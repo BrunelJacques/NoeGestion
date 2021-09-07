@@ -19,48 +19,6 @@ import datetime
 
 DICT_CONNEXIONS = {}
 
-def GetConfigs():
-    # appel des params de connexion stockés dans UserProfile et data
-    cfg = xucfg.ParamUser()
-    grpUSER = cfg.GetDict(groupe='USER', close=False)
-    grpAPPLI = cfg.GetDict(groupe='APPLI')
-    # appel des params de connexion stockés dans Data
-    cfg = xucfg.ParamFile()
-    grpCONFIGS = cfg.GetDict(groupe='CONFIGS')
-    return grpAPPLI,grpUSER,grpCONFIGS
-
-def GetOneConfig(self, nomConfig='lastConfig', mute=False):
-    # appel d'une configuration nommée, retourne le dict des params
-    cfg = xucfg.ParamFile()
-    grpCONFIGS = cfg.GetDict(groupe='CONFIGS')
-    cfg = xucfg.ParamUser()
-    grpAPPLI = cfg.GetDict(groupe='APPLI')
-    nomAppli = ''
-    if 'NOM_APPLICATION' in grpAPPLI.keys():
-        nomAppli = grpAPPLI['NOM_APPLICATION']
-
-    if nomConfig == 'lastConfig':
-        # recherche du nom de configuration par défaut, cad la dernière des choix
-        if 'choixConfigs' in grpCONFIGS:
-            if nomAppli in grpCONFIGS['choixConfigs'].keys():
-                if 'lastConfig' in grpCONFIGS['choixConfigs'][nomAppli].keys():
-                    nomConfig = grpCONFIGS['choixConfigs'][nomAppli]['lastConfig']
-
-    typeConfig = 'db_reseau'
-    if 'TYPE_CONFIG' in grpAPPLI:
-        typeConfig = grpAPPLI['TYPE_CONFIG']
-    if 'lstConfigs' in grpCONFIGS:
-        lstNomsConfigs = [x[typeConfig]['ID'] for x in grpCONFIGS['lstConfigs']]
-        if not (nomConfig in lstNomsConfigs):
-            mess = "xDB: Le nom de config '%s' n'est pas dans la liste des accès base de donnée" % (nomConfig)
-            self.erreur = mess
-            if not mute:
-                wx.MessageBox(mess)
-            return mess
-        ix = lstNomsConfigs.index(nomConfig)
-        # on récupére les paramétres de la config par le pointeur ix dans les clés
-        return grpCONFIGS['lstConfigs'][ix][typeConfig]
-
 class DB():
     # accès à la base de donnees principale
     def __init__(self, IDconnexion = None, config=None, nomFichier=None, mute=False):
@@ -82,10 +40,6 @@ class DB():
         if not IDconnexion:
             self.connexion = None
 
-            # appel des params de connexion stockés dans UserProfile et Data
-            grpAPPLI, grpUSER, grpCONFIGS = GetConfigs()
-            self.dictAppli = grpAPPLI
-            self.grpConfigs = grpCONFIGS
 
             # aiguillage dans les paramètres
             try:
@@ -102,14 +56,10 @@ class DB():
                 if nomConfig:
                     self.cfgParams = GetOneConfig(self,nomConfig,mute=mute)
                 # on ajoute les choix pris dans grpUSER,  pour mot passe, aux paramètres de la config retenue
-                if self.cfgParams:
-                    for cle, valeur in grpUSER.items():
-                        self.cfgParams[cle] = valeur
-                        self.nomBase = self.cfgParams['nameDB']
             except Exception as err:
                 mess = "xDB: La récup des identifiants de connexion a échoué : \nErreur detectee :%s" % err
                 if not mute:
-                    wx.MessageBox(mess)
+                    print(mess)
                 self.erreur = err
                 return
 
@@ -132,7 +82,7 @@ class DB():
                 mess = "xDB: Le type de Base de Données '%s' n'est pas géré!" % self.typeDB
                 self.erreur = mess
                 if not mute:
-                    wx.MessageBox(mess)
+                    print(mess)
                 return mess
 
             if self.connexion:
@@ -181,15 +131,14 @@ class DB():
         return ret
 
     def AfficheTestOuverture(self,info=""):
-        style = wx.ICON_STOP
-        if self.echec == 0: style = wx.ICON_INFORMATION
         accroche = ['Ouverture réussie ',"Echec d'ouverture "][self.echec]
         accroche += info
         retour = ['avec succès', ' SANS SUCCES !\n'][self.echec]
         mess = "%s\n\nL'accès à la base '%s' s'est réalisé %s" % (accroche,self.nomBase, retour)
         if self.erreur:
             mess += '\nErreur: %s'%self.erreur
-        wx.MessageBox(mess, style=style)
+        print(mess)
+        return mess
 
     def CreateBaseMySql(self,ifExist=True):
         """ Version RESEAU avec MYSQL """
@@ -209,7 +158,7 @@ class DB():
 
         except Exception as err:
             mess= "La création de la base de donnees MYSQL a echoue. \nErreur: %s"%err
-            wx.MessageBox(mess,'CreateBaseMySql')
+            print(mess,'CreateBaseMySql')
             self.erreur = err
             self.echec = 1
         else:
@@ -227,7 +176,7 @@ class DB():
             if len(userdb)>0 and len(config['mpUserDB'])==0:
                 if not mute:
                     mess = "Pas de mot de passe saisi, veuillez configurer les accès résea"
-                    wx.MessageBox(mess, caption="xUTILS_DB.ConnexionFichierReseau ")
+                    print(mess, caption="xUTILS_DB.ConnexionFichierReseau ")
                 self.erreur = "%s\n\nEtape: %s"%("Config incompète",mess)
                 self.echec = 1
                 return
@@ -249,11 +198,11 @@ class DB():
                 self.cursor.execute("USE %s;" % nomFichier)
                 self.echec = 0
             else:
-                wx.MessageBox('xDB: Accès BD non développé pour %s' %self.typeDB)
+                print('xDB: Accès BD non développé pour %s' %self.typeDB)
         except Exception as err:
             mess = "La connexion MYSQL a echoué.\n\nEtape: %s,\nErreur: '%s'" %(etape,err)
             if not mute:
-                wx.MessageBox(mess,caption="xUTILS_DB.ConnexionFichierReseau ")
+                print(mess,caption="xUTILS_DB.ConnexionFichierReseau ")
             self.erreur = "%s\n\nEtape: %s"%(err,etape)
             self.echec = 1
 
@@ -261,7 +210,7 @@ class DB():
         """ Version LOCALE avec SQLITE """
         # Vérifie que le fichier sqlite existe bien
         if os.path.isfile(nomFichier) == False:
-            wx.MessageBox("xDB: Le fichier local '%s' demande n'est pas present sur le disque dur."%nomFichier)
+            print("xDB: Le fichier local '%s' demande n'est pas present sur le disque dur."%nomFichier)
             self.echec = 1
             return
         # Initialisation de la connexion
@@ -283,15 +232,15 @@ class DB():
             elif self.typeDB == 'mySqlLocal':
                 self.ConnectMySqlLocal()
             else:
-                wx.MessageBox('xDB: Accès DB non développé pour %s' %self.typeDB)
+                print('xDB: Accès DB non développé pour %s' %self.typeDB)
         except Exception as err:
-            wx.MessageBox("xDB: La connexion base de donnée a echoué à l'étape: %s, sur l'erreur :\n\n%s" %(etape,err))
+            print("xDB: La connexion base de donnée a echoué à l'étape: %s, sur l'erreur :\n\n%s" %(etape,err))
             self.erreur = "%s\n\n: %s"%(err,etape)
 
     def ConnectAcessOdbc(self):
         # permet un acces aux bases access sans office
         if os.path.isfile(self.nomBase) == False:
-            wx.MessageBox("xDB:Le fichier %s demandé n'est pas present sur le disque dur."% self.nomBase, style = wx.ICON_WARNING)
+            print("xDB:Le fichier %s demandé n'est pas present sur le disque dur."% self.nomBase)
             return
         # Initialisation de la connexion
         try:
@@ -303,7 +252,7 @@ class DB():
             cursor = self.connexion.cursor()
             allTables = cursor.tables()
             if len(allTables) == 0:
-                wx.MessageBox("xDB:La base de donnees %s est présente mais vide " % self.nomBase)
+                print("xDB:La base de donnees %s est présente mais vide " % self.nomBase)
                 return
             # Exemple code
             """
@@ -315,8 +264,7 @@ class DB():
             self.connexion.close()"""
             self.echec = 0
         except Exception as err:
-            wx.MessageBox("xDB.ConnectAcessOdbc:La connexion à la base access %s a echoué : \nErreur détectée :%s" %(self.nomBase,err),
-                          style=wx.ICON_WARNING)
+            print("xDB.ConnectAcessOdbc:La connexion à la base access %s a echoué : \nErreur détectée :%s" %(self.nomBase,err))
             self.erreur = err
 
     def ConnectAcessADO(self):
@@ -324,7 +272,7 @@ class DB():
            N'est pas compatible access 95, mais lit comme access 2002"""
         # Vérifie que le fichier existe bien
         if os.path.isfile(self.nomBase) == False:
-            wx.MessageBox("xDB:Le fichier %s demandé n'est pas present sur le disque dur."% self.nomBase, style = wx.ICON_WARNING)
+            print("xDB:Le fichier %s demandé n'est pas present sur le disque dur."% self.nomBase)
             return
         # Initialisation de la connexion
         try:
@@ -337,14 +285,13 @@ class DB():
             cat.ActiveConnection = self.connexion
             allTables = cat.Tables
             if len(allTables) == 0:
-                wx.MessageBox("xDB:La base de donnees %s est présente mais vide " % self.nomBase)
+                print("xDB:La base de donnees %s est présente mais vide " % self.nomBase)
                 return
             del cat
             self.cursor = win32com.client.Dispatch(r'ADODB.Recordset')
             self.echec = 0
         except Exception as err:
-            wx.MessageBox("xDB:La connexion avec la base access %s a echoué : \nErreur détectée :%s" %(self.nomBase,err),
-                          style=wx.ICON_WARNING)
+            print("xDB:La connexion avec la base access %s a echoué : \nErreur détectée :%s" %(self.nomBase,err))
             self.erreur = err
 
     def ConnectSQLite(self):
@@ -352,7 +299,7 @@ class DB():
         #nécessite : pip install pysqlite
         # Vérifie que le fichier sqlite existe bien
         if os.path.isfile(self.nomBase) == False:
-            wx.MessageBox("xDB: Le fichier %s demandé n'est pas present sur le disque dur."% self.nomBase, style = wx.ICON_WARNING)
+            print("xDB: Le fichier %s demandé n'est pas present sur le disque dur."% self.nomBase)
             return
         # Initialisation de la connexion
         try:
@@ -360,7 +307,7 @@ class DB():
             self.cursor = self.connexion.cursor()
             self.echec = 0
         except Exception as err:
-            wx.MessageBox("xDB: La connexion avec la base de donnees SQLITE a echoué : \nErreur détectée :%s" % err, style = wx.ICON_WARNING)
+            print("xDB: La connexion avec la base de donnees SQLITE a echoué : \nErreur détectée :%s" % err)
             self.erreur = err
 
     def ExecuterReq(self, req, mess=None, affichError=True):
@@ -401,7 +348,7 @@ class DB():
             else: self.retourReq = 'Erreur xUTILS_DB\n\n'
             self.retourReq +=  ("ExecuterReq:\n%s\n\nErreur detectee:\n%s"% (req, str(err)))
             if affichError:
-                wx.MessageBox(self.retourReq)
+                print(self.retourReq)
         finally:
             return self.retourReq
 
@@ -435,181 +382,6 @@ class DB():
         except :
             pass
         return resultat
-
-    def DonneesInsert(self,donnees):
-        # décompacte les données en une liste  ou liste de liste pour requêtes Insert
-        donneesValeurs = '('
-        def Compose(liste):
-            serie = ''
-            for valeur in liste:
-                if isinstance(valeur,(int,float)):
-                    val = "%s, " %str(valeur)
-                elif isinstance(valeur, (tuple, list,dict)):
-                    val = "'%s', "%str(valeur)[1:-1].replace('\'', '')
-                elif valeur == None or valeur == '':
-                    val = "NULL, "
-                else:
-                    val = "'%s', "%str(valeur).replace('\'', '')
-                serie += "%s"%(val)
-            return serie[:-2]
-        if isinstance(donnees[0], (tuple,list)):
-            for (liste) in donnees:
-                serie = Compose(liste)
-                donneesValeurs += "%s ), ("%(serie)
-            donneesValeurs = donneesValeurs[:-4]
-        else:
-            donneesValeurs += "%s"%Compose(donnees)
-        return donneesValeurs +')'
-
-    def ReqInsert(self,nomTable="",lstChamps=[],lstlstDonnees=[],lstDonnees=None,commit=True, mess=None,affichError=True):
-        """ Permet d'insérer les lstChamps ['ch1','ch2',..] et lstlstDonnees [[val11,val12...],[val21],[val22]...]
-            self.newID peut être appelé ensuite pour récupérer le dernier'D """
-        if lstDonnees:
-            if len(lstDonnees[0]) != 2: raise("lstDonnees doit être une liste de tuples (champ,donnee)")
-            lsttemp=[]
-            lstChamps=[]
-            lstlstDonnees = []
-            for (champ,donnee) in lstDonnees:
-                lstChamps.append(champ)
-                lsttemp.append(donnee)
-            lstlstDonnees.append(lsttemp)
-        if len(lstChamps)* len(lstlstDonnees) == 0:
-            if affichError:
-                wx.MessageBox('%s\n\nChamps ou données absents'%mess,
-                              'Echec ReqInsert', style= wx.ICON_STOP)
-            return '%s\n\nChamps ou données absents'%mess
-        valeurs = self.DonneesInsert(lstlstDonnees)
-        champs = '( ' + str(lstChamps)[1:-1].replace('\'','') +' )'
-        req = """INSERT INTO %s 
-              %s 
-              VALUES %s ;""" % (nomTable, champs, valeurs)
-        self.retourReq = "ok"
-        self.newID= 0
-        try:
-            # Enregistrement
-            self.cursor.execute(req)
-            if commit == True :
-                self.Commit()
-            # Récupération de l'ID
-            if self.typeDB == 'mysql' :
-                # Version MySQL
-                self.cursor.execute("SELECT LAST_INSERT_ID();")
-            else:
-                # Version Sqlite
-                self.cursor.execute("SELECT last_insert_rowid() FROM %s" % nomTable)
-            self.newID = self.cursor.fetchall()[0][0]
-        except Exception as err:
-            self.echec = 1
-            if mess:
-                self.retourReq = mess +'\n\n'
-            else: self.retourReq = 'Erreur xUTILS_DB\n\n'
-            self.retourReq +=  ("ReqInsert:\n%s\n\nErreur detectee:\n%s"% (req, str(err)))
-            if affichError:
-                wx.MessageBox(self.retourReq)
-        finally:
-            return self.retourReq
-
-    def CoupleMAJ(self,champ, valeur):
-        nonetype = type(None)
-        if isinstance(valeur,(int,float)):
-            val = "%s, " %str(valeur)
-        elif isinstance(valeur, (nonetype)):
-            val = "NULL, "
-        elif isinstance(valeur, (tuple, list,dict)):
-            val = str(valeur)[1:-1]
-            val = val.replace("'","")
-            val = "'%s', "%val
-        else: val = "\"%s\", "%str(valeur)
-        couple = " %s = %s"%(champ,val)
-        return couple
-
-    def DonneesMAJ(self,donnees):
-        # décompacte les données en une liste de couples pour requêtes MAJ
-        donneesCouples = ""
-        if isinstance(donnees, (tuple,list)):
-            for (champ,valeur) in donnees:
-                couple = self.CoupleMAJ(champ, valeur)
-                donneesCouples += "%s"%(couple)
-        elif isinstance((donnees,dict)):
-            for (champ, valeur) in donnees.items():
-                couple = self.CoupleMAJ(champ, valeur)
-                donneesCouples += "%s" % (couple)
-        else: return None
-        donneesCouples = donneesCouples[:-2]+' '
-        return donneesCouples
-
-    def ListesMAJ(self,lstChamps,lstDonnees):
-        # assemble des données en une liste de couples pour requêtes MAJ
-        donneesCouples = ''
-        for ix in range(len(lstChamps)):
-            couple = self.CoupleMAJ(lstChamps[ix], lstDonnees[ix])
-            donneesCouples += "%s"%(couple)
-        donneesCouples = donneesCouples[:-2]+' '
-        return donneesCouples
-
-    def ReqMAJ(self, nomTable='',
-               lstDonnees=None,
-               nomChampID=None,ID=None,condition=None,
-               lstValues=[],lstChamps=[],
-               mess=None, affichError=True, IDestChaine = False):
-        """ Permet de mettre à jour des lstDonnees présentées en dic ou liste de tuples"""
-        # si couple est None, on en crée à partir de lstChamps et lstValues
-        if lstDonnees :
-            update = self.DonneesMAJ(lstDonnees)
-        elif (len(lstChamps) > 0) and (len(lstChamps) == len(lstValues)):
-            update = self.ListesMAJ(lstChamps,lstValues)
-        if nomChampID and ID:
-            # un nom de champ avec un ID vient s'ajouter à la condition
-            if IDestChaine == False and (isinstance(ID, int )):
-                condID = " (%s=%d) "%(nomChampID, ID)
-            else:
-                condID = " (%s='%s') "%(nomChampID, ID)
-            if condition:
-                condition += " AND %s "%(condID)
-            else: condition = condID
-        elif (not condition) or (len(condition.strip())==0):
-            # si pas de nom de champ et d'ID, la condition ne doit pas être vide sinon tout va updater
-            condition = " FALSE "
-        req = "UPDATE %s SET  %s WHERE %s ;" % (nomTable, update, condition)
-        # Enregistrement
-        try:
-            self.cursor.execute(req,)
-            self.Commit()
-            self.retourReq = "ok"
-        except Exception as err:
-            self.echec = 1
-            if mess:
-                self.retourReq = mess + '\n\n'
-            else:
-                self.retourReq = 'Erreur xUTILS_DB\n\n'
-            self.retourReq += ("ReqMAJ:\n%s\n\nErreur detectee:\n%s" % (req, str(err)))
-            if affichError:
-                wx.MessageBox(self.retourReq)
-        finally:
-            return self.retourReq
-
-    def ReqDEL(self, nomTable,champID="",ID=None, condition="", commit=True, mess=None, affichError=True):
-        """ Suppression d'un enregistrement ou d'un ensemble avec condition de type where"""
-        if len(condition)==0:
-            condition = champID+" = %d"%ID
-        self.retourReq = "ok"
-        req = "DELETE FROM %s WHERE %s ;" % (nomTable, condition)
-        try:
-            self.cursor.execute(req)
-            if commit == True :
-                self.Commit()
-                self.retourReq = "ok"
-        except Exception as err:
-            self.echec = 1
-            if mess:
-                self.retourReq = mess + '\n\n'
-            else:
-                self.retourReq = 'Erreur xUTILS_DB\n\n'
-            self.retourReq += ("ReqMAJ:\n%s\n\nErreur detectee:\n%s" % (req, str(err)))
-            if affichError:
-                wx.MessageBox(self.retourReq)
-        finally:
-            return self.retourReq
 
     def Commit(self):
         if self.connexion:
@@ -813,7 +585,7 @@ class DB():
         if self and retour == 'KO':
             mess = "Des tables manquent dans cette base de donnée\n\n"
             mess += "Identifiez-vous en tant qu'admin pour pouvoir les créer, ou changez de base"
-            wx.MessageBox(mess,"Création de tables nécessaires")
+            print(mess,"Création de tables nécessaires")
 
     def CreationTables(self, parent,dicTables, tables):
         if not tables:
@@ -964,20 +736,6 @@ class DB():
         return listeIndex
 
     def MaFonctionTest(self):
-        import pyodbc
-        DRIVER='{Microsoft Access Driver (*.mdb, *.accdb)}'
-        DBQ='c:/temp/qcompta.mdb'
-        PWD = '' # passWord
-        cnxn = pyodbc.connect('DRIVER={};DBQ={};PWD={}'.format(DRIVER,DBQ,PWD))
-        cursor = cnxn.cursor()
-        cursor.execute("select * from Journaux;")
-        for row in cursor.fetchall():
-            print(row)
-        cursor.close()
-        del cursor
-        cnxn.close()
-        return
-
         import mysql
         cnx = mysql.connector.connect(host='192.168.1.43', user='root', database='matthania_data',password='xxxxx')
         cursor = cnx.cursor()
@@ -1041,10 +799,10 @@ def Init_tables(parent=None, mode='creation',tables=None,db_tables=None,db_ix=No
         if mode in ('creation', 'test'):
             txt = "de toutes les tables manquantes à l'appli mère"
         else: txt = "de tous les champs des tables de l'appli mère"
-        md = wx.MessageDialog(parent,
-                "%s %s:\n\n'%s'"%(mode.capitalize(), txt, str(db_tables.keys())[10:-1]),
-                style=wx.YES_NO)
-        if md.ShowModal() != wx.ID_YES:
+        mess = "%s %s:\n\n'%s'"%(mode.capitalize(), txt, str(db_tables.keys())[10:-1])
+        print(mess)
+        ret = input("On continue? O/N")
+        if ret.upper() != "O":
             return
         tables = db_tables.keys()
 
@@ -1081,7 +839,6 @@ def Init_tables(parent=None, mode='creation',tables=None,db_tables=None,db_ix=No
     db.Close() # fermeture pour prise en compte de la création
 
 if __name__ == "__main__":
-    app = wx.App()
     os.chdir("..")
     db = DB()
     #db.MaFonctionTest()
