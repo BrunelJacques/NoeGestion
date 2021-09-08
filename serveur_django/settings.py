@@ -78,6 +78,9 @@ WSGI_APPLICATION = 'serveur_django.wsgi.application'
 p = Path('/etc/noegestion/default_database.json')
 with p.open() as json_auth:
     default = json.load(json_auth)
+
+default['ENGINE'] = 'django.db.backends.mysql'
+
 DATABASES = {
     'default': default
 }
