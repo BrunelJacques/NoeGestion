@@ -841,7 +841,6 @@ def Init_tables(parent=None, mode='creation',tables=None,db_tables=None,db_ix=No
 if __name__ == "__main__":
     os.chdir("..")
     db = DB()
-    #db.MaFonctionTest()
     #db.DropUneTable('cpta_journaux')
     #from srcNoelite.DB_schema import DB_TABLES, DB_IX, DB_PK
     #db.CreationUneTable(DB_TABLES,'stEffectifs')

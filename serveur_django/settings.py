@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'appli_web',
 ]
 
 MIDDLEWARE = [
@@ -82,7 +83,7 @@ DATABASES = {
 }
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR + '/media/'
+MEDIA_ROOT = str(BASE_DIR) + '\\media\\'
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -115,16 +116,21 @@ USE_L10N = True
 
 USE_TZ = True
 
+DATE_INPUT_FORMATS = ('%d/%m/%Y','%Y-%m-%d')
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = (BASE_DIR + '/static/')
+STATICFILES_DIRS = (str(BASE_DIR) + '\\static\\',
+                    )
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 if __name__ == '__main__':
     print('databases : ',DATABASES)
+    print('staticfiles_dir : ', STATICFILES_DIRS)
+    print('media_root : ', MEDIA_ROOT)
+    print()
+    print('ok')
