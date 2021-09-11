@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 
 
-class zzActivites(models.Model):
+class activites(models.Model):
     # classe test
     idactivite = models.AutoField(db_column='IDactivite', primary_key=True)  # Field name made lowercase.
     nom = models.CharField(max_length=200, blank=True, null=True)
@@ -40,5 +40,5 @@ class zzActivites(models.Model):
         return self.abrege[4:]
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'activites'

@@ -85,6 +85,14 @@ DATABASES = {
     'default': default
 }
 
+"""DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}"""
+
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = str(BASE_DIR) + '\\media\\'
 
@@ -135,5 +143,7 @@ if __name__ == '__main__':
     print('databases : ',DATABASES)
     print('staticfiles_dir : ', STATICFILES_DIRS)
     print('media_root : ', MEDIA_ROOT)
+    print('basedir : ', BASE_DIR)
+
     print()
     print('ok')
