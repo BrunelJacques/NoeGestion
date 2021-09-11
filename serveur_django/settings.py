@@ -28,7 +28,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -75,7 +74,7 @@ WSGI_APPLICATION = 'serveur_django.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-p = Path('/etc/noegestion/default_database.json')
+"""p = Path('/etc/noegestion/default_database.json')
 with p.open() as json_auth:
     default = json.load(json_auth)
 
@@ -83,7 +82,19 @@ default['ENGINE'] = 'django.db.backends.mysql'
 
 DATABASES = {
     'default': default
+}"""
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'noegestion',
+        'USER': 'xxxxx',
+        'PASSWORD': 'xxxxxxx',
+        'HOST': '192.168.1.43',
+        'PORT': '3306'
+    }
 }
+
 
 """DATABASES = {
     'default': {
