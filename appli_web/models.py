@@ -4,15 +4,15 @@ from django.db import models
 
 class geAnalytiques(models.Model):
     # Etat des stocks à une date donnée
-    idAnalytique = models.CharField(max_lenght=8, blank=True, unique=True,
+    idAnalytique = models.CharField(max_length=8, blank=True, unique=True,
                                     db_index=True)
-    label = models.CharField(max_lenght=200, blank=True,
+    label = models.CharField(max_length=200, blank=True,
                              help_text="Libellé long du code analytique"
                              )
     params = models.TextField( blank=True,
                                help_text="liste texte de paramétrages constructeurs, pour le calcul coût"
                                )
-    axe = models.CharField(max_lenght=32, blank=True,
+    axe = models.CharField(max_length=32, blank=True,
                            help_text="axe analytique 'VEHICULES' 'CONVOIS' 'PRIXJOUR', defaut = vide"
                            )
     dateSaisie = models.DateField(auto_now=True)
@@ -45,21 +45,21 @@ class stArticles(models.Model):
         ('VND', 'Viande'),
     ]
 
-    idArticle = models.CharField(max_lenght=128, blank=True, unique=True,
+    idArticle = models.CharField(max_length=128, blank=True, unique=True,
                                  db_index=True,
                                  help_text="PK Désignation du produit",
                                  )
-    rations = models.DecimalField(blank=True,
+    rations = models.DecimalField(max_digits=10,decimal_places=4,blank=True,
                                   help_text="Nombre de ration pour une unité"
                                   )
-    fournisseur = models.CharField(max_lenght=32, blank=True,
+    fournisseur = models.CharField(max_length=32, blank=True,
                                    db_index=True,
                                    help_text="Fournisseur habituel"
                                    )
     qteStock = models.IntegerField( null=False, default=0,
                                     help_text="Stock en live"
                                     )
-    txTva = models.DecimalField(blank=False,
+    txTva = models.DecimalField(max_digits=10,decimal_places=4,blank=False,
                                 help_text="tx de TVA en %"
                                 )
     magasin = models.IntegerField( blank=False, choices=MAGASIN_CHOICES,
@@ -79,16 +79,16 @@ class stArticles(models.Model):
     obsolete = models.BooleanField( null=False, default=False,
                                     help_text="1 article qui n'est plus utilisé"
                                     )
-    prixMoyen = models.DecimalField(blank=True,
+    prixMoyen = models.DecimalField(max_digits=10,decimal_places=4,blank=True,
                                     help_text="Prix unitaire moyen historique du stock"
                                     )
-    prixActuel = models.DecimalField(blank=True,
+    prixActuel = models.DecimalField(max_digits=10,decimal_places=4,blank=True,
                                      help_text="Dernier prix TTC unitaire livré ou de réappro"
                                      )
     dernierAchat = models.DateField(blank=False,
                                     help_text="Date de dernière entrée avec prix saisi"
                                     )
-    ordi = models.CharField(max_lenght=32, blank=True,
+    ordi = models.CharField(max_length=32, blank=True,
                             help_text= "Nom de l'ordi utilisé entrée ou modif")
     dateSaisie = models.DateField(auto_now=True)
 
@@ -131,7 +131,7 @@ class stEffectifs(models.Model):
     prevuRepas = models.IntegerField( null=False, default=0,
                                       help_text="Nbre d'inscrits staff inclus"
                                       )
-    ordi = models.CharField(max_lenght=32, blank=True,
+    ordi = models.CharField(max_length=32, blank=True,
                             help_text= "Nom de l'ordi utilisé entrée ou modif")
     dateSaisie = models.DateField(auto_now=True)
 
@@ -196,21 +196,23 @@ class stMouvements(models.Model):
                                   db_index=True,
                                   help_text="article mouvementé"
                                   )
-    fournisseur = models.CharField(max_lenght=32, blank=True,
+    fournisseur = models.CharField(max_length=32, blank=True,
                                    db_index=True,
                                    help_text="Fournisseur de l'entrée"
                                    )
-    origine = models.CharField(blank=False, choices=ORIGINE_CHOICES,
+    origine = models.CharField(max_length=32,blank=False,
+                               choices=ORIGINE_CHOICES,
                                help_text="Origine du mouvement")
-    qte = models.DecimalField( null=False, default=0,
+    qte = models.DecimalField( max_digits=10,decimal_places=4,
+                               null=False, default=0,
                                help_text="Quantitée mouvementée signée"
                                )
-    prixUnit = models.DecimalField(blank=False,
+    prixUnit = models.DecimalField(max_digits=10,decimal_places=4,blank=False,
                                    help_text= "Prix moyen pour sorties et retour, Prix revient pour achats"
                                 )
     repas = models.IntegerField( blank=False, choices=REPAS_CHOICES,
                                  help_text="Repas concerné par la sortie vers cuisine")
-    ordi = models.CharField(max_lenght=32, blank=True,
+    ordi = models.CharField(max_length=32, blank=True,
                             help_text="Nom de l'ordi utilisé entrée ou modif")
     dateSaisie = models.DateTimeField(auto_now=True)
     modifiable = models.BooleanField(default=True,
@@ -242,13 +244,13 @@ class stInventaires(models.Model):
     qteConstat = models.IntegerField(null=False, default=0,
                                      help_text="Qté constatée lors d'un inventaire"
                                      )
-    prixMoyen = models.DecimalField(blank=True,
+    prixMoyen = models.DecimalField(max_digits=10,decimal_places=4,blank=True,
                                     help_text="Prix unitaire moyen historique du stock"
                                     )
-    prixActuel = models.DecimalField(blank=True,
+    prixActuel = models.DecimalField(max_digits=10,decimal_places=4,blank=True,
                                      help_text="Prix forcé pour valorisation de l'inventaire"
                                      )
-    ordi = models.CharField(max_lenght=32, blank=True,
+    ordi = models.CharField(max_length=32, blank=True,
                             help_text="Nom de l'ordi utilisé entrée ou modif")
     dateSaisie = models.DateField(auto_now=True)
     modifiable = models.BooleanField(default=True,
