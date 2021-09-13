@@ -7,7 +7,7 @@ class geAnalytiques(models.Model):
     idAnalytique = models.CharField(max_length=8, blank=True, unique=True,
                                     db_index=True)
     label = models.CharField(max_length=200, blank=True,
-                             help_text="Libellé long du code analytique"
+                             help_text="Libellé long du code analytique",
                              )
     params = models.TextField( blank=True,
                                help_text="liste texte de paramétrages constructeurs, pour le calcul coût"
@@ -47,7 +47,7 @@ class stArticles(models.Model):
 
     idArticle = models.CharField(max_length=128, blank=True, unique=True,
                                  db_index=True,
-                                 help_text="PK Désignation du produit",
+                                 help_text="Désignation du produit",
                                  )
     rations = models.DecimalField(max_digits=10,decimal_places=4,blank=True,
                                   help_text="Nombre de ration pour une unité"
