@@ -14,96 +14,79 @@ import subprocess
 import mysql.connector
 import win32com.client
 import sqlite3
-import copy
 import datetime
-
-DICT_CONNEXIONS = {}
+from serveur_django.settings import DATABASES
 
 class DB():
     # accès à la base de donnees principale
-    def __init__(self, IDconnexion = None, config=None, nomFichier=None, mute=False):
-        # config peut être soit un nom de config soit un dictionaire
-        #print(config,nomFichier,IDconnexion)
+    def __init__(self, nomConfig='default',mute=False):
+        # configLan sera un dict réseau avec host,user, password port
+        # nomFichierDB pour des bases locales access ou sqlite
+        # mute ne signalera pas l'erreur, tester avec self.erreur et echec
         self.echec = 1
-        self.IDconnexion = IDconnexion
-        self.nomBase = 'personne!'
-        self.isNetwork = False
         self.lstTables = None
         self.lstIndex = None
-        self.grpConfigs = None
-        self.dictAppli = None
-        self.cfgParams = None
         self.erreur = None
-        if nomFichier:
+        self.connexion = None
+        mess = None
+
+        # contrôles initiaux des paramètres de connexion
+        if not nomConfig in DATABASES.keys():
+            mess = "n'est pas une connexion paramétrée dans DATABASES!"
+        self.cfgParams = DATABASES[nomConfig]
+        if not isinstance(self.cfgParams, dict):
+            mess = "n'est pas un dictionnaire dans DATABASES!"
+        if not "NAME" in self.cfgParams.keys():
+            mess = "ne contient pas de clé 'NAME'"
+        self.nomBase = self.cfgParams['NAME']
+
+        # contrôle du type de base
+        if not 'HOST' in self.cfgParams:
+            self.isNetwork = False
+        else: self.isNetwork = True
+
+        if not self.isNetwork and not 'PATH' in self.cfgParams:
+            mess = "bd fichier sans HOST doit avoir un PATH"
+
+        if 'TYPE' in self.cfgParams:
+            self.typeDB = self.cfgParams['TYPE'].lower()
+            if not self.typeDB in ('mysql','sqlserver','access','sqlite'):
+                mess = "Le type de Base de Données '%s' n'est pas géré!" \
+                       % self.typeDB
+        else: # type de données par défaut si absent
+            if self.isNetwork:
+                self.typeDB = 'mysql'
+            else: self.typeDB = 'sqlite'
+
+
+        # final étape contrôles initiaux, abandon sur erreur
+        if mess:
+            self.erreur = "%s %s"%(nomConfig, mess)
+            if not mute:
+                raise NameError(self.erreur)
+            else: return
+
+        # lancement de la connexion local
+        if not self.isNetwork:
+            # test de présence du fichier
+            nomFichier = self.cfgParams['PATH']
+            if not nomFichier[-1] in ('/','\\'):
+                nomFichier += '/'
+            nomFichier = nomFichier.replace('\\','/')
+            nomFichier += self.cfgParams['NAME']
+            self.nomBase = nomFichier
             self.OuvertureFichierLocal(nomFichier)
-            return
-        if not IDconnexion:
-            self.connexion = None
+            # connecte
+            self.ConnexionFichierLocal(self.cfgParams)
+        else: # cas d'une connexion réseau
+            self.ConnexionFichierReseau(self.cfgParams, mute=mute)
 
+        # fin de l'init self.erreur est alimenté par les méthodes connexions
+        if self.erreur:
+            if not mute:
+                raise NameError(self.erreur)
 
-            # aiguillage dans les paramètres
-            try:
-                # priorité la config passée en kwds puis recherche de la dernière config dans 'USER'
-                if config:
-                    # Présence de kwds 'config', peut être le nom de la config ou un dictionaire de configuration
-                    if isinstance(config, str):
-                        nomConfig = config
-                    elif isinstance(config,dict):
-                        nomConfig = None
-                        self.cfgParams = copy.deepcopy(config)
-                else: nomConfig = 'lastConfig'
-
-                if nomConfig:
-                    self.cfgParams = GetOneConfig(self,nomConfig,mute=mute)
-                # on ajoute les choix pris dans grpUSER,  pour mot passe, aux paramètres de la config retenue
-            except Exception as err:
-                mess = "xDB: La récup des identifiants de connexion a échoué : \nErreur detectee :%s" % err
-                if not mute:
-                    print(mess)
-                self.erreur = err
-                return
-
-            if not self.cfgParams :
-                self.erreur = "Aucun fichier de paramètres de connexion trouvé!"
-                return
-
-            # Ouverture des bases de données selon leur type
-            if 'typeDB' in self.cfgParams:
-                self.typeDB = self.cfgParams['typeDB'].lower()
-            else : self.typeDB = 'Non renseigné'
-            if 'typeDB' in self.cfgParams.keys() and  self.cfgParams['typeDB'].lower() in ['mysql','sqlserver']:
-                self.isNetwork = True
-                # Ouverture de la base de données
-                self.ConnexionFichierReseau(self.cfgParams, mute=mute)
-            elif 'typeDB' in self.cfgParams.keys() and  self.cfgParams['typeDB'].lower() in ['access','sqlite']:
-                self.isNetwork = False
-                self.ConnexionFichierLocal(self.cfgParams)
-            else :
-                mess = "xDB: Le type de Base de Données '%s' n'est pas géré!" % self.typeDB
-                self.erreur = mess
-                if not mute:
-                    print(mess)
-                return mess
-
-            if self.connexion:
-                # Mémorisation de l'ouverture de la connexion et des requêtes
-                if len(DICT_CONNEXIONS) == 0:
-                    self.IDconnexion = 1
-                else:
-                    self.IDconnexion = sorted(DICT_CONNEXIONS.keys())[-1]+1
-                DICT_CONNEXIONS[self.IDconnexion] = {}
-                DICT_CONNEXIONS[self.IDconnexion]['isNetwork'] = self.isNetwork
-                DICT_CONNEXIONS[self.IDconnexion]['typeDB'] = self.typeDB
-                DICT_CONNEXIONS[self.IDconnexion]['connexion'] = self.connexion
-                DICT_CONNEXIONS[self.IDconnexion]['cfgParams'] = self.cfgParams
-        else:
-            if self.IDconnexion in DICT_CONNEXIONS:
-                # la connexion a été conservée (absence de DB.Close)
-                self.isNetwork  = DICT_CONNEXIONS[self.IDconnexion]['isNetwork']
-                self.typeDB     = DICT_CONNEXIONS[self.IDconnexion]['typeDB']
-                self.connexion  = DICT_CONNEXIONS[self.IDconnexion]['connexion']
-                self.cfgParams  = DICT_CONNEXIONS[self.IDconnexion]['cfgParams']
-                if self.connexion: self.echec = 0
+    # Méthodes pour la Connexion ----------------------------------------------
 
     def Ping(self,serveur):
         option = '-n' if sys.platform == 'win32' else ''
@@ -140,69 +123,48 @@ class DB():
         print(mess)
         return mess
 
-    def CreateBaseMySql(self,ifExist=True):
-        """ Version RESEAU avec MYSQL """
-
-        try:
-            # usage de  "mysql.connector":
-            self.cursor = self.connexion.cursor()
-            if ifExist: exist = 'IF NOT EXISTS'
-            else: exist = ''
-            # Création
-            req = "CREATE DATABASE %s %s;" %(exist,self.nomBase)
-            self.cursor.execute(req)
-
-            # Utilisation
-            if self.nomBase not in ("", None):
-                self.cursor.execute("USE %s;" % self.nomBase)
-
-        except Exception as err:
-            mess= "La création de la base de donnees MYSQL a echoue. \nErreur: %s"%err
-            print(mess,'CreateBaseMySql')
-            self.erreur = err
-            self.echec = 1
-        else:
-            self.echec = 0
-
     def ConnexionFichierReseau(self,config,mute=False):
         self.connexion = None
         self.echec = 1
         try:
             etape = 'Décompactage de la config'
-            host = config['serveur']
-            port = config['port']
-            userdb = config['userDB']
-            passwd = config['mpUserDB']
-            if len(userdb)>0 and len(config['mpUserDB'])==0:
+            host = config['HOST']
+            port = config['PORT']
+            userdb = config['USER']
+            passwd = config['PASSWORD']
+            if len(userdb)>0 and len(config['PASSWORD'])==0:
                 if not mute:
                     mess = "Pas de mot de passe saisi, veuillez configurer les accès résea"
-                    print(mess, caption="xUTILS_DB.ConnexionFichierReseau ")
+                    print(mess, "xUTILS_DB.ConnexionFichierReseau ")
                 self.erreur = "%s\n\nEtape: %s"%("Config incompète",mess)
                 self.echec = 1
                 return
-            nomFichier = config['nameDB']
             etape = 'Ping %s'%(host)
             ret = self.Ping(host)
             if not ret == 'ok':
                 self.echec = 1
                 self.connexion = None
                 return
-            etape = 'Création du connecteur %s:%s user: %s - %s'%(host, port,userdb,passwd)
+            etape = 'Création du connecteur %s:%s user: %s - %s'%(host, port,
+                                                                  userdb,passwd)
             if self.typeDB == 'mysql':
-                connexion = mysql.connector.connect(host=host, user=userdb, passwd=passwd, port=int(port))
+                connexion = mysql.connector.connect(host=host,
+                                                    user=userdb,
+                                                    passwd=passwd,
+                                                    port=int(port))
                 etape = 'Création du curseur, après connexion'
                 self.cursor = connexion.cursor(buffered=True)
                 self.connexion = connexion
                 # Tentative d'Utilisation de la base
-                etape = " Tentative d'accès à '%s'" %nomFichier
-                self.cursor.execute("USE %s;" % nomFichier)
+                etape = " Tentative d'accès à '%s'" %self.nomBase
+                self.cursor.execute("USE %s;" % self.nomBase)
                 self.echec = 0
             else:
                 print('xDB: Accès BD non développé pour %s' %self.typeDB)
         except Exception as err:
             mess = "La connexion MYSQL a echoué.\n\nEtape: %s,\nErreur: '%s'" %(etape,err)
             if not mute:
-                print(mess,caption="xUTILS_DB.ConnexionFichierReseau ")
+                print(mess,"xUTILS_DB.ConnexionFichierReseau ")
             self.erreur = "%s\n\nEtape: %s"%(err,etape)
             self.echec = 1
 
@@ -210,7 +172,7 @@ class DB():
         """ Version LOCALE avec SQLITE """
         # Vérifie que le fichier sqlite existe bien
         if os.path.isfile(nomFichier) == False:
-            print("xDB: Le fichier local '%s' demande n'est pas present sur le disque dur."%nomFichier)
+            print("Le fichier local '%s' demande n'est pas present sur le disque dur."%nomFichier)
             self.echec = 1
             return
         # Initialisation de la connexion
@@ -220,19 +182,14 @@ class DB():
 
     def ConnexionFichierLocal(self, config):
         self.connexion = None
-        if config['serveur'][-1] != "\\":
-            config['serveur'] += "\\"
-        self.nomBase = config['serveur'] + config['nameDB']
         try:
             etape = 'Création du connecteur'
             if self.typeDB == 'access':
                 self.ConnectAcessADO()
             elif self.typeDB == 'sqlite':
                 self.ConnectSQLite()
-            elif self.typeDB == 'mySqlLocal':
-                self.ConnectMySqlLocal()
             else:
-                print('xDB: Accès DB non développé pour %s' %self.typeDB)
+                self.mess = 'Accès DB non développé pour %s' %self.typeDB
         except Exception as err:
             print("xDB: La connexion base de donnée a echoué à l'étape: %s, sur l'erreur :\n\n%s" %(etape,err))
             self.erreur = "%s\n\n: %s"%(err,etape)
@@ -309,6 +266,8 @@ class DB():
         except Exception as err:
             print("xDB: La connexion avec la base de donnees SQLITE a echoué : \nErreur détectée :%s" % err)
             self.erreur = err
+
+    # Gestion des requêtes SQL ------------------------------------------------
 
     def ExecuterReq(self, req, mess=None, affichError=True):
         # Pour parer le pb des () avec MySQL
@@ -390,9 +349,34 @@ class DB():
     def Close(self):
         try :
             self.connexion.close()
-            del DICT_CONNEXIONS[self.IDconnexion]
         except :
             pass
+
+    # Gestion du modèle base de donnée --------------------------------------------
+
+    def CreateBaseMySql(self,ifExist=True):
+        """ Version RESEAU avec MYSQL """
+
+        try:
+            # usage de  "mysql.connector":
+            self.cursor = self.connexion.cursor()
+            if ifExist: exist = 'IF NOT EXISTS'
+            else: exist = ''
+            # Création
+            req = "CREATE DATABASE %s %s;" %(exist,self.nomBase)
+            self.cursor.execute(req)
+
+            # Utilisation
+            if self.nomBase not in ("", None):
+                self.cursor.execute("USE %s;" % self.nomBase)
+
+        except Exception as err:
+            mess= "La création de la base de donnees MYSQL a echoue. \nErreur: %s"%err
+            print(mess,'CreateBaseMySql')
+            self.erreur = err
+            self.echec = 1
+        else:
+            self.echec = 0
 
     def SupprChamp(self, nomTable="", nomChamp = ""):
         """ Suppression d'une colonne dans une table """
@@ -667,6 +651,7 @@ class DB():
                 parent.mess += "- Index PK Terminés"
             parent.SetStatusText(parent.mess[-200:])
 
+    # Visu sur le modèle de base de données -----------------------------------
     def GetDataBases(self):
         self.cursor.execute("SHOW DATABASES;")
         listeBases = self.cursor.fetchall()
@@ -793,7 +778,10 @@ class DB():
         finally:
             connection.close()
 
-def Init_tables(parent=None, mode='creation',tables=None,db_tables=None,db_ix=None,db_pk=None):
+# Upgrade BD selon jeu de paramètres façon: NoeXpy.srcNoelite.DBshema.py
+
+def Init_tables(parent=None, mode='creation',tables=None,
+                db_tables=None,db_ix=None,db_pk=None):
     # actualise ou vérifie la structure des tables : test, creation, ctrl
     if not tables:
         if mode in ('creation', 'test'):
@@ -841,8 +829,9 @@ def Init_tables(parent=None, mode='creation',tables=None,db_tables=None,db_ix=No
 if __name__ == "__main__":
     os.chdir("..")
     db = DB()
+    db.AfficheTestOuverture()
+
     #db.DropUneTable('cpta_journaux')
-    #from srcNoelite.DB_schema import DB_TABLES, DB_IX, DB_PK
     #db.CreationUneTable(DB_TABLES,'stEffectifs')
     #db.CreationTables(None,dicTables=DB_TABLES,tables=['stArticles','stEffectifs','stMouvements','stInventaires','cpta_analytiques'])
     #db.CreationTousIndex(None,DB_PK,['stEffectifs',])
