@@ -2,10 +2,11 @@
 # -*- coding: utf-8 -*-
 
 #------------------------------------------------------------------------
-# Application :    noegestion, Gestion des bases de données
-# Auteur:          Jacques Brunel
-# Copyright:       (c) 2021-08   Matthania
-# Licence:         Licence GNU GPL
+# Application:  NoeGestion, Gestion des bases de données
+# Module utils_db: contient les méthodes database hors Django
+# Auteur:       Jacques Brunel, repris de Noethys Yvan Lucas
+# Copyright:    (c) 2021-09   Matthania, Noethys
+# Licence:      Licence GNU GPL
 #------------------------------------------------------------------------
 
 import os
@@ -82,7 +83,7 @@ class DB():
             self.ConnexionFichierReseau(self.cfgParams, mute=mute)
 
         # fin de l'init self.erreur est alimenté par les méthodes connexions
-        if self.erreur:
+        if self.echec:
             if not mute:
                 raise NameError(self.erreur)
 
@@ -117,9 +118,11 @@ class DB():
         accroche = ['Ouverture réussie ',"Echec d'ouverture "][self.echec]
         accroche += info
         retour = ['avec succès', ' SANS SUCCES !\n'][self.echec]
-        mess = "%s\n\nL'accès à la base '%s' s'est réalisé %s" % (accroche,self.nomBase, retour)
-        if self.erreur:
+        mess = "%s\n\nLa connexion vers '%s' s'est réalisé %s" % (accroche,self.nomBase, retour)
+        if self.echec and self.erreur:
             mess += '\nErreur: %s'%self.erreur
+        elif self.erreur:
+            mess += '\nMais %s'%self.erreur
         print(mess)
         return mess
 
@@ -155,12 +158,18 @@ class DB():
                 etape = 'Création du curseur, après connexion'
                 self.cursor = connexion.cursor(buffered=True)
                 self.connexion = connexion
-                # Tentative d'Utilisation de la base
-                etape = " Tentative d'accès à '%s'" %self.nomBase
-                self.cursor.execute("USE %s;" % self.nomBase)
                 self.echec = 0
+                # Tentative d'Utilisation de la base
+                if self.IsDatabaseExits():
+                    etape = " Tentative d'accès à '%s'" %self.nomBase
+                    self.cursor.execute("USE %s;" % self.nomBase)
+                else: # base non encore crée
+                    self.erreur = "La base '%s' n'existe pas" % (self.nomBase)
             else:
-                print('xDB: Accès BD non développé pour %s' %self.typeDB)
+                self.echec = 1
+                self.erreur = 'xDB: Accès BD non développé pour %s'%self.nomBase
+                if not mute:
+                    print(self.erreur)
         except Exception as err:
             mess = "La connexion MYSQL a echoué.\n\nEtape: %s,\nErreur: '%s'" %(etape,err)
             if not mute:
@@ -652,6 +661,12 @@ class DB():
             parent.SetStatusText(parent.mess[-200:])
 
     # Visu sur le modèle de base de données -----------------------------------
+    def IsDatabaseExits(self):
+        lstBases = self.GetDataBases()
+        if (self.nomBase,) in lstBases:
+            return True
+        else: return False
+
     def GetDataBases(self):
         self.cursor.execute("SHOW DATABASES;")
         listeBases = self.cursor.fetchall()

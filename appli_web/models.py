@@ -53,7 +53,9 @@ class stArticles(models.Model):
     rations = models.DecimalField(max_digits=10,decimal_places=4,blank=True,
         help_text="Nombre de ration pour une unité stock"
         )
-    qteParUniteVente = models.DecimalField(max_digits=10,decimal_places=4,blank=True,
+    qteParUniteVente = models.DecimalField(max_digits=10,decimal_places=4,
+        blank=True,
+        default=1,
         help_text="Quantité rentrée pour une unité de vente"
         )
     fournisseur = models.CharField(max_length=32, blank=True,
@@ -105,7 +107,8 @@ class stArticles(models.Model):
         return self.idArticle
 
     class Meta:
-        verbose_name = 'ArticlesStock'
+        managed=True
+        verbose_name = 'Articles Stock'
         ordering = ['idArticle',]
 
 class stEffectifs(models.Model):
@@ -157,13 +160,15 @@ class stEffectifs(models.Model):
 
 
     class Meta:
+        managed=True
         verbose_name = 'Effectifs présents'
         indexes = [
             models.Index(fields=['idDate','idAnalytique',])
         ]
-        constraint = models.UniqueConstraint(
+        constraints = (models.UniqueConstraint(
             fields=['idDate','idAnalytique',],
             name='date_analytique_unique'
+            ),
         )
 
         ordering = ['idAnalytique','idDate',]
@@ -218,6 +223,7 @@ class stMouvements(models.Model):
         )
     nbUnitesVente = models.DecimalField(max_digits=10,decimal_places=4,
         blank=True,
+        default=0,
         help_text="Nombre une unité vente"
         )
     qteMouvementStock = models.DecimalField( max_digits=10,decimal_places=4,
@@ -240,16 +246,17 @@ class stMouvements(models.Model):
         return '%s  %s' % (self.idAnalytique, str(self.idDate),)
 
     class Meta:
+        managed=True
         verbose_name = 'Mouvements de stock'
         indexes = [
             models.Index(fields=['idAnalytique','idDate','idArticle',])
         ]
-        constraint = models.UniqueConstraint(
+        constraints = (models.UniqueConstraint(
             fields=['idAnalytique','idDate', 'idArticle',],
             name='analytique_date_article_unique'
+            ),
         )
         ordering = ['idAnalytique','idDate','idArticle']
-
 
 class stInventaires(models.Model):
     # Etat des stocks à une date donnée
@@ -295,15 +302,16 @@ class stInventaires(models.Model):
         return self.idDate
 
     class Meta:
-        manage=True
+        managed=True
         verbose_name = 'Inventaires'
         indexes = [
             models.Index(fields=['idDate',
                                  'idArticle',])
         ]
-        constraint = models.UniqueConstraint(
+        constraints = (models.UniqueConstraint(
             fields=['idDate','idArticle',],
             name='date_article_unique'
+            ),
         )
         ordering = ['idDate','idArticle',]
 
