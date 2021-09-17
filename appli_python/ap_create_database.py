@@ -50,10 +50,10 @@ def CreateBaseMySql(nomConfig='default'):
     # lancement migrate
     print(os.getcwd())
     Manage(('makemigrations', 'appli_web'))
-    Manage('migrate')
+    Manage(('migrate',))
 
 
 #------------------------------------------------------------------------------
 if __name__ == "__main__":
     os.chdir("..")
-    CreateBaseMySql(nomConfig='test')
+    CreateBaseMySql(nomConfig='default')

@@ -4,18 +4,18 @@ from django.db import models
 
 class geAnalytiques(models.Model):
     # Etat des stocks à une date donnée
-    idAnalytique = models.CharField(max_length=8, blank=True, unique=True,
+    idAnalytique = models.CharField(max_length=8, blank=False, unique=True,
         db_index=True)
-    label = models.CharField(max_length=200, blank=True,
+    label = models.CharField(max_length=200, blank=False,
         help_text="Libellé long du code analytique",
         )
-    params = models.TextField( blank=True,
+    params = models.TextField( blank=True,default='',
         help_text="liste texte de paramétrages constructeurs, pour le calcul coût"
         )
-    axe = models.CharField(max_length=32, blank=True,
+    axe = models.CharField(max_length=32, blank=True, default='',
         help_text="axe analytique 'VEHICULES' 'CONVOIS' 'PRIXJOUR', defaut = vide"
         )
-    dateSaisie = models.DateField(auto_now=True)
+    dateSaisie = models.DateField(auto_now=True,null=True,)
 
     def __str__(self):
         return "%s %s" % (self.idAnalytique,self.label)
@@ -46,58 +46,73 @@ class stArticles(models.Model):
         ('VND', 'Viande'),
     ]
 
-    idArticle = models.CharField(max_length=128, blank=True, unique=True,
+    idArticle = models.CharField(max_length=128,
+        blank=False, unique=True,
         db_index=True,
         help_text="Désignation du produit",
         )
-    rations = models.DecimalField(max_digits=10,decimal_places=4,blank=True,
+    rations = models.DecimalField(max_digits=10,decimal_places=4,
+        blank=False, default=1,
         help_text="Nombre de ration pour une unité stock"
         )
     qteParUniteVente = models.DecimalField(max_digits=10,decimal_places=4,
-        blank=True,
-        default=1,
+        blank=False,default=1,
         help_text="Quantité rentrée pour une unité de vente"
         )
-    fournisseur = models.CharField(max_length=32, blank=True,
+    fournisseur = models.CharField(max_length=32,
+        blank=True, default='',
         db_index=True,
         help_text="Fournisseur habituel"
         )
-    qteStock = models.IntegerField( null=False, default=0,
+    qteStock = models.IntegerField(
+        blank=True, null=True, default=0,
         help_text="Stock en live"
         )
-    txTva = models.DecimalField(max_digits=10,decimal_places=4,blank=False,
+    txTva = models.DecimalField(max_digits=10,decimal_places=4,
+        blank=False, default=0,
         help_text="tx de TVA en %"
         )
-    magasin = models.IntegerField( blank=False, choices=MAGASIN_CHOICES,
+    magasin = models.IntegerField(choices=MAGASIN_CHOICES,
+        blank=False,
         db_index=True,
         help_text="Lieu de stockage: réserve, congel,frigo"
         )
-    rayon = models.IntegerField( blank=False, choices=RAYON_CHOICES,
+    rayon = models.IntegerField(choices=RAYON_CHOICES,
+        blank=False,
         db_index=True,
         help_text="rayon ou famille produit: type de produit dans le magasin"
         )
-    qteMini = models.IntegerField( null=False, default=0,
+    qteMini = models.IntegerField(
+        blank=True, null=True,
         help_text="Seuil déclenchant une alerte rouge"
         )
-    qteSaison = models.IntegerField( null=False, default=0,
+    qteSaison = models.IntegerField(
+        blank=True, null=True,
         help_text="Seuil souhaitable en haute saison"
         )
-    obsolete = models.BooleanField( null=False, default=False,
+    obsolete = models.BooleanField(
+        null=True, default = False,
         help_text="1 article qui n'est plus utilisé"
         )
-    prixMoyen = models.DecimalField(max_digits=10,decimal_places=4,blank=True,
+    prixMoyen = models.DecimalField(max_digits=10,decimal_places=4,
+        blank=True, null=True,
         help_text="Prix unitaire moyen historique du stock"
         )
-    prixActuel = models.DecimalField(max_digits=10,decimal_places=4,blank=True,
+    prixActuel = models.DecimalField(max_digits=10,decimal_places=4,
+        blank=True, null=True,
         help_text="Dernier prix TTC unitaire livré ou de réappro"
         )
     dernierAchat = models.DateField(blank=False,
+        null=True,
         help_text="Date de dernière entrée avec prix saisi"
         )
-    ordi = models.CharField(max_length=32, blank=True,
+    ordi = models.CharField(max_length=32,
+        null=True,default='',
         help_text= "Nom de l'ordi utilisé entrée ou modif"
         )
-    dateSaisie = models.DateField(auto_now=True)
+    dateSaisie = models.DateField(
+        null=True,
+        auto_now=True)
 
     @property
     def montant(self):

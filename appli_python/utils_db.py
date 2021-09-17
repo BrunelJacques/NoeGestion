@@ -34,6 +34,8 @@ class DB():
         # contrôles initiaux des paramètres de connexion
         if not nomConfig in DATABASES.keys():
             mess = "n'est pas une connexion paramétrée dans DATABASES!"
+            raise NameError("'%s' %s"%(nomConfig, mess))
+
         self.cfgParams = DATABASES[nomConfig]
         if not isinstance(self.cfgParams, dict):
             mess = "n'est pas un dictionnaire dans DATABASES!"
