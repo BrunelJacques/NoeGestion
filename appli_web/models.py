@@ -72,12 +72,14 @@ class stArticles(models.Model):
         blank=False, default=0,
         help_text="tx de TVA en %"
         )
-    magasin = models.IntegerField(choices=MAGASIN_CHOICES,
+    magasin = models.CharField(max_length=32,
+        choices=MAGASIN_CHOICES,
         blank=False,
         db_index=True,
         help_text="Lieu de stockage: réserve, congel,frigo"
         )
-    rayon = models.IntegerField(choices=RAYON_CHOICES,
+    rayon = models.CharField(max_length=32,
+        choices=RAYON_CHOICES,
         blank=False,
         db_index=True,
         help_text="rayon ou famille produit: type de produit dans le magasin"
