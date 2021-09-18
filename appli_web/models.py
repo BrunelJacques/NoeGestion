@@ -9,10 +9,12 @@ class geAnalytiques(models.Model):
     label = models.CharField(max_length=200, blank=False,
         help_text="Libellé long du code analytique",
         )
-    params = models.TextField( blank=True,default='',
+    params = models.TextField(
+        blank=True,default='',
         help_text="liste texte de paramétrages constructeurs, pour le calcul coût"
         )
-    axe = models.CharField(max_length=32, blank=True, default='',
+    axe = models.CharField(max_length=32,
+        blank=True, default='',
         help_text="axe analytique 'VEHICULES' 'CONVOIS' 'PRIXJOUR', defaut = vide"
         )
     dateSaisie = models.DateField(auto_now=True,null=True,)
@@ -65,7 +67,7 @@ class stArticles(models.Model):
         help_text="Fournisseur habituel"
         )
     qteStock = models.IntegerField(
-        blank=True, null=True, default=0,
+        blank=True, null=True,
         help_text="Stock en live"
         )
     txTva = models.DecimalField(max_digits=10,decimal_places=4,
@@ -104,8 +106,8 @@ class stArticles(models.Model):
         blank=True, null=True,
         help_text="Dernier prix TTC unitaire livré ou de réappro"
         )
-    dernierAchat = models.DateField(blank=False,
-        null=True,
+    dernierAchat = models.DateField(
+        blank=True,null=True,
         help_text="Date de dernière entrée avec prix saisi"
         )
     ordi = models.CharField(max_length=32,
@@ -155,7 +157,8 @@ class stEffectifs(models.Model):
     prevuRepas = models.IntegerField( null=False, default=0,
         help_text="Nbre d'inscrits staff inclus"
         )
-    ordi = models.CharField(max_length=32, blank=True,
+    ordi = models.CharField(max_length=32,
+        blank=True, default='',
         help_text= "Nom de l'ordi utilisé entrée ou modif")
     dateSaisie = models.DateField(auto_now=True)
 
@@ -219,7 +222,7 @@ class stMouvements(models.Model):
         on_delete=models.RESTRICT,
         null=True,
         db_index=True,
-        help_text="PK Section analytique du camp à facturer, nulle pour cuisine"
+        help_text="PK Section analytique du camp à facturer"
         )
     idDate = models.DateField(blank=False,
         db_index=True,
@@ -230,7 +233,8 @@ class stMouvements(models.Model):
         db_index=True,
         help_text="PK article mouvementé"
         )
-    fournisseur = models.CharField(max_length=32, blank=True,
+    fournisseur = models.CharField(max_length=32,
+        blank=True, default='',
         db_index=True,
         help_text="Fournisseur de l'entrée"
         )
@@ -239,24 +243,27 @@ class stMouvements(models.Model):
         help_text="Origine du mouvement"
         )
     nbUnitesVente = models.DecimalField(max_digits=10,decimal_places=4,
-        blank=True,
-        default=0,
+        blank=False, default=1,
         help_text="Nombre une unité vente"
         )
     qteMouvementStock = models.DecimalField( max_digits=10,decimal_places=4,
         null=False, default=0,
         help_text="Quantitée mouvementée signée"
         )
-    prixUnit = models.DecimalField(max_digits=10,decimal_places=4,blank=False,
+    prixUnit = models.DecimalField(max_digits=10,decimal_places=4,
+        blank=False,
         help_text= "Prix moyen pour sorties et retour, Prix revient pour achats"
         )
-    repas = models.IntegerField( blank=False, choices=REPAS_CHOICES,
+    repas = models.IntegerField(choices=REPAS_CHOICES,
+        blank=True, null=True,
         help_text="Repas concerné par la sortie vers cuisine")
-    ordi = models.CharField(max_length=32, blank=True,
+    ordi = models.CharField(max_length=32,
+        blank=True, default='',
         help_text="Nom de l'ordi utilisé entrée ou modif")
     dateSaisie = models.DateTimeField(auto_now=True)
-    modifiable = models.BooleanField(default=True,
-        help_text= "0/1 Marque un transfert export  réussi ou import"
+    transfertCompta = models.DateField(
+        null=True,
+        help_text= "Marque un transfert export  réussi"
         )
 
     def __str__(self):
@@ -268,11 +275,6 @@ class stMouvements(models.Model):
         indexes = [
             models.Index(fields=['idAnalytique','idDate','idArticle',])
         ]
-        constraints = (models.UniqueConstraint(
-            fields=['idAnalytique','idDate', 'idArticle',],
-            name='analytique_date_article_unique'
-            ),
-        )
         ordering = ['idAnalytique','idDate','idArticle']
 
 class stInventaires(models.Model):
@@ -298,15 +300,18 @@ class stInventaires(models.Model):
         help_text="Qté constatée lors d'un inventaire"
         )
     prixMoyen = models.DecimalField(
-        max_digits=10,decimal_places=4,blank=True,
+        max_digits=10,decimal_places=4,
+        blank=True, null=True,
         help_text="Prix unitaire moyen historique du stock"
         )
     prixActuel = models.DecimalField(
-        max_digits=10,decimal_places=4,blank=True,
+        max_digits=10,decimal_places=4,
+        blank=True, null=True,
         help_text="Prix pour valorisation de l'inventaire"
         )
     ordi = models.CharField(
-        max_length=32, blank=True,
+        max_length=32,
+        blank=True, default='',
         help_text="Nom de l'ordi utilisé entrée ou modif"
         )
     dateSaisie = models.DateField(auto_now=True)
