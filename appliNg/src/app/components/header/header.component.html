@@ -1,0 +1,40 @@
+<div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
+    <mat-toolbar color="primary" class="example-toolbar">
+      <button mat-icon-button (click)="snav.toggle()"><mat-icon svgIcon="outline-menu">menu</mat-icon></button>
+      <h1 class="example-app-name"><img src="assets/img/logomatthaniasombre.webp" alt="Logo Matthania"></h1>
+    </mat-toolbar>
+  
+    <mat-sidenav-container class="example-sidenav-container"
+                           [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+      <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'"
+                   [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
+        <mat-nav-list>
+          <a mat-list-item routerLink="/abonnements">Abonnements</a>
+          <a mat-list-item routerLink="/familles">Familles</a>
+          <a mat-list-item routerLink="/individus">Individus</a>
+          <a mat-list-item routerLink="/prestations">Prestations</a>
+          <a mat-list-item routerLink="/reglements">Règlements</a>
+          <a mat-list-item routerLink="/transports">Transports</a>
+          <a mat-list-item routerLink="/depots">Depots</a>
+          <a mat-list-item routerLink="/creationdepot">Nouveau dépot</a>
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>Paramètrage des données</mat-panel-title>
+            </mat-expansion-panel-header>
+            <a mat-list-item routerLink="/agrements">Agréments</a>
+            <a mat-list-item routerLink="/activites">Activités</a>
+            <a mat-list-item routerLink="/articles">Articles</a>
+            <a mat-list-item routerLink="/comptescomptables">Comptes comptables</a>
+            <a mat-list-item routerLink="/groupes">Groupes</a>
+            <a mat-list-item routerLink="/transportslieux">Lieux de transport</a>
+            <a mat-list-item routerLink="/transportslignes">Lignes de transport</a>
+          </mat-expansion-panel>
+        </mat-nav-list>
+      </mat-sidenav>
+  
+      <mat-sidenav-content>
+        <router-outlet></router-outlet><!--Ici on met le contenu de la page-->
+      </mat-sidenav-content>
+    </mat-sidenav-container>
+    <app-footer></app-footer>
+  </div>
