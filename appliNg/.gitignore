@@ -43,3 +43,5 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+/src/assets/img/minibus 143x143.jpg
+/src/assets/img/Epicerie 145 x145.jpg
