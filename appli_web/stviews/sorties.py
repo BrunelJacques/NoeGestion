@@ -4,9 +4,9 @@ from django.http import JsonResponse, HttpResponse
 from ..models import stMouvements
 
 
-def getSorties(idDate):
+def getSorties(idDate=None):
     resultat = dict()
-    resultat['individus'] = makeSorties(idDate)
+    resultat['stsorties'] = makeSorties(idDate)
     #  On renvoie toutes les informations récoltées en Json.
     print(resultat)
 
@@ -15,7 +15,10 @@ def getSorties(idDate):
                         json_dumps_params={'indent': 2})
 
 def makeSorties(idDate):
+    if not idDate: idDate = '2021-08-02'
     mouvements = stMouvements.objects.filter(idDate=idDate).values('idDate',
+                                                                'origine'
                                                                 'idArticle',
-                                                                'titulaire')
+                                                                'qteMouvement',
+                                                                'prixUnit')
     return list(mouvements)
