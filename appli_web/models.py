@@ -246,10 +246,10 @@ class stMouvements(models.Model):
         blank=False, default=1,
         help_text="Nombre une unité vente"
         )
-    qteMouvementStock = models.DecimalField( max_digits=10,decimal_places=4,
-        null=False, default=0,
-        help_text="Quantitée mouvementée signée"
-        )
+    qteMouvement = models.DecimalField(max_digits=10, decimal_places=4,
+                                       null=False, default=0,
+                                       help_text="Quantitée mouvementée signée"
+                                       )
     prixUnit = models.DecimalField(max_digits=10,decimal_places=4,
         blank=False,
         help_text= "Prix moyen pour sorties et retour, Prix revient pour achats"
