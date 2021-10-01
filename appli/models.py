@@ -4,8 +4,8 @@ from django.db import models
 
 class geAnalytiques(models.Model):
     # Etat des stocks à une date donnée
-    idAnalytique = models.CharField(max_length=8, blank=False, unique=True,
-        db_index=True)
+    code = models.CharField(max_length=8, blank=False, unique=True,
+                                  db_index=True)
     label = models.CharField(max_length=200, blank=False,
         help_text="Libellé long du code analytique",
         )
@@ -20,12 +20,12 @@ class geAnalytiques(models.Model):
     dateSaisie = models.DateField(auto_now=True,null=True,)
 
     def __str__(self):
-        return "%s %s" % (self.idAnalytique,self.label)
+        return "%s %s" % (self.code, self.label)
 
     class Meta:
         managed = True
         verbose_name = 'CodeAnalytique'
-        ordering = ['idAnalytique',]
+        ordering = ['code',]
 
 class stArticles(models.Model):
     # articles utilisés pour les stocks
@@ -48,11 +48,11 @@ class stArticles(models.Model):
         ('VND', 'Viande'),
     ]
 
-    idArticle = models.CharField(max_length=128,
-        blank=False, unique=True,
-        db_index=True,
-        help_text="Désignation du produit",
-        )
+    nom = models.CharField(max_length=128,
+                               blank=False, unique=True,
+                               db_index=True,
+                               help_text="Désignation du produit",
+                               )
     rations = models.DecimalField(max_digits=10,decimal_places=4,
         blank=False, default=1,
         help_text="Nombre de ration pour une unité stock"
@@ -119,24 +119,24 @@ class stArticles(models.Model):
         auto_now=True)
 
     @property
-    def montant(self):
+    def montantStock(self):
         return self.qteStock * self.prixMoyen
 
     def __str__(self):
-        return self.idArticle
+        return self.nom
 
     class Meta:
         managed=True
         verbose_name = 'Articles Stock'
-        ordering = ['idArticle',]
+        ordering = ['nom',]
 
 class stEffectifs(models.Model):
     # articles utilisés pour les stocks
-    idAnalytique = models.ForeignKey(geAnalytiques,
+    analytique = models.ForeignKey(geAnalytiques,
         on_delete=models.RESTRICT,
         help_text="PK Section analytique du camp à facturer null pour Cuisine"
         )
-    idDate = models.DateField(blank=False,
+    jour = models.DateField(blank=False,
         help_text="PK Date de la situation de l'effectif"
         )
     midiClients = models.IntegerField( null=False, default=0,
@@ -171,7 +171,7 @@ class stEffectifs(models.Model):
         return (self.midiClients + self.soirClients) / preparations
 
     def __str__(self):
-        return self.idDate
+        return self.jour
 
     @property
     def repas(self):
@@ -183,15 +183,15 @@ class stEffectifs(models.Model):
         managed=True
         verbose_name = 'Effectifs présents'
         indexes = [
-            models.Index(fields=['idDate','idAnalytique',])
+            models.Index(fields=['jour','analytique',])
         ]
         constraints = (models.UniqueConstraint(
-            fields=['idDate','idAnalytique',],
-            name='date_analytique_unique'
+            fields=['jour','analytique',],
+            name='jour_analytique_unique'
             ),
         )
 
-        ordering = ['idAnalytique','idDate',]
+        ordering = ['analytique','jour',]
 
 class stMouvements(models.Model):
     # mouvements de sortie ou d'entrée en stock
@@ -218,17 +218,17 @@ class stMouvements(models.Model):
         (4, 'Tous'),
     ]
 
-    idAnalytique = models.ForeignKey(geAnalytiques,
+    analytique = models.ForeignKey(geAnalytiques,
         on_delete=models.RESTRICT,
         null=True,
         db_index=True,
         help_text="PK Section analytique du camp à facturer"
         )
-    idDate = models.DateField(blank=False,
+    jour = models.DateField(blank=False,
         db_index=True,
         help_text="PK date du mouvement de stock"
         )
-    idArticle = models.ForeignKey(stArticles,
+    article = models.ForeignKey(stArticles,
         on_delete=models.RESTRICT,
         db_index=True,
         help_text="PK article mouvementé"
@@ -266,26 +266,30 @@ class stMouvements(models.Model):
         help_text= "Marque un transfert export  réussi"
         )
 
+    @property
+    def montantMouvement(self):
+        return self.qteMouvement * self.prixUnit
+
     def __str__(self):
-        return '%s  %s' % (self.idAnalytique, str(self.idDate),)
+        return '%s  %s' % (self.analytique, str(self.jour),)
 
     class Meta:
         managed=True
         verbose_name = 'Mouvements de stock'
         indexes = [
-            models.Index(fields=['idAnalytique','idDate','idArticle',])
+            models.Index(fields=['analytique','jour','article',])
         ]
-        ordering = ['idAnalytique','idDate','idArticle']
+        ordering = ['analytique','jour','article']
 
 class stInventaires(models.Model):
     # Etat des stocks à une date donnée
 
-    idDate = models.DateField(
+    jour = models.DateField(
         blank=False,
         db_index=True,
         help_text="PK Date de l'inventaire copie des stocks confirmée"
         )
-    idArticle = models.ForeignKey(
+    article = models.ForeignKey(
         stArticles,
         on_delete=models.RESTRICT,
         db_index=True,
@@ -321,19 +325,19 @@ class stInventaires(models.Model):
         )
 
     def __str__(self):
-        return self.idDate
+        return self.jour
 
     class Meta:
         managed=True
         verbose_name = 'Inventaires'
         indexes = [
-            models.Index(fields=['idDate',
-                                 'idArticle',])
+            models.Index(fields=['jour',
+                                 'article',])
         ]
         constraints = (models.UniqueConstraint(
-            fields=['idDate','idArticle',],
-            name='date_article_unique'
+            fields=['jour','article',],
+            name='jour_article_unique'
             ),
         )
-        ordering = ['idDate','idArticle',]
+        ordering = ['jour','article',]
 

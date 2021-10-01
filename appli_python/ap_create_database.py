@@ -49,7 +49,7 @@ def CreateBaseMySql(nomConfig='default'):
 
     # lancement migrate
     print(os.getcwd())
-    Manage(('makemigrations', 'appli_web'))
+    Manage(('makemigrations', 'appli'))
     Manage(('migrate',))
 
 

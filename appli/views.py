@@ -3,14 +3,14 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
-from appli_web.stviews.sorties import *
+from appli.stviews.sorties import *
 
 
 @csrf_exempt
-def stsorties(request, idDate):
+def stsorties(request, jour):
     """
     Cette fonction va gérer toutes les URL de la forme
-    /famille/<int:id>
+    /stsorties/<slug:jour>
     :param request : la requete qui a été envoyée au serveur
     :param id: l'id de la famille dont on cherche à obtenir
     les informations
@@ -19,7 +19,7 @@ def stsorties(request, idDate):
     Angular
     """
     if (request.method == 'GET'):
-        return getSorties(idDate)
+        return getSorties(jour)
     elif (request.method == 'POST'):
         pass
     else:
