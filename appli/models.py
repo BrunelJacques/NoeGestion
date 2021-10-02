@@ -1,6 +1,6 @@
 from django.db import models
 
-# Describe your models here.
+# models = tables. Toujours une majuscule dans le nom cf 'relations inverses'
 
 class geAnalytiques(models.Model):
     # Etat des stocks à une date donnée
