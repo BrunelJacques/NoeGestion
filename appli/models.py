@@ -299,10 +299,6 @@ class stInventaires(models.Model):
         null=False, default=0,
         help_text="Qté reportée par calcul depuis dernier constat"
         )
-    qteConstat = models.IntegerField(
-        null=False, default=0,
-        help_text="Qté constatée lors d'un inventaire"
-        )
     prixMoyen = models.DecimalField(
         max_digits=10,decimal_places=4,
         blank=True, null=True,
@@ -313,6 +309,12 @@ class stInventaires(models.Model):
         blank=True, null=True,
         help_text="Prix pour valorisation de l'inventaire"
         )
+    montant = models.DecimalField(
+        max_digits=10,decimal_places=2,
+        blank=True, null=True,
+        help_text="valeur des articles en stock du stock"
+        )
+
     ordi = models.CharField(
         max_length=32,
         blank=True, default='',
