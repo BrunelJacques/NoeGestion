@@ -55,11 +55,21 @@ class stArticles(models.Model):
                                )
     rations = models.DecimalField(max_digits=10,decimal_places=4,
         blank=False, default=1,
-        help_text="Nombre de ration pour une unité stock"
+        help_text="Nombre de rations proposé pour chaque unité stock sortie"
         )
     qteParUniteVente = models.DecimalField(max_digits=10,decimal_places=4,
         blank=False,default=1,
-        help_text="Quantité rentrée pour une unité de vente"
+        help_text="Nbre d'unité de stock proposé pour chaque unité de vente"
+        )
+    uniteStock = models.CharField(max_length=8,
+        blank=True, default='',
+        db_index=False,
+        help_text="Nom de l'unité de décompte du stock et des sorties"
+        )
+    uniteVente = models.CharField(max_length=8,
+        blank=True, default='un',
+        db_index=False,
+        help_text="Nom de l'unité vente habituellement utilisée lors des achats"
         )
     fournisseur = models.CharField(max_length=32,
         blank=True, default='',
@@ -244,15 +254,20 @@ class stMouvements(models.Model):
         )
     nbUnitesVente = models.DecimalField(max_digits=10,decimal_places=4,
         blank=False, default=1,
-        help_text="Nombre une unité vente"
+        help_text="Lors des achats: Nombre stocké par unité vente"
         )
-    qteMouvement = models.DecimalField(max_digits=10, decimal_places=4,
-                                       null=False, default=0,
-                                       help_text="Quantitée mouvementée signée"
-                                       )
+    nbRations = models.DecimalField(max_digits=10,decimal_places=4,
+        blank=False, default=1,
+        help_text="Lors des sorties: Nombre de rations par unité stock sortie"
+        )
+    qteMouvement = models.DecimalField(
+        max_digits=10, decimal_places=4,
+        null=False, default=0,
+        help_text="Quantité mouvementée signée en unité de stock"
+        )
     prixUnit = models.DecimalField(max_digits=10,decimal_places=4,
         blank=False,
-        help_text= "Prix moyen pour sorties et retour, Prix revient pour achats"
+        help_text= "Prix saisi pour achats, Prix calculé pour les autres mvts"
         )
     repas = models.IntegerField(choices=REPAS_CHOICES,
         blank=True, null=True,
@@ -302,12 +317,12 @@ class stInventaires(models.Model):
     prixMoyen = models.DecimalField(
         max_digits=10,decimal_places=4,
         blank=True, null=True,
-        help_text="Prix unitaire moyen historique du stock"
+        help_text="Prix unitaire historique du stock, FirstInFirstOut"
         )
     prixActuel = models.DecimalField(
         max_digits=10,decimal_places=4,
         blank=True, null=True,
-        help_text="Prix pour valorisation de l'inventaire"
+        help_text="Dernier prix d'achat, le jour de l'inventaire"
         )
     montant = models.DecimalField(
         max_digits=10,decimal_places=2,
