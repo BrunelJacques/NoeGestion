@@ -3,18 +3,17 @@
 
 #------------------------------------------------------------------------------
 # Application:  NoeGestion, Gestion des bases de données
-# Commande:     ap_create_database Complements django mysql
+# Commande:     ap_databases Complements django accès mysql
 # Auteur:       Jacques Brunel
 # Copyright:    (c) 2021-09   Matthania
 # Licence:      Licence GNU GPL
 #------------------------------------------------------------------------------
 
 import os
-import sys
-import utils_db
-import manage
+from ap_utils_db import DB
+import manage # appelé par exec
 
-def Manage(*args):
+def _Manage(*args):
     """lancement de manage par module, arg est la ligne d'options de manage"""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'serveur_django.settings')
     try:
@@ -28,11 +27,9 @@ def Manage(*args):
         params += param
     execute_from_command_line(params)
 
-
-
-def CreateBaseMySql(nomConfig='default'):
+def CreateBaseDjango(nomConfig='default'):
     """lance 'create base' de la base définie par django puis 'migrate'"""
-    db = utils_db.DB(nomConfig=nomConfig, mute=True)
+    db = DB(nomConfig=nomConfig, mute=True)
     if db.echec:
         # erreur lors de la connexion
         print(db.erreur)
@@ -49,11 +46,37 @@ def CreateBaseMySql(nomConfig='default'):
 
     # lancement migrate
     print(os.getcwd())
-    Manage(('makemigrations', 'appli'))
-    Manage(('migrate',))
+    _Manage(('makemigrations', 'appli'))
+    _Manage(('migrate',))
 
+def GetChampsTableNoethys(nomTable):
+    # retourne une liste des champs par dic DB_schema
+    from srcNoelite.DB_schema import DB_TABLES as tables_noethys
+    # alternative d'accès si absence du projet NoeXpy dans le path
+    """
+    import sys
+    mydir = os.path.dirname(__file__)
+    noelite_dir = os.path.join(mydir, '..', '..', 'NoeXpy','srcNoelite')
+    sys.path.append(noelite_dir)
+    import DB_schema
+    tables_noethys = DB_schema.DB_TABLES
+    """
+    schema = tables_noethys[nomTable]
+    champs = [x for x,y,z in schema]
+    return champs
+
+def GetChampsTableNoegest(nomTable):
+    # retourne une liste de nom de champs par SQL show columns
+    dbgest = DB('lan_noegestion')
+    nom = 'appli_'+nomTable.lower()
+    lt = dbgest.GetListeChamps(nom)
+    champs = [x for (x,type) in lt]
+    return champs
 
 #------------------------------------------------------------------------------
 if __name__ == "__main__":
     os.chdir("..")
-    CreateBaseMySql(nomConfig='default')
+    print(os.getcwd())
+    #CreateBaseDjango(nomConfig='default')
+    ret = GetChampsTableNoegest('stArticles')
+    print()

@@ -19,10 +19,10 @@ import datetime
 from serveur_django.settings import DATABASES
 
 class DB():
-    # accès à la base de donnees principale
+    # accès à une base de donnees par son nom dans settings
     def __init__(self, nomConfig='default',mute=False):
-        # configLan sera un dict réseau avec host,user, password port
-        # nomFichierDB pour des bases locales access ou sqlite
+        # DATABASES[nomConfig] / dict réseau avec host,user, password port
+        # pour des bases locales access ou sqlite / nomFichierDB, path
         # mute ne signalera pas l'erreur, tester avec self.erreur et echec
         self.echec = 1
         self.lstTables = None
@@ -51,9 +51,10 @@ class DB():
         if not self.isNetwork and not 'PATH' in self.cfgParams:
             mess = "bd fichier sans HOST doit avoir un PATH"
 
-        if 'TYPE' in self.cfgParams:
-            self.typeDB = self.cfgParams['TYPE'].lower()
-            if not self.typeDB in ('mysql','sqlserver','access','sqlite'):
+        if 'ENGINE' in self.cfgParams:
+            lsttypes = self.cfgParams['ENGINE'].lower().split('.')
+            self.typeDB = lsttypes[-1]
+            if not self.typeDB in ('mysql','sqlserver','access','sqlite3'):
                 mess = "Le type de Base de Données '%s' n'est pas géré!" \
                        % self.typeDB
         else: # type de données par défaut si absent
@@ -713,6 +714,9 @@ class DB():
                 req = "SHOW COLUMNS FROM %s;" % nomTable
                 self.ExecuterReq(req)
                 listeTmpChamps = self.ResultatReq()
+                if len(listeTmpChamps) == 0:
+                    mess = "%s\n%s%s"%(req,"Aucun champ retourné pour ",nomTable)
+                    raise Exception(mess)
                 for valeurs in listeTmpChamps:
                     lstChamps.append((valeurs[0].lower(), valeurs[1].lower()))
             self.dlTablesChamps[nomTable] = lstChamps

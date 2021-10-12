@@ -544,7 +544,7 @@ def ProrataCommercial(entree,sortie,debutex,finex):
 
 if __name__ == '__main__':
     import os
-    os.chdir("..")
+    os.chdir("../appli_python")
     """
     print(FmtDecimal(1230.05189),FmtDecimal(-1230.05189),FmtDecimal(0))
     print(FmtSolde(8520.547),FmtSolde(-8520.547),FmtSolde(0))
