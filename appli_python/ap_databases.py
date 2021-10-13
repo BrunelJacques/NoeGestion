@@ -10,7 +10,7 @@
 #------------------------------------------------------------------------------
 
 import os
-from ap_utils_db import DB
+from appli_python.ap_db_sql import DB
 import manage # appelé par exec
 
 def _Manage(*args):
@@ -27,9 +27,9 @@ def _Manage(*args):
         params += param
     execute_from_command_line(params)
 
-def CreateBaseDjango(nomConfig='default'):
+def CreateBaseDjango(dbConfig='default'):
     """lance 'create base' de la base définie par django puis 'migrate'"""
-    db = DB(nomConfig=nomConfig, mute=True)
+    db = DB(dbConfig=dbConfig, mute=True)
     if db.echec:
         # erreur lors de la connexion
         print(db.erreur)
@@ -77,6 +77,6 @@ def GetChampsTableNoegest(nomTable):
 if __name__ == "__main__":
     os.chdir("..")
     print(os.getcwd())
-    #CreateBaseDjango(nomConfig='default')
+    #CreateBaseDjango(dbConfig='default')
     ret = GetChampsTableNoegest('stArticles')
     print()

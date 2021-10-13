@@ -2,7 +2,7 @@
 import copy
 import datetime
 import unicodedata
-from xconst import *
+#from xconst import *
 
 # Conversion des dates
 

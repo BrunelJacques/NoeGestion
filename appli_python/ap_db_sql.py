@@ -20,8 +20,8 @@ from serveur_django.settings import DATABASES
 
 class DB():
     # accès à une base de donnees par son nom dans settings
-    def __init__(self, nomConfig='default',mute=False):
-        # DATABASES[nomConfig] / dict réseau avec host,user, password port
+    def __init__(self, dbConfig='default',mute=False):
+        # DATABASES[dbConfig] / dict réseau avec host,user, password port
         # pour des bases locales access ou sqlite / nomFichierDB, path
         # mute ne signalera pas l'erreur, tester avec self.erreur et echec
         self.echec = 1
@@ -32,11 +32,11 @@ class DB():
         mess = None
 
         # contrôles initiaux des paramètres de connexion
-        if not nomConfig in DATABASES.keys():
+        if not dbConfig in DATABASES.keys():
             mess = "n'est pas une connexion paramétrée dans DATABASES!"
-            raise NameError("'%s' %s"%(nomConfig, mess))
+            raise NameError("'%s' %s"%(dbConfig, mess))
 
-        self.cfgParams = DATABASES[nomConfig]
+        self.cfgParams = DATABASES[dbConfig]
         if not isinstance(self.cfgParams, dict):
             mess = "n'est pas un dictionnaire dans DATABASES!"
         if not "NAME" in self.cfgParams.keys():
@@ -65,7 +65,7 @@ class DB():
 
         # final étape contrôles initiaux, abandon sur erreur
         if mess:
-            self.erreur = "%s %s"%(nomConfig, mess)
+            self.erreur = "%s %s"%(dbConfig, mess)
             if not mute:
                 raise NameError(self.erreur)
             else: return
@@ -281,6 +281,193 @@ class DB():
 
     # Gestion des requêtes SQL ------------------------------------------------
 
+    class _fmtDonnees:
+        def __init__(self,):
+            # formatage de données en vue de requêtes sql
+            pass
+
+        def DonneesInsert(self, donnees):
+            # décompacte les données en une liste ou lstLst pour Insert
+            donneesValeurs = '('
+
+            def Compose(liste):
+                serie = ''
+                for valeur in liste:
+                    if isinstance(valeur, (int, float)):
+                        val = "%s, " % str(valeur)
+                    elif isinstance(valeur, (tuple, list, dict)):
+                        val = "'%s', " % str(valeur)[1:-1].replace('\'', '')
+                    elif valeur == None or valeur == '':
+                        val = "NULL, "
+                    else:
+                        val = "'%s', " % str(valeur).replace('\'', '')
+                    serie += "%s" % (val)
+                return serie[:-2]
+
+            if isinstance(donnees[0], (tuple, list)):
+                for (liste) in donnees:
+                    serie = Compose(liste)
+                    donneesValeurs += "%s ), (" % (serie)
+                donneesValeurs = donneesValeurs[:-4]
+            else:
+                donneesValeurs += "%s" % Compose(donnees)
+            return donneesValeurs + ')'
+
+        def coupleMAJ(self,champ, valeur):
+            # retourne un texte 'champ = valeur, ' pour update
+            nonetype = type(None)
+            if isinstance(valeur, (int, float)):
+                val = "%s, " % str(valeur)
+            elif isinstance(valeur, (nonetype)):
+                val = "NULL, "
+            elif isinstance(valeur, (tuple, list, dict)):
+                champ = str(champ)[2:-2]
+                val = str(valeur)[1:-1]
+                val = val.replace("'", "")
+                val = "'%s', " % val
+            else:
+                val = "\"%s\", " % str(valeur)
+            couple = " %s = %s" % (champ, val)
+            return couple
+
+        def donneesMAJ(self,donnees):
+            # retourne du texte pour la partie SET d'un UPDATE
+            donneesCouples = ""
+            if isinstance(donnees, (tuple,list)):
+                for (champ,valeur) in donnees:
+                    couple = self.coupleMAJ(champ, valeur)
+                    donneesCouples += "%s"%(couple)
+            elif isinstance(donnees,dict):
+                for (champ, valeur) in donnees.items():
+                    couple = self.coupleMAJ(champ, valeur)
+                    donneesCouples += "%s" % (couple)
+            else: return None
+            donneesCouples = donneesCouples[:-2]+' '
+            return donneesCouples
+
+        def listesMAJ(self,lstChamps, ltChampValue):
+            # assemble champs données en une liste de tuples [(champ, donnee),]
+            donneesCouples = ''
+            for ix in range(len(lstChamps)):
+                couple = self.coupleMAJ(lstChamps[ix], ltChampValue[ix])
+                donneesCouples += "%s" % (couple)
+            donneesCouples = donneesCouples[:-2] + ' '
+            return donneesCouples
+
+    def ReqInsert(self,nomTable="",
+                  champs=[],llValues=[],
+                  ltChampValue=None,commit=True, mess=None,affichError=True):
+        """ Permet d'insérer les champs ['ch1','ch2',..] et llValues [[val11,val12...],[val21],[val22]...]
+            self.newID peut être appelé ensuite pour récupérer l'ID"""
+        if ltChampValue:
+            if len(ltChampValue[0]) != 2: raise("ltChampValue doit être une liste de tuples (champ,donnee)")
+            lsttemp=[]
+            champs=[]
+            llValues = []
+            for (champ,donnee) in ltChampValue:
+                champs.append(champ)
+                lsttemp.append(donnee)
+            llValues.append(lsttemp)
+        if len(champs)* len(llValues) == 0:
+            if affichError:
+                mess = ('%s\n\nChamps ou données absents' % mess)
+                raise Exception(mess)
+            return mess
+
+        valeurs = self._fmtDonnees().DonneesInsert(llValues)
+        champs = '( ' + str(champs)[1:-1].replace('\'','') +' )'
+        req = """INSERT INTO %s 
+              %s 
+              VALUES %s ;""" % (nomTable, champs, valeurs)
+        self.retourReq = "ok"
+        self.newID= 0
+        try:
+            # Enregistrement
+            self.cursor.execute(req)
+            if commit == True :
+                self.Commit()
+            # Récupération de l'ID
+            if self.typeDB == 'mysql' :
+                # Version MySQL
+                self.cursor.execute("SELECT LAST_INSERT_ID();")
+            else:
+                # Version Sqlite
+                self.cursor.execute("SELECT last_insert_rowid() FROM %s" % nomTable)
+            self.newID = self.cursor.fetchall()[0][0]
+        except Exception as err:
+            self.echec = 1
+            if mess:
+                self.retourReq = mess +'\n%s\n'%err
+            else: self.retourReq = 'Erreur xUTILS_DB\n\n'
+            self.retourReq +=  ("ReqInsert:\n%s\n\nErreur detectee:\n%s"% (req, str(err)))
+            if affichError:
+                raise Exception(self.retourReq)
+        return self.retourReq
+
+    def ReqDEL(self, nomTable,champID="",ID=None, condition="",
+               commit=True, mess=None, affichError=True):
+        """ del d'un enregistrement ou d'un ensemble, condition façon where"""
+        if len(condition)==0:
+            condition = champID+" = %d"%ID
+        retourReq = "ok"
+        req = "DELETE FROM %s WHERE %s ;" % (nomTable, condition)
+        try:
+            self.cursor.execute(req)
+            if commit == True :
+                self.Commit()
+                retourReq = "ok"
+        except Exception as err:
+            self.echec = 1
+            if mess:
+                retourReq = mess + '\n\n'
+            else:
+                retourReq = 'Erreur xUTILS_DB\n\n'
+            retourReq += ("ReqMAJ:\n%s\n\nErreur detectee:\n%s" % (req, str(err)))
+            if affichError:
+                raise Exception(retourReq)
+            else: print(retourReq)
+        return retourReq
+
+    def ReqMAJ(self, nomTable='',nomID=None,ID=None,
+               champs=[],values=[],
+               ltChampValue=None,condition=None,
+               mess=None, affichError=True, IDestChaine = False):
+        """ MAJ des values présentées en dic ou liste de tuples"""
+        update_ = None
+        if ltChampValue :
+            update_ = self._fmtDonnees().donneesMAJ(ltChampValue)
+        elif (len(champs) > 0) and (len(champs) == len(values)):
+            update_ = self._fmtDonnees().coupleMAJ(champs,values)[:-2]
+        if nomID and ID:
+            # un nom de champ avec un ID vient s'ajouter à la condition
+            if IDestChaine == False and (isinstance(ID, int )):
+                condID = " (%s = %d) "%(nomID, ID)
+            else:
+                condID = " (%s='%s') "%(nomID, ID)
+            if condition:
+                condition += " AND %s "%(condID)
+            else: condition = condID
+        elif (not condition) or (len(condition.strip())==0):
+            # si pas de nom de champ et d'ID, la condition ne doit pas être vide sinon tout va updater
+            condition = " FALSE "
+        req = "UPDATE %s SET  %s WHERE %s ;" % (nomTable, update_, condition)
+        # Enregistrement
+        try:
+            self.cursor.execute(req,)
+            self.Commit()
+            retourReq = "ok"
+        except Exception as err:
+            self.echec = 1
+            if mess:
+                retourReq = mess + '\n%s\n' % err
+            else:
+                retourReq = 'Erreur xUTILS_DB\n\n'
+            retourReq += ("ReqMAJ:\n%s\n\nErreur detectee:\n%s" % (req, str(err)))
+            if affichError:
+                raise Exception(retourReq)
+            else: print(retourReq)
+        return retourReq
+
     def ExecuterReq(self, req, mess=None, affichError=True):
         # Pour parer le pb des () avec MySQL
         #if self.typeDB == 'mysql' :
@@ -304,40 +491,24 @@ class DB():
                                 go = False
                         self.recordset.append(record)
                         self.cursor.MoveNext()
-                    self.retourReq = "ok"
+                    retourReq = "ok"
                 else:
-                    self.retourReq = "Aucun enregistrement"
+                    retourReq = "Aucun enregistrement"
                 self.cursor.Close()
             else:
                 # autres types de connecteurs
                 self.cursor.execute(req)
-                self.retourReq = 'ok'
+                retourReq = 'ok'
         except Exception as err:
             self.echec = 1
             if mess:
-                self.retourReq = mess +'\n\n'
-            else: self.retourReq = 'Erreur xUTILS_DB\n\n'
-            self.retourReq +=  ("ExecuterReq:\n%s\n\nErreur detectee:\n%s"% (req, str(err)))
+                retourReq = '\n\n Origine Requête: ' + mess + '\n\n'
+            else: retourReq = 'Erreur xUTILS_DB\n\n'
+            retourReq +=  ("ExecuterReq:\n%s\n\nErreur detectee:\n%s"% (req, str(err)))
             if affichError:
-                print(self.retourReq)
-        finally:
-            return self.retourReq
-
-    def Executermany(self, req="", lstDonnees=[], commit=True):
-        """ Executemany pour local ou réseau """
-        """ Exemple de req : "INSERT INTO table (IDtable, nom) VALUES (?, ?)" """
-        """ Exemple de lstDonnees : [(1, 2), (3, 4), (5, 6)] """
-        # Adaptation réseau/local
-        if self.isNetwork == True :
-            # Version MySQL
-            req = req.replace("?", "%s")
-        else:
-            # Version Sqlite
-            req = req.replace("%s", "?")
-        # Executemany
-        self.cursor.executemany(req, lstDonnees)
-        if commit == True :
-            self.connexion.commit()
+                raise Exception(retourReq)
+            else: print(retourReq)
+        return retourReq
 
     def ResultatReq(self):
         if self.echec == 1 : return []

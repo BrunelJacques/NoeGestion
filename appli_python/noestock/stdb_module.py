@@ -3,25 +3,37 @@
 # ------------------------------------------------------------------------
 # stModule: fonctions pour gestion des stocks
 # ------------------------------------------------------------------------
-from  stdb_utils import *
 from outils    import xformat
-from appli_python.ap_utils_db import *
+from appli_python.ap_databases  import DB
+from appli_python.ap_db_sql import *
+from stdb_utils import *
 
 class Inventaire:
     # calculs d'inventaire FIFO à une date donnée dite clôture
     def __init__(self,
                  cloture=datetime.date.today(),
+                 dbConfig='default',
                  achat='achat'):
         # 'achat' origine avec prix s'appliquant aux autres mvts
         self.achat = achat
+        self.db = None
+        # si dbConfig n'est pas fourni, il y a un différé de la définition
+        if dbConfig:
+            self.db = DB(dbConfig)
         self.cloture = cloture
         self.mvtsCorriges = []
-        self.lastInventaire = GetLastInventaire(cloture)
+        self.lastInventaire = GetLastInventaire(self.db,cloture)
         if len(self.lastInventaire) == 0:
             self.lastInventaire = None
         else:
             for ligne in self.lastInventaire:
                 mvtInv = ligne
+
+    def SetDB(self,dbConfig,mute):
+        self.db = DB(dbConfig,mute)
+
+    def CloseDB(self):
+        self.db.Close()
 
     def _IsAchat(self,origine):
         ok = False
@@ -33,7 +45,7 @@ class Inventaire:
         # Enregistre les lignes d'inventaire à la date cloture
         ret = self.RecalculPrixSorties()
         if ret: llinventaire = self.CalculInventaire()
-        ok = PostInventaire(self.cloture, llinventaire)
+        ok = PostInventaire(self.db,self.cloture, llinventaire)
         return ok
 
     def _xAjoutInventaire(self,lstMmouvements):
@@ -45,16 +57,17 @@ class Inventaire:
         return
 
     def CalculInventaire(self,fin=None):
-        # retourne un inventaire: liste de liste
+        # retourne un inventaire: liste de liste, alimente self.mttInventaire
         if fin == None: fin = self.cloture
 
         debut = None
         if self.lastInventaire:
             # présence d'un inventaire antérieur
-            debut = xformat.DateSqlToDatetime(self.lastInventaire[0][0])
+            debut = xformat.DateToDatetime(self.lastInventaire[0][0])
 
-        #['jour', 'origine', 'nomArticle', 'qteMouvement','prixUnit']
-        llMouvements = GetMouvements(debut=debut,fin=fin)
+        #mouvements['jour', 'origine', 'nomArticle', 'qteMouvement','prixUnit']
+        llMouvements = GetMouvements(self.db,debut=debut,fin=fin)
+        # ajoute l'inventaire précédent aux mouvements filtrés
         self._xAjoutInventaire(llMouvements)
 
         # liste préalable pour traitement par article
@@ -71,9 +84,11 @@ class Inventaire:
 
         # composition de l'inventaire
         llinventaire= []
+        self.mttInventaire = 0
         for article in lstArticles:
             lstMvts = [x[0:2]+x[3:] for x in llMouvements if x[2] == article]
             qte, mtt, lastPrix = self._CalculInventaireUnArticle(lstMvts)
+            self.mttInventaire += mtt
             if qte == 0:
                 pu = 0.0
             else: pu = round(mtt/qte,4)
@@ -126,7 +141,7 @@ class Inventaire:
             mttFin += (part * pu)
 
         # retour : qte, mttTotal à la date de clôture
-        return qteFin,mttFin,lastPrix
+        return qteFin,round(mttFin,2),lastPrix
 
     def RecalculPrixSorties(self,fin=None):
         ok = False
@@ -137,7 +152,7 @@ class Inventaire:
             debut = xformat.DateSqlToDatetime(self.lastInventaire[0][0])
 
         #['jour', 'origine', 'nomArticle', 'qteMouvement','prixUnit']
-        self.mvtsCorriges = GetMouvements(debut=debut,fin=fin)
+        self.mvtsCorriges = GetMouvements(self.db,debut=debut,fin=fin)
         self._xAjoutInventaire(self.mvtsCorriges)
         self.mvtsCorriges.sort()
 
@@ -173,7 +188,7 @@ class Inventaire:
                     nbrUpdates += 1
             ok = True
 
-        PostMouvements(champs=['prixUnit', 'idMouvement'],
+        PostMouvements(self.db,champs=['prixUnit', 'idMouvement'],
                           mouvements=self.llModifsMouvements)
 
         print(nbrUpdates)
@@ -195,33 +210,78 @@ class Inventaire:
                 dicAchats[dte]['mttIn'] += qte * pu
             else:
                 lstSorties.append(mvt)
+        """if article == 'COMP POMME/BANAN 5/1':
+            print()"""
 
-        # si pas d'entrée ou pas de sortie : abandon
-        if len(dicAchats) == 0: return
+        # si pas de sortie : abandon
         if len(lstSorties) == 0: return
 
         # stockage  de l'affectation qte et montants, entrées sur sorties
         tmpAffect = {}
         ix = -1
-        for _ in lstSorties:
+        firstOdIn = None
+        firstSortie = None
+        for mvt in lstSorties:
             ix +=1
             tmpAffect[ix] = {'qteAff':0,'mttAff':0}
+            if not firstSortie and (mvt[4] != 0): firstSortie = mvt[4]
+            if not firstOdIn and (mvt[4] != 0) and (mvt[3] > 0):
+                firstSortie = mvt[4]
+        lastIx = ix
+        qteAchats = 0
+        mttAchats = 0
 
+        def affectPrixEstime():
+            # après affectation des achats il reste des sorties
+            prixEstime = None
+            # prix moyen des achats ou inventaire
+            if qteAchats > 0:
+                prixEstime = round(mttAchats / qteAchats,4)
+            if not prixEstime:
+                # on prend le prix de la première odIn
+                prixEstime = firstOdIn
+            if not prixEstime:
+                # on prend le prix de la première sortie
+                prixEstime = firstSortie
+            ix = -1
+            for mvt in lstSorties:
+                ix += 1
+                if tmpAffect[ix]['qteAff'] == 0:
+                    # on met le prix moyen
+                    if mvt[4] != prixEstime:
+                        mvt[4] = prixEstime  # modif interne
+                        self.dicPrixMvtNew[mvt[-1]] = prixEstime  # pour modif BD
+                elif tmpAffect[ix]['qteAff'] < -mvt[3]:
+                    nbrest = -mvt[3] - tmpAffect[ix]['qteAff']
+                    newPrix = (nbrest * prixEstime) + tmpAffect[ix]['mttAff']
+                    newPrix = newPrix / (nbrest + tmpAffect[ix]['qteAff'])
+                    newPrix = round(newPrix,4)
+                    if mvt[4] != newPrix:
+                        mvt[4] = newPrix  # modif interne
+                        self.dicPrixMvtNew[mvt[-1]] = newPrix  # pour modif BD
+
+        if len(dicAchats) == 0:
+            # pas d'achat mais des sorties
+            affectPrixEstime()
+            return
         # affectation du prix d'entrée sur les sorties plus anciennes
         for dteIn,achat in dicAchats.items():
             qteIn = achat['qteIn']
             if qteIn == 0: continue
             mttIn = achat['mttIn']
             puIn = mttIn / qteIn
+            qteAchats += qteIn
+            mttAchats += mttIn
             ix = -1
             # recherche des sorties encore non affectées à une entrée
             for mvt in lstSorties:
                 dateOut, origine, article, qteOut, puOut, id = mvt
+                
                 ix += 1
                 qteAffecte = tmpAffect[ix]['qteAff']
-                if qteAffecte >= -qteOut: continue
+                if qteOut < 0 and qteAffecte >= -qteOut: continue
+                if qteOut == 0: continue
 
-                mttAffecte = tmpAffect[ix]['mttAff']
                 # l'entrée impute son prix sur la sortie,
                 qteLettre = min(qteIn, -qteOut - qteAffecte)
                 prixLettre = puIn
@@ -239,7 +299,10 @@ class Inventaire:
                 if qteIn < 0:
                     raise Exception("SurAffectation de l'entrée %s:%s"%(
                         dteIn,achat))
-        return
+        # vérif si toutes les sorties ont été couvertes par des achats
+        if tmpAffect[lastIx]['qteAff'] == 0:
+            affectPrixEstime()
+
 
 class Tests:
     def __init__(self,name=None):
@@ -267,9 +330,9 @@ class Tests:
 if __name__ == '__main__':
     import os
     os.chdir("..")
-    inv = Inventaire(datetime.date(2021,9,30))
+    inv = Inventaire(datetime.date(2021,9,30),'wan_noethys')
     #test = Tests()
     #test = Tests("CalculInventaire")
     #test = inv.RecalculPrixSorties()
     test = inv.PostInventaire()
-    print(test)
+    print(inv.mttInventaire)

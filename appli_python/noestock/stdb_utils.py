@@ -8,32 +8,29 @@
 # ------------------------------------------------------------------------
 
 import datetime, os
-from outils         import xformat
-from appli_python.ap_databases  import xdb
+from outils                     import xformat
 
 LIMITSQL = 100
 # codes repas [ 1,      2,     3,     4       5]
 CHOIX_REPAS = ['PtDej','Midi','Soir','5eme','Tous']
 
 
-# Nouvelle Gestion des inventaires --------------------------------------------
-def PostMouvements(champs=[],mouvements=[[],]):
-    # uddate des champs d'un mouvement, l'ID en dernière position
-    db = xdb.DB()
+# Gestion des inventaires -----------------------------------------------------
 
+def PostMouvements(db,champs=[],mouvements=[[],]):
+    # uddate des champs d'un mouvement, l'ID en dernière position
     retour = True
     for mouvement in mouvements:
         ret = db.ReqMAJ('stMouvements',
-                    nomChampID=champs[-1],
+                    nomID=champs[-1],
                     ID = mouvement[-1],
-                    lstChamps=champs[:-1],lstValues=mouvement[:-1],
+                    champs=champs[:-1],values=mouvement[:-1],
                     mess="UTILS_Stocks.PostMouvements")
         if ret != 'ok':
             retour = False
-    db.Close()
     return retour
 
-def PostInventaire(cloture=datetime.date.today(),inventaire=[[],]):
+def PostInventaire(db,cloture=datetime.date.today(),inventaire=[[],]):
     # delete puis recrée l'inventaire à la date de cloture
     if cloture == None:
         cloture = datetime.date.today()
@@ -55,7 +52,6 @@ def PostInventaire(cloture=datetime.date.today(),inventaire=[[],]):
         llDonnees.append([dte,article,qte,pxMoy,pxLast,ordi,dteSaisie])
 
     # test présence inventaire
-    db = xdb.DB()
     finIso = xformat.DatetimeToStr(cloture,iso=True)
     condition = "stInventaires.IDdate = '%s'"%finIso
     req = """   SELECT *
@@ -70,18 +66,16 @@ def PostInventaire(cloture=datetime.date.today(),inventaire=[[],]):
             mess = "UTILS_Stoks.PostInventaire.ReqDel"
             ret = db.ReqDEL('stInventaires',condition=condition,mess=mess)
 
-    ret = db.ReqInsert('stInventaires',lstChamps=lstChamps,lstlstDonnees=llDonnees,
+    ret = db.ReqInsert('stInventaires',champs=lstChamps,llValues=llDonnees,
                  mess="UTILS_Stocks.PostInventaires")
-    db.Close()
     if ret == 'ok':
         return True
     return ret
 
-def SqlLastInventaire(cloture=None):
+def GetLastInventaire(db,cloture=None):
     # retourne l'inventaire précédent la date de cloture
     if cloture == None:
         cloture = datetime.date.today()
-    db = xdb.DB()
     # Appelle l'inventaire précédent
     lstChamps = ['IDdate','IDarticle','qteStock','prixMoyen',]
     finIso = xformat.DatetimeToStr(cloture,iso=True)
@@ -103,17 +97,20 @@ def SqlLastInventaire(cloture=None):
             for ix  in range(len(lstChamps)):
                 mouvement.append(record[ix])
             llInventaire.append(mouvement)
-    db.Close()
     return llInventaire
 
-def SqlMouvementsPeriode(debut=None,fin=None):
+def GetMouvements(db,debut=None,fin=None):
     # retourne une  liste de mouvements en forme de liste
     lstChamps = ['date','origine','stMouvements.IDarticle','qte','prixUnit','IDmouvement']
+    # normalisation datefin
     if fin == None: fin = datetime.date.today()
-    if debut == None: debut = fin - datetime.timedelta(days=180)
-    finIso = xformat.DatetimeToStr(fin,iso=True)
+    elif not isinstance(fin,datetime.date):
+        fin = xformat.DateToDatetime(fin)
+    # normalisation datedebut
+    if debut == None:
+        debut = fin - datetime.timedelta(days=180)
+    finIso = xformat.DateToIso(fin)
     debutIso = xformat.DatetimeToStr(debut,iso=True)
-    db = xdb.DB()
     # Appelle les mouvements de la période
     req = """   SELECT %s
                 FROM stMouvements
@@ -130,5 +127,4 @@ def SqlMouvementsPeriode(debut=None,fin=None):
             for ix  in range(len(lstChamps)):
                 mouvement.append(record[ix])
             llMouvements.append(mouvement)
-    db.Close()
     return llMouvements
