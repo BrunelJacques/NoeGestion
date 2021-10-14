@@ -14,8 +14,32 @@ LIMITSQL = 100
 # codes repas [ 1,      2,     3,     4       5]
 CHOIX_REPAS = ['PtDej','Midi','Soir','5eme','Tous']
 
-
+# pour info correspondance de champs stArticles
+"""CHAMPS_ARTICLES = {
+    'nothys':
+        ['IDarticle', 'rations', 'fournisseur', 'qteStock', 'txTva', 
+         'magasin', 'rayon', 'qteMini', 'qteSaison', 'obsolete', 'prixMoyen',
+         'prixActuel', 'dernierAchat', 'ordi', 'dateSaisie'],
+    'noegest':
+        ['id', 'nom', 'rations', 'qteparunitevente', 'fournisseur','qtestock', 
+         'txtva', 'magasin', 'rayon', 'qtemini', 'qtesaison','obsolete', 
+         'prixmoyen', 'prixactuel', 'dernierachat', 'ordi', 'datesaisie']
+}"""
 # Gestion des inventaires -----------------------------------------------------
+
+def PostArticles(db,champs=[],articles=[[],]):
+    # uddate des champs d'un article, l'ID en dernière position
+    retour = True
+    for article in articles:
+        ret = db.ReqMAJ('stArticles',
+                    nomID=champs[-1],
+                    ID = article[-1],
+                    champs=champs[:-1],values=article[:-1],
+                    mess="stdb_utils.PostArticles")
+        #print(article[-1],ret)
+        if ret != 'ok':
+            retour = False
+    return retour
 
 def PostMouvements(db,champs=[],mouvements=[[],]):
     # uddate des champs d'un mouvement, l'ID en dernière position
@@ -25,7 +49,8 @@ def PostMouvements(db,champs=[],mouvements=[[],]):
                     nomID=champs[-1],
                     ID = mouvement[-1],
                     champs=champs[:-1],values=mouvement[:-1],
-                    mess="UTILS_Stocks.PostMouvements")
+                    mess="stdb_utils.PostMouvements")
+        #print(mouvement[-1],ret)
         if ret != 'ok':
             retour = False
     return retour
@@ -45,7 +70,7 @@ def PostInventaire(db,cloture=datetime.date.today(),inventaire=[[],]):
                  'ordi',
                  'dateSaisie',]
     llDonnees = []
-    # lignes reçues [date,article,qte,prixMoyen,montant,lastPrix]
+    # lignes reçues [dte,article,qte,prixMoyen,montant,lastPrix]
     for dte,article,qte,pxMoy,mtt,pxLast in inventaire:
         if dte != str(cloture): raise Exception(
             "cloture = %s diff de inventaire = %s"%(str(cloture),str(dte)))
@@ -59,7 +84,7 @@ def PostInventaire(db,cloture=datetime.date.today(),inventaire=[[],]):
                 WHERE %s
                 ;""" %(condition)
 
-    retour = db.ExecuterReq(req, mess='UTILS_Stocks.testPrésenceInventaire')
+    retour = db.ExecuterReq(req, mess='stdb_utils.testPrésenceInventaire')
     if retour == "ok":
         recordset = db.ResultatReq()
         if len(recordset) > 0:
@@ -67,7 +92,7 @@ def PostInventaire(db,cloture=datetime.date.today(),inventaire=[[],]):
             ret = db.ReqDEL('stInventaires',condition=condition,mess=mess)
 
     ret = db.ReqInsert('stInventaires',champs=lstChamps,llValues=llDonnees,
-                 mess="UTILS_Stocks.PostInventaires")
+                 mess="stdb_utils.PostInventaires")
     if ret == 'ok':
         return True
     return ret
@@ -88,7 +113,7 @@ def GetLastInventaire(db,cloture=None):
                         )
                 ;""" % (",".join(lstChamps),finIso)
 
-    retour = db.ExecuterReq(req, mess='UTILS_Stocks.SqlLastInventaire')
+    retour = db.ExecuterReq(req, mess='stdb_utils.SqlLastInventaire')
     llInventaire = []
     if retour == "ok":
         recordset = db.ResultatReq()
@@ -118,7 +143,7 @@ def GetMouvements(db,debut=None,fin=None):
                             AND (date <= '%s' ))
                 ;""" % (",".join(lstChamps),debutIso,finIso)
 
-    retour = db.ExecuterReq(req, mess='UTILS_Stocks.SqlMouvementsPeriode')
+    retour = db.ExecuterReq(req, mess='stdb_utils.GetMouvements')
     llMouvements = []
     if retour == "ok":
         recordset = db.ResultatReq()
@@ -128,3 +153,26 @@ def GetMouvements(db,debut=None,fin=None):
                 mouvement.append(record[ix])
             llMouvements.append(mouvement)
     return llMouvements
+
+def GetArticles(db,lstChamps=None):
+    # retourne un dict{id:article} d'articles en forme dictionnaire
+    if lstChamps == None:
+        lstChamps = db.GetListeChamps('stArticles')
+
+    # Appelle les articles
+    req = """   SELECT %s
+                FROM stArticles
+                ;"""%",".join(lstChamps)
+    retour = db.ExecuterReq(req, mess='stdb_utils.GetArticles')
+    ddArticles = {}
+
+    # retour en dict, pour récupérer les noms de champs différant noethys%gest
+    if retour == "ok":
+        recordset = db.ResultatReq()
+        for record in recordset:
+            article = {}
+            for ix  in range(len(lstChamps)):
+                article[lstChamps[ix].lower()] = (record[ix])
+            # l'id article est en dernière position
+            ddArticles[record[-1]]=article
+    return ddArticles

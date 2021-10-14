@@ -321,10 +321,10 @@ class DB():
             elif isinstance(valeur, (nonetype)):
                 val = "NULL, "
             elif isinstance(valeur, (tuple, list, dict)):
-                champ = str(champ)[2:-2]
+                champ = str(champ)[1:-1]
                 val = str(valeur)[1:-1]
-                val = val.replace("'", "")
-                val = "'%s', " % val
+                #val = val.replace("'", "")
+                val = "%s, " % val
             else:
                 val = "\"%s\", " % str(valeur)
             couple = " %s = %s" % (champ, val)
