@@ -12,20 +12,17 @@ class Inventaire:
     # calculs d'inventaire FIFO à une date donnée dite clôture
     today = datetime.date.today()
     def __init__(self,cloture=today,dbConfig='default',achat='achat'):
-        # 'achat' origine avec prix s'appliquant aux autres mvts
+        # 'achat' origine avec prix s'appliquant aux autres mvts en priorité
         self.achat = achat
         self.db = None
         # si dbConfig n'est pas fourni, il y a un différé de la définition
         if dbConfig:
             self.db = DB(dbConfig)
+        if not isinstance(cloture, datetime.date):
+            raise Exception("Date '%s' pas de type datetime!"%str(cloture))
         self.cloture = cloture
         self.mvtsCorriges = []
-        self.lastInventaire = su.GetLastInventaire(self.db,cloture)
-        if len(self.lastInventaire) == 0:
-            self.lastInventaire = None
-        else:
-            for ligne in self.lastInventaire:
-                mvtInv = ligne
+        self.lastInventaire = self.GetLastInventaire(cloture)
 
     def SetDB(self,dbConfig,mute):
         self.db = DB(dbConfig,mute)
@@ -35,33 +32,60 @@ class Inventaire:
 
     def _IsAchat(self,origine):
         ok = False
-        if origine.find(self.achat): ok = True
-        if origine.find('invent'): ok = True
+        if origine.find(self.achat)>=0: ok = True
+        if origine.find('invent')>=0: ok = True
         return ok
+
+    def GetLastInventaire(self,jour):
+        lastInventaire = su.GetLastInventaire(self.db,jour)
+        if len(lastInventaire) == 0:
+            lastInventaire = None
+        return lastInventaire
 
     def MajQtePrixArticles(self,fin=datetime.date.today()):
         # Met à jour les champs qte prixMoyen dans article
         if self.db.nomBase == 'noegestion':
-            lstChamps = ['nom','qtestock','prixmoyen','prixactuel','id']
+            nameid = 'id'
+            lstChamps = [nameid,'nom','qtestock','prixmoyen','prixactuel']
         else:
-            lstChamps = ['idArticle','qteStock','prixMoyen','prixActuel','idArticle']
+            nameid = 'idArticle'
+            lstChamps = [nameid,'qteStock','prixMoyen','prixActuel']
 
+        # lecture des valeurs actuelles
         ddArticles = su.GetArticles(self.db,lstChamps)
         if len(ddArticles) == 0:
             return False
 
+        # recalcul de l'inventaire à aujourd'hui
         llinventaire = self.CalculInventaire(fin=fin)
-        llarticles = []
-        # ligne :[dte, article, qte, prixMoyen, montant, lastPrix]
-        for dte, article, qte, prixMoyen, montant, lastPrix in llinventaire:
-            if not lastPrix : lastPrix = 0
+
+        def appendArticle(article,qte,prixMoyen,lastPrix,):
             artIn = ddArticles[article]
             if self.db.nomBase == 'noegestion':
-                artOut = [artIn['nom'],artIn['nom'],qte,prixMoyen,lastPrix,artIn['id']]
+                artOut = [artIn['id'],artIn['nom'],artIn['nom'],qte,prixMoyen,lastPrix,]
             else:
-                artOut = [artIn['idarticle'],qte,prixMoyen,lastPrix,artIn['idarticle']]
+                artOut = [artIn['idarticle'],qte,prixMoyen,lastPrix,]
             llarticles.append(artOut)
-                
+
+        # exportation des valeurs d'inventaire pour stArticles
+        llarticles = []
+        lstNomsArt = []
+        # ligne :[dte, article, qte, prixMoyen, montant, lastPrix]
+        for dte, article, qte, prixMoyen, montant, lastPrix in llinventaire:
+            lstNomsArt.append(article)
+            if not lastPrix : lastPrix = 0
+            appendArticle(article,qte,prixMoyen,lastPrix,)
+
+        # raz des qtés article pas à zéro et pas dans l'inventaire
+        for key,dicArt in ddArticles.items():
+            if not key in lstNomsArt and dicArt['qtestock'] != 0:
+                article = dicArt[nameid.lower()]
+                qte = 0
+                # seule la qte sera RAZ
+                prixMoyen = dicArt['prixmoyen']
+                lastPrix = dicArt['prixactuel']
+                appendArticle(article,qte,prixMoyen,lastPrix,)
+
         ok = su.PostArticles(self.db,lstChamps,llarticles)
         return ok
 
@@ -77,26 +101,29 @@ class Inventaire:
         if not self.lastInventaire: return
         for ligne in self.lastInventaire:
             jour, article, qte, pxMoyen = ligne[:4]
-            lstMmouvements.append([jour,"inventaire",article,qte,pxMoyen,None])
+            lstMmouvements.append([None,jour,"inventaire",article,qte,pxMoyen])
         return
 
     def CalculInventaire(self,fin=None):
         # retourne un inventaire: liste de liste, alimente self.mttInventaire
-        if fin == None: fin = self.cloture
+        if fin == None:
+            fin = self.cloture
+        else:
+            self.lastInventaire = su.GetLastInventaire(self.db,fin)
 
-        debut = None
+        apres = None
         if self.lastInventaire:
             # présence d'un inventaire antérieur
-            debut = xformat.DateToDatetime(self.lastInventaire[0][0])
+            apres = xformat.DateToDatetime(self.lastInventaire[0][0])
 
         #mouvements['jour', 'origine', 'nomArticle', 'qteMouvement','prixUnit']
-        llMouvements = su.GetMouvements(self.db,debut=debut,fin=fin)
+        llMouvements = su.GetMouvements(self.db,apres=apres,fin=fin)
         # ajoute l'inventaire précédent aux mouvements filtrés
         self._xAjoutInventaire(llMouvements)
 
         # liste préalable pour traitement par article
         lstArticles = []
-        for jour,origine,article,qte,pu,id in llMouvements:
+        for id,jour,origine,article,qte,pu in llMouvements:
             if not article:
                 raise Exception("Article disparu! mvt du %s qte= %d"%(jour,qte))
             if not article in lstArticles:
@@ -104,13 +131,15 @@ class Inventaire:
         lstArticles.sort()
         if lstArticles == None:
             raise Exception("Aucun mouvement dans la période du %s au %s"\
-                  %(debut,fin))
+                  %(apres,fin))
 
         # composition de l'inventaire
         llinventaire= []
         self.mttInventaire = 0
         for article in lstArticles:
-            lstMvts = [x[0:2]+x[3:] for x in llMouvements if x[2] == article]
+            """if article == 'BISC COOKIES PAQUET':
+                print()"""
+            lstMvts = [x[0:3]+x[4:] for x in llMouvements if x[3] == article]
             qte, mtt, lastPrix = self._CalculInventaireUnArticle(lstMvts)
             self.mttInventaire += mtt
             if qte == 0:
@@ -129,15 +158,15 @@ class Inventaire:
         return llinventaire
 
     def _CalculInventaireUnArticle(self,mvts=[[],]):
-        # mouvements en tuple (date,origine, qte,pu,id) qte est signé
+        # mouvements en tuple (id,date,origine, qte,pu) qte est signé
         mttFin = 0.0
         qteProgress = 0.0
-        qteFin = sum([qte for dte,origine,qte,pu,id in mvts])
+        qteFin = sum([qte for id,dte,origine,qte,pu in mvts])
 
-        lstPU = [pu for dte,origine,qte,pu,id in mvts if origine == self.achat]
+        lstPU = [pu for id,dte,origine,qte,pu in mvts if pu and self._IsAchat(origine)]
         if len(lstPU) == 0:
             # si pas d'entrée principale: moyenne des prix présents
-            lstPU = [pu for dte, origine, qte, pu, id in mvts if pu > 0]
+            lstPU = [pu for id,dte,origine,qte,pu in mvts if (pu and (pu > 0))]
             
         # calcul d'une valeur par défaut de prix unitaire
         if len(lstPU) > 0:
@@ -146,9 +175,10 @@ class Inventaire:
 
         # recherche des derniers achats (reverse), pour calcul du reste final
         lastPrix = None
-        for dte,origine,qte,pu,id in sorted(mvts,reverse=True):
+        for id,dte,origine,qte,pu in sorted(mvts,key=lambda x: (x[1],x[0]),
+                                            reverse=True):
             # ne prend que les achats
-            if origine != self.achat:
+            if not self._IsAchat(origine):
                 continue
             if not lastPrix:
                 lastPrix = pu
@@ -169,26 +199,30 @@ class Inventaire:
 
     def MajPrixSortiesMouvements(self, fin=None):
         ok = False
-        if fin == None: fin = self.cloture
-        debut = None
+        if fin == None:
+            fin = self.cloture
+        else:
+            self.lastInventaire = self.GetLastInventaire(fin)
+
+        apres = None
         if self.lastInventaire:
             # présence d'un inventaire antérieur
-            debut = xformat.DateToDatetime(self.lastInventaire[0][0])
+            apres = xformat.DateToDatetime(self.lastInventaire[0][0])
 
         #['jour', 'origine', 'nomArticle', 'qteMouvement','prixUnit']
-        self.mvtsCorriges = su.GetMouvements(self.db,debut=debut,fin=fin)
+        self.mvtsCorriges = su.GetMouvements(self.db,apres=apres,fin=fin)
         self._xAjoutInventaire(self.mvtsCorriges)
-        self.mvtsCorriges.sort()
+        self.mvtsCorriges.sort(key=lambda x: (x[1],x[0]))
 
         lstArticles = []
         # listes préalable, chaque article est traité à part
-        for jour,origine,article,qte,pu,id in self.mvtsCorriges:
+        for id,jour,origine,article,qte,pu in self.mvtsCorriges:
             if not article in lstArticles:
                 lstArticles.append(article)
         lstArticles.sort()
         if lstArticles == None:
             raise Exception("Aucun mouvement dans la période du %s au %s"\
-                  %(debut,fin))
+                  %(apres,fin))
 
         nbrUpdates = 0
         self.llModifsMouvements = []
@@ -197,44 +231,45 @@ class Inventaire:
             self.dicPrixMvtOld = {}
             self.dicPrixMvtNew = {}
             # isole les mouvements de l'article
-            for jour,origine,artMvt,qte,pu,id in self.mvtsCorriges:
+            for id,jour,origine,artMvt,qte,pu in self.mvtsCorriges:
                 if artMvt != artArt:
                     continue
                 self.dicPrixMvtOld[id] = pu                
-                mvtsArticle.append([jour,origine,artMvt,qte,pu,id])
+                mvtsArticle.append([id,jour,origine,artMvt,qte,pu])
 
             #if artArt == "ABRICOTS FRAIS KG": print()# debug arrêt sur article
             self._xRecalculPrixSortiesUnArticle(mvtsArticle)
             for id,prix in self.dicPrixMvtNew.items():
                 # les calculs intermédiaires font varier temporairement prix
                 if abs(prix - self.dicPrixMvtOld[id]) > 0.0001:
-                    self.llModifsMouvements.append([prix,id])
+                    self.llModifsMouvements.append([id,prix])
                     nbrUpdates += 1
             ok = True
 
         # écrit les modifs dans la table mouvements
-        su.PostMouvements(self.db,champs=['prixUnit', 'idMouvement'],
+        su.PostMouvements(self.db,champs=['idMouvement','prixUnit',],
                           mouvements=self.llModifsMouvements)
 
         print(nbrUpdates)
         return ok
 
     def _xRecalculPrixSortiesUnArticle(self, mvts=[[],]):
-        # mouvements en liste (date,origine, qte,pu,id) qte est signé
-        mvts.sort(key=lambda x: (x[0],x[-1])) # tri sur deux champs date, ID
+        # mouvements en liste (id,date,origine, qte,pu) qte est signé
+        mvts.sort(key=lambda x: (x[1],x[0])) # tri sur deux champs date, ID
 
         # sépare les mouvements achats,entrées, sorties
         dicAchats = {}
         dicEntrees = {}
         lstEntrees = []
         lstSorties = []
-        qteAchats = 0
+        firstAchat = None
         mttAchats = 0
         for mvt in mvts:
-            dte, origine, article, qte, pu, id = mvt
+            id,dte,origine,article,qte,pu = mvt
             # les achats vont dans un dic
-            if origine in (self.achat, "inventaire"):
-                qteAchats += qte
+            if self._IsAchat(origine):
+                if not firstAchat and pu > 0:
+                    firstAchat = pu
                 mttAchats += round(pu * qte,2)
                 if not (dte,id) in dicAchats:
                     dicAchats[(dte,id)] = {}
@@ -250,8 +285,6 @@ class Inventaire:
             # les sorties sont dans une liste qui sera triée par date
             else:
                 lstSorties.append(mvt)
-        if article == 'MAIS DOUX 4/4':
-            print()
 
         # si pas de sortie : abandon
         if len(lstSorties) == 0: return
@@ -261,17 +294,16 @@ class Inventaire:
         firstOdIn = None
         firstSortie = None
         for mvt in lstSorties:
-            tmpAffect[mvt[-1]] = {'qteAff':0,'mttAff':0}
-            if not firstSortie and (mvt[4] != 0): firstSortie = mvt[4]
-            if not firstOdIn and (mvt[4] != 0) and (mvt[3] > 0):
-                firstSortie = mvt[4]
-        lastIx = mvt[-1]
-
+            tmpAffect[mvt[0]] = {'qteAff':0,'mttAff':0}
+            if not firstSortie and (mvt[5] != 0): firstSortie = mvt[5]
+            if not firstOdIn and (mvt[5] != 0) and (mvt[4] > 0):
+                firstSortie = mvt[5]
+            lastIx = mvt[0]
 
         def determinePrixEstime():
             # prix moyen des achats ou inventaire
-            if qteAchats > 0:
-                prixEstime = round(mttAchats / qteAchats,4)
+            if firstAchat and firstAchat > 0:
+                prixEstime = firstAchat
             elif firstOdIn:
                 # on prend le prix de la première odIn
                 prixEstime = firstOdIn
@@ -285,30 +317,30 @@ class Inventaire:
         def affectPrixEstime(mvts):
             # après affectation des achats il reste des sorties
             for mvt in mvts:
-                ix = mvt[-1]
+                ix = mvt[0]
                 if (not ix in tmpAffect) or (tmpAffect[ix]['qteAff'] == 0):
                     # on met le prix moyen
-                    if mvt[4] != prixEstime:
-                        mvt[4] = prixEstime  # modif interne
-                        self.dicPrixMvtNew[mvt[-1]] = prixEstime  # pour modif BD
-                elif tmpAffect[ix]['qteAff'] < -mvt[3]:
-                    nbrest = -mvt[3] - tmpAffect[ix]['qteAff']
+                    if mvt[5] != prixEstime:
+                        mvt[5] = prixEstime  # modif interne
+                        self.dicPrixMvtNew[mvt[0]] = prixEstime  # pour modif BD
+                elif tmpAffect[ix]['qteAff'] < -mvt[4]:
+                    nbrest = -mvt[4] - tmpAffect[ix]['qteAff']
                     newPrix = (nbrest * prixEstime) + tmpAffect[ix]['mttAff']
                     newPrix = newPrix / (nbrest + tmpAffect[ix]['qteAff'])
                     newPrix = round(newPrix,4)
-                    if mvt[4] != newPrix:
-                        mvt[4] = newPrix  # modif interne
-                        self.dicPrixMvtNew[mvt[-1]] = newPrix  # pour modif BD
+                    if mvt[5] != newPrix:
+                        mvt[5] = newPrix  # modif interne
+                        self.dicPrixMvtNew[mvt[0]] = newPrix  # pour modif BD
 
         def modifPrixMvts(dicIn,lmvtsOut):
             for (dteIn, id), dicMvtIn in dicIn.items():
                 qteIn = dicMvtIn['qteIn']
                 if qteIn == 0: continue
                 mvtIn = dicMvtIn['mvt']
-                puIn = mvtIn[4]
+                puIn = mvtIn[5]
                 # recherche sorties non affectées à une entrée et applique le prix
                 for mvt in lmvtsOut:
-                    dateOut, origine, article, qteOut, puOut, id = mvt
+                    id,dateOut,origine,article,qteOut,puOut = mvt
                     ix = id
                     qteAffecte = tmpAffect[ix]['qteAff']
                     if qteOut < 0 and qteAffecte >= -qteOut: continue
@@ -324,7 +356,7 @@ class Inventaire:
                     qteIn -= qteLettre
                     # ici le prix de la sortie est actualisé (élément de liste)
                     if puOut != puOutNew:
-                        mvt[4] = puOutNew  # modif interne
+                        mvt[5] = puOutNew  # modif interne
                         self.dicPrixMvtNew[id] = puOutNew  # pour modif BD
                     if qteIn == 0:
                         break

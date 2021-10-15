@@ -16,7 +16,8 @@ import mysql.connector
 import win32com.client
 import sqlite3
 import datetime
-from serveur_django.settings import DATABASES
+from outils                     import xformat
+from serveur_django.settings    import DATABASES
 
 class DB():
     # accès à une base de donnees par son nom dans settings
@@ -328,6 +329,7 @@ class DB():
             else:
                 val = "\"%s\", " % str(valeur)
             couple = " %s = %s" % (champ, val)
+
             return couple
 
         def donneesMAJ(self,donnees):
@@ -433,12 +435,30 @@ class DB():
                ltChampValue=None,condition=None,
                mess=None, affichError=True, IDestChaine = False):
         """ MAJ des values présentées en dic ou liste de tuples"""
+
+        req = None
+        def onErreur(err):
+            self.echec = 1
+            if mess:
+                retourReq = mess + '\n%s\n' % err
+            else:
+                retourReq = 'Erreur xUTILS_DB\n\n'
+            retourReq += ("ReqMAJ:\n%s\n\nErreur detectee:\n%s" % (req, str(err)))
+            if affichError:
+                raise Exception(retourReq)
+            else: print(retourReq)
+
         update_ = None
         if ltChampValue :
             update_ = self._fmtDonnees().donneesMAJ(ltChampValue)
         elif (len(champs) > 0) and (len(champs) == len(values)):
-            update_ = self._fmtDonnees().coupleMAJ(champs,values)[:-2]
+            update_ = self._fmtDonnees().listesMAJ(champs,values)
+        if not update_ or len(update_) < 2:
+            onErreur("Aucune donnée fournie pour MAJ")
+
         if nomID and ID:
+            ID = xformat.EscapeQuote(ID)
+            nomID = nomID
             # un nom de champ avec un ID vient s'ajouter à la condition
             if IDestChaine == False and (isinstance(ID, int )):
                 condID = " (%s = %d) "%(nomID, ID)
@@ -457,15 +477,7 @@ class DB():
             self.Commit()
             retourReq = "ok"
         except Exception as err:
-            self.echec = 1
-            if mess:
-                retourReq = mess + '\n%s\n' % err
-            else:
-                retourReq = 'Erreur xUTILS_DB\n\n'
-            retourReq += ("ReqMAJ:\n%s\n\nErreur detectee:\n%s" % (req, str(err)))
-            if affichError:
-                raise Exception(retourReq)
-            else: print(retourReq)
+            onErreur(err)
         return retourReq
 
     def ExecuterReq(self, req, mess=None, affichError=True):

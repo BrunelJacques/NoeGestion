@@ -1,8 +1,7 @@
 # Recueil de fonctions diverses
-import copy
 import datetime
 import unicodedata
-#from xconst import *
+from outils.xconst import *
 
 # Conversion des dates
 
@@ -354,8 +353,15 @@ def FmtSolde(montant):
     return strMtt
 
 # Formatage de textes
+def EscapeQuote(txt,quote= "'"):
+    if not isinstance(txt,str):
+        return txt
+    for car in quote:
+        if car in txt:
+            txt = txt.replace(car,"\%s"%car)
+    return txt
 
-def NoPunctuation(txt= '',punct= "'!\"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'"):
+def NoPunctuation(txt= '',punct= "'!\"#$%&()*+,-./:;<=>?@[]^_`{|}~"):
     import re
     regex = re.compile('[%s]' % re.escape(punct))
     return regex.sub(' ', txt)
@@ -553,9 +559,12 @@ if __name__ == '__main__':
     print(NoAccents("ÊLève!"))
     print(FmtTelephone('0494149367'))
     print(DateToIso('21-02-14'))
-    """
     dt = FinDeMois(datetime.date.today())
-    print(dt,type(dt))
+    """
+
+    txt = EscapeQuote("bonjour!'!\"#$%&()*+,-./:;<=>?@[]^_`{|}~")
+    print("'!\"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'")
+    print(txt)
 
 
 

@@ -32,11 +32,11 @@ def PostArticles(db,champs=[],articles=[[],]):
     retour = True
     for article in articles:
         ret = db.ReqMAJ('stArticles',
-                    nomID=champs[-1],
-                    ID = article[-1],
-                    champs=champs[:-1],values=article[:-1],
+                    nomID=champs[0],
+                    ID = article[0],
+                    champs=champs[1:],values=article[1:],
                     mess="stdb_utils.PostArticles")
-        #print(article[-1],ret)
+        #print(article[0],ret)
         if ret != 'ok':
             retour = False
     return retour
@@ -44,13 +44,17 @@ def PostArticles(db,champs=[],articles=[[],]):
 def PostMouvements(db,champs=[],mouvements=[[],]):
     # uddate des champs d'un mouvement, l'ID en dernière position
     retour = True
+
+    nb = len(mouvements)
     for mouvement in mouvements:
         ret = db.ReqMAJ('stMouvements',
-                    nomID=champs[-1],
-                    ID = mouvement[-1],
-                    champs=champs[:-1],values=mouvement[:-1],
+                    nomID=champs[0],
+                    ID = mouvement[0],
+                    champs=champs[1:],values=mouvement[1:],
                     mess="stdb_utils.PostMouvements")
-        #print(mouvement[-1],ret)
+        if len(mouvements) > 100:
+            print(nb)
+            nb -=1
         if ret != 'ok':
             retour = False
     return retour
@@ -124,24 +128,24 @@ def GetLastInventaire(db,cloture=None):
             llInventaire.append(mouvement)
     return llInventaire
 
-def GetMouvements(db,debut=None,fin=None):
+def GetMouvements(db,apres=None,fin=None):
     # retourne une  liste de mouvements en forme de liste
-    lstChamps = ['date','origine','stMouvements.IDarticle','qte','prixUnit','IDmouvement']
+    lstChamps = ['IDmouvement','date','origine','stMouvements.IDarticle','qte','prixUnit']
     # normalisation datefin
     if fin == None: fin = datetime.date.today()
     elif not isinstance(fin,datetime.date):
         fin = xformat.DateToDatetime(fin)
     # normalisation datedebut
-    if debut == None:
-        debut = fin - datetime.timedelta(days=180)
+    if apres == None:
+        apres = fin - datetime.timedelta(days=180)
     finIso = xformat.DateToIso(fin)
-    debutIso = xformat.DatetimeToStr(debut,iso=True)
+    apresIso = xformat.DatetimeToStr(apres,iso=True)
     # Appelle les mouvements de la période
     req = """   SELECT %s
                 FROM stMouvements
                 WHERE   (   (date > '%s' ) 
                             AND (date <= '%s' ))
-                ;""" % (",".join(lstChamps),debutIso,finIso)
+                ;""" % (",".join(lstChamps),apresIso,finIso)
 
     retour = db.ExecuterReq(req, mess='stdb_utils.GetMouvements')
     llMouvements = []
@@ -174,5 +178,5 @@ def GetArticles(db,lstChamps=None):
             for ix  in range(len(lstChamps)):
                 article[lstChamps[ix].lower()] = (record[ix])
             # l'id article est en dernière position
-            ddArticles[record[-1]]=article
+            ddArticles[record[0]]=article
     return ddArticles
