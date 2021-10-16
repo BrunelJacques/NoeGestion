@@ -9,6 +9,10 @@ class geAnalytiques(models.Model):
     label = models.CharField(max_length=200, blank=False,
         help_text="Libellé long du code analytique",
         )
+    obsolete = models.BooleanField(
+        null=True, default = False,
+        help_text="code qui n'est plus utilisé, plus proposé"
+        )
     params = models.TextField(
         blank=True,default='',
         help_text="liste texte de paramétrages constructeurs, pour le calcul coût"
@@ -117,16 +121,14 @@ class stArticles(models.Model):
         help_text="Dernier prix TTC unitaire livré ou de réappro"
         )
     dernierAchat = models.DateField(
-        blank=True,null=True,
+        null=True,
         help_text="Date de dernière entrée avec prix saisi"
         )
     ordi = models.CharField(max_length=32,
         null=True,default='',
         help_text= "Nom de l'ordi utilisé entrée ou modif"
         )
-    dateSaisie = models.DateField(
-        null=True,
-        auto_now=True)
+    dateSaisie = models.DateField(auto_now=True,null=True,)
 
     @property
     def montantStock(self):
@@ -144,7 +146,8 @@ class stEffectifs(models.Model):
     # articles utilisés pour les stocks
     analytique = models.ForeignKey(geAnalytiques,
         on_delete=models.RESTRICT,
-        help_text="PK Section analytique du camp à facturer null pour Cuisine"
+        default='00',
+        help_text="PK Section analytique du camp à facturer '00' pour Cuisine"
         )
     jour = models.DateField(blank=False,
         help_text="PK Date de la situation de l'effectif"
@@ -170,7 +173,7 @@ class stEffectifs(models.Model):
     ordi = models.CharField(max_length=32,
         blank=True, default='',
         help_text= "Nom de l'ordi utilisé entrée ou modif")
-    dateSaisie = models.DateField(auto_now=True)
+    dateSaisie = models.DateField(auto_now=True,null=True,)
 
     @property
     def clients(self):
@@ -232,7 +235,7 @@ class stMouvements(models.Model):
         on_delete=models.RESTRICT,
         null=True,
         db_index=True,
-        help_text="PK Section analytique du camp à facturer"
+        help_text="Camp particulier à facturer, pas de valeur défaut"
         )
     jour = models.DateField(blank=False,
         db_index=True,
@@ -267,7 +270,7 @@ class stMouvements(models.Model):
         )
     prixUnit = models.DecimalField(max_digits=10,decimal_places=4,
         blank=False,
-        help_text= "Prix saisi pour achats, Prix calculé pour les autres mvts"
+        help_text= "PrixTTC saisi pour achats, Prix calculé pour autres mvts"
         )
     repas = models.IntegerField(choices=REPAS_CHOICES,
         blank=True, null=True,
@@ -275,7 +278,7 @@ class stMouvements(models.Model):
     ordi = models.CharField(max_length=32,
         blank=True, default='',
         help_text="Nom de l'ordi utilisé entrée ou modif")
-    dateSaisie = models.DateTimeField(auto_now=True)
+    dateSaisie = models.DateField(auto_now=True,null=True,)
     transfertCompta = models.DateField(
         null=True,
         help_text= "Marque un transfert export  réussi"
@@ -300,7 +303,7 @@ class stInventaires(models.Model):
     # Etat des stocks à une date donnée
 
     jour = models.DateField(
-        blank=False,
+        blank = False,
         db_index=True,
         help_text="PK Date de l'inventaire copie des stocks confirmée"
         )
@@ -335,10 +338,10 @@ class stInventaires(models.Model):
         blank=True, default='',
         help_text="Nom de l'ordi utilisé entrée ou modif"
         )
-    dateSaisie = models.DateField(auto_now=True)
+    dateSaisie = models.DateField(auto_now=True,null=True,)
     modifiable = models.BooleanField(
-        default=True,
-        help_text="Transfert export  réussi ou import"
+        default=None,
+        help_text="0 : Transfert export  réussi ou import. Sinon -1|1|null"
         )
 
     def __str__(self):
@@ -358,3 +361,12 @@ class stInventaires(models.Model):
         )
         ordering = ['jour','article',]
 
+# mise à jour structure de la base de donnée
+"""par le terminal
+py manage.py makemigrations appli
+py manage.py migrate
+
+Si RAZ de la base, création d'une base vide, console python:
+from  appli_python.ap_databases import CreateBaseDjango
+CreateBaseDjango(dbConfig='default')
+"""

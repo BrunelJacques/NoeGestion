@@ -25,13 +25,22 @@ CHOIX_REPAS = ['PtDej','Midi','Soir','5eme','Tous']
          'txtva', 'magasin', 'rayon', 'qtemini', 'qtesaison','obsolete', 
          'prixmoyen', 'prixactuel', 'dernierachat', 'ordi', 'datesaisie']
 }"""
+
+def GetNomTable(db,table="articles"):
+    # retourne le nom de la table dans la base ouverte
+    if db.nomBase == 'noegestion':
+        return "appli_st%s"%table.lower()
+    else:
+        return "st%s"%table.capitalize()
+
 # Gestion des inventaires -----------------------------------------------------
 
 def PostArticles(db,champs=[],articles=[[],]):
-    # uddate des champs d'un article, l'ID en dernière position
+    # uddate des champs d'un article, l'ID en première position
     retour = True
+    table = GetNomTable(db,'articles')
     for article in articles:
-        ret = db.ReqMAJ('stArticles',
+        ret = db.ReqMAJ(table,
                     nomID=champs[0],
                     ID = article[0],
                     champs=champs[1:],values=article[1:],
@@ -46,8 +55,11 @@ def PostMouvements(db,champs=[],mouvements=[[],]):
     retour = True
 
     nb = len(mouvements)
+    table = GetNomTable(db,'mouvements')
+    if table[:5] != 'appli':
+        champs[0] = 'idMouvement'
     for mouvement in mouvements:
-        ret = db.ReqMAJ('stMouvements',
+        ret = db.ReqMAJ(table,
                     nomID=champs[0],
                     ID = mouvement[0],
                     champs=champs[1:],values=mouvement[1:],
@@ -63,16 +75,32 @@ def PostInventaire(db,cloture=datetime.date.today(),inventaire=[[],]):
     # delete puis recrée l'inventaire à la date de cloture
     if cloture == None:
         cloture = datetime.date.today()
+    finIso = xformat.DatetimeToStr(cloture,iso=True)
+
     ordi = os.environ['USERDOMAIN']
     dteSaisie = xformat.DatetimeToStr(datetime.date.today(),iso=True)
+    table = GetNomTable(db,'inventaires')
     # Appelle l'inventaire précédent
-    lstChamps = ['IDdate',
+    if table[:5] == 'appli':
+        lstChamps = ['jour',
+                 'article_id',
+                 'qteStock',
+                 'prixMoyen',
+                 'prixActuel',
+                 'ordi',
+                 'dateSaisie',]
+        condition = "%s.jour = '%s'" % (table, finIso)
+
+    else:
+        lstChamps = ['IDdate',
                  'IDarticle',
                  'qteStock',
                  'prixMoyen',
                  'prixActuel',
                  'ordi',
                  'dateSaisie',]
+        condition = "%s.IDdate = '%s'" % (table, finIso)
+
     llDonnees = []
     # lignes reçues [dte,article,qte,prixMoyen,montant,lastPrix]
     for dte,article,qte,pxMoy,mtt,pxLast in inventaire:
@@ -80,34 +108,35 @@ def PostInventaire(db,cloture=datetime.date.today(),inventaire=[[],]):
             "cloture = %s diff de inventaire = %s"%(str(cloture),str(dte)))
         llDonnees.append([dte,article,qte,pxMoy,pxLast,ordi,dteSaisie])
 
-    # test présence inventaire
-    finIso = xformat.DatetimeToStr(cloture,iso=True)
-    condition = "stInventaires.IDdate = '%s'"%finIso
-    req = """   SELECT *
-                FROM stInventaires
+    # test présence inventaire modifiable
+    req = """   SELECT count(id), sum(modifiable = 0)
+                FROM %s
                 WHERE %s
-                ;""" %(condition)
+                ;""" %(table,condition)
 
     retour = db.ExecuterReq(req, mess='stdb_utils.testPrésenceInventaire')
     if retour == "ok":
         recordset = db.ResultatReq()
-        if len(recordset) > 0:
+        if recordset[0][0] > 0 and recordset[0][1] in (0,None):
             mess = "UTILS_Stoks.PostInventaire.ReqDel"
-            ret = db.ReqDEL('stInventaires',condition=condition,mess=mess)
+            ret = db.ReqDEL(table,condition=condition,mess=mess)
+        elif  recordset[0][1] and  recordset[0][1] > 0:
+            raise Exception("Des enregistrements non modifiables sont présents")
 
-    ret = db.ReqInsert('stInventaires',champs=lstChamps,llValues=llDonnees,
+    ret = db.ReqInsert(table,champs=lstChamps,llValues=llDonnees,
                  mess="stdb_utils.PostInventaires")
     if ret == 'ok':
         return True
     return ret
 
-def GetLastInventaire(db,cloture=None):
+def _GetLastInventaireNoethys(db,cloture=None):
     # retourne l'inventaire précédent la date de cloture
     if cloture == None:
         cloture = datetime.date.today()
     # Appelle l'inventaire précédent
     lstChamps = ['IDdate','IDarticle','qteStock','prixMoyen',]
     finIso = xformat.DatetimeToStr(cloture,iso=True)
+
     req = """   SELECT %s
                 FROM stInventaires
                 WHERE   (stInventaires.IDdate = 
@@ -128,9 +157,46 @@ def GetLastInventaire(db,cloture=None):
             llInventaire.append(mouvement)
     return llInventaire
 
+def GetLastInventaire(db,cloture=None):
+    # retourne l'inventaire précédent la date de cloture
+
+    table = GetNomTable(db,'mouvements')
+    if table[:5] != 'appli':
+        llInventaire = _GetLastInventaireNoethys(db,cloture)
+        return llInventaire
+    if cloture == None:
+        cloture = datetime.date.today()
+    # Appelle l'inventaire précédent
+    lstChamps = ['jour','article_id','appli_stinventaires.qteStock',
+                 'appli_stinventaires.prixMoyen',]
+    finIso = xformat.DatetimeToStr(cloture,iso=True)
+
+    req = """   SELECT %s
+                FROM appli_stinventaires
+                LEFT JOIN appli_starticles 
+                        ON article_id = appli_starticles.id
+                WHERE   (appli_stinventaires.jour = 
+                            (SELECT MAX(stInv.jour) 
+                            FROM appli_stinventaires as stInv
+                            WHERE stInv.jour < '%s')
+                        )
+                ;""" % (",".join(lstChamps),finIso)
+
+    retour = db.ExecuterReq(req, mess='stdb_utils.SqlLastInventaire')
+    llInventaire = []
+    if retour == "ok":
+        recordset = db.ResultatReq()
+        for record in recordset:
+            mouvement = []
+            for ix  in range(len(lstChamps)):
+                mouvement.append(record[ix])
+            llInventaire.append(mouvement)
+    return llInventaire
+
 def GetMouvements(db,apres=None,fin=None):
     # retourne une  liste de mouvements en forme de liste
-    lstChamps = ['IDmouvement','date','origine','stMouvements.IDarticle','qte','prixUnit']
+
+    table = GetNomTable(db,'mouvements')
     # normalisation datefin
     if fin == None: fin = datetime.date.today()
     elif not isinstance(fin,datetime.date):
@@ -141,11 +207,17 @@ def GetMouvements(db,apres=None,fin=None):
     finIso = xformat.DateToIso(fin)
     apresIso = xformat.DatetimeToStr(apres,iso=True)
     # Appelle les mouvements de la période
+    if table[:5] == 'appli':
+        lstChamps = ['ID','jour','origine','article_id','qteMouvement','prixUnit']
+        dte = 'jour'
+    else:
+        lstChamps = ['IDmouvement','date','origine','IDarticle','qte','prixUnit']
+        dte = 'date'
     req = """   SELECT %s
-                FROM stMouvements
-                WHERE   (   (date > '%s' ) 
-                            AND (date <= '%s' ))
-                ;""" % (",".join(lstChamps),apresIso,finIso)
+                FROM %s
+                WHERE   (   (%s > '%s' ) 
+                            AND (%s <= '%s' ))
+                ;""" % (",".join(lstChamps),table,dte,apresIso,dte,finIso)
 
     retour = db.ExecuterReq(req, mess='stdb_utils.GetMouvements')
     llMouvements = []
@@ -160,13 +232,15 @@ def GetMouvements(db,apres=None,fin=None):
 
 def GetArticles(db,lstChamps=None):
     # retourne un dict{id:article} d'articles en forme dictionnaire
+    table = GetNomTable(db,'mouvements')
     if lstChamps == None:
-        lstChamps = db.GetListeChamps('stArticles')
+        lstChamps = db.GetListeChamps(table)
 
+    table = GetNomTable(db,'articles')
     # Appelle les articles
     req = """   SELECT %s
-                FROM stArticles
-                ;"""%",".join(lstChamps)
+                FROM %s
+                ;"""%(",".join(lstChamps),table)
     retour = db.ExecuterReq(req, mess='stdb_utils.GetArticles')
     ddArticles = {}
 
