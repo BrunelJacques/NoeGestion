@@ -14,9 +14,9 @@ LIMITSQL = 100
 # codes repas [ 1,      2,     3,     4       5]
 CHOIX_REPAS = ['PtDej','Midi','Soir','5eme','Tous']
 
-# pour info correspondance de champs stArticles
+# pour info correspondance de champs stArticles Noethus Noegestion
 """CHAMPS_ARTICLES = {
-    'nothys':
+    'noethys':
         ['IDarticle', 'rations', 'fournisseur', 'qteStock', 'txTva', 
          'magasin', 'rayon', 'qteMini', 'qteSaison', 'obsolete', 'prixMoyen',
          'prixActuel', 'dernierAchat', 'ordi', 'dateSaisie'],
@@ -51,7 +51,7 @@ def PostArticles(db,champs=[],articles=[[],]):
     return retour
 
 def PostMouvements(db,champs=[],mouvements=[[],]):
-    # uddate des champs d'un mouvement, l'ID en dernière position
+    # uddate des champs d'un mouvement, l'ID en première position
     retour = True
 
     nb = len(mouvements)
@@ -250,7 +250,7 @@ def GetArticles(db,lstChamps=None):
         for record in recordset:
             article = {}
             for ix  in range(len(lstChamps)):
-                article[lstChamps[ix].lower()] = (record[ix])
-            # l'id article est en dernière position
+                article[lstChamps[ix]] = (record[ix])
+            # l'id article est en première position
             ddArticles[record[0]]=article
     return ddArticles

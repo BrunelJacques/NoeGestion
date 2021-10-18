@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 # models = tables. Toujours une majuscule dans le nom cf 'relations inverses'
 
@@ -35,9 +36,9 @@ class stArticles(models.Model):
     # articles utilisés pour les stocks
 
     MAGASIN_CHOICES = [
-        ('FRI', 'Réfrigérateur'),
-        ('SUR', 'Surgelés'),
-        ('RES', 'Réserve')
+        ('FRI', 'Frigo'),
+        ('SUR', 'Congel'),
+        ('RES', 'Reserve')
     ]
 
     RAYON_CHOICES = [
@@ -121,18 +122,19 @@ class stArticles(models.Model):
         help_text="Dernier prix TTC unitaire livré ou de réappro"
         )
     dernierAchat = models.DateField(
-        null=True,
+        blank=True,
         help_text="Date de dernière entrée avec prix saisi"
         )
     ordi = models.CharField(max_length=32,
-        null=True,default='',
+        blank=True,
+        default='',
         help_text= "Nom de l'ordi utilisé entrée ou modif"
         )
     dateSaisie = models.DateField(auto_now=True,null=True,)
 
     @property
     def montantStock(self):
-        return self.qteStock * self.prixMoyen
+        return round(self.qteStock * self.prixMoyen,2)
 
     def __str__(self):
         return self.nom
@@ -280,8 +282,8 @@ class stMouvements(models.Model):
         help_text="Nom de l'ordi utilisé entrée ou modif")
     dateSaisie = models.DateField(auto_now=True,null=True,)
     transfertCompta = models.DateField(
-        null=True,
-        help_text= "Marque un transfert export  réussi"
+        blank=True,
+        help_text= "Marque la date d'un transfert export  réussi"
         )
 
     @property
@@ -290,6 +292,12 @@ class stMouvements(models.Model):
 
     def __str__(self):
         return '%s  %s' % (self.analytique, str(self.jour),)
+
+    def sorties_ce_jour(self, jour=timezone.datetime.today()):
+        lstOriginesSorties = [ x for (x,y) in self.ORIGINE_CHOICES['sorties']]
+        ceJour = (self.dateSaisie == jour)
+        sortie = self.origine in lstOriginesSorties
+        return ceJour and sortie
 
     class Meta:
         managed=True

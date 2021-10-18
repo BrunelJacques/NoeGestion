@@ -3,7 +3,7 @@
 
 #------------------------------------------------------------------------
 # Application:  NoeGestion, Gestion des bases de données
-# Module utils_db: contient les méthodes database hors Django
+# Module utils_db: contient les méthodes sql pour database hors Django
 # Auteur:       Jacques Brunel, repris de Noethys Yvan Lucas
 # Copyright:    (c) 2021-09   Matthania, Noethys
 # Licence:      Licence GNU GPL
@@ -435,7 +435,6 @@ class DB():
                ltChampValue=None,condition=None,
                mess=None, affichError=True, IDestChaine = False):
         """ MAJ des values présentées en dic ou liste de tuples"""
-
         req = None
         def onErreur(err):
             self.echec = 1
@@ -847,6 +846,7 @@ class DB():
             parent.SetStatusText(parent.mess[-200:])
 
     # Visu sur le modèle de base de données -----------------------------------
+
     def IsDatabaseExits(self):
         lstBases = self.GetDataBases()
         if (self.nomBase,) in lstBases:

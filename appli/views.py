@@ -7,7 +7,7 @@ from appli.stviews.sorties import *
 
 
 @csrf_exempt
-def stsorties(request, jour):
+def stsorties(request,jour,origine='repas'):
     """
     Cette fonction va gérer toutes les URL de la forme
     /stsorties/<slug:jour>
@@ -19,7 +19,26 @@ def stsorties(request, jour):
     Angular
     """
     if (request.method == 'GET'):
-        return getSorties(jour)
+        return getSorties(jour,origine)
+    elif (request.method == 'POST'):
+        pass
+    else:
+        pass
+
+@csrf_exempt
+def starticles(request,contient=''):
+    """
+    Cette fonction va gérer toutes les URL de la forme
+    /stsorties/<slug:jour>
+    :param request : la requete qui a été envoyée au serveur
+    :param id: l'id de la famille dont on cherche à obtenir
+    les informations
+    :return: Retourne les membres de la famille, ainsi qu'un maximum
+    d'informations sur la famille, pour pouvoir les afficher dans
+    Angular
+    """
+    if (request.method == 'GET'):
+        return getArticles(contient)
     elif (request.method == 'POST'):
         pass
     else:

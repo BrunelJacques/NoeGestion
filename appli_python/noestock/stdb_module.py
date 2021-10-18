@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------
-# stModule: fonctions pour gestion des stocks
+# stModule: gestion des stocks opérations d'inventaire et cohérence
 # ------------------------------------------------------------------------
 from outils    import xformat
 from appli_python.ap_databases  import DB
@@ -239,7 +239,7 @@ class Inventaire:
 
         def appendArticle(article,qte,prixMoyen,lastPrix,):
             artIn = ddArticles[article]
-            artOut = [artIn[nameid.lower()],qte,prixMoyen,lastPrix,]
+            artOut = [artIn[nameid],qte,prixMoyen,lastPrix,]
             llarticles.append(artOut)
 
         # exportation des valeurs d'inventaire pour stArticles
@@ -253,12 +253,12 @@ class Inventaire:
 
         # raz des qtés article pas à zéro et pas dans l'inventaire
         for key,dicArt in ddArticles.items():
-            if not key in lstNomsArt and dicArt['qtestock'] != 0:
-                article = dicArt[nameid.lower()]
+            if not key in lstNomsArt and dicArt['qteStock'] != 0:
+                article = dicArt[nameid]
                 qte = 0
                 # seule la qte sera RAZ
-                prixMoyen = dicArt['prixmoyen']
-                lastPrix = dicArt['prixactuel']
+                prixMoyen = dicArt['prixMoyen']
+                lastPrix = dicArt['prixActuel']
                 appendArticle(article,qte,prixMoyen,lastPrix,)
 
         ok = su.PostArticles(self.db,lstChamps,llarticles)
