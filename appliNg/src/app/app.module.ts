@@ -21,6 +21,8 @@ import { AppComponent } from './app.component';
 
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { SortieComponent } from './components/sortie/sortie.component';
+import { SortiesComponent } from './components/sorties/sorties.component';
 
 
 
@@ -29,6 +31,8 @@ import { FooterComponent } from './components/footer/footer.component';
     AppComponent,
     HeaderComponent,
     FooterComponent,
+    SortieComponent,
+    SortiesComponent,
   ],
   imports: [
     HttpClientModule,

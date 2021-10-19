@@ -98,3 +98,19 @@ def makeArticles(contient):
             'uniteVente': art.uniteVente,
         })
     return list(lst)
+
+def getChoices():
+    resultat = dict()
+    resultat['stchoices'] = makeChoices()
+    #  On renvoie toutes les informations récoltées en Json.
+    return JsonResponse(resultat,
+                        safe=False,
+                        json_dumps_params={'indent': 2})
+
+def makeChoices():
+    dic = dict()
+    dic['origine'] = stMouvements.ORIGINE_CHOICES
+    dic['repas'] = stMouvements.REPAS_CHOICES
+    dic['magasin'] = stArticles.MAGASIN_CHOICES
+    dic['rayon'] = stArticles.RAYON_CHOICES
+    return dic

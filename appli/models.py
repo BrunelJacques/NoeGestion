@@ -196,7 +196,7 @@ class stEffectifs(models.Model):
 
     class Meta:
         managed=True
-        verbose_name = 'Effectifs présents'
+        verbose_name = 'Effectifs présent'
         indexes = [
             models.Index(fields=['jour','analytique',])
         ]
@@ -357,7 +357,7 @@ class stInventaires(models.Model):
 
     class Meta:
         managed=True
-        verbose_name = 'Inventaires'
+        verbose_name = 'Inventaire'
         indexes = [
             models.Index(fields=['jour',
                                  'article',])
