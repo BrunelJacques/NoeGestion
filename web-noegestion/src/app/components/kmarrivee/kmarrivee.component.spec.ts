@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { KmarriveeComponent } from './kmarrivee.component';
+import { KmArriveeComponent } from './kmarrivee.component';
 
 describe('KmarriveeComponent', () => {
-  let component: KmarriveeComponent;
-  let fixture: ComponentFixture<KmarriveeComponent>;
+  let component: KmArriveeComponent;
+  let fixture: ComponentFixture<KmArriveeComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ KmarriveeComponent ]
+      declarations: [ KmArriveeComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(KmarriveeComponent);
+    fixture = TestBed.createComponent(KmArriveeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

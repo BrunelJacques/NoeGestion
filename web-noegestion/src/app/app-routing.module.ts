@@ -2,7 +2,14 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router'; 
 import { AuthGuard } from './guards/auth.guard';
 import { StSortiesComponent } from './components/stsorties/stsorties.component';
+import { StsortieComponent } from './components/stsorties/stsortie/stsortie.component';
 import { StEntreesComponent } from './components/stentrees/stentrees.component';
+import { StEffectifsComponent } from './components/steffectifs/steffectifs.component';
+import { StInventaireComponent } from './components/stinventaire/stinventaire.component';
+import { StPrixJourneeComponent } from './components/stprixjournee/stprixjournee.component';
+import { KmArriveeComponent } from './components/kmarrivee/kmarrivee.component';
+import { KmDepartComponent } from './components/kmdepart/kmdepart.component';
+
 
 const routes: Routes = [
   {
@@ -11,11 +18,40 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'sortie',
+    component: StsortieComponent,
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'entrees',
     component: StEntreesComponent,
     canActivate: [AuthGuard]
   },
-
+  {
+    path: 'effectifs',
+    component: StEffectifsComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'inventaire',
+    component: StInventaireComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'prixjournees',
+    component: StPrixJourneeComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'depart',
+    component: KmDepartComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'arrivee',
+    component: KmArriveeComponent,
+    canActivate: [AuthGuard]
+  },
 ];
 
 @NgModule({

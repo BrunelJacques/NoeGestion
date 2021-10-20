@@ -20,18 +20,17 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { HeaderComponent } from './components/header/header.component';
-import { FooterComponent } from './components/footer/footer.component';
+import { FooterComponent } from './components/header/footer/footer.component';
 import { StSortiesComponent } from './components/stsorties/stsorties.component';
 import { StEntreesComponent } from './components/stentrees/stentrees.component';
-import { StentreeComponent } from './components/stentree/stentree.component';
-import { StsortieComponent } from './components/stsortie/stsortie.component';
-import { SteffectifsComponent } from './components/steffectifs/steffectifs.component';
-import { StprixjourneeComponent } from './components/stprixjournee/stprixjournee.component';
-import { StinventaireComponent } from './components/stinventaire/stinventaire.component';
-import { KmdepartComponent } from './components/kmdepart/kmdepart.component';
-import { KmarriveeComponent } from './components/kmarrivee/kmarrivee.component';
-
-
+import { StentreeComponent } from './components/stentrees/stentree/stentree.component';
+import { StsortieComponent } from './components/stsorties/stsortie/stsortie.component';
+import { StEffectifsComponent } from './components/steffectifs/steffectifs.component';
+import { StPrixJourneeComponent } from './components/stprixjournee/stprixjournee.component';
+import { StInventaireComponent } from './components/stinventaire/stinventaire.component';
+import { KmDepartComponent } from './components/kmdepart/kmdepart.component';
+import { KmArriveeComponent } from './components/kmarrivee/kmarrivee.component';
+import { JourComponent } from './components/stsorties/jour/jour.component';
 
 @NgModule({
   declarations: [
@@ -42,11 +41,12 @@ import { KmarriveeComponent } from './components/kmarrivee/kmarrivee.component';
     StEntreesComponent,
     StentreeComponent,
     StsortieComponent,
-    SteffectifsComponent,
-    StprixjourneeComponent,
-    StinventaireComponent,
-    KmdepartComponent,
-    KmarriveeComponent,
+    StEffectifsComponent,
+    StPrixJourneeComponent,
+    StInventaireComponent,
+    KmDepartComponent,
+    KmArriveeComponent,
+    JourComponent,
   ],
   imports: [
     HttpClientModule,

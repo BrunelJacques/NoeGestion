@@ -5,7 +5,7 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './kmdepart.component.html',
   styleUrls: ['./kmdepart.component.scss']
 })
-export class KmdepartComponent implements OnInit {
+export class KmDepartComponent implements OnInit {
 
   constructor() { }
 

@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { StprixjourneeComponent } from './stprixjournee.component';
+import { StPrixJourneeComponent } from './stprixjournee.component';
 
 describe('StprixjourneeComponent', () => {
-  let component: StprixjourneeComponent;
-  let fixture: ComponentFixture<StprixjourneeComponent>;
+  let component: StPrixJourneeComponent;
+  let fixture: ComponentFixture<StPrixJourneeComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ StprixjourneeComponent ]
+      declarations: [ StPrixJourneeComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(StprixjourneeComponent);
+    fixture = TestBed.createComponent(StPrixJourneeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -5,7 +5,7 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './stprixjournee.component.html',
   styleUrls: ['./stprixjournee.component.scss']
 })
-export class StprixjourneeComponent implements OnInit {
+export class StPrixJourneeComponent implements OnInit {
 
   constructor() { }
 
