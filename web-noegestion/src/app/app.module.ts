@@ -31,6 +31,7 @@ import { StInventaireComponent } from './components/stinventaire/stinventaire.co
 import { KmDepartComponent } from './components/kmdepart/kmdepart.component';
 import { KmArriveeComponent } from './components/kmarrivee/kmarrivee.component';
 import { JourComponent } from './components/stsorties/jour/jour.component';
+import {CustomDatePipe} from './models/custom.datepipe';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { JourComponent } from './components/stsorties/jour/jour.component';
     KmDepartComponent,
     KmArriveeComponent,
     JourComponent,
+    CustomDatePipe,
   ],
   imports: [
     HttpClientModule,
