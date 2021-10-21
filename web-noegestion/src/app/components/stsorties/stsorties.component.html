@@ -1,2 +1,10 @@
-<h1>sorties de stock</h1>
-<app-jour></app-jour>
+<h1 class= "title">sorties de stock</h1>
+<h3 class="ctnparams">Date: 
+    <span class="ctnjour">
+        <input type="date" id="jour" name="jour" [(ngModel)] = "jour"  placeholder="jour">
+    </span>
+    <span class="origine"> 
+    <input type="string" id="origine" name="origine" [(ngModel)] = "origine"  
+    placeholder="origine" width="50px"> 
+    </span>
+</h3>

@@ -1,0 +1,18 @@
+.title {margin: 0 0 0px;}
+.ctnparams {
+    /**position: fixed; 
+    top: 10%;
+    left: 20%; 
+    -webkit-transform: translate(10%,10%); */
+    transform: translate(0%, -10%);
+    width: 100%;
+    margin: 0 0 0;
+   }
+.input {
+    width: 10;
+    color: royalblue;
+}   
+
+::ng-deep .mat-input-wrapper{
+   width:50px !important;
+}

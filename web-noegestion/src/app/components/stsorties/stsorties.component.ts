@@ -8,7 +8,8 @@ import { Component, OnInit } from '@angular/core';
 export class StSortiesComponent implements OnInit {
 
   constructor() { }
-
+  jour : Date = new Date();
+  origine: String = "Cuisine"
   ngOnInit(): void {
   }
 

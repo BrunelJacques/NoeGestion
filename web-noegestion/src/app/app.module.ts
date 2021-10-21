@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { HttpClientModule } from '@angular/common/http';
@@ -30,8 +30,11 @@ import { StPrixJourneeComponent } from './components/stprixjournee/stprixjournee
 import { StInventaireComponent } from './components/stinventaire/stinventaire.component';
 import { KmDepartComponent } from './components/kmdepart/kmdepart.component';
 import { KmArriveeComponent } from './components/kmarrivee/kmarrivee.component';
-import { JourComponent } from './components/stsorties/jour/jour.component';
 import {CustomDatePipe} from './models/custom.datepipe';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+
 
 @NgModule({
   declarations: [
@@ -47,7 +50,6 @@ import {CustomDatePipe} from './models/custom.datepipe';
     StInventaireComponent,
     KmDepartComponent,
     KmArriveeComponent,
-    JourComponent,
     CustomDatePipe,
   ],
   imports: [
@@ -64,8 +66,12 @@ import {CustomDatePipe} from './models/custom.datepipe';
     BrowserModule,
     FormsModule,
     AppRoutingModule,
-    ReactiveFormsModule 
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatAutocompleteModule,
   ],
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   providers: [],
   bootstrap: [AppComponent]
 })
