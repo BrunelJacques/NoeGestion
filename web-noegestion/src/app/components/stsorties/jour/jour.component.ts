@@ -25,8 +25,8 @@ export class JourComponent implements OnInit {
     uniteVente: '',
     fournisseur: ''
   };
-  jour:string = '01/05/2021'
-  todayDate : Date = new Date();
+  jourString:string = '01/05/2021'
+  jour : Date = new Date();
 
   constructor() { }
 
