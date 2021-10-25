@@ -1,18 +1,19 @@
 .title {margin: 0 0 0px;}
-.ctnparams {
-    /**position: fixed; 
+.ctnjour {
+    /*--position: fixed;
     top: 10%;
     left: 20%; 
-    -webkit-transform: translate(10%,10%); */
-    transform: translate(0%, -10%);
-    width: 100%;
+    -webkit-transform: translate(10%,10%); 
+    transform: translate(10%, 10%);*/
+    width: 120px;
     margin: 0 0 0;
+    color: royalblue;
    }
 .input {
-    width: 10;
-    color: royalblue;
+    width: 60px;
+    color: rgb(225, 65, 185);
 }   
 
 ::ng-deep .mat-input-wrapper{
-   width:50px !important;
+   width: 250px !important;
 }
