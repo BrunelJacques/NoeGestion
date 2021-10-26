@@ -11,9 +11,10 @@
    }
 .input {
     width: 60px;
-    color: rgb(225, 65, 185);
+    color: royalblue;
+    font-size: 1rem
 }   
 
 ::ng-deep .mat-input-wrapper{
-   width: 250px !important;
+   width: 150px !important;
 }

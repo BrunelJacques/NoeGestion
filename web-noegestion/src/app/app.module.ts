@@ -34,6 +34,7 @@ import {CustomDatePipe} from './models/custom.datepipe';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { LoginComponent } from './components/login/login.component';
 
 
 @NgModule({
@@ -51,6 +52,7 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
     KmDepartComponent,
     KmArriveeComponent,
     CustomDatePipe,
+    LoginComponent,
   ],
   imports: [
     HttpClientModule,

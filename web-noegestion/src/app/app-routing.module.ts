@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router'; 
 import { AuthGuard } from './guards/auth.guard';
+import { LoginComponent } from './components/login/login.component';
 import { StSortiesComponent } from './components/stsorties/stsorties.component';
 import { StsortieComponent } from './components/stsorties/stsortie/stsortie.component';
 import { StEntreesComponent } from './components/stentrees/stentrees.component';
@@ -20,6 +21,11 @@ const routes: Routes = [
   {
     path: 'sortie',
     component: StsortieComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'zzlogin',
+    component: LoginComponent,
     canActivate: [AuthGuard]
   },
   {
