@@ -1,20 +1,94 @@
-.title {margin: 0 0 0px;}
-.ctnjour {
-    /*--position: fixed;
-    top: 10%;
-    left: 20%; 
-    -webkit-transform: translate(10%,10%); 
-    transform: translate(10%, 10%);*/
-    width: 120px;
-    margin: 0 0 0;
-    color: royalblue;
-   }
-.input {
-    width: 60px;
-    color: royalblue;
-    font-size: 1rem
-}   
+*   {
+    margin: 0 0 0px;
+    }
+    .jour, .input {
+        color: #0a247a;
+        background-color: rgb(255, 254, 168);
+        font-size-adjust: var() ;
+        border-width: 1px;
+        border-color: #0a247a
+    }
+    .jour {
+        width: 120px;
+    }
+    .input {
+        width: 120px;
+        font-size: 1rem;
+    }
+    
+    .left {
+        margin-left: 5px;
+        margin-bottom: 0px;
+    }
+/* StSortiesComponent's private CSS styles */
+.sortie {
+    display: inline-block;
+    color: #0a247a;
+    background-color: #DDE;
+    margin: 4px;
+    padding: 5px 5px;
 
-::ng-deep .mat-input-wrapper{
-   width: 150px !important;
 }
+
+.sorties {
+    margin: 0 0 1em 0;
+    list-style-type: none;
+    padding: 0;
+    width: 25em;
+  }
+  .sorties li {
+    cursor: pointer;
+    position: relative;
+    left: 0;
+    background-color: #EEE;
+    margin: 4px;
+    padding: 0 0;
+    height: 1.9em;
+    border-radius: 4px;
+  }
+  .sorties li:hover {
+    color: #2c3a41;
+    background-color: #e6e6e6;
+    left: .1em;
+  }
+  .sorties li.selected {
+    background-color: #0BD;
+    color: white;
+  }
+  .sorties li.selected:hover {
+    background-color: #0AE;
+    color: white;
+  }
+  .sorties li.selected:active {
+    background-color: #122fb1;
+    color: white;
+  }
+  .item {
+    color: #0a247a;
+    height: 1.7em;
+    position: relative;
+    top: -1px;
+    margin-right: .3em;
+    border-radius: 0px 0 0 0px;
+    padding: 5px 5px 0px 5px;
+    width: 80px;
+  }
+ 
+  .badge {
+    display: inline-block;
+    color: white;
+    background-color:#5079a7;
+    height: 1.7em;
+    position: relative;
+    top: 0px;
+    margin-right: .3em;
+    border-radius: 6px 0 0 6px;
+    padding: 5px 5px 0px 5px;
+    width: 170px;
+}
+      
+
+  
+
+  
+

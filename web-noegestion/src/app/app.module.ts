@@ -36,7 +36,6 @@ import { MatInputModule } from '@angular/material/input';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { LoginComponent } from './components/login/login.component';
 
-
 @NgModule({
   declarations: [
     AppComponent,

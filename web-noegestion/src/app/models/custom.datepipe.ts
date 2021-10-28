@@ -1,3 +1,5 @@
+/* ******* redéfinition de mots clé d'angular *******    */
+
 import { Pipe, PipeTransform } from '@angular/core';
 import { DatePipe } from '@angular/common';
 
@@ -7,7 +9,7 @@ import { DatePipe } from '@angular/common';
 export class CustomDatePipe extends 
              DatePipe implements PipeTransform {
   transform(value: any, args?: any): any {
-    return super.transform(value, " dd/MM/yyyy ");
+    return super.transform(value, "dd/MM/yyyy ");
   }
 }
 

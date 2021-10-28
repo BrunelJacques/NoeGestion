@@ -1,11 +1,36 @@
-<h1 class= "title">sorties de stock</h1>
-<h3 class="params">Date: 
-    <span >
-        <input class="ctnjour" type="date" id="jour" name="jour" [(ngModel)] = "jour"  
-        placeholder="jour">
+<h1 class= "left">sorties de stock</h1>
+<h3 class="left">Date: 
+    <span ng-controller="CtrlJour" >
+        <input class="jour" [ngModel]="jour | date:'yyyy-MM-dd'" (ngModelChange)="jour = $event" type="date" name="jour"/>
+        <!--<input class="date" type="date" id="jour" name="jour" [(ngModel)] = "jour" placeholder="jour" >-->
     </span>
-    <span > Vers:
+    <span class="left" >Vers:
     <input class="input" type="string" id="origine" name="origine" [(ngModel)] = "origine"  
     placeholder="origine"> 
     </span>
 </h3>
+
+<div class="sortie" *ngIf="selectedMvt">
+    <h4 class="left" >Sortie sélectionnée:</h4>
+    <div>
+        <label>article /  </label>
+        <label for="qte"> qté / </label>
+    </div>
+    <input class="input" id="art" [(ngModel)]= "selectedMvt.article" placeholder="article">
+    <input class="input" id="qte" [(ngModel)]="selectedMvt.qteMouvement" placeholder="qteMouvement">
+    <span> {{magasin}} {{rayon}}</span>
+
+</div>
+
+<ul class="sorties" >
+    <li *ngFor="let mvt of mvts"
+        [class.selected]="mvt === selectedMvt"
+        (click)="onSelect(mvt)"
+        >
+        <span>
+            <span class="badge">  {{mvt.article}}</span>
+            <span class= "item"> {{mvt.qteMouvement}} </span>
+            <span class= "item"> {{mvt.uniteStock}} </span>
+        </span>
+    </li>
+</ul>

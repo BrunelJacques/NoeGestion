@@ -12,6 +12,9 @@ urlpatterns=[
   path('stsorties/<slug:jour>/<str:origine>/', views.stsorties, name='stsorties'),
   path('stsorties/<slug:jour>/', views.stsorties, name='stsorties'),
 
+  path('stmouvements/<slug:jour>/<str:origine>/', views.stmouvements,
+       name='stmouvements'),
+
   path('starticles/<str:contient>/', views.starticles,name='starticles'),
   path('starticles/', views.starticles, name='starticles'),
 

@@ -1,19 +1,27 @@
 export interface Mouvement {
     id: number;
+    jour: string;
+    origine: string;
+    article_id: number;
     article: string;
-    nbUnitesVente: number;
-    qteMouvement: number;
-    prixUnit: number;
+    nbUnitesVente: any;
+    qteMouvement: any;
+    prixUnit: any;
     repas: string;
-    nbRationsUnit: number;
-    artNbRations: number;
-    qteParUniteVente: number;
-    qteStock: number;
+    nbRations: any;
+    nbRationsArt: any;
+    qteParUniteVente: any;
+    qteStock: any;
     magasin: string;
     rayon: string;
     uniteStock: string;
     uniteVente: string;
     fournisseur: string;
+    fournisseurArt: string;
+    txTva: any;
+    prixMoyen: any;
+    analytique: string;
+    transfertCompta: any;
   }
   
   

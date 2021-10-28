@@ -14,10 +14,21 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from .stviews.sorties import *
+from .stviews.mouvements import *
 
 # Create your views here.
 
 #@csrf_protect
+
+@csrf_exempt
+def stmouvements(request,jour,origine='repas'):
+    if (request.method == 'GET'):
+        return getMouvements(jour,origine)
+    elif (request.method == 'POST'):
+        pass
+    else:
+        pass
+
 @csrf_exempt
 def stsorties(request,jour,origine='repas'):
     if (request.method == 'GET'):
