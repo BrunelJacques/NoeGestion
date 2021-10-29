@@ -35,6 +35,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { LoginComponent } from './components/login/login.component';
+import { MessagesComponent } from './components/messages/messages.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { LoginComponent } from './components/login/login.component';
     KmArriveeComponent,
     CustomDatePipe,
     LoginComponent,
+    MessagesComponent,
   ],
   imports: [
     HttpClientModule,

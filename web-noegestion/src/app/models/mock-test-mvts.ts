@@ -1,4 +1,4 @@
-import { Mouvement } from "./stmouvements";
+import { Mouvement } from "./stmouvement";
 
 export const MOUVEMENTS: Mouvement[] = [
     {
