@@ -3,9 +3,14 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  appVersion: require('../../package.json').version + ' - dev -',
-  appName: require('../../package.json').name,
-  production: false
+  production: false,
+  application:
+  {
+    name: 'angular-starter',
+    angular: 'Angular 12.2.11',
+    bootstrap: 'Bootstrap 5.1.3',
+    fontawesome: 'Font Awesome 5.15.4',
+  }
 };
 
 /*

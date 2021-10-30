@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router'; 
-import { AuthGuard } from './guards/auth.guard';
-import { LoginComponent } from './components/login/login.component';
+import { AuthGuard } from './components/general/guards/auth.guard';
+import { LoginComponent } from './components/general/login/login.component';
 import { StSortiesComponent } from './components/stsorties/stsorties.component';
+import { HomeComponent } from './components/general/home/home.component';
 import { StsortieComponent } from './components/stsorties/stsortie/stsortie.component';
 import { StEntreesComponent } from './components/stentrees/stentrees.component';
 import { StEffectifsComponent } from './components/steffectifs/steffectifs.component';
@@ -13,10 +14,14 @@ import { KmDepartComponent } from './components/kmdepart/kmdepart.component';
 
 
 const routes: Routes = [
+  
+  {
+    path: 'home',
+    component: HomeComponent
+  },
   {
     path: 'sorties',
     component: StSortiesComponent,
-    canActivate: [AuthGuard]
   },
   {
     path: 'sortie',

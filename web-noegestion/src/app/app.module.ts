@@ -7,20 +7,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CdkAccordionModule } from '@angular/cdk/accordion';
 
-import { MatSliderModule } from '@angular/material/slider';
-
-import { MatMenuModule } from '@angular/material/menu';
-import { MatIconModule } from '@angular/material/icon';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatListModule } from '@angular/material/list';
-import {MatExpansionModule} from '@angular/material/expansion';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-import { HeaderComponent } from './components/header/header.component';
-import { FooterComponent } from './components/header/footer/footer.component';
+import { HomeComponent } from './components/general/home/home.component';
+import { HeaderComponent } from './components/general/header/header.component';
 import { StSortiesComponent } from './components/stsorties/stsorties.component';
 import { StEntreesComponent } from './components/stentrees/stentrees.component';
 import { StentreeComponent } from './components/stentrees/stentree/stentree.component';
@@ -31,17 +22,15 @@ import { StInventaireComponent } from './components/stinventaire/stinventaire.co
 import { KmDepartComponent } from './components/kmdepart/kmdepart.component';
 import { KmArriveeComponent } from './components/kmarrivee/kmarrivee.component';
 import {CustomDatePipe} from './models/custom.datepipe';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import {MatAutocompleteModule} from '@angular/material/autocomplete';
-import { LoginComponent } from './components/login/login.component';
-import { MessagesComponent } from './components/messages/messages.component';
+import { LoginComponent } from './components/general/login/login.component';
+import { MessagesComponent } from './components/general/messages/messages.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
+    HomeComponent,
     AppComponent,
     HeaderComponent,
-    FooterComponent,
     StSortiesComponent,
     StEntreesComponent,
     StentreeComponent,
@@ -58,21 +47,12 @@ import { MessagesComponent } from './components/messages/messages.component';
   imports: [
     HttpClientModule,
     BrowserAnimationsModule,
-    MatSliderModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatMenuModule,
-    MatSidenavModule,
-    MatListModule,
     CdkAccordionModule,
-    MatExpansionModule,
     BrowserModule,
     FormsModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatAutocompleteModule,
+    FontAwesomeModule,
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   providers: [],

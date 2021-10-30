@@ -1,5 +1,10 @@
 export const environment = {
-  appVersion: require('../../package.json').version + ' - prod-',
-  appName: require('../../package.json').name,
-  production: true
+  production: true,
+  application:
+  {
+    name: 'angular-starter',
+    angular: 'Angular 12.2.11',
+    bootstrap: 'Bootstrap 5.1.3',
+    fontawesome: 'Font Awesome 5.15.4',
+  }
 };

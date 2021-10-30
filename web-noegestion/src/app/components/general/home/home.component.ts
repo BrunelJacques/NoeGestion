@@ -3,12 +3,12 @@ import { Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 
 @Component({
-  selector: 'app-entrees',
-  templateUrl: './stentrees.component.html',
-  styleUrls: ['./stentrees.component.scss']
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.css']
 })
-export class StEntreesComponent implements OnInit {
-  
+export class HomeComponent implements OnInit {
+
   constructor(@Inject(PLATFORM_ID) private platformId: object) {}
 
   ngOnInit(): void {
@@ -25,4 +25,6 @@ export class StEntreesComponent implements OnInit {
       document.getElementsByTagName('head')[0].appendChild(s);
     }
   }
+
+  
 }
