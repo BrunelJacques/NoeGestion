@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { StSortiesComponent } from './stsorties.component';
 
 describe('SortiesComponent', () => {

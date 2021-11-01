@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { Mouvement } from 'src/app/models/stmouvement';
 import { StMvtService } from 'src/app/services/stmvt.service';
 import { MessageService } from 'src/app/services/general/message.service';
@@ -22,9 +24,11 @@ export class StSortiesComponent implements OnInit {
   mvts: Mouvement[] = [];
 
   constructor(private stMvtService: StMvtService,
-    private messageService: MessageService) { }
+    private messageService: MessageService,
+    @Inject(PLATFORM_ID) private platformId: object) { }
 
   ngOnInit(): void {
+    this.loadScript('assets/params/js/index.js');
     this.getMvts();
   }
 
@@ -33,6 +37,15 @@ export class StSortiesComponent implements OnInit {
     this.rayon = mvt.rayon;
     this.magasin = mvt.magasin;
     this.messageService.add(`HeroesComponent: Selected hero id=${mvt.id}`);
+  }
+  loadScript(name: string): void {
+
+    if (isPlatformBrowser(this.platformId)) {
+      const s = document.createElement('script');
+      s.type = 'text/javascript';
+      s.src = name;
+      document.getElementsByTagName('head')[0].appendChild(s);
+    }
   }
 
   getMvts(): void {
