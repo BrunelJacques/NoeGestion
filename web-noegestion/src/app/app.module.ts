@@ -12,6 +12,7 @@ import { AppComponent } from './app.component';
 
 import { HomeComponent } from './components/general/home/home.component';
 import { HeaderComponent } from './components/general/header/header.component';
+import { FooterComponent } from './components/general/footer/footer.component';
 import { StSortiesComponent } from './components/stsorties/stsorties.component';
 import { StEntreesComponent } from './components/stentrees/stentrees.component';
 import { StentreeComponent } from './components/stentrees/stentree/stentree.component';
@@ -21,7 +22,7 @@ import { StPrixJourneeComponent } from './components/stprixjournee/stprixjournee
 import { StInventaireComponent } from './components/stinventaire/stinventaire.component';
 import { KmDepartComponent } from './components/kmdepart/kmdepart.component';
 import { KmArriveeComponent } from './components/kmarrivee/kmarrivee.component';
-import {CustomDatePipe} from './models/custom.datepipe';
+import { CustomDatePipe } from './models/custom.datepipe';
 import { LoginComponent } from './components/general/login/login.component';
 import { MessagesComponent } from './components/general/messages/messages.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -31,6 +32,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     HomeComponent,
     AppComponent,
     HeaderComponent,
+    FooterComponent,
     StSortiesComponent,
     StEntreesComponent,
     StentreeComponent,
