@@ -1,0 +1,17 @@
+body {
+  padding-top: 3rem;
+  color: #0040d0;
+  font-weight: 400;
+}
+
+.navbar {
+  -webkit-box-shadow: 0 8px 6px -6px #999;
+  -moz-box-shadow: 0 8px 6px -6px #999;
+  box-shadow: 0 8px 6px -6px #999;
+  background-color: #003a96;
+}
+
+.footer {
+  background: #3F729B;
+  padding: 2em;
+}
