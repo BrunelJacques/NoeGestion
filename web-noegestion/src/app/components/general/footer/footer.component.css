@@ -1,0 +1,9 @@
+
+.footer-container {
+    margin: 0;
+    text-align: center;
+    font-size: 8pt;
+    font-style:italic;
+    color: rgb(50,50,120);
+    background-color: rgb(210, 230, 250); 
+  }
