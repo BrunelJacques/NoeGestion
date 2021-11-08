@@ -16,7 +16,7 @@ import { KmDepartComponent } from './components/kmdepart/kmdepart.component';
 const routes: Routes = [
   
   {
-    path: 'home',
+    path: '',
     component: HomeComponent
   },
   {

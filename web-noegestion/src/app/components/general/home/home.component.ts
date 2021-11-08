@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { environment } from 'src/environments/environment';
+import { MessageService } from 'src/app/services/general/message.service';
 
 @Component({
   selector: 'app-home',
@@ -10,7 +11,13 @@ import { environment } from 'src/environments/environment';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(@Inject(PLATFORM_ID) private platformId: object) {}
+  constructor(
+    @Inject(PLATFORM_ID)
+    private platformId: object,
+    messageService: MessageService
+  ) {
+    messageService.clear()
+  }
 
   ngOnInit(): void {
     this.loadScript('assets/params/js/index.js');
