@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-home',
@@ -25,6 +26,7 @@ export class HomeComponent implements OnInit {
       document.getElementsByTagName('head')[0].appendChild(s);
     }
   }
+  appName = environment.appName
 
   
 }

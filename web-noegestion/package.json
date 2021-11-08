@@ -1,6 +1,8 @@
 {
   "name": "web-noegestion",
-  "version": "0.1.1",
+  "common_name": "NoeGest by Matthania",
+  "version": "1.1.1",
+  "year_copyright": "2021",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --port 4200",

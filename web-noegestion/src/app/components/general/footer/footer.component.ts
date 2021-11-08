@@ -9,8 +9,9 @@ import { environment } from 'src/environments/environment';
 export class FooterComponent implements OnInit {
 
   constructor() { }
-  title = environment.appName
-  appVersion = environment.appVersion;
+  appName = environment.appName
+  appVersion = environment.appVersion
+  appYear = environment.appYear
   ngOnInit() {
   }
 

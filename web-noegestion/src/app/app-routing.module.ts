@@ -20,6 +20,13 @@ const routes: Routes = [
     component: HomeComponent
   },
   {
+    path: 'stocks',
+    component: StSortiesComponent
+  },
+  {
+    path: 'km',
+    component: KmDepartComponent
+  },  {
     path: 'sorties',
     component: StSortiesComponent,
   },

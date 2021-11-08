@@ -1,10 +1,13 @@
-<app-header></app-header>
 
-<main>
-    <div class="container-fluid">
+<header class="fixed-top">
+    <app-header></app-header>
+</header>
+
+<main class="container-fluid">
         <router-outlet></router-outlet>
         <app-messages></app-messages>
-    </div>
 </main>
 
-<app-footer></app-footer>
+<footer class="row fixed-bottom">
+        <app-footer></app-footer>
+</footer>
