@@ -1,92 +1,49 @@
-*   {
-    margin: 0 0 0px;
-    }
-    .jour, .input {
-        color: #0a247a;
-        background-color: rgb(255, 254, 168);
-        font-size-adjust: var() ;
-        border-width: 1px;
-        border-color: #0a247a
-    }
-    .jour {
-        width: 120px;
-    }
-    .input {
-        width: 120px;
-        font-size: 1rem;
-    }
-    
-    .left {
-        margin-left: 5px;
-        margin-bottom: 0px;
-    }
-/* StSortiesComponent's private CSS styles */
-.sortie {
-    display: inline-block;
+* {
+  margin: 0 0 0px;
+  }
+.jour, .input {
     color: #0a247a;
-    background-color: #DDE;
-    margin: 4px;
-    padding: 5px 5px;
-
+    background-color: rgb(255, 254, 168);
+    font-size-adjust: var() ;
+    border-width: 1px;
+    border-color: #0a247a
+}
+.jour {
+    width: 120px;
+}
+.input {
+    width: 120px;
+    font-size: 1rem;
 }
 
-.sorties {
-    margin: 0 0 1em 0;
-    list-style-type: none;
-    padding: 0;
-    width: 25em;
-  }
-  .sorties li {
-    cursor: pointer;
-    position: relative;
-    left: 0;
-    background-color: #EEE;
-    margin: 4px;
-    padding: 0 0;
-    height: 1.9em;
-    border-radius: 4px;
-  }
-  .sorties li:hover {
-    color: #2c3a41;
-    background-color: #e6e6e6;
-    left: .1em;
-  }
-  .sorties li.selected {
-    background-color: #0BD;
-    color: white;
-  }
-  .sorties li.selected:hover {
-    background-color: #0AE;
-    color: white;
-  }
-  .sorties li.selected:active {
-    background-color: #122fb1;
-    color: white;
-  }
-  .item {
-    color: #0a247a;
-    height: 1.7em;
-    position: relative;
-    top: -1px;
-    margin-right: .3em;
-    border-radius: 0px 0 0 0px;
-    padding: 5px 5px 0px 5px;
-    width: 80px;
-  }
- 
-  .badge {
-    display: inline-block;
-    color: white;
-    background-color:#5079a7;
-    height: 1.7em;
-    position: relative;
-    top: 0px;
-    margin-right: .3em;
-    border-radius: 6px 0 0 6px;
-    padding: 5px 5px 0px 5px;
-    width: 170px;
+.left {
+    margin-left: 5px;
+    margin-bottom: 0px;
 }
-      
+
+.item {
+  color: #0a247a;
+  height: 1.2em;
+  font-size: 0.85rem;
+  position: relative;
+  top: -1px;
+  margin-right: .3rem;
+  text-align: right;
+  border-radius: 0px 0 0 0px;
+  padding: 5px;
+  width: 80px;
+}
+
+.itemid {
+  color: #0a247a;
+  /*background-color:#e0e7f0;*/
+  font-size: 0.85rem;
+  text-align: left;
+  border-radius: 0px 0 0 0px;
+  padding: 5px;
+  width: 170px;
+}
+
 
   
 
