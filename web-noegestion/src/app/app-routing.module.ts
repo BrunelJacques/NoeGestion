@@ -11,6 +11,7 @@ import { StInventaireComponent } from './components/stinventaire/stinventaire.co
 import { StPrixJourneeComponent } from './components/stprixjournee/stprixjournee.component';
 import { KmArriveeComponent } from './components/kmarrivee/kmarrivee.component';
 import { KmDepartComponent } from './components/kmdepart/kmdepart.component';
+import { StFiltresComponent } from './components/stfiltres/stfiltres.component';
 
 
 const routes: Routes = [
@@ -70,6 +71,13 @@ const routes: Routes = [
     component: KmArriveeComponent,
     canActivate: [AuthGuard]
   },
+
+  {
+    path: 'filtres',
+    component: StFiltresComponent,
+    canActivate: [AuthGuard]
+  },
+  
 ];
 
 @NgModule({

@@ -1,0 +1,47 @@
+<div class="modal-open container-fluid" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Paramètres de liste</h5>
+      </div>
+      <div class="modal-body">
+        <div class="form-row">
+          <label class="label" for="jour">Date:
+            <input class="data" id="jour" 
+              [(ngModel)]="filtres.jour"
+              type="date" name="jour" placeholder="filtres.jour"
+            >
+          </label>
+          <div class="label">
+            <label for="origine">
+              Vers: 
+              <input class="data"  id="origine" 
+                [(ngModel)] = "filtres.origine"  
+                type="string" name="origine" placeholder="filtres.origine"
+              >
+            </label>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="domestic">
+              Domestic</label>
+            <input type="text" class="form-control" id="domestic" value="$858,373,000">
+          </div>
+          <div class="form-group col-md-4">
+            <label>International</label>
+            <input type="text" class="form-control" placeholder="" value="$1,939,427,564">
+          </div>
+          <div class="form-group col-md-4">
+            <label for="worldwide">Worldwide</label>
+            <input type="text" class="form-control" id="worldwide" placeholder="" value="$2,797,800,564">
+          </div>
+        </div>
+
+        <label class="modal-footer" for="back">{{filtres.location}} 
+          <button class="back btn btn-primary" (click)="goBack()">
+            Retour
+          </button>
+        </label> 
+      </div>
+    </div>
+  </div>
+</div>

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Mouvement } from 'src/app/models/stmouvement';
 import { StMvtService } from 'src/app/services/stmvt.service';
 import { MessageService } from 'src/app/services/general/message.service';
+import { FILTRES } from 'src/app/models/filtres';
 
 @Component({
   selector: 'app-sorties',
@@ -27,6 +28,7 @@ export class StSortiesComponent implements OnInit {
   ngOnInit(): void {
     this.loadScript('assets/params/js/index.js');
     this.getMvts();
+    FILTRES.location= "sorties"
   }
 
   onSelect(mvt: Mouvement): void {
@@ -36,6 +38,7 @@ export class StSortiesComponent implements OnInit {
     this.messageService.add(`HeroesComponent: Selected hero id=${mvt.id}`);
   }
   loadScript(name: string): void {
+
     const s = document.createElement('script');
     s.type = 'text/javascript';
     s.src = name;

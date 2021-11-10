@@ -26,6 +26,7 @@ import { CustomDatePipe } from './models/custom.datepipe';
 import { LoginComponent } from './components/general/login/login.component';
 import { MessagesComponent } from './components/general/messages/messages.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { StFiltresComponent } from './components/stfiltres/stfiltres.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     CustomDatePipe,
     LoginComponent,
     MessagesComponent,
+    StFiltresComponent,
   ],
   imports: [
     HttpClientModule,

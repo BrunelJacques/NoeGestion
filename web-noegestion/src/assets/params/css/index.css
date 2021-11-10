@@ -15,16 +15,16 @@ header {
   background-color: #3F729B;
 }
 main {
-  margin-top: 1.3rem;
+  margin-top: 0.8rem;
 }
 
 .nav-link {
   background-color: gray;
-  margin-right: 10%;
   margin-left: -2%;
+  height: 28px;
   border-bottom: 1px solid #999;
   opacity: 1;
-  padding: 0.1rem 0.25rem !important;
+  padding: 0.25rem 1rem !important;
   font-size: 14px;
 }
 
@@ -34,6 +34,10 @@ main {
   -moz-box-shadow: 0 9px 6px -6px #999;
   box-shadow: 0 9px 6px -6px #999;
   padding: 0.3rem !important;
+}
+
+.navbar-nav {
+  margin-top: 3%;
 }
 
 .navbar-expand-md {
