@@ -7,8 +7,9 @@ describe('SortiesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ StSortiesComponent ]
-    })
+    declarations: [StSortiesComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   });
 

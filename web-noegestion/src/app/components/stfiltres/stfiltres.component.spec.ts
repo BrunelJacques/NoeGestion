@@ -8,8 +8,9 @@ describe('StfiltresComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ StfiltresComponent ]
-    })
+    declarations: [StfiltresComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   });
 

@@ -8,8 +8,9 @@ describe('StinventaireComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ StInventaireComponent ]
-    })
+    declarations: [StInventaireComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   });
 

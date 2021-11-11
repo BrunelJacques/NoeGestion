@@ -9,7 +9,9 @@ import { MessageService } from 'src/app/services/general/message.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
+
 export class HomeComponent implements OnInit {
+
 
   constructor(
     @Inject(PLATFORM_ID)
@@ -17,7 +19,9 @@ export class HomeComponent implements OnInit {
     messageService: MessageService
   ) {
     messageService.clear()
-  }
+  } 
+  
+  
 
   ngOnInit(): void {
     this.loadScript('assets/params/js/index.js');
@@ -35,5 +39,5 @@ export class HomeComponent implements OnInit {
   }
   appName = environment.appName
 
-  
+
 }

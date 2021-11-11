@@ -8,8 +8,9 @@ describe('KmarriveeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ KmArriveeComponent ]
-    })
+    declarations: [KmArriveeComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   });
 

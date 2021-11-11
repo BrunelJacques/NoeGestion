@@ -8,8 +8,9 @@ describe('StentreeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ StentreeComponent ]
-    })
+    declarations: [StentreeComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   });
 

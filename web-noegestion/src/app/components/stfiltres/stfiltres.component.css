@@ -5,15 +5,14 @@
 }
 
 .label {
-  width: 90%;
+  width: 20%;
   padding: 0rem 0.55rem;
-  align-items: center;
+  text-align: right;
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
-  background-color: lightgrey;
   background-clip: padding-box;
-  border: 1px solid #ced4da;
+  border: 0px solid;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -29,9 +28,9 @@
   font-weight: 400;
   line-height: 1.5;
   color: #0a247a;
-  background-color: #fff;
+  background-color: lightyellow;
   background-clip: padding-box;
-  border: 0px solid #ced4da;
+  border: 1px solid #ced4da;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;

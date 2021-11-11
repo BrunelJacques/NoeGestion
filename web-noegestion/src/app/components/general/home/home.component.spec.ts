@@ -8,11 +8,12 @@ describe('HomeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
+    imports: [
         RouterTestingModule
-      ],
-      declarations: [ HomeComponent ]
-    })
+    ],
+    declarations: [HomeComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   });
 

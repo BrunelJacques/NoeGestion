@@ -8,8 +8,9 @@ describe('StsortieComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ StsortieComponent ]
-    })
+    declarations: [StsortieComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   });
 

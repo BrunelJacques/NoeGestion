@@ -8,8 +8,9 @@ describe('StprixjourneeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ StPrixJourneeComponent ]
-    })
+    declarations: [StPrixJourneeComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   });
 
