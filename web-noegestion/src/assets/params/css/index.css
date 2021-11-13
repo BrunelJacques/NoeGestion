@@ -20,12 +20,8 @@ main {
 
 .nav-link {
   background-color: gray;
-  margin-left: -2%;
-  height: 28px;
+  margin-left: 0.1rem;
   border-bottom: 1px solid #999;
-  opacity: 1;
-  padding: 0.25rem 1rem !important;
-  font-size: 14px;
 }
 
 .navbar {
@@ -37,7 +33,7 @@ main {
 }
 
 .navbar-nav {
-  margin-top: 3%;
+  margin-top: 4px; /* attention à l'incidence collapse grand écran*/
 }
 
 .navbar-expand-md {

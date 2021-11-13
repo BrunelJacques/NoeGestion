@@ -26,9 +26,9 @@ import { CustomDatePipe } from './models/custom.datepipe';
 import { LoginComponent } from './components/general/login/login.component';
 import { MessagesComponent } from './components/general/messages/messages.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { StFiltresComponent } from './components/stfiltres/stfiltres.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { StParamsComponent } from './components/stparams/stparams.component';
 
 @NgModule({
   declarations: [
@@ -43,12 +43,12 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
     StEffectifsComponent,
     StPrixJourneeComponent,
     StInventaireComponent,
+    StParamsComponent,
     KmDepartComponent,
     KmArriveeComponent,
     CustomDatePipe,
     LoginComponent,
     MessagesComponent,
-    StFiltresComponent,
   ],
   imports: [
     HttpClientModule,

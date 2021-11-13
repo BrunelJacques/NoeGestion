@@ -11,7 +11,7 @@ import { StInventaireComponent } from './components/stinventaire/stinventaire.co
 import { StPrixJourneeComponent } from './components/stprixjournee/stprixjournee.component';
 import { KmArriveeComponent } from './components/kmarrivee/kmarrivee.component';
 import { KmDepartComponent } from './components/kmdepart/kmdepart.component';
-import { StFiltresComponent } from './components/stfiltres/stfiltres.component';
+import { StParamsComponent } from './components/stparams/stparams.component';
 
 
 const routes: Routes = [
@@ -73,8 +73,8 @@ const routes: Routes = [
   },
 
   {
-    path: 'filtres',
-    component: StFiltresComponent,
+    path: 'params',
+    component: StParamsComponent,
     canActivate: [AuthGuard]
   },
   

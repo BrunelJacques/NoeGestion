@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Mouvement } from 'src/app/models/stmouvement';
 import { StMvtService } from 'src/app/services/stmvt.service';
 import { MessageService } from 'src/app/services/general/message.service';
-import { FILTRES } from 'src/app/models/filtres';
+import { PARAMS } from 'src/app/models/params';
 
 @Component({
   selector: 'app-sorties',
@@ -28,7 +28,7 @@ export class StSortiesComponent implements OnInit {
   ngOnInit(): void {
     this.loadScript('assets/params/js/index.js');
     this.getMvts();
-    FILTRES.location= "sorties"
+    PARAMS.location= "sorties"
   }
 
   onSelect(mvt: Mouvement): void {
