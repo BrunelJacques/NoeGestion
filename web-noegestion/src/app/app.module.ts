@@ -27,7 +27,6 @@ import { LoginComponent } from './components/general/login/login.component';
 import { MessagesComponent } from './components/general/messages/messages.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { StFiltresComponent } from './components/stfiltres/stfiltres.component';
-import { ModalComponent } from './components/modal/modal.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -50,7 +49,6 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
     LoginComponent,
     MessagesComponent,
     StFiltresComponent,
-    ModalComponent,
   ],
   imports: [
     HttpClientModule,

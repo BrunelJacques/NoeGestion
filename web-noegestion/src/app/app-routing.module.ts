@@ -12,16 +12,10 @@ import { StPrixJourneeComponent } from './components/stprixjournee/stprixjournee
 import { KmArriveeComponent } from './components/kmarrivee/kmarrivee.component';
 import { KmDepartComponent } from './components/kmdepart/kmdepart.component';
 import { StFiltresComponent } from './components/stfiltres/stfiltres.component';
-import { ModalComponent } from './components/modal/modal.component';
 
 
 const routes: Routes = [
 
-  {
-    path: 'modal',
-    component: ModalComponent,
-  },
-  
   {
     path: '',
     component: HomeComponent
