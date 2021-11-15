@@ -1,8 +1,21 @@
-<div *ngIf="messageService.messages.length" class="fixed-bottom">
-
-    <h2>Messages</h2>
-    <button class="Clear"
-            (click)="messageService.clear()">Clear messages</button>
-    <div *ngFor='let message of messageService.messages'> {{message}} </div>
-  
+<!--div *ngIf="messageService.messages.length" class="fixed-bottom"-->
+<div class="modal-header">
+  <h4 class="modal-title">Messages:</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+  <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="card mvt-border">
+    <div class="card-body" *ngFor='let message of messageService.messages'>
+      <p class="card-text"> 
+        {{message}}
+      </p>
+    </div>
   </div>
+</div>
+<div class="modal-footer">
+  <button type="button"class="Clear" (click)="messageService.clear()">Clear messages</button>
+  <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+</div>
+<!--/div exemple de section conditionnelle-->

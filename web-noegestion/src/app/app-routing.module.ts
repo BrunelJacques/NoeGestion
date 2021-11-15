@@ -12,6 +12,7 @@ import { StPrixJourneeComponent } from './components/stprixjournee/stprixjournee
 import { KmArriveeComponent } from './components/kmarrivee/kmarrivee.component';
 import { KmDepartComponent } from './components/kmdepart/kmdepart.component';
 import { StParamsComponent } from './components/stparams/stparams.component';
+import { MessagesComponent } from './components/general/messages/messages.component';
 
 
 const routes: Routes = [
@@ -77,7 +78,10 @@ const routes: Routes = [
     component: StParamsComponent,
     canActivate: [AuthGuard]
   },
-  
+  {
+    path: 'messages',
+    component: MessagesComponent
+  },  
 ];
 
 @NgModule({

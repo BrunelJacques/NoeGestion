@@ -31,12 +31,12 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let mvt of mvts"
+    <tr *ngFor="let mvt of mvts;"
       [class.selected]="mvt === selectedMvt"
       (click)="onSelect(mvt)"
     >
       <td class= "col item">
-        <a class="fas fa-pencil-alt" routerLink="/"></a>
+      <button type="button" c class="btn btn-info" (click)="openMvt(mvt)">Details</button>
       </td>
       <td class="col itemid">  {{mvt.article}}</td>
       <td class= "col item"> {{mvt.qteMouvement}} </td>

@@ -3,6 +3,8 @@ import { Mouvement } from 'src/app/models/stmouvement';
 import { StMvtService } from 'src/app/services/stmvt.service';
 import { MessageService } from 'src/app/services/general/message.service';
 import { PARAMS } from 'src/app/models/params';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { StsortieComponent } from './stsortie/stsortie.component';
 
 @Component({
   selector: 'app-sorties',
@@ -23,7 +25,9 @@ export class StSortiesComponent implements OnInit {
   mvts: Mouvement[] = [];
 
   constructor(private stMvtService: StMvtService,
-    private messageService: MessageService) { }
+    private messageService: MessageService,
+    private modalService: NgbModal
+    ) { }
 
   ngOnInit(): void {
     this.loadScript('assets/params/js/index.js');
@@ -35,7 +39,7 @@ export class StSortiesComponent implements OnInit {
     this.selectedMvt = mvt;
     this.rayon = mvt.rayon;
     this.magasin = mvt.magasin;
-    this.messageService.add(`HeroesComponent: Selected hero id=${mvt.id}`);
+    this.messageService.add(`Mouvements: Selected mvt id=${mvt.article}`);
   }
   loadScript(name: string): void {
 
@@ -43,6 +47,11 @@ export class StSortiesComponent implements OnInit {
     s.type = 'text/javascript';
     s.src = name;
     document.getElementsByTagName('head')[0].appendChild(s);
+  }
+
+  openMvt(mvt: Mouvement ) {
+    const modalRef = this.modalService.open(StsortieComponent);
+    modalRef.componentInstance.mvt = mvt;
   }
 
   getMvts(): void {

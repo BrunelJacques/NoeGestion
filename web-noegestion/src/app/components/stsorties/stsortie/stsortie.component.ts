@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { Mouvement } from 'src/app/models/stmouvement';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-stsortie',
@@ -6,7 +8,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./stsortie.component.scss'],
 })
 export class StsortieComponent implements OnInit {
-
-  constructor() {} 
+  @Input()
+  mvt!: Mouvement;
+  constructor(public activeModal: NgbActiveModal) {}
   ngOnInit(): void {}
 }

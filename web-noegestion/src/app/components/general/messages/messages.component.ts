@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MessageService } from 'src/app/services/general/message.service';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-messages',
@@ -8,7 +9,10 @@ import { MessageService } from 'src/app/services/general/message.service';
 })
 export class MessagesComponent implements OnInit {
 
-  constructor(public messageService: MessageService) { }
+  constructor(
+    public messageService: MessageService,
+    public activeModal: NgbActiveModal    
+  ) { }
 
   ngOnInit(): void {
   }
