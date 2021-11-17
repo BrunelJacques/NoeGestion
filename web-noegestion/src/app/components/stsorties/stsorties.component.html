@@ -7,7 +7,7 @@
   </span>
 </h6>
 
-<div class="sortie" *ngIf="selectedMvt">
+<!--div class="sortie" *ngIf="selectedMvt">
     <h4 class="left" >Sortie sélectionnée:</h4>
     <div>
         <label>article /  </label>
@@ -17,7 +17,7 @@
     <input class="input" id="qte" [(ngModel)]="selectedMvt.qteMouvement" placeholder="qteMouvement">
     <span> {{magasin}} {{rayon}}</span>
 
-</div>
+</div-->
 
 <table class="table table-hover table-striped table-responsive-md" >
   <thead class="bg-secondary">
@@ -33,11 +33,8 @@
   <tbody>
     <tr *ngFor="let mvt of mvts;"
       [class.selected]="mvt === selectedMvt"
-      (click)="onSelect(mvt)"
+      (click)="openMvt(mvt)"
     >
-      <td class= "col item">
-      <button type="button" c class="btn btn-info" (click)="openMvt(mvt)">Details</button>
-      </td>
       <td class="col itemid">  {{mvt.article}}</td>
       <td class= "col item"> {{mvt.qteMouvement}} </td>
       <td class= "col item"> {{mvt.uniteStock}} </td>

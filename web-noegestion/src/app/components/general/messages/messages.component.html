@@ -3,11 +3,11 @@
 <div class="modal-header">
   <h5 class="modal-title">Messages système:</h5>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-primary" (click)="activeModal.close('Close click')">Fermer</button>
-    <button type="button"class="btn fas fa-trash-alt btn-outline-primary" (click)="messageService.clear()">&nbsp;Supprimer</button>
+    <button type="button" class="btn btn-info" (click)="activeModal.close('Close click')">Fermer</button>
+    <button type="button"class="btn btn-info fas fa-trash-alt " (click)="messageService.clear()">&nbsp;Supprimer</button>
   </div>
 </div>
-<div class="modal-body">
+<div class="modal-body">        
   <div class="card mvt-border">
     <div class="card-body" *ngFor='let message of messageService.messages'>
       <p class="card-text"> 

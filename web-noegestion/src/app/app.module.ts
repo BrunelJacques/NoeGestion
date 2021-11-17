@@ -25,10 +25,11 @@ import { KmArriveeComponent } from './components/kmarrivee/kmarrivee.component';
 import { CustomDatePipe } from './models/custom.datepipe';
 import { LoginComponent } from './components/general/login/login.component';
 import { MessagesComponent } from './components/general/messages/messages.component';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { StParamsComponent } from './components/stparams/stparams.component';
+import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faReply, faBell, faCheck } from '@fortawesome/free-solid-svg-icons';
 
 @NgModule({
   declarations: [
@@ -58,11 +59,17 @@ import { StParamsComponent } from './components/stparams/stparams.component';
     FormsModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    FontAwesomeModule,
     NgbModule,
+    FontAwesomeModule,
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   providers: [NgbActiveModal,],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+
+export class AppModule {
+  constructor(library: FaIconLibrary) {
+    // library.addIconPacks(fas);
+    library.addIcons(faReply, faBell, faCheck);
+  }
+}

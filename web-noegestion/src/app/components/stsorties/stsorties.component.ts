@@ -24,7 +24,8 @@ export class StSortiesComponent implements OnInit {
   magasin = ''
   mvts: Mouvement[] = [];
 
-  constructor(private stMvtService: StMvtService,
+  constructor(
+    private stMvtService: StMvtService,
     private messageService: MessageService,
     private modalService: NgbModal
     ) { }
@@ -35,14 +36,7 @@ export class StSortiesComponent implements OnInit {
     PARAMS.location= "sorties"
   }
 
-  onSelect(mvt: Mouvement): void {
-    this.selectedMvt = mvt;
-    this.rayon = mvt.rayon;
-    this.magasin = mvt.magasin;
-    this.messageService.add(`Mouvements: Selected mvt id=${mvt.article}`);
-  }
   loadScript(name: string): void {
-
     const s = document.createElement('script');
     s.type = 'text/javascript';
     s.src = name;
@@ -50,6 +44,10 @@ export class StSortiesComponent implements OnInit {
   }
 
   openMvt(mvt: Mouvement ) {
+    this.selectedMvt = mvt;
+    this.rayon = mvt.rayon;
+    this.magasin = mvt.magasin;
+    this.messageService.add(`Mouvements: Selected mvt id=${mvt.article}`);
     const modalRef = this.modalService.open(StsortieComponent);
     modalRef.componentInstance.mvt = mvt;
   }
@@ -61,6 +59,5 @@ export class StSortiesComponent implements OnInit {
   }
 
 }
-
 
 

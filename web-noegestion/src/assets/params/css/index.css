@@ -46,7 +46,7 @@ main {
 
 .container-fluid {
   margin-top: 0.3rem;
-}
+} 
 
 .card-header {
   padding: 0.5rem 1rem;
@@ -66,5 +66,24 @@ main {
 }
 
 .btn {
-  background: rgb(210, 230, 250); 
+  color: #02b;
+  background: #e6f0fa;                 
+}
+
+.btn-info {
+  border-color: rgb(0,32,176,0.3)
+}
+
+.btn-info:focus {
+  color: #fff;
+  background:  #346cb0  ; 
+  border-color: rgb(50,50,120);
+  box-shadow: 0 0 0 0.25rem #e6f0fa;
+}
+
+.table {
+  --bs-table-accent-bg: transparent;
+  --bs-table-striped-color: #02b;
+  --bs-table-hover-color: black;
+  --bs-table-hover-bg: #e6f0fa;
 }
