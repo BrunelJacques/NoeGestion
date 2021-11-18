@@ -38,7 +38,7 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'zzlogin',
+    path: 'login',
     component: LoginComponent,
     canActivate: [AuthGuard]
   },

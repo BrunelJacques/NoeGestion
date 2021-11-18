@@ -10,6 +10,7 @@ import { CdkAccordionModule } from '@angular/cdk/accordion';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
+
 import { HomeComponent } from './components/general/home/home.component';
 import { HeaderComponent } from './components/general/header/header.component';
 import { FooterComponent } from './components/general/footer/footer.component';
@@ -30,6 +31,8 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { StParamsComponent } from './components/stparams/stparams.component';
 import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faReply, faBell, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { UserService } from './services/user.service';
+
 
 @NgModule({
   declarations: [
@@ -63,7 +66,9 @@ import { faReply, faBell, faCheck } from '@fortawesome/free-solid-svg-icons';
     FontAwesomeModule,
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
-  providers: [NgbActiveModal,],
+  providers: [
+    NgbActiveModal,
+    UserService],
   bootstrap: [AppComponent]
 })
 

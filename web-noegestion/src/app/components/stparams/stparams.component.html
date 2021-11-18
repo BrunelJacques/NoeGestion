@@ -11,27 +11,27 @@
       </div>
       <div class="modal-body">
         <div class="form-row">
-          <label class="label" for="jour">Date:</label>
-          <input class="data" 
+          <label class="" for="jour">Date:</label>
+          <input id="start"
             type="date" 
-            value="2021-11-15"
-            [(ngModel)]="params.jour"
-            name="jour" id="jour" placeholder="params.jour"
-          />
-          
+            min="2021-01-01" max="2099-12-31"
+            [ngModel]="params.jour | date:'yyyy-MM-dd'" 
+            (ngModelChange)="params.jour = $event"
+            [value]="params.jour | date:'yyyy-MM-dd'" 
+            #jour="ngModel" required>          
           <div>
-            <label class="label" for="origine">
+            <label  for="origine">
               Vers: 
             </label>
             <input class="data"  id="origine" 
               [(ngModel)] = "params.origine"  
-              type="string" name="origine" placeholder="params.origine"
+              type="string" name="origine" placeholder="repas"
             >
           </div>
           <div class="form-group col-md-4">
             <label for="domestic">
-              Domestic</label>
-            <input type="text" class="form-control" id="domestic" value="$858,373,000">
+              Dom</label>
+            <input type="text" class="form-control" id="domestic" value="0.0">
           </div>
           <div class="form-group col-md-4">
             <label>International</label>
@@ -43,11 +43,11 @@
           </div>
         </div>
 
-        <label class="modal-footer" for="back">{{params.location}} 
+        <div class="modal-footer" for="back">{{params.location}} 
           <button class="back btn btn-primary" (click)="goBack()">
             Retour
           </button>
-        </label> 
+        </div> 
       </div>
     </div>
   </div>

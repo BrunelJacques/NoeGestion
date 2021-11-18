@@ -15,13 +15,8 @@ import { StsortieComponent } from './stsortie/stsortie.component';
 })
 
 export class StSortiesComponent implements OnInit {
-  jour = new Date('2021-05-02');
-  //date1 =  new FormControl(new Date());
-  origine: String = "Repas en cuisine";
-
+  params = PARAMS
   selectedMvt?: Mouvement;
-  rayon = ''
-  magasin = ''
   mvts: Mouvement[] = [];
 
   constructor(
@@ -44,9 +39,6 @@ export class StSortiesComponent implements OnInit {
   }
 
   openMvt(mvt: Mouvement ) {
-    this.selectedMvt = mvt;
-    this.rayon = mvt.rayon;
-    this.magasin = mvt.magasin;
     this.messageService.add(`Mouvements: Selected mvt id=${mvt.article}`);
     const modalRef = this.modalService.open(StsortieComponent);
     modalRef.componentInstance.mvt = mvt;

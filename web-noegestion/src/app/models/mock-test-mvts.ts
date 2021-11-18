@@ -3,12 +3,12 @@ import { Mouvement } from "./stmouvement";
 export const MOUVEMENTS: Mouvement[] = [
     {
         id: 7879,
-        jour: "2021-08-02",
+        jour: "2021-08-05",
         origine: "repas",
         article_id: 17,
         article: "BANANES KG",
         nbUnitesVente: "1.0000",
-        qteMouvement: -6.2,
+        qteMouvement: -6.253,
         prixUnit: "1.8884",
         repas: "Midi",
         nbRations: "1.0000",

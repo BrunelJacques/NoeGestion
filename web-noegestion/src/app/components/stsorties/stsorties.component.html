@@ -1,8 +1,8 @@
 <h4 class= "left">Sorties de stock</h4>
 <h6 class="left">
   <span ng-controller="CtrlParams">
-    Le: {{jour| date:'dd/MM/yyyy'}} 
-    &nbsp;Vers: {{origine}}
+    Le: {{params.jour| date:'dd/MM/yyyy'}} 
+    &nbsp;Vers: {{params.origine}}&nbsp;
     <a class="fas fa-pencil-alt" routerLink="/params"></a>
   </span>
 </h6>
@@ -36,7 +36,7 @@
       (click)="openMvt(mvt)"
     >
       <td class="col itemid">  {{mvt.article}}</td>
-      <td class= "col item"> {{mvt.qteMouvement}} </td>
+      <td class= "col item"> {{mvt.qteMouvement | number : '1.0-5'}} </td>
       <td class= "col item"> {{mvt.uniteStock}} </td>
       <td class= "col item"> tarta0 </td>
       <td class= "col item"> {{mvt.uniteStock}} </td>

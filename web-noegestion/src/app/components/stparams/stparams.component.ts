@@ -12,7 +12,6 @@ export class StParamsComponent implements OnInit {
   params= PARAMS;
   closeResult = '';
 
-
   constructor(
     private location: Location,
   ) {

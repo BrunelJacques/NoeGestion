@@ -1,16 +1,8 @@
-.container{
-    position: fixed;
-    top: 10%;
-    left: 5%; 
-    -webkit-transform: translate(1%, -1%);
-    transform: translate(15%, 50%); 
-    width: 400px;
-}
-
-.Username{
-    width: 100px;
-
-}
-::ng-deep .mat-input-wrapper{
-   width:100px !important;
- }
+p {
+    font-family: Lato;
+  }
+  
+  input, textarea {
+    display: block;
+    margin-bottom: 12px;
+  }
