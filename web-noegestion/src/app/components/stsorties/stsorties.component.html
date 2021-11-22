@@ -1,7 +1,7 @@
 <h4 class= "left">Sorties de stock</h4>
 <h6 class="left">
   <span ng-controller="CtrlParams">
-    Le: {{params.jour| date:'dd/MM/yyyy'}} 
+    Le: {{params.jour| date:'dd/MM/yyyy'}}
     &nbsp;Vers: {{params.origine}}&nbsp;
     <a class="fas fa-pencil-alt" routerLink="/params"></a>
   </span>
@@ -31,15 +31,22 @@
     </tr>
   </thead>
   <tbody>
+    <!--appel modal via ts:  
     <tr *ngFor="let mvt of mvts;"
-      [class.selected]="mvt === selectedMvt"
-      (click)="openMvt(mvt)"
-    >
-      <td class="col itemid">  {{mvt.article}}</td>
-      <td class= "col item"> {{mvt.qteMouvement | number : '1.0-5'}} </td>
-      <td class= "col item"> {{mvt.uniteStock}} </td>
-      <td class= "col item"> tarta0 </td>
-      <td class= "col item"> {{mvt.uniteStock}} </td>
+    [class.selected]="mvt === selectedMvt"
+    (click)="openSortie(mvt)"
+    > -->
+    <tr *ngFor="let mvt of mvts;">
+      <a routerLink="/sortie">
+        <td class= "col item">
+        <button type="button" c class="btn btn-info" (click)="openMvt(mvt)">Details</button>
+        </td>
+        <td class="col itemid">  {{mvt.article}}</td>
+        <td class= "col item"> {{mvt.qteMouvement | number : '1.0-5'}} </td>
+        <td class= "col item"> {{mvt.uniteStock}} </td>
+        <td class= "col item"> tarta0 </td>
+        <td class= "col item"> {{mvt.uniteStock}} </td>
+      </a>
     </tr>
   </tbody>
 </table>

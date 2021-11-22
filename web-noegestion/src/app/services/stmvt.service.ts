@@ -12,9 +12,17 @@ export class StMvtService {
 
   constructor(private messageService: MessageService) { }
 
-  getMvts(): Observable<Mouvement[]> {
+  getSorties(): Observable<Mouvement[]> {
     const mvts = of(MOUVEMENTS);
     this.messageService.add('StMvtService: cherche mvts');
     return mvts
   }
+
+  getSortiesNoObs():Mouvement[]{
+    const mvts = MOUVEMENTS;
+    this.messageService.add('StMvtService: cherche mvts');
+    return mvts
+  }
+
 }
+

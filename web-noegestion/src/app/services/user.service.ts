@@ -20,8 +20,7 @@ const fakeData = {
 @Injectable()
 
 export class UserService {
-  constructor() {
-   }
+  constructor() {}
 
   loadData() {
     return fakeData;

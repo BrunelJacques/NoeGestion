@@ -32,6 +32,7 @@ import { StParamsComponent } from './components/stparams/stparams.component';
 import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faReply, faBell, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { UserService } from './services/user.service';
+import { SortieComponent } from './components/stsorties/sortie/sortie.component';
 
 
 @NgModule({
@@ -53,6 +54,7 @@ import { UserService } from './services/user.service';
     CustomDatePipe,
     LoginComponent,
     MessagesComponent,
+    SortieComponent,
   ],
   imports: [
     HttpClientModule,

@@ -5,6 +5,7 @@ import { MessageService } from 'src/app/services/general/message.service';
 import { PARAMS } from 'src/app/models/params';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { StsortieComponent } from './stsortie/stsortie.component';
+import { SortieComponent } from './sortie/sortie.component';
 
 @Component({
   selector: 'app-sorties',
@@ -27,7 +28,7 @@ export class StSortiesComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadScript('assets/params/js/index.js');
-    this.getMvts();
+    this.getSorties();
     PARAMS.location= "sorties"
   }
 
@@ -43,10 +44,15 @@ export class StSortiesComponent implements OnInit {
     const modalRef = this.modalService.open(StsortieComponent);
     modalRef.componentInstance.mvt = mvt;
   }
+  openSortie(mvt: Mouvement ) {
+    this.messageService.add(`Mouvements: Selected mvt id=${mvt.article}`);
+    const modalRef = this.modalService.open(StsortieComponent);
+    modalRef.componentInstance.mvt = mvt;
+  }
 
-  getMvts(): void {
-    //this.mvts = this.stMvtService.getMvts(); sans observable
-    this.stMvtService.getMvts()
+  getSorties(): void {
+    //this.mvts = this.stMvtService.getSorties(); sans observable
+    this.stMvtService.getSorties()
     .subscribe(mvts => this.mvts = mvts)
   }
 
