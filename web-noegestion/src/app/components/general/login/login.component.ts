@@ -38,6 +38,7 @@ export class LoginComponent {
   }
 
   submit() {
+    console.log("coucou clic")
     if (this.form.valid) {
       this.origine.firstName = this.form.value.firstName;
       console.log(this.origine.firstName);
