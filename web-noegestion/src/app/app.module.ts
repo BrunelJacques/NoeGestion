@@ -4,6 +4,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { InMemoryDataService } from './models/in-memory-data.service';
+
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CdkAccordionModule } from '@angular/cdk/accordion';
 
@@ -66,6 +69,12 @@ import { SortieComponent } from './components/stsorties/sortie/sortie.component'
     ReactiveFormsModule,
     NgbModule,
     FontAwesomeModule,
+     // The HttpClientInMemoryWebApiModule module intercepts HTTP requests
+    // and returns simulated server responses.
+    // Remove it when a real server is ready to receive requests.
+    HttpClientInMemoryWebApiModule.forRoot(
+      InMemoryDataService, { dataEncapsulation: false }
+    )
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   providers: [

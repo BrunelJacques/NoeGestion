@@ -37,12 +37,12 @@
     (click)="openSortie(mvt)"
     > -->
     <tr *ngFor="let mvt of mvts;">
-      <a routerLink="/sortie">
+      <a routerLink="/sortie/{{mvt.id}}">
         <td class= "col item">
         <button type="button" c class="btn btn-info" (click)="openMvt(mvt)">Details</button>
         </td>
         <td class="col itemid">  {{mvt.article}}</td>
-        <td class= "col item"> {{mvt.qteMouvement | number : '1.0-5'}} </td>
+        <td class= "col item"> {{mvt.qteMouvement * -1 | number : '1.0-5'}} </td>
         <td class= "col item"> {{mvt.uniteStock}} </td>
         <td class= "col item"> tarta0 </td>
         <td class= "col item"> {{mvt.uniteStock}} </td>

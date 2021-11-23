@@ -5,14 +5,11 @@ import { MessageService } from 'src/app/services/general/message.service';
 import { PARAMS } from 'src/app/models/params';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { StsortieComponent } from './stsortie/stsortie.component';
-import { SortieComponent } from './sortie/sortie.component';
 
 @Component({
   selector: 'app-sorties',
   templateUrl: './stsorties.component.html',
-  styleUrls: [
-    './stsorties.component.scss',
-  ],
+  styleUrls: [ './stsorties.component.scss', ],
 })
 
 export class StSortiesComponent implements OnInit {
@@ -39,19 +36,23 @@ export class StSortiesComponent implements OnInit {
     document.getElementsByTagName('head')[0].appendChild(s);
   }
 
+  // appel avec bouton et non par sélection
   openMvt(mvt: Mouvement ) {
-    this.messageService.add(`Mouvements: Selected mvt id=${mvt.article}`);
+    console.log('coucou openMvt')
+    this.messageService.add(`Sorties: Clic button id=${mvt.article}`);
     const modalRef = this.modalService.open(StsortieComponent);
     modalRef.componentInstance.mvt = mvt;
   }
+
+  // appel par clic sur une ligne qui se sélectionne au passage
   openSortie(mvt: Mouvement ) {
-    this.messageService.add(`Mouvements: Selected mvt id=${mvt.article}`);
+    console.log('coucou openSortie')
+    this.messageService.add(`Sorties: Selected sortie id=${mvt.article}`);
     const modalRef = this.modalService.open(StsortieComponent);
     modalRef.componentInstance.mvt = mvt;
   }
 
   getSorties(): void {
-    //this.mvts = this.stMvtService.getSorties(); sans observable
     this.stMvtService.getSorties()
     .subscribe(mvts => this.mvts = mvts)
   }

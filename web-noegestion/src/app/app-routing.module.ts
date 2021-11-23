@@ -21,6 +21,7 @@ const routes: Routes = [
   { path: 'stocks', component: StSortiesComponent },
   { path: 'km', component: KmDepartComponent },  
   { path: 'sorties', component: StSortiesComponent, },
+  { path: 'sortie', component: SortieComponent, canActivate: [AuthGuard] },
   { path: 'sortie/:id', component: SortieComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent, canActivate: [AuthGuard] },
   { path: 'entrees', component: StEntreesComponent, canActivate: [AuthGuard] },

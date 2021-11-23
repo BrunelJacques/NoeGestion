@@ -1,1 +1,37 @@
-<p>sortie works!</p>
+<h5>Sortie</h5>
+<form [formGroup]="sortieForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+        <label for="article">Article</label>
+        <input type="text" formControlName="article" class="form-control" 
+          [ngModel]="sortie.article"
+          [ngClass]="{ 'is-invalid': submitted && f.article.errors }" />
+        <div *ngIf="submitted && f.article.errors" class="invalid-feedback">
+            <div *ngIf="f.article.errors.required">L'article est obligatoire</div>
+        </div>
+    </div>
+    <div class="form-group">
+      <label for="qteMouvement">Quantité</label>
+      <input type="number" formControlName="qteMouvement" class="form-control" 
+        id = "toto"
+        [(ngModel)]="sortie.qteMouvement"
+        [ngClass]="{ 'is-invalid': submitted && f.qteMouvement.errors }" 
+      />
+    </div>
+    <div class="form-group">
+      <label for="prixUnit">Prix Unitaire</label>
+      <input type="number" formControlName="prixUnit" class="form-control" 
+        [ngModel]="sortie.prixUnit"
+        [ngClass]="{ 'is-invalid': submitted && f.prixUnit.errors }" 
+      />
+      <div *ngIf="submitted && f.prixUnit.errors" class="invalid-feedback">
+          <div *ngIf="f.prixUnit.errors.required">Le prix Unitaire est obligatoire</div>
+      </div>
+    </div>
+    <div class="form-group">
+        <button [disabled]="loading" class="btn btn-primary">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+            Ok
+        </button>
+        <a routerLink="/register" class="btn btn-link">Abandon</a>
+    </div>
+</form>

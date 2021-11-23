@@ -1,12 +1,13 @@
 export interface Mouvement {
+    qteSortie: any;
     id: number;
     jour: string;
     origine: string;
     article_id: number;
     article: string;
     nbUnitesVente: any;
-    qteMouvement: any;
-    prixUnit: any;
+    qteMouvement: number;
+    prixUnit: number;
     repas: string;
     nbRations: any;
     nbRationsArt: any;
