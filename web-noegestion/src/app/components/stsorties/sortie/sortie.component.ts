@@ -32,8 +32,9 @@ export class SortieComponent implements OnInit {
   ngOnInit(): void {
     this.getSortie()
     this.sortieForm = this.formBuilder.group({
-      prixUnit: ['', Validators.required],
-      article: ['', Validators.required]
+      prixUnit: ['', Validators.required,Validators.pattern("^[0-9]")],
+      qteMouvement: ['',Validators.pattern("^[0-9]")],
+      article: ['', Validators.required],
     });
 
     // get return url from route parameters or default to '/'
