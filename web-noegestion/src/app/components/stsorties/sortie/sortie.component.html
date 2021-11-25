@@ -1,39 +1,45 @@
-<h5>Sortie</h5>
-<form [formGroup]="sortieForm" (ngSubmit)="onSubmit()">
-  <div class="form-group">
-      <label for="article">Article</label>
-      <input type="text" formControlName="article" class="form-control" 
-        [ngModel]="sortie.article"
-        [ngClass]="{ 'is-invalid': submitted && f.article.errors }" />
-      <div *ngIf="submitted && f.article.errors" class="invalid-feedback">
-          <div *ngIf="f.article.errors.required">L'article est obligatoire</div>
-      </div>
+<h5>Sortie du stock </h5>
+<form class="col-12" [formGroup]="sortieForm" (ngSubmit)="onSubmit()">
+  <div class="form-inline">
+    <label for="repas">repas</label>
+    <select id="repas" name="repas" type=text formControlName="repas" class="form-control">
+      <option value="matin"></option>
+      <option value="midi"></option>
+      <option value="soir"></option>
+    </select>
+  </div>
+
+  <div class="form-row">
+    <label class="col-sm-2 col-form-label" for="article">Article</label>
+    <input id="article" type="text" formControlName="article" class="col-sm-10" 
+      [ngClass]="{ 'is-invalid': submitted && f.article.errors }" />
+
   </div>
   <div class="form-group">
     <label for="qteMouvement">Quantité</label>
-    <input type="number" formControlName="qteMouvement" class="form-control" 
-      id = "toto"
-      [(ngModel)]="sortie.qteMouvement"
+    <input id = "qteMouvement" type="number" formControlName="qteMouvement" class="form-control" 
       [ngClass]="{ 'is-invalid': submitted && f.qteMouvement.errors }" 
     />
   </div>
   <div class="form-group">
-    <label for="prixUnit">Prix Unitaire</label>
-    <input type="number" formControlName="prixUnit" class="form-control" 
-      [ngModel]="sortie.prixUnit"
-      [ngClass]="{ 'is-invalid': submitted && f.prixUnit.errors }" 
-    />
+    <label for="prixUnit">Prix Unitaire </label>
+      <input type="number" formControlName="prixUnit" class="form-control" 
+        [ngClass]="{ 'is-invalid': submitted && f.prixUnit.errors }" 
+      />
+
     <div *ngIf="submitted && f.prixUnit.errors" class="invalid-feedback">
         <div *ngIf="f.prixUnit.errors.required">Le prix Unitaire est obligatoire</div>
     </div>
   </div>
+  <HR>
   <div class="form-group">
-      <button [disabled]="loading" 
-        class="btn btn-primary"
-        type="submit">
-          <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-          Ok
-      </button>
-      <a routerLink="/register" class="btn btn-link">Abandon</a>
+    <button [disabled]="sortieForm.invalid" 
+      class="btn btn-primary"
+      type="submit">
+        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1">charge...</span>
+        Ok
+    </button>
+    &nbsp;
+    <a routerLink="/register" class="btn btn-primary">Abandon</a>
   </div>
 </form>

@@ -48,7 +48,7 @@ export class StMvtService {
 
   /** GET mvt by id. Will 404 if id not found */
   getSortie(id: number): Observable<Mouvement> {
-    console.log('appel mouvement: ' + id)
+    //console.log('appel mouvement: ' + id)
     const url = `${this.mvtsUrl}/${id}`;
     return this.http.get<Mouvement>(url).pipe(
       tap(_ => this.log(`fetched mvt id=${id}`)),

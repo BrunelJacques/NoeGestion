@@ -1,28 +1,30 @@
-export interface Mouvement {
-    qteSortie: any;
-    id: number;
-    jour: string;
-    origine: string;
-    article_id: number;
-    article: string;
-    nbUnitesVente: any;
-    qteMouvement: number;
-    prixUnit: number;
-    repas: string;
-    nbRations: any;
-    nbRationsArt: any;
-    qteParUniteVente: any;
-    qteStock: any;
-    magasin: string;
-    rayon: string;
-    uniteStock: string;
-    uniteVente: string;
-    fournisseur: string;
-    fournisseurArt: string;
-    txTva: any;
-    prixMoyen: any;
-    analytique: string;
-    transfertCompta: any;
-  }
+export class Mouvement {
+  constructor(
+    public qteSortie: any,
+    public id: number,
+    public jour: string,
+    public origine: string,
+    public article_id: number,
+    public article: string,
+    public nbUnitesVente: any,
+    public qteMouvement: number,
+    public prixUnit: number,
+    public repas: string,
+    public nbRations: any,
+    public nbRationsArt: any,
+    public qteParUniteVente: any,
+    public qteStock: any,
+    public magasin: string,
+    public rayon: string,
+    public uniteStock: string,
+    public uniteVente: string,
+    public fournisseur: string,
+    public fournisseurArt: string,
+    public txTva: any,
+    public prixMoyen: any,
+    public analytique: string,
+    public transfertCompta: any,
+  ){}
+}
   
   

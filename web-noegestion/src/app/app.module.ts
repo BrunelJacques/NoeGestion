@@ -36,6 +36,7 @@ import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontaweso
 import { faReply, faBell, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { UserService } from './services/user.service';
 import { SortieComponent } from './components/stsorties/sortie/sortie.component';
+import { SortieService } from './services/sortie.service';
 
 
 @NgModule({
@@ -79,7 +80,9 @@ import { SortieComponent } from './components/stsorties/sortie/sortie.component'
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   providers: [
     NgbActiveModal,
-    UserService],
+    UserService,
+    SortieService
+  ],
   bootstrap: [AppComponent]
 })
 

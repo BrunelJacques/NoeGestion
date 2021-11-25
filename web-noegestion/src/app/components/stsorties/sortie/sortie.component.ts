@@ -6,6 +6,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Mouvement } from 'src/app/models/stmouvement';
 import { StMvtService } from 'src/app/services/stmvt.service';
+import { SortieService } from 'src/app/services/sortie.service';
 
 @Component({
   selector: 'app-sortie',
@@ -15,6 +16,7 @@ import { StMvtService } from 'src/app/services/stmvt.service';
 
 export class SortieComponent implements OnInit {
   sortie!: Mouvement;
+  mvts!: Mouvement[];
   sortieForm!: FormGroup;
   returnUrl!: string;
   submitted: boolean = false;
@@ -26,32 +28,50 @@ export class SortieComponent implements OnInit {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private stMvtService: StMvtService,
+    private sortieService: SortieService,
     private location: Location    
   ) {}
 
   ngOnInit(): void {
-    this.getSortie()
+    this.getSortie();
     this.sortieForm = this.formBuilder.group({
-      prixUnit: ['', Validators.required,Validators.pattern("^[0-9]")],
-      qteMouvement: ['',Validators.pattern("^[0-9]")],
+      prixUnit: ['0', ], //Validators.pattern("^[0-9]") ne valide pas!!
+      qteMouvement: ['0',Validators.pattern("^[0-9]")],
       article: ['', Validators.required],
+      repas: ['', Validators.required],
     });
-
     // get return url from route parameters or default to '/'
-  this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
-
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
 
   getSortie(): void {
     const id = parseInt(this.route.snapshot.paramMap.get('id')!, 10);
     this.stMvtService.getSortie(id)
-      .subscribe(sortie => this.sortie = sortie);
+      .subscribe(sortie => {
+        this.sortie = sortie;
+        this.sortieForm.patchValue({
+          article: this.sortie.article,
+          qteMouvement: -1 * this.sortie.qteMouvement,
+          prixUnit: this.sortie.prixUnit,
+          repas: this.sortie.repas,
+        })
+      });
+
   }
+
+  //zz
+  getSorties(): void {
+    this.stMvtService.getSorties()
+    .subscribe(mvts => this.mvts = mvts)
+    console.log(this.stMvtService.getSorties());
+  }
+
 
   goBack(): void {
     this.location.back();
   }
 
+ //zz
   save(): void {
     if (this.sortie) {
       this.stMvtService.updateMvt(this.sortie).subscribe(() => this.goBack());
@@ -63,13 +83,15 @@ export class SortieComponent implements OnInit {
 
   onSubmit() {
       this.submitted = true;
-
-      // stop here if form is invalid
-      if (this.sortieForm.invalid) {
-          return;
-      }
-
-      this.loading = true;
+      //const formValue = this.sortieForm.value;
+      const newSortie = this.sortie
+      /*new Mouvement(
+        formValue['article'],
+        formValue['qteMouvement'],
+        formValue['prixUnit'],
+        formValue['repas']
+      );*/
+      this.sortieService.addSortie(newSortie)
+      this.router.navigate(['/sorties'])
   } 
-
 }
