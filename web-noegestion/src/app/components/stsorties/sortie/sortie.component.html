@@ -1,29 +1,36 @@
-<h5>Sortie du stock </h5>
-<form class="col-12" [formGroup]="sortieForm" (ngSubmit)="onSubmit()">
-  <div class="form-inline">
-    <label for="repas">repas</label>
-    <select id="repas" name="repas" type=text formControlName="repas" class="form-control">
-      <option value="matin"></option>
-      <option value="midi"></option>
-      <option value="soir"></option>
+<div class="fst-italic">Sortie du stock </div>
+<div class="col-sm-10 col-sm-offset-2">
+<form [formGroup]="sortieForm" (ngSubmit)="onSubmit()">
+
+  <div class="form-group">
+    <label for="repas">Pour repas :</label>
+    <select id="repas" name="repas" formControlName="repas" class="form-control-sm"
+      placeholder="saisir">
+      <option value="Matin">repas du matin</option>
+      <option value="Midi">repas de midi</option>
+      <option value="Soir">repas du soir</option>
+      <option value="">non précisé</option>
     </select>
   </div>
 
   <div class="form-row">
-    <label class="col-sm-2 col-form-label" for="article">Article</label>
-    <input id="article" type="text" formControlName="article" class="col-sm-10" 
+    <label for="article">Article :</label>
+    <input id="article" type="text" formControlName="article" class="form-control-sm" 
+      placeholder="choisissez un article"
       [ngClass]="{ 'is-invalid': submitted && f.article.errors }" />
 
   </div>
-  <div class="form-group">
-    <label for="qteMouvement">Quantité</label>
-    <input id = "qteMouvement" type="number" formControlName="qteMouvement" class="form-control" 
+  <div class="form-row">
+    <label for="qteMouvement">Quantité :</label>
+    <input id = "qteMouvement" type="text" formControlName="qteMouvement" 
+      class= "form-control-sm" 
       [ngClass]="{ 'is-invalid': submitted && f.qteMouvement.errors }" 
     />
   </div>
   <div class="form-group">
-    <label for="prixUnit">Prix Unitaire </label>
-      <input type="number" formControlName="prixUnit" class="form-control" 
+    <label for="prixUnit">Prix Unitaire :</label>
+      <input id="prixUnit" type="number" formControlName="prixUnit" 
+      class="form-control-sm" 
         [ngClass]="{ 'is-invalid': submitted && f.prixUnit.errors }" 
       />
 
@@ -43,3 +50,4 @@
     <a routerLink="/register" class="btn btn-primary">Abandon</a>
   </div>
 </form>
+</div>

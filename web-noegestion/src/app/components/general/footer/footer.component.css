@@ -1,6 +1,4 @@
 #droite {
   position: absolute;
-  text-align: end;
-  width: 20%;
-
+  right: 3%;
 }

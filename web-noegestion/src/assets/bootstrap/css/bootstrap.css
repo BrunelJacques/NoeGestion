@@ -2149,7 +2149,6 @@ progress {
 
 .form-control {
   display: block;
-  width: 100%;
   padding: 0.375rem 0.75rem;
   font-size: 1rem;
   font-weight: 400;
@@ -2218,7 +2217,7 @@ progress {
   }
 }
 .form-control:hover:not(:disabled):not([readonly])::file-selector-button {
-  background-color: #dde0e3;
+  background-color: #1909a7;
 }
 .form-control::-webkit-file-upload-button {
   padding: 0.375rem 0.75rem;
@@ -2243,7 +2242,7 @@ progress {
   }
 }
 .form-control:hover:not(:disabled):not([readonly])::-webkit-file-upload-button {
-  background-color: #dde0e3;
+  background-color: #0f345a;
 }
 
 .form-control-plaintext {

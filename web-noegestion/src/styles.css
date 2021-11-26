@@ -1,0 +1,123 @@
+body {
+  padding-top: 3rem;
+  color: #3F729B;
+  background-color: whitesmoke;
+  line-height: 0.9;
+}
+
+header {
+  position: absolute;
+  width: 100%;
+  height: 49px;
+  top: 0;
+  left: 0;
+  opacity: 1;
+  background-color: #3F729B;
+}
+main {
+  margin-top: 0.8rem;
+}
+
+.zzrow {
+  width: 100%;
+  text-align: right;
+  margin-top: 1rem;
+  margin-right: 2rem
+}
+
+label {
+  width: 30%;
+  padding: 0rem 0.55rem;
+  text-align: right;
+  font-weight: 400;
+  line-height: 1.5;
+  background-clip: padding-box;
+  border: 0px solid;
+}
+
+input, select {
+  width: 50%;
+  padding: 0rem 0.75rem;
+  font-size: 1rem;
+  color: #0a247a;
+  background-color: lightyellow;
+  border: 1px solid #ced4da;
+  margin: 3px;
+
+}
+
+.form-control-sm {
+  padding: 0rem 0.75rem;
+  max-height: 1.5rem;/*limite la marge autour de la police*/
+  min-block-size: 1rem;/*limite la marge autour de la police*/
+}
+
+.nav-link {
+  background-color: gray;
+  margin-left: 0.1rem;
+  border-bottom: 1px solid #999;
+}
+
+.navbar {
+  z-index: 1;
+  -webkit-box-shadow: 0 9px 6px -6px #999;
+  -moz-box-shadow: 0 9px 6px -6px #999;
+  box-shadow: 0 9px 6px -6px #999;
+  padding: 0.3rem !important;
+}
+
+.navbar-nav {
+  margin-top: 4px; /* attention à l'incidence collapse grand écran*/
+}
+
+.navbar-expand-md {
+  background-color:  rgba(63, 114, 155, 0.55);
+}
+
+.navbar-toggler {
+  background-color: gray;
+}
+
+.container-fluid {
+  margin-top: 0.3rem;
+} 
+
+.card-header {
+  padding: 0.5rem 1rem;
+  margin-bottom: 0;
+  background-color: rgba(0, 0, 250, 0.06);
+}
+
+.footer {
+  width: 100%;
+  margin: 0;
+  text-align: center;
+  font-size: 9pt;
+  font-style:italic;
+  color: rgb(50,50,120);
+  background: rgb(210, 230, 250); 
+  padding: 0.2em;
+}
+
+.btn {
+  color: #02b;
+  background: #e6f0fa;                 
+}
+
+.btn-info {
+  border-color: rgb(0,32,176,0.3)
+}
+
+.btn-info:focus {
+  color: #fff;
+  background:  #346cb0  ; 
+  border-color: rgb(50,50,120);
+  box-shadow: 0 0 0 0.25rem #e6f0fa;
+}
+
+.table {
+  --bs-table-accent-bg: transparent;
+  --bs-table-striped-color: #02b;
+  --bs-table-hover-color: black;
+  --bs-table-hover-bg: #e6f0fa;
+}
