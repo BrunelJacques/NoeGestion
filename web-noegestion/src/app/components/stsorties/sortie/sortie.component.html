@@ -1,8 +1,8 @@
-<div class="fst-italic">Sortie du stock </div>
+<h5>Sortie du stock </h5>
 <div class="col-sm-10 col-sm-offset-2">
-<form [formGroup]="sortieForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="sortieForm" (ngSubmit)="onSubmit()" class="form-group">
 
-  <div class="form-group">
+  <div >
     <label for="repas">Pour repas :</label>
     <select id="repas" name="repas" formControlName="repas" class="form-control-sm"
       placeholder="saisir">

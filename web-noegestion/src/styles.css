@@ -3,6 +3,7 @@ body {
   color: #3F729B;
   background-color: whitesmoke;
   line-height: 0.9;
+  margin-left: 2%
 }
 
 header {
@@ -16,13 +17,6 @@ header {
 }
 main {
   margin-top: 0.8rem;
-}
-
-.zzrow {
-  width: 100%;
-  text-align: right;
-  margin-top: 1rem;
-  margin-right: 2rem
 }
 
 label {
@@ -99,12 +93,12 @@ input, select {
   padding: 0.2em;
 }
 
-.btn {
+.btn-primary {
   color: #02b;
   background: #e6f0fa;                 
 }
 
-.btn-info {
+.btn {
   border-color: rgb(0,32,176,0.3)
 }
 
