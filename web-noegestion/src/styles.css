@@ -5,11 +5,10 @@ body {
   line-height: 0.9;
   margin-left: 2%
 }
-
 header {
   position: absolute;
   width: 100%;
-  height: 49px;
+  height: 52px;
   top: 0;
   left: 0;
   opacity: 1;
@@ -17,6 +16,16 @@ header {
 }
 main {
   margin-top: 0.8rem;
+}
+footer {
+  width: 100%;
+  margin: 0;
+  text-align: center;
+  font-size: 9pt;
+  font-style:italic;
+  color: rgb(50,50,120);
+  background: rgb(210, 230, 250); 
+  padding: 0.2em;
 }
 
 label {
@@ -40,16 +49,42 @@ input, select {
 
 }
 
-.form-control-sm {
+input:focus, 
+select:focus, 
+.form-control:focus {
+  color: darkblue ;
+  background-color: white ;
+  border-width: 0px;
+  border-color: #02b !important;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px #02b;
+  outline: 0 none;
+}
+
+.form-control {
   padding: 0rem 0.75rem;
   max-height: 1.5rem;/*limite la marge autour de la police*/
   min-block-size: 1rem;/*limite la marge autour de la police*/
 }
 
+.btn-primary {
+  color: #02b;
+  background: #e6f0fa;                 
+}
+.btn {
+  border-color: rgb(0,32,176,0.3)
+}
+.btn:focus {
+  color: #fff;
+  background:  #346cb0  ; 
+  box-shadow: 2px 2px 0 0 #02b;
+}
+
 .nav-link {
   background-color: gray;
-  margin-left: 0.1rem;
+  margin-left: 0.2rem!important;
+  padding: 0.7rem 1rem!important;
   border-bottom: 1px solid #999;
+  width: 140px;
 }
 
 .navbar {
@@ -69,7 +104,14 @@ input, select {
 }
 
 .navbar-toggler {
-  background-color: gray;
+  border-width: 2px;
+  border-color: white !important;
+}
+
+.navbar-toggler:focus {
+  border-width:  2px ; 
+  border-color: white ;
+  box-shadow:  0 0 0 0 ;
 }
 
 .container-fluid {
@@ -80,33 +122,6 @@ input, select {
   padding: 0.5rem 1rem;
   margin-bottom: 0;
   background-color: rgba(0, 0, 250, 0.06);
-}
-
-.footer {
-  width: 100%;
-  margin: 0;
-  text-align: center;
-  font-size: 9pt;
-  font-style:italic;
-  color: rgb(50,50,120);
-  background: rgb(210, 230, 250); 
-  padding: 0.2em;
-}
-
-.btn-primary {
-  color: #02b;
-  background: #e6f0fa;                 
-}
-
-.btn {
-  border-color: rgb(0,32,176,0.3)
-}
-
-.btn-info:focus {
-  color: #fff;
-  background:  #346cb0  ; 
-  border-color: rgb(50,50,120);
-  box-shadow: 0 0 0 0.25rem #e6f0fa;
 }
 
 .table {

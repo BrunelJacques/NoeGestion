@@ -8,7 +8,6 @@ import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService } from './models/in-memory-data.service';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CdkAccordionModule } from '@angular/cdk/accordion';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -29,14 +28,11 @@ import { KmArriveeComponent } from './components/kmarrivee/kmarrivee.component';
 import { CustomDatePipe } from './models/custom.datepipe';
 import { LoginComponent } from './components/general/login/login.component';
 import { MessagesComponent } from './components/general/messages/messages.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { StParamsComponent } from './components/stparams/stparams.component';
-import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faReply, faBell, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { UserService } from './services/user.service';
 import { SortieComponent } from './components/stsorties/sortie/sortie.component';
 import { SortieService } from './services/sortie.service';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -63,23 +59,20 @@ import { SortieService } from './services/sortie.service';
   imports: [
     HttpClientModule,
     BrowserAnimationsModule,
-    CdkAccordionModule,
     BrowserModule,
     FormsModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    NgbModule,
-    FontAwesomeModule,
      // The HttpClientInMemoryWebApiModule module intercepts HTTP requests
     // and returns simulated server responses.
     // Remove it when a real server is ready to receive requests.
     HttpClientInMemoryWebApiModule.forRoot(
       InMemoryDataService, { dataEncapsulation: false }
-    )
+    ),
+     NgbModule
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   providers: [
-    NgbActiveModal,
     UserService,
     SortieService
   ],
@@ -87,8 +80,4 @@ import { SortieService } from './services/sortie.service';
 })
 
 export class AppModule {
-  constructor(library: FaIconLibrary) {
-    // library.addIconPacks(fas);
-    library.addIcons(faReply, faBell, faCheck);
   }
-}

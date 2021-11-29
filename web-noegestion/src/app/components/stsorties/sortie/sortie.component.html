@@ -23,14 +23,14 @@
   <div class="form-row">
     <label for="qteMouvement">Quantité :</label>
     <input id = "qteMouvement" type="text" formControlName="qteMouvement" 
-      class= "form-control-sm" 
+      class= "form-control"
       [ngClass]="{ 'is-invalid': submitted && f.qteMouvement.errors }" 
     />
   </div>
   <div class="form-group">
     <label for="prixUnit">Prix Unitaire :</label>
       <input id="prixUnit" type="number" formControlName="prixUnit" 
-      class="form-control-sm" 
+      class="form-control" 
         [ngClass]="{ 'is-invalid': submitted && f.prixUnit.errors }" 
       />
 

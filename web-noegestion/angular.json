@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "angular-starter": {
+    "NewNoegest": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:application": {
@@ -17,19 +17,20 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/angular-starter/browser",
+            "outputPath": "dist/NewNoegest",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "assets": [
-              "src/favicon.png",
+              "src/favicon.ico",
               "src/assets"
             ],
             "styles": [
-              "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
-              "src/assets/params/css/index.css",
-              "src/styles.css"
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/bootstrap-icons/font/bootstrap-icons.css",
+              "src/styles.css",
+              "src/assets/params/css/index.css"
             ],
             "scripts": [
               "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
@@ -72,10 +73,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "angular-starter:build:production"
+              "browserTarget": "NewNoegest:build:production"
             },
             "development": {
-              "browserTarget": "angular-starter:build:development"
+              "browserTarget": "NewNoegest:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -83,7 +84,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "angular-starter:build"
+            "browserTarget": "NewNoegest:build"
           }
         },
         "test": {
@@ -94,7 +95,7 @@
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
             "assets": [
-              "src/favicon.png",
+              "src/favicon.ico",
               "src/assets"
             ],
             "styles": [
@@ -102,65 +103,9 @@
             ],
             "scripts": []
           }
-        },
-        "server": {
-          "builder": "@angular-devkit/build-angular:server",
-          "options": {
-            "outputPath": "dist/angular-starter/server",
-            "main": "server.ts",
-            "tsConfig": "tsconfig.server.json"
-          },
-          "configurations": {
-            "production": {
-              "outputHashing": "media",
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
-                }
-              ]
-            },
-            "development": {
-              "optimization": false,
-              "sourceMap": true,
-              "extractLicenses": false
-            }
-          },
-          "defaultConfiguration": "production"
-        },
-        "serve-ssr": {
-          "builder": "@nguniversal/builders:ssr-dev-server",
-          "configurations": {
-            "development": {
-              "browserTarget": "angular-starter:build:development",
-              "serverTarget": "angular-starter:server:development"
-            },
-            "production": {
-              "browserTarget": "angular-starter:build:production",
-              "serverTarget": "angular-starter:server:production"
-            }
-          },
-          "defaultConfiguration": "development"
-        },
-        "prerender": {
-          "builder": "@nguniversal/builders:prerender",
-          "options": {
-            "routes": [
-              "/"
-            ]
-          },
-          "configurations": {
-            "production": {
-              "browserTarget": "angular-starter:build:production"
-            },
-            "development": {
-              "browserTarget": "angular-starter:build:development"
-            }
-          },
-          "defaultConfiguration": "production"
         }
       }
     }
   },
-  "defaultProject": "angular-starter"
+  "defaultProject": "NewNoegest"
 }
