@@ -1,4 +1,4 @@
-<h4 class= "left">Sorties de stock</h4>
+<h4 class= "container left fixeur">Sorties de stock</h4>
 <h6 class="left">
   <span ng-controller="CtrlParams">
     Le: {{params.jour| date:'dd/MM/yyyy'}}
@@ -18,16 +18,16 @@
     <span> {{magasin}} {{rayon}}</span>
 
 </div-->
-
-<table class="table table-hover table-striped table-responsive-md" >
+<div class="table-responsive">
+<table class="table table-striped" >
   <thead class="bg-secondary">
     <tr>
-      <th class="col"> </th>
-      <th class="col-8">Article</th>
-      <th class="col-2">Qté</th>
-      <th class="col-2">Unit</th>
-      <th class="col-2">Pour</th>
-      <th class="col-2">Coût</th>
+      <th class="">btn</th>
+      <th class="">Article</th>
+      <th class="">Qté</th>
+      <th class="">Unit</th>
+      <th class="">Pour</th>
+      <th class="">Coût</th>
     </tr>
   </thead>
   <tbody>
@@ -37,16 +37,15 @@
     (click)="openSortie(mvt)"
     > -->
     <tr *ngFor="let mvt of mvts;">
-      <a routerLink="/sortie/{{mvt.id}}">
-        <td class= "col item">
+        <td class= "item">
         <button type="button" c class="btn btn-primary" (click)="openMvt(mvt)">Details</button>
         </td>
-        <td class="col itemid">  {{mvt.article}}</td>
-        <td class= "col item"> {{mvt.qteMouvement * -1 | number : '1.0-5'}} </td>
-        <td class= "col item"> {{mvt.uniteStock}} </td>
-        <td class= "col item"> tarta0 </td>
-        <td class= "col item"> {{mvt.uniteStock}} </td>
-      </a>
+        <td class="itemid" routerLink="/sortie/{{mvt.id}}">  {{mvt.article}}</td>
+        <td class= "item" routerLink="/sortie/{{mvt.id}}"> {{mvt.qteMouvement * -1 | number : '1.0-5'}} </td>
+        <td class= "item" routerLink="/sortie/{{mvt.id}}"> {{mvt.uniteStock}} </td>
+        <td class= "item" routerLink="/sortie/{{mvt.id}}"> x </td>
+        <td class= "col item" routerLink="/sortie/{{mvt.id}}"> {{mvt.uniteStock}} </td>
     </tr>
   </tbody>
 </table>
+</div>

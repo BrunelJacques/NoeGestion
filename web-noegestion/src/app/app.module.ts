@@ -33,6 +33,7 @@ import { UserService } from './services/user.service';
 import { SortieComponent } from './components/stsorties/sortie/sortie.component';
 import { SortieService } from './services/sortie.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { RepasComponent } from './components/stsorties/repas/repas.component';
 
 
 @NgModule({
@@ -55,6 +56,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     LoginComponent,
     MessagesComponent,
     SortieComponent,
+    RepasComponent,
   ],
   imports: [
     HttpClientModule,

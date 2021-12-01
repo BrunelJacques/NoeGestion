@@ -1,7 +1,8 @@
 <h5>Sortie du stock </h5>
+<app-repas></app-repas>
+
 <div class="col-sm-10 col-sm-offset-2">
 <form [formGroup]="sortieForm" (ngSubmit)="onSubmit()" class="form-group">
-
   <div >
     <label for="repas">Pour repas :</label>
     <select id="repas" name="repas" formControlName="repas" class="form-control-sm"

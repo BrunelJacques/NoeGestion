@@ -1,6 +1,11 @@
 * {
   margin: 0 0 0px;
   }
+
+.unresponsive thead tr th {
+  min-width: 100px;
+}
+  
 .jour, .input {
     color: #0a247a;
     background-color: rgb(255, 254, 168);
@@ -21,7 +26,7 @@
     margin-bottom: 0px;
 }
 
-.item {
+.zzitem {
   color: #02b;
   height: 1.2em;
   font-size: 0.85rem;
@@ -34,7 +39,7 @@
   width: 80px;
 }
 
-.itemid {
+.zzitemid {
   color: #02b;
   /*background-color:#e0e7f0;*/
   font-size: 0.85rem;

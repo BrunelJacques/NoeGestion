@@ -23,7 +23,6 @@ export class SortieComponent implements OnInit {
   loading: boolean = false;
   router!: Router;
 
-
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
