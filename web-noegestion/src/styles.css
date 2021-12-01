@@ -33,12 +33,11 @@ label {
   padding: 0rem 0.55rem;
   text-align: right;
   font-weight: 400;
-  line-height: 1.5;
   background-clip: padding-box;
   border: 0px solid;
 }
 
-input, select {
+input, select, .form-control {
   width: 50%;
   padding: 0rem 0.75rem;
   font-size: 1rem;
@@ -49,11 +48,9 @@ input, select {
 
 }
 
-input:focus, 
-select:focus, 
-.form-control:focus {
+:focus, .btn:focus, .form-control:focus {
   color: darkblue ;
-  background-color: white ;
+  background-color: whitesmoke ;
   border-width: 0px;
   border-color: #02b !important;
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px #02b;
@@ -71,13 +68,11 @@ select:focus,
   background: #e6f0fa;                 
 }
 .btn {
-  border-color: rgb(0,32,176,0.3)
-}
-.btn:focus {
-  color: #fff;
-  background:  #346cb0  ; 
-  box-shadow: 2px 2px 0 0 #02b;
-}
+  border-color: rgb(0,32,176,0.3);
+  margin: 0;
+  padding: 0rem 0.5rem 0rem 0.5rem;
+  font-size: 1.5rem;
+ }
 
 .nav-link {
   background-color: gray;
@@ -107,11 +102,11 @@ select:focus,
   border-width: 2px;
   border-color: white !important;
 }
-
-.navbar-toggler:focus {
-  border-width:  2px ; 
-  border-color: white ;
-  box-shadow:  0 0 0 0 ;
+.navbar-toggler:focus  {
+  background: #447cd0 ;      
+  border-width: 2px;
+  border-color: whitesmoke!important;
+  box-shadow: 0px 0px 15px white;
 }
 
 .container-fluid {
@@ -129,4 +124,34 @@ select:focus,
   --bs-table-striped-color: #02b;
   --bs-table-hover-color: black;
   --bs-table-hover-bg: #e6f0fa;
+}
+
+.bi-check {
+  font-size: 2.5rem; 
+  color: green;
+}
+
+#ok {
+  padding: 0rem 0.5rem 0rem 1.5rem;
+}
+
+/* utiliser fixeur pour contenir les positions absolute, dans le contexte*/
+.fixeur {
+  position: relative;
+}
+
+/* utiliser fixe après fixeur pour rester dans son contexte, sinon c'est vraiment absolu*/
+.fixe {
+  position: absolute;
+  top: -33px;
+  left: -8px;
+}
+
+.small {
+  margin-right: 0;
+} 
+
+.align-items-end {
+  margin-right: 0;
+  padding-right: 0;
 }
