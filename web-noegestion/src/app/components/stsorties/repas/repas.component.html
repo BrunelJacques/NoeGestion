@@ -1,0 +1,17 @@
+<div >
+  <form [formGroup]="repasForm" class="form-group">
+    <label for="repas">Pour repas :</label>
+    <select id="repas" name="repas" formControlName="repas" class="form-control-sm">
+      <option value="Matin">repas du matin</option>
+      <option value="Midi">repas de midi</option>
+      <option value="Soir">repas du soir</option>
+      <option value="">non précisé</option>
+    </select>
+  </form>
+  <div class="form-row">
+    <label for="repas">{{repas}}</label>
+    <input id = "repas" type="text" formControlName="repas" 
+      class= "form-control"
+    />
+  </div>
+</div>

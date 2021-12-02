@@ -8,10 +8,11 @@ import { Mouvement } from 'src/app/models/stmouvement';
 import { StMvtService } from 'src/app/services/stmvt.service';
 import { SortieService } from 'src/app/services/sortie.service';
 
+
 @Component({
   selector: 'app-sortie',
   templateUrl: './sortie.component.html',
-  styleUrls: ['./sortie.component.css']
+  styleUrls: ['./sortie.component.css'],
 })
 
 export class SortieComponent implements OnInit {
@@ -22,6 +23,7 @@ export class SortieComponent implements OnInit {
   submitted: boolean = false;
   loading: boolean = false;
   router!: Router;
+  item = "titi";
 
   constructor(
     private formBuilder: FormBuilder,
@@ -41,6 +43,7 @@ export class SortieComponent implements OnInit {
     });
     // get return url from route parameters or default to '/'
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    this.item = "toto";
   }
 
   getSortie(): void {
@@ -55,6 +58,7 @@ export class SortieComponent implements OnInit {
           repas: this.sortie.repas,
         })
       });
+
 
   }
 
