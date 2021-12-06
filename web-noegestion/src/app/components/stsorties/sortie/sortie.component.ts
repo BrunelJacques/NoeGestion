@@ -21,9 +21,9 @@ export class SortieComponent implements OnInit {
   sortieForm!: FormGroup;
   returnUrl!: string;
   submitted: boolean = false;
-  loading: boolean = false;
+  loading: boolean = false; // à gérer si chargement long
   router!: Router;
-  item = "titi";
+  repas = "matin";
 
   constructor(
     private formBuilder: FormBuilder,
@@ -43,7 +43,6 @@ export class SortieComponent implements OnInit {
     });
     // get return url from route parameters or default to '/'
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
-    this.item = "toto";
   }
 
   getSortie(): void {
@@ -57,18 +56,16 @@ export class SortieComponent implements OnInit {
           prixUnit: this.sortie.prixUnit,
           repas: this.sortie.repas,
         })
+        
+      this.repas = this.sortie.repas;
       });
-
-
   }
 
-  //zz
-  getSorties(): void {
-    this.stMvtService.getSorties()
-    .subscribe(mvts => this.mvts = mvts)
-    console.log(this.stMvtService.getSorties());
+  onRepasChanged(newrepas: string) {
+    this.sortieForm.patchValue({
+      repas: newrepas,
+    })
   }
-
 
   goBack(): void {
     this.location.back();

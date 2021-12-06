@@ -23,7 +23,7 @@ export class Mouvement {
     public txTva: any,
     public prixMoyen: any,
     public analytique: string,
-    public transfertCompta: any,
+    public transfertCompta: any | string,
   ){}
 }
   

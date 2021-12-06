@@ -1,25 +1,17 @@
 <h5>Sortie du stock </h5>
-<app-repas [repas]="item" ></app-repas>
 
 <div class="col-sm-10 col-sm-offset-2">
+<app-repas 
+  [repas]="this.repas"
+  (changed)="onRepasChanged($event)" 
+>
+</app-repas>
 <form [formGroup]="sortieForm" (ngSubmit)="onSubmit()" class="form-group">
-  <div >
-    <label for="repas">Pour repas :</label>
-    <select id="repas" name="repas" formControlName="repas" class="form-control-sm"
-      placeholder="saisir">
-      <option value="Matin">repas du matin</option>
-      <option value="Midi">repas de midi</option>
-      <option value="Soir">repas du soir</option>
-      <option value="">non précisé</option>
-    </select>
-  </div>
-
   <div class="form-row">
     <label for="article">Article :</label>
     <input id="article" type="text" formControlName="article" class="form-control-sm" 
       placeholder="choisissez un article"
       [ngClass]="{ 'is-invalid': submitted && f.article.errors }" />
-
   </div>
   <div class="form-row">
     <label for="qteMouvement">Quantité :</label>
@@ -44,7 +36,7 @@
     <button [disabled]="sortieForm.invalid" 
       class="btn btn-primary"
       type="submit">
-        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1">charge...</span>
+        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
         Ok
     </button>
     &nbsp;
