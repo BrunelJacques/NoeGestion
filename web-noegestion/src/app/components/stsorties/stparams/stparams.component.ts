@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { PARAMS } from 'src/app/models/params';
-import { FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-stparams',
@@ -15,7 +14,6 @@ export class StParamsComponent implements OnInit {
 
   constructor(
     private location: Location,
-    private formBuilder: FormBuilder,
   ) {
     this.location = location
   }

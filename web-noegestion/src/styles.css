@@ -125,6 +125,10 @@ input, select, .form-control {
   margin-top: 0.3rem;
 } 
 
+.modal-header {
+  padding: 0.3rem 1rem;
+}
+
 .card-header {
   padding: 0.5rem 1rem;
   margin-bottom: 0;

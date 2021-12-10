@@ -11,7 +11,7 @@ import { StInventaireComponent } from './components/stinventaire/stinventaire.co
 import { StPrixJourneeComponent } from './components/stprixjournee/stprixjournee.component';
 import { KmArriveeComponent } from './components/kmarrivee/kmarrivee.component';
 import { KmDepartComponent } from './components/kmdepart/kmdepart.component';
-import { StParamsComponent } from './components/stparams/stparams.component';
+import { StParamsComponent } from './components/stsorties/stparams/stparams.component';
 import { MessagesComponent } from './components/general/messages/messages.component';
 
 
