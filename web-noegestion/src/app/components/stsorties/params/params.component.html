@@ -1,0 +1,56 @@
+<!-- Modal en cours -->
+<div class="modal-open container-fluid" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-content" role="document">
+    <div class="modal-header">
+      <h6 class="modal-title">Paramètres de liste</h6>
+      <button type="button" class="close btn btn-primary bi-reply" 
+        aria-label="Close" 
+        (click)="goBack()">
+      </button>
+    </div>
+    <form [formGroup]="paramsForm" class="form-group">
+      
+      <label class="" for="jour">Date:</label>
+      <input id="start"
+        type="date" 
+        min="2021-01-01" max="2099-12-31"
+        [ngModel]="params.jour | date:'yyyy-MM-dd'" 
+        (ngModelChange)="params.jour = $event"
+        [value]="params.jour | date:'yyyy-MM-dd'" 
+        #jour="ngModel" required>
+
+      <label for="origine">Vers :</label>
+      <select id="origine" name="origine" formControlName="origine" class="form-control-sm">
+        <option value="cuisine">Repas en cuisine</option>
+        <option value="camp">Camp Extérieur</option>
+        <option value="odIn">Régularisation</option>
+      </select>
+
+      <app-repas 
+        [repas]="this.repas"
+        (changed)="onRepasChanged($event)">
+      </app-repas>
+
+      <label for="tva">Tva mtt:</label>
+      <select id="tva" name="tva" formControlName="tva" class="form-control-sm">
+        <option value="ttc">en TTC</option>
+        <option value="ht">en HT</option>
+      </select>
+
+      <label for="domestic">
+        Dom</label>
+      <input type="text" class="form-control" id="domestic" value="0.0">
+
+      <div class="modal-footer align-items-end">
+        <label class="small">(vers {{params.location}})</label>
+        <div class="fixeur">
+          <label class="fixe bi-check" for="ok"></label>
+        </div>
+        <button id="ok" class="btn btn-primary" (click)="goBack()">
+          &nbsp;ok
+        </button>
+
+      </div> 
+    </form>
+  </div>
+</div>

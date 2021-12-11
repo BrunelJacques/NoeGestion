@@ -1,17 +1,19 @@
 export interface Params {
   jour: Date;
   origine: string;
+  repas: string;
+  camp: string;
   fournisseur: string;
   tva: string;
-  article: string;
   location: string;
 }
 
 export const  PARAMS: Params= {
     jour: new Date(),
-    origine: "repas",
+    origine: "",
+    repas: "",
+    camp: "",
     fournisseur: "",
-    tva: "HT",
-    article: "",
+    tva: "",
     location: "home"
   }

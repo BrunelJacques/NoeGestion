@@ -1,23 +1,29 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { PARAMS } from 'src/app/models/params';
+import { FormGroup } from '@angular/forms';
 
 @Component({
-  selector: 'app-stparams',
-  templateUrl: './stparams.component.html',
-  styleUrls: ['./stparams.component.css']
+  selector: 'app-params',
+  templateUrl: './params.component.html',
+  styleUrls: ['./params.component.css']
 })
-export class StParamsComponent implements OnInit {
+export class ParamsComponent implements OnInit {
   params= PARAMS;
   closeResult = '';
- 
+  repas = ""; 
+  paramsForm!: FormGroup;
 
   constructor(
     private location: Location,
   ) {
     this.location = location
   }
- 
+
+  onRepasChanged(newrepas: string) {
+    this.repas = newrepas
+  }
+
   ngOnInit(): void {};
 
   goBack(): void {
