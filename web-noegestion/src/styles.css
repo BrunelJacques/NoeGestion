@@ -26,7 +26,6 @@ main {
   margin-top: 0.8rem;
 }
 footer {
-  width: 100%;
   margin: 0;
   text-align: center;
   font-size: 9pt;
@@ -77,9 +76,8 @@ input, select, .form-control {
 }
 .btn {
   border-color: rgb(0,32,176,0.3);
-  margin-left: 3rem;
   padding: 0rem 0.5rem 0rem 0.5rem;
-  font-size: 1.5rem;
+  font-size: 1.1rem;
  }
 
 .nav-link {
@@ -129,6 +127,10 @@ input, select, .form-control {
   padding: 0.3rem 1rem;
 }
 
+.modal-footer {
+  padding: 0.1rem 1rem;
+}
+
 .card-header {
   padding: 0.5rem 1rem;
   margin-bottom: 0;
@@ -154,16 +156,20 @@ input, select, .form-control {
 /* utiliser fixeur pour contenir les positions absolute, dans le contexte*/
 .fixeur {
   position: relative;
+  margin: 5px 1px;
 }
 
 /* utiliser fixe après fixeur pour rester dans son contexte, sinon c'est vraiment absolu*/
 .fixe {
   position: absolute;
-  top: -33px;
-  left: -8px;
+  top: -25px;
+  left: -2px;
+  padding: 4px 1px
 }
 
 .small {
   margin-right: 0;
+  margin-left:0;
+  align-items: top;
 } 
 

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { PARAMS } from 'src/app/models/params';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-params',
@@ -13,18 +13,30 @@ export class ParamsComponent implements OnInit {
   closeResult = '';
   repas = ""; 
   paramsForm!: FormGroup;
+  jour= new Date();
 
   constructor(
+    private formBuilder: FormBuilder,
     private location: Location,
   ) {
     this.location = location
+    console.log(location)
   }
 
   onRepasChanged(newrepas: string) {
     this.repas = newrepas
   }
 
-  ngOnInit(): void {};
+  ngOnInit(): void {
+    this.paramsForm = this.formBuilder.group({
+      jour: this.jour,
+      origine: "",
+      camp: "",
+      repas: "",
+      fournisseur: "",
+      tva: "",
+    })
+  }
 
   goBack(): void {
     this.location.back();

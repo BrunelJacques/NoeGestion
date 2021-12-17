@@ -11,13 +11,8 @@
     <form [formGroup]="paramsForm" class="form-group">
       
       <label class="" for="jour">Date:</label>
-      <input id="start"
-        type="date" 
-        min="2021-01-01" max="2099-12-31"
-        [ngModel]="params.jour | date:'yyyy-MM-dd'" 
-        (ngModelChange)="params.jour = $event"
-        [value]="params.jour | date:'yyyy-MM-dd'" 
-        #jour="ngModel" required>
+      <input id="jour" formControlName="jour" 
+            class="form-control-sm">
 
       <label for="origine">Vers :</label>
       <select id="origine" name="origine" formControlName="origine" class="form-control-sm">
@@ -41,8 +36,8 @@
         Dom</label>
       <input type="text" class="form-control" id="domestic" value="0.0">
 
-      <div class="modal-footer align-items-end">
-        <label class="small">(vers {{params.location}})</label>
+      <div class="modal-footer align-items-center>">
+        <label class="small">(vers_{{params.location}})</label>
         <div class="fixeur">
           <label class="fixe bi-check" for="ok"></label>
         </div>
