@@ -11,10 +11,10 @@ export interface Params {
 
 export const  PARAMS: Params= {
     jour: new Date(),
-    origine: "",
+    origine: "cuisine",
     repas: "",
     camp: "",
     fournisseur: "",
-    tva: "",
+    tva: "ttc",
     location: "home"
   }

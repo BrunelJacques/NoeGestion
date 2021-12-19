@@ -15,7 +15,6 @@ export class ParamsComponent implements OnInit {
   closeResult = '';
   repas = ""; 
   paramsForm!: FormGroup;
-  dte = new Date();
   jour = ""
 
   constructor(
@@ -23,8 +22,8 @@ export class ParamsComponent implements OnInit {
     private formBuilder: FormBuilder,
     private location: Location,
   ) {
-    this.jour = this.datePipe.transform(this.dte, 'dd/MM/yyyy');
     this.location = location
+    //this.params.jour.setDate(this.params.jour.getDate() - 10);
   }
 
   onRepasChanged(newrepas: string) {
@@ -33,17 +32,23 @@ export class ParamsComponent implements OnInit {
 
   ngOnInit(): void {
     this.paramsForm = this.formBuilder.group({
-      jour: this.jour,
-      origine: "",
-      camp: "",
-      repas: "",
-      fournisseur: "",
-      tva: "",
+      jour: this.datePipe.transform(this.params.jour, 'yyyy-MM-dd'),
+      origine: this.params.origine,
+      camp: this.params.camp,
+      tva: this.params.tva,
     })
   }
 
+  okBack(): void {
+    this.params.jour = new Date(this.paramsForm.value.jour),
+    this.params.origine = this.paramsForm.value.origine,
+    this.params.camp = this.paramsForm.value.camp,
+    this.params.tva = this.paramsForm.value.tva,
+    this.params.repas = this.repas,
+    this.goBack()
+  }
+
   goBack(): void {
-    console.log (this.repas, this.params)
     this.location.back();
   }
 }
