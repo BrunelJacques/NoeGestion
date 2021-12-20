@@ -21,16 +21,19 @@
         <option value="odIn">Régularisation</option>
       </select>
 
-      <app-repas 
-        [repas]="this.repas"
-        (changed)="onRepasChanged($event)">
-      </app-repas>
+      <label for="camp">Camp:</label>
+      <input id="camp" name="camp" formControlName="camp" class="form-control-sm">
 
       <label for="tva">Tva mtt:</label>
       <select id="tva" name="tva" formControlName="tva" class="form-control-sm">
         <option value="ttc">en TTC</option>
         <option value="ht">en HT</option>
       </select>
+      <hr>
+      <app-repas 
+        [repas]="this.repas"
+        (changed)="onRepasChanged($event)">
+      </app-repas>
 
       <div class="modal-footer align-items-center>">
         <label class="small">(vers_{{params.location}})</label>

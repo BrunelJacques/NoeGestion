@@ -5,7 +5,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
-import { InMemoryDataService } from './models/in-memory-data.service';
+import { InMemDtServMvts } from './models/in-memory-data.service';
+//import { InMemDtServCamps } from './models/in-memory-data.service';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -69,10 +70,11 @@ import { RepasComponent } from './components/stsorties/repas/repas.component';
     // and returns simulated server responses.
     // Remove it when a real server is ready to receive requests.
     HttpClientInMemoryWebApiModule.forRoot(
-      InMemoryDataService, { dataEncapsulation: false }
+      InMemDtServMvts, { dataEncapsulation: false }
     ),
      NgbModule
   ],
+
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   providers: [
     UserService,

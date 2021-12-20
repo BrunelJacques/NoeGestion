@@ -5,7 +5,7 @@ import { Mouvement } from './stmouvement';
 @Injectable({
   providedIn: 'root'
 })
-export class InMemoryDataService implements InMemoryDbService {
+export class InMemDtServMvts implements InMemoryDbService {
   createDb() {
     const mvts = [
       {
@@ -986,12 +986,35 @@ export class InMemoryDataService implements InMemoryDbService {
     ];
     return {mvts};
   }
-
-  // Overrides the genId method to ensure that a hero always has an id.
+    // Overrides the genId method to ensure that a hero always has an id.
   // If the heroes array is empty,
   // the method below returns the initial number (11).
   // if the array is not empty, the method below returns the highest id + 1.
   genId(mvts: Mouvement[]): number {
     return mvts.length > 0 ? Math.max(...mvts.map(mvt => mvt.id)) + 1 : 11;
+  }
+};
+
+export class InMemDtServCamps implements InMemoryDbService {
+  createDb() {
+    const mvts = [
+    {
+        id: 31,
+        libelle: "31 Camp Montagne",
+        },  
+    {
+        id: 22,
+        libelle: "22 Camp aventure",
+    },
+    {
+        id: 21,
+        libelle: "21 Camp découverte",
+    },
+    {
+        id: 23,
+        libelle: "23 Camp corse s1",
+        },
+    ];
+    return {mvts};
   }
 }
