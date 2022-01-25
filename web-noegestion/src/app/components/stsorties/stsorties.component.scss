@@ -1,8 +1,8 @@
 * {
-  margin: 0 0 0px;
-  }
+  margin: 0px 0px 0px;
+  padding: 2px 1px;  }
 
-.unresponsive thead tr th {
+.zzunresponsive thead tr th {
   min-width: 100px;
 }
   
@@ -22,31 +22,19 @@
 }
 
 .left {
-    margin-left: 5px;
     margin-bottom: 0px;
 }
 
-.zzitem {
-  color: #02b;
-  height: 1.2em;
-  font-size: 0.85rem;
-  position: relative;
-  top: -1px;
-  margin-right: .3rem;
-  text-align: right;
-  border-radius: 0px 0 0 0px;
-  padding: 5px;
-  width: 80px;
+.item  {
+  padding: 5px 0 0 4px;
 }
 
-.zzitemid {
-  color: #02b;
-  /*background-color:#e0e7f0;*/
-  font-size: 0.85rem;
-  text-align: left;
-  border-radius: 0px 0 0 0px;
-  padding: 5px;
-  width: 170px;
+.ctnbtn {
+  padding: 2px;
+}
+
+th {
+  font-weight: 400;
 }
 
 

@@ -6,11 +6,12 @@
 }
 
 body {
-  padding-top: 3rem;
+  padding-top: 0rem;
   color: #3F729B;
   background-color: whitesmoke;
   line-height: 0.9;
   margin: 0;
+  font-size: 0.6rem;
   /*margin-left: 2%*/
 }
 header {
@@ -22,9 +23,11 @@ header {
   opacity: 1;
   background-color: #3F729B;
 }
+
 main {
   margin-top: 0.8rem;
 }
+
 footer {
   margin: 0;
   text-align: center;
@@ -33,6 +36,7 @@ footer {
   color: rgb(50,50,120);
   background: rgb(210, 230, 250); 
   padding: 0.2em;
+
 }
 
 label {
@@ -47,7 +51,7 @@ label {
 input, select, .form-control {
   width: 50%;
   padding: 0rem 0.75rem;
-  font-size: 1rem;
+  font-size: 0.6rem;
   color: #0a247a;
   background-color: lightyellow;
   border: 1px solid #ced4da;
@@ -77,7 +81,7 @@ input, select, .form-control {
 .btn {
   border-color: rgb(0,32,176,0.3);
   padding: 0rem 0.5rem 0rem 0.5rem;
-  font-size: 1.1rem;
+  font-size: 0.6rem;
  }
 
 .nav-link {
@@ -153,17 +157,11 @@ input, select, .form-control {
   padding: 0rem 0.5rem 0rem 1.5rem;
 }
 
-/* utiliser fixeur pour contenir les positions absolute, dans le contexte*/
-.fixeur {
+/* relatif positionne selon le dernier élément static (normal)*/
+.relatif40 {
   position: relative;
-  margin: 5px 1px;
-}
-
-/* utiliser fixe après fixeur pour rester dans son contexte, sinon c'est vraiment absolu*/
-.fixe {
-  position: absolute;
-  top: -25px;
-  left: -2px;
+  top: 0px;
+  left: 40px;
   padding: 4px 1px
 }
 
@@ -172,4 +170,3 @@ input, select, .form-control {
   margin-left:0;
   align-items: top;
 } 
-
