@@ -13,7 +13,8 @@ import { DatePipe } from '@angular/common';
 export class ParamsComponent implements OnInit {
   params= PARAMS;
   closeResult = '';
-  repas = ""; 
+  repas = "";
+  origine = "";
   paramsForm!: FormGroup;
   jour = ""
 
@@ -23,11 +24,16 @@ export class ParamsComponent implements OnInit {
     private location: Location,
   ) {
     this.location = location
-    //this.params.jour.setDate(this.params.jour.getDate() - 10);
+    this.origine = this.params.origine
   }
 
   onRepasChanged(newrepas: string) {
     this.repas = newrepas
+  }
+
+  onOrigineChanged(neworigine: any) {
+    this.origine = neworigine
+    this.origine = 'camp'
   }
 
   ngOnInit(): void {

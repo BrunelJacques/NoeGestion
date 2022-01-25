@@ -34,7 +34,8 @@ import { UserService } from './services/user.service';
 import { SortieComponent } from './components/stsorties/sortie/sortie.component';
 import { SortieService } from './services/sortie.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { RepasComponent } from './components/stsorties/repas/repas.component';
+import { RepasComponent } from './components/stsorties/params/repas/repas.component';
+import { CampComponent } from './components/stsorties/params/camp/camp.component';
 
 
 @NgModule({
@@ -58,6 +59,7 @@ import { RepasComponent } from './components/stsorties/repas/repas.component';
     MessagesComponent,
     SortieComponent,
     RepasComponent,
+    CampComponent,
   ],
   imports: [
     HttpClientModule,
