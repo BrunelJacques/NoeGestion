@@ -11,10 +11,11 @@ import { DatePipe } from '@angular/common';
   providers: [DatePipe,]
 })
 export class ParamsComponent implements OnInit {
-  params= PARAMS;
+  params = PARAMS;
   closeResult = '';
   repas = "";
   origine = "";
+  camp = "";
   paramsForm!: FormGroup;
   jour = ""
 
@@ -25,15 +26,16 @@ export class ParamsComponent implements OnInit {
   ) {
     this.location = location
     this.origine = this.params.origine
+    this.camp = this.params.camp
+
   }
 
-  onRepasChanged(newrepas: string) {
-    this.repas = newrepas
+  onRepasChange(newrepas: any) {
+    this.repas = newrepas.target.value
   }
 
-  onOrigineChanged(neworigine: any) {
-    this.origine = neworigine
-    this.origine = 'camp'
+  onOrigineChange(neworigine: any) {
+    this.origine = neworigine.target.value
   }
 
   ngOnInit(): void {
@@ -42,13 +44,13 @@ export class ParamsComponent implements OnInit {
       origine: this.params.origine,
       camp: this.params.camp,
       tva: this.params.tva,
-    })
+      })
   }
 
   okBack(): void {
     this.params.jour = new Date(this.paramsForm.value.jour),
     this.params.origine = this.paramsForm.value.origine,
-    this.params.camp = this.paramsForm.value.camp,
+    this.params.camp = this.camp,
     this.params.tva = this.paramsForm.value.tva,
     this.params.repas = this.repas,
     this.goBack()

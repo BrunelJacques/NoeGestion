@@ -48,14 +48,14 @@ label {
   border: 0px solid;
 }
 
-input, select, .form-control {
+input, select, .form-control, .form-control-sm {
   width: 50%;
   padding: 0rem 0.75rem;
   font-size: 0.6rem;
   color: #0a247a;
   background-color: lightyellow;
   border: 1px solid #ced4da;
-  margin: 3px;
+  margin: 2px;
 
 }
 
@@ -149,7 +149,7 @@ input, select, .form-control {
 }
 
 .bi-check {
-  font-size: 2.5rem; 
+  font-size: 1.5rem; 
   color: green;
 }
 

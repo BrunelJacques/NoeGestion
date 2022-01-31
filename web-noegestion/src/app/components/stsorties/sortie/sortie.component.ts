@@ -61,7 +61,7 @@ export class SortieComponent implements OnInit {
       });
   }
 
-  onRepasChanged(newrepas: string) {
+  onRepasChange(newrepas: any) {
     this.sortieForm.patchValue({
       repas: newrepas,
     })

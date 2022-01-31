@@ -3,7 +3,7 @@
 <div class="col-sm-10 col-sm-offset-2">
 <app-repas 
   [repas]="this.repas"
-  (changed)="onRepasChanged($event)" 
+  (change)="onRepasChange($event)" 
 >
 </app-repas>
 <form [formGroup]="sortieForm" (ngSubmit)="onSubmit()" class="form-group">

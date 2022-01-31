@@ -16,26 +16,23 @@
             min="2020-01-01" max="2099-12-31">
       <label for="origine">Vers :</label>
       <select id="origine" name="origine"
-        (changed)="onOrigineChanged($event)"
+        (change)="onOrigineChange($event)"
         formControlName="origine" 
         class="form-control-sm">
         <option value="cuisine">Repas en cuisine</option>
         <option value="camp">Camp Extérieur</option>
         <option value="odIn">Régularisation</option>
       </select>
-      <div>{{origine}}</div>
-      <app-origine *ngIf="origine == 'camp'">
-      </app-origine>
+      <app-camp *ngIf="origine == 'camp'" [(camp)]="camp">
+      </app-camp>
       <label for="tva">Tva mtt:</label>
       <select id="tva" name="tva" formControlName="tva" class="form-control-sm">
         <option value="ttc">en TTC</option>
         <option value="ht">en HT</option>
       </select>
       <hr>
-      <app-repas 
-        [(ngModel)]="repas">
-      </app-repas>
-
+      <app-repas></app-repas>
+        <!--impossible en 'form' [(ngModel)]="repas"-->
       <div class="modal-footer align-items-center>">
         <label class="small">(vers_{{params.location}})</label>
         <div>
@@ -44,7 +41,6 @@
         <button id="ok" class="btn btn-primary" (click)="okBack()">
           &nbsp;ok
         </button>
-
       </div> 
     </form>
   </div>
