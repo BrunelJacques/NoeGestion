@@ -8,7 +8,7 @@
         (click)="goBack()">
       </button>
     </div>
-    <form [formGroup]="paramsForm" class="form-group">
+    <form [formGroup]="paramsForm" class="form-group was-validated"  (ngSubmit)="onSubmitForm()">
       
       <label class="" for="jour">Date:</label>
       <input type= "date" id="jour" formControlName="jour" 
@@ -18,11 +18,13 @@
       <select id="origine" name="origine"
         (change)="onOrigineChange($event)"
         formControlName="origine" 
-        class="form-control-sm">
+        class="form-control-sm" required aria-label="select example">
+        <option value="">Choisissez</option>
         <option value="cuisine">Repas en cuisine</option>
         <option value="camp">Camp Extérieur</option>
         <option value="odIn">Régularisation</option>
       </select>
+      <label class="invalid-feedback">!!! mauvais choix </label>
       <app-camp *ngIf="origine == 'camp'" [(camp)]="camp">
       </app-camp>
       <label for="tva">Tva mtt:</label>
@@ -32,16 +34,18 @@
       </select>
       <hr>
       <app-repas [(repas)]="repas"></app-repas>
-        <!--impossible en 'form' [(ngModel)]="repas"-->
       <div class="modal-footer align-items-center>">
         <label class="small">(vers_{{params.location}})</label>
-        <div>
-          <label class="relatif40 bi-check" for="ok"></label>
-        </div>
-        <button id="ok" class="btn btn-primary" (click)="okBack()">
+        <button id="ok" class="btn btn-primary bi-check" 
+                type="submit"
+                [disabled]="paramsForm.invalid"
+                >
           &nbsp;ok
         </button>
       </div> 
     </form>
+    <div *ngIf="paramsForm.hasError('invalidParams')">
+      La saisie du camp est obligatoire!!!
+    </div>
   </div>
 </div>

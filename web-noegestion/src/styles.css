@@ -84,6 +84,12 @@ input, select, .form-control, .form-control-sm {
   color: #02b;
   background: #e6f0fa;                 
 }
+
+.btn-primary:disabled {
+  color: rgb(0, 0, 125, 0.8);
+  background: lightgray;               
+}
+
 .btn {
   border-color: rgb(0,32,176,0.3);
   padding: 0rem 0.5rem 0rem 0.5rem;
@@ -156,12 +162,16 @@ input, select, .form-control, .form-control-sm {
 }
 
 .bi-check {
-  font-size: 1.5rem; 
+  font-size: 1rem; 
   color: green;
+}
+.bi-check:disabled {
+  font-size: 0.8rem; 
+  color: gray;
 }
 
 #ok {
-  padding: 0rem 0.5rem 0rem 1.5rem;
+  padding: 0rem 0.2rem 0rem 0.1rem;
 }
 
 /* relatif positionne selon le dernier élément static (normal)*/

@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { PARAMS } from 'src/app/models/params';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
+import { ParamsValidator } from 'src/app/services/params.validator';
 
 @Component({
   selector: 'app-params',
@@ -39,9 +40,11 @@ export class ParamsComponent implements OnInit {
       jour: this.datePipe.transform(this.params.jour, 'yyyy-MM-dd'),
       origine: this.params.origine,
       camp: this.params.camp,
-      repas: this.params.repas,
-      tva: this.params.tva,
-      })
+      repas: [this.params.repas,],
+      tva: [this.params.tva, Validators.required],
+    },
+    // NOTE Validateur de haut niveau
+    { validator : ParamsValidator.campValidator });
   }
 
   okBack(): void {
@@ -49,12 +52,16 @@ export class ParamsComponent implements OnInit {
     this.params.origine = this.paramsForm.value.origine,
     this.params.camp = this.camp,
     this.params.tva = this.paramsForm.value.tva,
-    this.params.repas = this.repas,
-    console.log(this.params)
+    this.params.repas = this.paramsForm.value.repas,
     this.goBack()
+  }
+  onSubmitForm(){ 
+    this.okBack()
   }
 
   goBack(): void {
+    console.log(this.params )
+    this.params.repas = this.paramsForm.value.repas,
     this.location.back();
   }
 }
