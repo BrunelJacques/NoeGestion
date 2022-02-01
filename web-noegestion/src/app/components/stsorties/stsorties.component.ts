@@ -27,7 +27,7 @@ export class StSortiesComponent implements OnInit {
     this.loadScript('assets/params/js/index.js');
     this.getSorties();
     PARAMS.location= "sorties"
-  }
+  }/*  */
 
   loadScript(name: string): void {
     const s = document.createElement('script');

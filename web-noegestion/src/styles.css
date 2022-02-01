@@ -5,6 +5,12 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+h4 {font-size: 1.1rem;}
+
+h5 {font-size: 1rem;}
+
+h6 {font-size: 0.7rem;}
+
 body {
   padding-top: 0rem;
   color: #3F729B;
@@ -14,6 +20,7 @@ body {
   font-size: 0.6rem;
   /*margin-left: 2%*/
 }
+
 header {
   position: absolute;
   width: 100%;
@@ -31,7 +38,6 @@ main {
 footer {
   margin: 0;
   text-align: center;
-  font-size: 9pt;
   font-style:italic;
   color: rgb(50,50,120);
   background: rgb(210, 230, 250); 
@@ -81,7 +87,8 @@ input, select, .form-control, .form-control-sm {
 .btn {
   border-color: rgb(0,32,176,0.3);
   padding: 0rem 0.5rem 0rem 0.5rem;
-  font-size: 0.6rem;
+  font-size: 0.8rem;
+  line-height: 2;
  }
 
 .nav-link {

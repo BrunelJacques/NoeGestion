@@ -2,7 +2,11 @@
 <h6 class="left">
   <span ng-controller="CtrlParams">
     Le: {{params.jour| date:'dd/MM/yyyy'}}
-    &nbsp;Vers: {{params.origine}}&nbsp;
+    &nbsp; 
+    <span *ngIf="params.origine == 'odIn'">Régul.</span> 
+    <span *ngIf="params.origine == 'camp'">Vers: '{{params.camp}}'</span>
+    &nbsp;
+    <span *ngIf="params.repas != ''">Repas '{{params.repas}}'&nbsp;</span>
     <a class="bi bi-pencil-fill" routerLink="/params"></a>
   </span>
 </h6>
@@ -22,12 +26,12 @@
 <table class="table table-striped" >
   <thead class="table-light">
     <tr>
-      <th class="">btn</th>
-      <th class="">Article</th>
-      <th class="">Qté</th>
-      <th class="">Unit</th>
-      <th class="">Pour</th>
-      <th class="">Coût</th>
+      <th class="col-6">Article</th>
+      <th class="col-1">btn</th>
+      <th class="col-4">Qté</th>
+      <th class="col-4">Unit</th>
+      <th class="col-4">Pour</th>
+      <th class="col-4">Coût</th>
     </tr>
   </thead>
   <tbody>
@@ -37,11 +41,11 @@
     (click)="openSortie(mvt)"
     > -->
     <tr *ngFor="let mvt of mvts;">
-        <td class= "ctnbtn">
-        <button type="button" c class="btn btn-primary" (click)="openMvt(mvt)">Details</button>
-        </td>
         <td class="item" routerLink="/sortie/{{mvt.id}}">  {{mvt.article}}</td>
-        <td class= "item" routerLink="/sortie/{{mvt.id}}"> {{mvt.qteMouvement * -1 | number : '1.0-5'}} </td>
+        <td class= "ctnbtn">
+          <button type="button" class="btn btn-primary" (click)="openMvt(mvt)">...</button>
+          </td>
+          <td class= "item" routerLink="/sortie/{{mvt.id}}"> {{mvt.qteMouvement * -1 | number : '1.0-5'}} </td>
         <td class= "item" routerLink="/sortie/{{mvt.id}}"> {{mvt.uniteStock}} </td>
         <td class= "item" routerLink="/sortie/{{mvt.id}}"> x </td>
         <td class= "col item" routerLink="/sortie/{{mvt.id}}"> {{mvt.uniteStock}} </td>

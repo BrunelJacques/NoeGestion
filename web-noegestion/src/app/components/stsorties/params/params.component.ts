@@ -27,11 +27,7 @@ export class ParamsComponent implements OnInit {
     this.location = location
     this.origine = this.params.origine
     this.camp = this.params.camp
-
-  }
-
-  onRepasChange(newrepas: any) {
-    this.repas = newrepas.target.value
+    this.repas = this.params.repas
   }
 
   onOrigineChange(neworigine: any) {
@@ -43,6 +39,7 @@ export class ParamsComponent implements OnInit {
       jour: this.datePipe.transform(this.params.jour, 'yyyy-MM-dd'),
       origine: this.params.origine,
       camp: this.params.camp,
+      repas: this.params.repas,
       tva: this.params.tva,
       })
   }
@@ -53,6 +50,7 @@ export class ParamsComponent implements OnInit {
     this.params.camp = this.camp,
     this.params.tva = this.paramsForm.value.tva,
     this.params.repas = this.repas,
+    console.log(this.params)
     this.goBack()
   }
 
