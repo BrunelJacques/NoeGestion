@@ -1,13 +1,10 @@
 from django.contrib import admin
 
-from django.contrib import admin
-
-from .models import stMouvements, stArticles, stEffectifs,stInventaires
-
+from .models import Starticles, Stmouvements, Steffectifs, Stinventaires
 # Register your models here, pour les gérer avec interface admin.
 
-admin.site.register(stMouvements)
-admin.site.register(stArticles)
-admin.site.register(stEffectifs)
-admin.site.register(stInventaires)
+admin.site.register(Stmouvements)
+admin.site.register(Starticles)
+admin.site.register(Steffectifs)
+admin.site.register(Stinventaires)
 
