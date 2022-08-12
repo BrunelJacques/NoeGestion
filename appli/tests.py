@@ -1,7 +1,6 @@
 #from django.test import TestCase
-from django.db.models import F, Count, Sum
-from appli.models import geAnalytiques,stArticles,stMouvements
-import os
+from models_ancien import stMouvements
+
 #os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'serveur_django.settings')
 
 # tests ----------------------------------------------------------------------

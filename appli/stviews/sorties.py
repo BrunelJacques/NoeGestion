@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from django.shortcuts import get_object_or_404
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse
 from outils import xformat
 from django.utils import timezone
 
-from ..models import stMouvements,stArticles
+from models_ancien import stMouvements,stArticles
 
 def getSorties(jour,origine):
     resultat = dict()
