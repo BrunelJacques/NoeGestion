@@ -13,20 +13,17 @@ from .views import (
 )
 
 urlpatterns=[
-  path('register/', RegistrationAPIView.as_view(), name='register_user'),
-  path('login/', LoginAPIView.as_view(), name='login_user'),
-  path('logout/', LogoutAPIView.as_view(), name="logout_user"),
-  path('user/', UserRetrieveUpdateAPIView.as_view(), name='user'),  # kwargs={'id': None},
-  path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-  path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-  path('home',views.home,name='home'),
-  path('home/<name>', views.home, name='home'),
-  path('', views.home, name='home'),
-  #path('auth/login/', obtain_jwt_token),
-  #path('auth/refresh-token/', refresh_jwt_token),
-
+  #Authentification
+  path('register', RegistrationAPIView.as_view(), name='register_user'),
+  path('login', LoginAPIView.as_view(), name='login_user'),
+  path('logout', LogoutAPIView.as_view(), name="logout_user"),
+  path('user', UserRetrieveUpdateAPIView.as_view(), name='user'),  # kwargs={'id': None},
+  path('token', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+  path('token/refresh', TokenRefreshView.as_view(), name='token_refresh'),
+  # API Noegestion
   path('sorties', views.sorties, name='sorties'),
   path('mouvements', views.mouvements, name='mouvements'),
+  path('mouvement', views.mouvement, name='mouvements'),
   path('articles', views.articles, name='articles'),
   path('article/<str:id>', views.article, name='article'),
   path('effectifs', views.effectifs, name='effectifs'),

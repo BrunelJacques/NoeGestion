@@ -75,10 +75,10 @@ def PostInventaire(db,cloture=datetime.date.today(),inventaire=[[],]):
     # delete puis recrée l'inventaire à la date de cloture
     if cloture == None:
         cloture = datetime.date.today()
-    finIso = xformat.DatetimeToStr(cloture,iso=True)
+    finIso = xformat.datetime_to_str(cloture, iso=True)
 
     ordi = os.environ['USERDOMAIN']
-    dteSaisie = xformat.DatetimeToStr(datetime.date.today(),iso=True)
+    dteSaisie = xformat.datetime_to_str(datetime.date.today(), iso=True)
     table = GetNomTable(db,'inventaires')
     # Appelle l'inventaire précédent
     if table[:5] == 'appli':
@@ -135,7 +135,7 @@ def _GetLastInventaireNoethys(db,cloture=None):
         cloture = datetime.date.today()
     # Appelle l'inventaire précédent
     lstChamps = ['IDdate','IDarticle','qteStock','prixMoyen',]
-    finIso = xformat.DatetimeToStr(cloture,iso=True)
+    finIso = xformat.datetime_to_str(cloture, iso=True)
 
     req = """   SELECT %s
                 FROM stInventaires
@@ -169,7 +169,7 @@ def GetLastInventaire(db,cloture=None):
     # Appelle l'inventaire précédent
     lstChamps = ['jour','article_id','appli_stinventaires.qteStock',
                  'appli_stinventaires.prixMoyen',]
-    finIso = xformat.DatetimeToStr(cloture,iso=True)
+    finIso = xformat.datetime_to_str(cloture, iso=True)
 
     req = """   SELECT %s
                 FROM appli_stinventaires
@@ -205,7 +205,7 @@ def GetMouvements(db,apres=None,fin=None):
     if apres == None:
         apres = fin - datetime.timedelta(days=180)
     finIso = xformat.DateToIso(fin)
-    apresIso = xformat.DatetimeToStr(apres,iso=True)
+    apresIso = xformat.datetime_to_str(apres, iso=True)
     # Appelle les mouvements de la période
     if table[:5] == 'appli':
         lstChamps = ['ID','jour','origine','article_id','qteMouvement','prixUnit']
