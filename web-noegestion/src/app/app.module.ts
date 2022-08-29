@@ -10,7 +10,7 @@ import { InMemDtServMvts } from './models/in-memory-data.service';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { AppRoutingModule } from './app-routing.module';
+import { AppRoutingModule, ROUTES } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 
@@ -34,8 +34,10 @@ import { UserService } from './services/user.service';
 import { SortieComponent } from './components/stsorties/sortie/sortie.component';
 import { SortieService } from './services/sortie.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { RouterModule } from "@angular/router";
 import { RepasComponent } from './components/stsorties/params/repas/repas.component';
 import { CampComponent } from './components/stsorties/params/camp/camp.component';
+//import { Constantes } from './services/general/constantes'
 
 
 @NgModule({
@@ -60,6 +62,7 @@ import { CampComponent } from './components/stsorties/params/camp/camp.component
     SortieComponent,
     RepasComponent,
     CampComponent,
+    //Constantes,
   ],
   imports: [
     HttpClientModule,
@@ -71,10 +74,11 @@ import { CampComponent } from './components/stsorties/params/camp/camp.component
      // The HttpClientInMemoryWebApiModule module intercepts HTTP requests
     // and returns simulated server responses.
     // Remove it when a real server is ready to receive requests.
-    HttpClientInMemoryWebApiModule.forRoot(
-      InMemDtServMvts, { dataEncapsulation: false }
-    ),
-     NgbModule
+    //HttpClientInMemoryWebApiModule.forRoot(
+    //  InMemDtServMvts, { dataEncapsulation: false }
+    //),
+     NgbModule,
+    RouterModule.forRoot(ROUTES)
   ],
 
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],

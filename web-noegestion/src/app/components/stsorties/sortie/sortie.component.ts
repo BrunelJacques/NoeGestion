@@ -30,7 +30,7 @@ export class SortieComponent implements OnInit {
     private route: ActivatedRoute,
     private stMvtService: StMvtService,
     private sortieService: SortieService,
-    private location: Location    
+    private location: Location
   ) {}
 
   ngOnInit(): void {
@@ -52,13 +52,23 @@ export class SortieComponent implements OnInit {
         this.sortie = sortie;
         this.sortieForm.patchValue({
           article: this.sortie.article,
-          qteMouvement: -1 * this.sortie.qteMouvement,
-          prixUnit: this.sortie.prixUnit,
+          qteMouvement: -1 * this.sortie.qtemouvement,
+          prixUnit: this.sortie.prixunit,
           repas: this.sortie.repas,
         })
-        
-      this.repas = this.sortie.repas;
+
+      this.repas = this.getRepasString(this.sortie.repas);
       });
+  }
+
+  getRepasString(idrepas: number): string{
+    if (idrepas == 1){
+      return "matin"
+    }
+    else if (idrepas == 2){
+      return "midi"
+    }
+    else return "piyou"
   }
 
   onRepasChange(newrepas: any) {
@@ -93,5 +103,5 @@ export class SortieComponent implements OnInit {
       );*/
       this.sortieService.addSortie(newSortie)
       this.router.navigate(['/sorties'])
-  } 
+  }
 }

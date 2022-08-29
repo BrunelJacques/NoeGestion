@@ -12,8 +12,6 @@ export class SortieService {
   }
 
   addSortie(sortie: Mouvement ) {
-    console.log(sortie)
-    //this.sorties.push(sortie);
-    //this.emitSortie();
+
   }
 }

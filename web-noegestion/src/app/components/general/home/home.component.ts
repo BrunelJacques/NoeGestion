@@ -19,9 +19,9 @@ export class HomeComponent implements OnInit {
     messageService: MessageService
   ) {
     messageService.clear()
-  } 
-  
-  
+  }
+
+
 
   ngOnInit(): void {
     this.loadScript('assets/params/js/index.js');

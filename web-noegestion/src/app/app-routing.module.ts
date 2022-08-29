@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router'; 
+import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './components/general/guards/auth.guard';
 import { LoginComponent } from './components/general/login/login.component';
 import { StSortiesComponent } from './components/stsorties/stsorties.component';
@@ -15,11 +15,11 @@ import { ParamsComponent } from './components/stsorties/params/params.component'
 import { MessagesComponent } from './components/general/messages/messages.component';
 
 
-const routes: Routes = [
+export const ROUTES: Routes = [
 
-  { path: '', component: HomeComponent },
+  { path: '', component: HomeComponent,  },
   { path: 'stocks', component: StSortiesComponent },
-  { path: 'km', component: KmDepartComponent },  
+  { path: 'km', component: KmDepartComponent },
   { path: 'sorties', component: StSortiesComponent, },
   { path: 'sortie', component: SortieComponent, canActivate: [AuthGuard] },
   { path: 'sortie/:id', component: SortieComponent, canActivate: [AuthGuard] },
@@ -31,11 +31,11 @@ const routes: Routes = [
   { path: 'depart', component: KmDepartComponent, canActivate: [AuthGuard] },
   { path: 'arrivee', component: KmArriveeComponent, canActivate: [AuthGuard] },
   { path: 'params', component: ParamsComponent, canActivate: [AuthGuard] },
-  { path: 'messages', component: MessagesComponent },  
+  { path: 'messages', component: MessagesComponent },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(ROUTES)],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

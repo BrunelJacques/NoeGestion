@@ -55,7 +55,7 @@ export class ParamsComponent implements OnInit {
     this.params.repas = this.paramsForm.value.repas,
     this.goBack()
   }
-  onSubmitForm(){ 
+  onSubmitForm(){
     this.okBack()
   }
 
