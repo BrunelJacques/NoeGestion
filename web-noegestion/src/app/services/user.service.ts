@@ -6,14 +6,19 @@ export interface User {
   id: number;
   firstName: string;
   lastName: string;
-  about: string;
+  birthday: string;
+  mail: string;
+  password: string;
 }
 
 const fakeData = {
   id: 0,
   firstName: 'Cory',
   lastName: 'Rylan',
-  about: 'Web Developer'
+  birthday: '',
+  mail: 'xxxx@yyy',
+  password: '***'
+
 };
 
 

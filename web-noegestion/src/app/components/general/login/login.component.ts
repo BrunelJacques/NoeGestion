@@ -32,9 +32,17 @@ export class LoginComponent {
     this.user = this.userService.loadUser().pipe(
       tap(user => this.form.patchValue(user))
     );   
-    
+  }
 
+  
+  okBack(): void {
+    this.goBack()
+  }
+  onSubmitForm(){
+    this.okBack()
+  }
 
+  goBack(): void {
   }
 
   submit() {
