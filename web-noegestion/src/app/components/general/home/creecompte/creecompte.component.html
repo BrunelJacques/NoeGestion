@@ -1,6 +1,6 @@
 <!-- origine: https://coryrylan.com/blog/using-angular-forms-with-async-data-->
 <hr>
-<form *ngIf="user | async; else loading" [formGroup]="form" (ngSubmit)="submit()">
+<form (ngSubmit)="submit()">
   <button type="button" class="close btn btn-primary bi-reply" 
     aria-label="Close" (click)="goBack()">
   </button>

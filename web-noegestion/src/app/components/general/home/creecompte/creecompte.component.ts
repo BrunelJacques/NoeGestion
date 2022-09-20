@@ -2,13 +2,13 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { UserService, User } from '../../../services/user.service';
+import { UserService, User } from '../../../../services/user.service';
 
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  selector: 'app-creecompte',
+  templateUrl: './creecompte.component.html',
+  styleUrls: ['./creecompte.component.scss']
 })
 
 export class LoginComponent {
