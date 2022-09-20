@@ -27,7 +27,7 @@ import { StInventaireComponent } from './components/stinventaire/stinventaire.co
 import { KmDepartComponent } from './components/kmdepart/kmdepart.component';
 import { KmArriveeComponent } from './components/kmarrivee/kmarrivee.component';
 import { CustomDatePipe } from './models/custom.datepipe';
-import { LoginComponent } from './components/general/login/login.component';
+import { LoginComponent } from './components/general/home/login/login.component';
 import { MessagesComponent } from './components/general/messages/messages.component';
 import { ParamsComponent } from './components/stsorties/params/params.component';
 import { UserService } from './services/user.service';

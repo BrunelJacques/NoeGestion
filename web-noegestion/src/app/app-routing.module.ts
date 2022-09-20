@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './components/general/guards/auth.guard';
-import { LoginComponent } from './components/general/login/login.component';
+import { LoginComponent } from './components/general/home/login/login.component';
 import { StSortiesComponent } from './components/stsorties/stsorties.component';
 import { HomeComponent } from './components/general/home/home.component';
 import { SortieComponent } from './components/stsorties/sortie/sortie.component';

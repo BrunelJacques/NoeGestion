@@ -1,0 +1,72 @@
+<!-- origine: https://coryrylan.com/blog/using-angular-forms-with-async-data-->
+<hr>
+<form *ngIf="user | async; else loading" [formGroup]="form" (ngSubmit)="submit()">
+  <button type="button" class="close btn btn-primary bi-reply" 
+    aria-label="Close" (click)="goBack()">
+  </button>
+  <div class="modal-header">
+    <h5 class="modal-title">Créez votre compte</h5>
+    <div>
+      Déjà inscrit ?
+      <a ref="//matthania.com">Se connecter</a>
+    </div>
+  </div>
+
+  <label for="firstname">
+    Prénom
+  </label>
+  <input id="firstname" class="form-control-sm" formControlName="firstName" />
+  <div *ngIf="form.controls.firstName.errors?.required && form.controls.firstName.touched" class="error">
+    <label></label>
+    *Required
+  </div>
+
+  <label for="lastname">
+    Nom
+  </label>
+  <input id="lastname" class="form-control-sm" formControlName="lastName" />
+  <div *ngIf="form.controls.lastName.errors?.required && form.controls.lastName.touched" class="error">
+    <label></label>
+    *Required
+  </div>
+
+  <label for="birthday">
+    Date de naissance
+  </label>
+  <input type= "date" id="birthday"  class="form-control-sm" formControlName="lastName" />
+  <div *ngIf="form.controls.lastName.errors?.required && form.controls.lastName.touched" class="error">
+    <label></label>
+    *Required
+  </div>
+
+  <label for="password">
+    Choisissez un mot de passe
+  </label>
+  <input type= "password" id="password"  class="form-control-sm" formControlName="password" />
+  <div *ngIf="form.controls.lastName.errors?.required && form.controls.lastName.touched" class="error">
+    <label></label>
+    *Required
+  </div>
+
+  <label for="mail">
+    Adresse mail
+  </label>
+  <input id="mail"  class="form-control-sm" formControlName="mail" />
+  <div *ngIf="form.controls.lastName.errors?.required && form.controls.lastName.touched" class="error">
+    <label></label>
+    *Required
+  </div>
+
+  <label class="modal-content">Si Matthania ne connaît pas votre date de naissance ou votre mail, contactez le bureau</label>
+  <label > </label>
+
+  <button [disabled]="!form.valid" id="ok" class="btn btn-primary bi-check" type="submit">
+    &nbsp;Enregistrer
+  </button>
+  <hr>
+</form>
+
+<ng-template #loading>
+  Loading User...
+</ng-template>
+
