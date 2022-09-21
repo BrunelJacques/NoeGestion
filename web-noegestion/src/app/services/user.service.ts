@@ -6,7 +6,7 @@ export interface User {
   id: number;
   firstName: string;
   lastName: string;
-  birthday: string;
+  birth: string;
   mail: string;
   password: string;
 }
@@ -15,7 +15,7 @@ const fakeData = {
   id: 0,
   firstName: 'Cory',
   lastName: 'Rylan',
-  birthday: '',
+  birth: '',
   mail: 'xxxx@yyy',
   password: '***'
 

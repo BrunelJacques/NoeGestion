@@ -4,17 +4,16 @@
 
   <div class="modal-header">
     <h3 class="modal-title">Se connecter</h3>
-    <div>
-      Pas encore inscrit?
-      <a ref="//matthania.com">Créer un compte</a>
-    </div>
+    <h6 class="modal-title">
+      <button class="btn btn-secondary">Créer un compte</button>
+    </h6>
   </div>
 
   <label for="mail">
     Adresse mail
   </label>
   <input id="mail"  class="form-control-sm" formControlName="mail" />
-  <div *ngIf="form.controls.lastName.errors?.required && form.controls.lastName.touched" class="error">
+  <div *ngIf="form.controls.mail.errors?.required && form.controls.mail.touched" class="error">
     <label></label>
     *Required
   </div>
@@ -23,15 +22,21 @@
     Mot de passe
   </label>
   <input type= "password" id="password"  class="form-control-sm" formControlName="password" />
-  <div *ngIf="form.controls.lastName.errors?.required && form.controls.lastName.touched" class="error">
+  <div *ngIf="form.controls.password.errors?.required && form.controls.password.touched" class="error">
     <label></label>
     *Required
   </div>
+  <div>
+    <label></label>
+    <a ref="//matthania.com">Mot de passe oublié?</a>
+  </div>
 
-  <button [disabled]="!form.valid" id="ok" class="btn btn-primary bi-check" type="submit">
-    &nbsp;Connexion
-  </button>
-  <hr>
+  <div class="modal-header">
+    <label></label>
+    <button [disabled]="!form.valid" id="ok" class="btn btn-primary bi-check" type="submit">
+      &nbsp;Connexion
+    </button>
+  </div>
 </form>
 
 <ng-template #loading>

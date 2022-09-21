@@ -13,7 +13,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule, ROUTES } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-
 import { HomeComponent } from './components/general/home/home.component';
 import { HeaderComponent } from './components/general/header/header.component';
 import { FooterComponent } from './components/general/footer/footer.component';
@@ -37,6 +36,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule } from "@angular/router";
 import { RepasComponent } from './components/stsorties/params/repas/repas.component';
 import { CampComponent } from './components/stsorties/params/camp/camp.component';
+import { CompteComponent } from './components/general/home/compte/compte.component';
 //import { Constantes } from './services/general/constantes'
 
 
@@ -62,6 +62,7 @@ import { CampComponent } from './components/stsorties/params/camp/camp.component
     SortieComponent,
     RepasComponent,
     CampComponent,
+    CompteComponent,
     //Constantes,
   ],
   imports: [

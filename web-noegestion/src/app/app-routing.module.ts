@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './components/general/guards/auth.guard';
 import { LoginComponent } from './components/general/home/login/login.component';
+import { CompteComponent } from './components/general/home/compte/compte.component';
 import { StSortiesComponent } from './components/stsorties/stsorties.component';
 import { HomeComponent } from './components/general/home/home.component';
 import { SortieComponent } from './components/stsorties/sortie/sortie.component';
@@ -24,6 +25,7 @@ export const ROUTES: Routes = [
   { path: 'sortie', component: SortieComponent, canActivate: [AuthGuard] },
   { path: 'sortie/:id', component: SortieComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent, canActivate: [AuthGuard] },
+  { path: 'compte', component: CompteComponent, canActivate: [AuthGuard] },
   { path: 'entrees', component: StEntreesComponent, canActivate: [AuthGuard] },
   { path: 'effectifs', component: StEffectifsComponent, canActivate: [AuthGuard] },
   { path: 'inventaire', component: StInventaireComponent, canActivate: [AuthGuard] },

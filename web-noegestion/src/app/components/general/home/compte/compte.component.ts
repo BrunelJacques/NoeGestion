@@ -6,12 +6,12 @@ import { UserService, User } from '../../../../services/user.service';
 
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  selector: 'app-compte',
+  templateUrl: './compte.component.html',
+  styleUrls: ['./compte.component.scss']
 })
 
-export class LoginComponent {
+export class CompteComponent {
   form!: FormGroup;
   user!: Observable<User>;
   origine!: User;
@@ -22,17 +22,19 @@ export class LoginComponent {
 
   ngOnInit() {
     this.form = this.formBuilder.group({
-      mail: ['', Validators.required],
-      password: ['', Validators.required],
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      birth: ['', Validators.required],
     });
 
     this.origine = this.userService.loadData();
 
     this.user = this.userService.loadUser().pipe(
       tap(user => this.form.patchValue(user))
-    );   
+    );
   }
-  
+
+
   okBack(): void {
     this.goBack()
   }
@@ -46,9 +48,9 @@ export class LoginComponent {
   submit() {
     console.log("coucou clic")
     if (this.form.valid) {
-      this.origine.mail = this.form.value.mail;
-      console.log(this.origine.mail);
-      this.origine.password = this.form.value.password;
+      this.origine.firstName = this.form.value.firstName;
+      console.log(this.origine.firstName);
+
     }
   }
 }
