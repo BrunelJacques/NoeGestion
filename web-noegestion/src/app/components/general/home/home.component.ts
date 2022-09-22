@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostBinding, Input, OnInit } from '@angular/core';
 import { Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { environment } from 'src/environments/environment';
@@ -20,8 +20,6 @@ export class HomeComponent implements OnInit {
   ) {
     messageService.clear()
   }
-
-
 
   ngOnInit(): void {
     this.loadScript('assets/params/js/index.js');
