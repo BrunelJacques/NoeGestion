@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Mouvement } from 'src/app/models/stmouvement';
-import { StMvtService } from 'src/app/services/stmvt.service';
+import { StsortiesService } from 'src/app/services/stmvt.service';
 import { MessageService } from 'src/app/services/general/message.service';
 import { PARAMS } from 'src/app/models/params';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -18,14 +18,14 @@ export class StSortiesComponent implements OnInit {
   mvts: Mouvement[] = [];
 
   constructor(
-    private stMvtService: StMvtService,
+    private stSortiesService: StsortiesService,
     private messageService: MessageService,
     private modalService: NgbModal
     ) { }
 
   ngOnInit(): void {
     this.loadScript('assets/params/js/index.js');
-    this.getSorties();
+    this.retrieveTutorials();
     PARAMS.location= "sorties"
   }/*  */
 
@@ -43,18 +43,26 @@ export class StSortiesComponent implements OnInit {
     const modalRef = this.modalService.open(StsortieComponent);
     modalRef.componentInstance.mvt = mvt;
   }
-
+/** 
   // appel par clic sur une ligne qui se sélectionne au passage
   openSortie(mvt: Mouvement ) {
     console.log('coucou openSortie')
     this.messageService.add(`Sorties: Selected sortie id=${mvt.article}`);
     const modalRef = this.modalService.open(StsortieComponent);
     modalRef.componentInstance.mvt = mvt;
-  }
+  }*/
 
-  getSorties(): void {
-    this.stMvtService.getSorties()
-    .subscribe(mvts => this.mvts = mvts)
+  retrieveTutorials(): void {
+    console.log("1");
+    this.stSortiesService.getSorties()
+      .subscribe({
+        next: (data) => {
+          console.log("2");
+          this.mvts = data;
+          console.log(data);
+        },
+        error: (e) => console.error(e)
+      });
   }
 
 }

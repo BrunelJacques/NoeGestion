@@ -5,7 +5,7 @@ import { Location } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Mouvement } from 'src/app/models/stmouvement';
-import { StMvtService } from 'src/app/services/stmvt.service';
+//import { StMvtService } from 'src/app/services/stmvt.service';
 import { SortieService } from 'src/app/services/sortie.service';
 
 
@@ -28,13 +28,13 @@ export class SortieComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
-    private stMvtService: StMvtService,
+    //private stMvtService: StMvtService,
     private sortieService: SortieService,
     private location: Location
   ) {}
 
   ngOnInit(): void {
-    this.getSortie();
+    //this.getSortie();
     this.sortieForm = this.formBuilder.group({
       prixUnit: ['0', ], //Validators.pattern("^[0-9]") ne valide pas!!
       qteMouvement: ['0',Validators.pattern("^[0-9]")],
@@ -45,7 +45,7 @@ export class SortieComponent implements OnInit {
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
 
-  getSortie(): void {
+ /** getSortie(): void {
     const id = parseInt(this.route.snapshot.paramMap.get('id')!, 10);
     this.stMvtService.getSortie(id)
       .subscribe(sortie => {
@@ -59,7 +59,7 @@ export class SortieComponent implements OnInit {
 
       this.repas = this.getRepasString(this.sortie.repas);
       });
-  }
+  } */
 
   getRepasString(idrepas: number): string{
     if (idrepas == 1){
@@ -84,7 +84,7 @@ export class SortieComponent implements OnInit {
  //zz
   save(): void {
     if (this.sortie) {
-      this.stMvtService.updateMvt(this.sortie).subscribe(() => this.goBack());
+ //     this.stMvtService.updateMvt(this.sortie).subscribe(() => this.goBack());
     }
   }
 
