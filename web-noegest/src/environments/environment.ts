@@ -4,7 +4,10 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:4000'
+  apiUrl: 'http://localhost:4000',
+  appVersion: require('../../package.json').version + ' - dev -',
+  appName: require('../../package.json').common_name,
+  appYear: require('../../package.json').year_copyright,
 };
 
 /*
