@@ -10,9 +10,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { JwtInterceptor, ErrorInterceptor } from './_helpers';
 import { AppComponent } from './app.component';
 import { AlertComponent } from './_components';
-import { HomeComponent } from './home';;
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { HeaderComponent } from './_components/header/header.component'
+import { HomeComponent } from './home';
+import { HeaderComponent } from './_components/header/header.component';
+import { Header2022Component} from './_components/header2022/header2022.component';
 
 @NgModule({
     imports: [
@@ -20,13 +20,13 @@ import { HeaderComponent } from './_components/header/header.component'
         ReactiveFormsModule,
         HttpClientModule,
         AppRoutingModule
-,
-        NgbModule    ],
+    ],
     declarations: [
         AppComponent,
         AlertComponent,
         HomeComponent,
-        HeaderComponent
+        HeaderComponent,
+        Header2022Component
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
