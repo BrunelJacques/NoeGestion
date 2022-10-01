@@ -26,7 +26,7 @@ import { Header2022Component} from './_components/header2022/header2022.componen
         AlertComponent,
         HomeComponent,
         HeaderComponent,
-        Header2022Component
+        Header2022Component,
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
