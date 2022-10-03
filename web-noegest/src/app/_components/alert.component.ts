@@ -11,8 +11,8 @@ export class AlertComponent implements OnInit, OnDestroy {
     @Input() fade = true;
 
     alerts: Alert[] = [];
-    alertSubscription: Subscription;
-    routeSubscription: Subscription;
+    alertSubscription: Subscription = new Subscription;
+    routeSubscription: Subscription = new Subscription;
 
     constructor(private router: Router, private alertService: AlertService) { }
 

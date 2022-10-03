@@ -1,0 +1,84 @@
+<header class="navbar navbar-expand-md navbar-dark fixed-top nga-navbar">
+  <nav class="container" aria-label="Main navigation">
+    <a routerLink="/" class="navbar-brand" alt="Accueil">
+      <img src="assets/params/images/noegest@1x.png"
+      srcset="assets/params/images/noegest@2x.png,
+      assets/params/images/noegest@1x.png" 
+      width="170" height="40" alt="Logo">
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+      aria-controls="navbarCollapse" aria-expanded="false" 
+      aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+      <ul class="navbar-nav mx-auto">
+        <li class="nav-item">
+          <a class="nav-link" 
+          aria-current="page" 
+          routerLink="/">
+            <i class="fas fa-home me-1"></i>
+            Home
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link"
+          routerLink="/sorties">
+            <i class="fas fa-arrow-left"></i>
+            Sorties
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link"
+          routerLink="/entrees">
+            <i class="fas fa-arrow-right"></i>
+            Entrées
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link"
+          routerLink="/effectifs">
+            <i class="fas fa-people-group"></i>
+            Effectifs
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link"
+          routerLink="/prixjournees">
+            <i class="fas fa-euro-sign"></i>
+            PrixJournée
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link"
+          routerLink="/inventaire">
+            <i class="fas fa-list-ol"></i>
+            Inventaire
+          </a>
+        </li>          
+        <li class="nav-item">
+          <a class="nav-link"
+          routerLink="/depart">
+            <i class="fas fa-car-side"></i>
+            KMdépart
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link"
+          aria-current="page"
+          routerLink="/arrivee">
+            <i class="fas fa-car"></i>
+            KMarrivee
+          </a>
+        </li>
+      </ul>
+      <form class="d-flex">
+        <button type="button" class="btn btn-sm btn-primary me-2" routerLink="/"><i
+            class="fas fa-user-plus me-2"></i>Sign up</button>
+        <button type="button" class="btn btn-sm btn-outline-light me-2" routerLink="/"><i
+            class="fas fa-sign-in-alt me-2"></i>Login</button>
+      </form>
+    </div>
+  </nav>
+</header>
+
