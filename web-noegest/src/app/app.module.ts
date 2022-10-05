@@ -1,24 +1,44 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+
+
+import { fakeBackendProvider } from './_helpers';
+
+import { AppRoutingModule } from './app-routing.module';
+import { JwtInterceptor, ErrorInterceptor } from './_helpers';
+
+import { AlertComponent } from './_components';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './modules/general/home/home.component';
 import { NotFoundComponent } from './modules/general/not-found/not-found.component';
-import { AppRoutingModule } from './app-routing.module';
 import { HeaderComponent } from './modules/general/header/header.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
+    AlertComponent,
     NotFoundComponent,
-    HeaderComponent,
     HeaderComponent,
   ],
   imports: [
     BrowserModule,
+    CommonModule,
+    ReactiveFormsModule,
+    HttpClientModule,
     AppRoutingModule,
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+
+    // provider used to create fake backend
+    fakeBackendProvider
+],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
