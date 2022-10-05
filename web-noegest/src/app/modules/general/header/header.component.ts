@@ -9,7 +9,8 @@ import { isPlatformBrowser } from '@angular/common';
 })
 
 export class HeaderComponent implements OnInit {
-  title = 'angular-bootstrap';
+  title = 'matthania';
+  user = true
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: object) {

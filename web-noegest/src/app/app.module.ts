@@ -15,6 +15,7 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './modules/general/home/home.component';
 import { NotFoundComponent } from './modules/general/not-found/not-found.component';
 import { HeaderComponent } from './modules/general/header/header.component';
+import { LoginComponent } from './account/login.component';
 
 
 @NgModule({
@@ -24,6 +25,7 @@ import { HeaderComponent } from './modules/general/header/header.component';
     AlertComponent,
     NotFoundComponent,
     HeaderComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
