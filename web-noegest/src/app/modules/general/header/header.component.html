@@ -73,12 +73,20 @@
           </a>
         </li>
       </ul>
-      <form class="d-flex">
-        <button type="button" class="btn btn-sm btn-primary me-2" routerLink="/"><i
-            class="fas fa-user-plus me-2"></i>Sign up</button>
-        <button type="button" class="btn btn-sm btn-outline-light me-2" routerLink="/"><i
-            class="fas fa-sign-in-alt me-2"></i>Login</button>
-      </form>
+      <div class="d-flex">
+        <button type="button" 
+        class="btn btn-sm btn-outline-light me-2"
+        (click)="logout()">
+          <i class="fas fa-sign-out-alt me-2"></i>
+          Logout
+        </button>
+        <button type="button" 
+        class="btn btn-sm btn-outline-light me-2" 
+        routerLink="/">
+          <i class="fas fa-sign-in-alt me-2"></i>
+          Login
+        </button>
+      </div>
     </div>
   </nav>
 </header>

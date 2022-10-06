@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 
+import { AccountService } from '@app/_services';
+import { User } from '@app/_models'; 
+
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -10,10 +13,12 @@ import { isPlatformBrowser } from '@angular/common';
 
 export class HeaderComponent implements OnInit {
   title = 'matthania';
-  user = true
+  user = new User()
 
   constructor(
-    @Inject(PLATFORM_ID) private platformId: object) {
+    @Inject(PLATFORM_ID) private platformId: object,
+    private accountService: AccountService) {
+      this.accountService.user.subscribe(x => this.user = x);
   }
 
   ngOnInit(): void {
@@ -29,5 +34,8 @@ export class HeaderComponent implements OnInit {
       }
     }
   }
-
+  logout() {
+    this.accountService.logout();
+  }
 }
+
