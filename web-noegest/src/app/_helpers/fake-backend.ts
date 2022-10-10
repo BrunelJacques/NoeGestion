@@ -5,7 +5,7 @@ import { delay, materialize, dematerialize } from 'rxjs/operators';
 
 // array in local storage for registered users
 const usersKey = 'angular-10-registration-login-example-users';
-let users = JSON.parse(localStorage.getItem(usersKey)!);
+let users = JSON.parse(localStorage.getItem(usersKey)) || [];
 
 @Injectable()
 export class FakeBackendInterceptor implements HttpInterceptor {
@@ -38,7 +38,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
         function authenticate() {
             const { username, password } = body;
-            const user = users.find((x: { username: any; password: any; }) => x.username === username && x.password === password);
+            const user = users.find(x => x.username === username && x.password === password);
             if (!user) return error('Username or password is incorrect');
             return ok({
                 ...basicDetails(user),
@@ -49,11 +49,11 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         function register() {
             const user = body
 
-            if (users.find((x: { username: any; }) => x.username === user.username)) {
+            if (users.find(x => x.username === user.username)) {
                 return error('Username "' + user.username + '" is already taken')
             }
 
-            user.id = users.length ? Math.max(...users.map((x: { id: any; }) => x.id)) + 1 : 1;
+            user.id = users.length ? Math.max(...users.map(x => x.id)) + 1 : 1;
             users.push(user);
             localStorage.setItem(usersKey, JSON.stringify(users));
             return ok();
@@ -61,13 +61,13 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
         function getUsers() {
             if (!isLoggedIn()) return unauthorized();
-            return ok(users.map((x: any) => basicDetails(x)));
+            return ok(users.map(x => basicDetails(x)));
         }
 
         function getUserById() {
             if (!isLoggedIn()) return unauthorized();
 
-            const user = users.find((x: { id: number; }) => x.id === idFromUrl());
+            const user = users.find(x => x.id === idFromUrl());
             return ok(basicDetails(user));
         }
 
@@ -75,7 +75,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             if (!isLoggedIn()) return unauthorized();
 
             let params = body;
-            let user = users.find((x: { id: number; }) => x.id === idFromUrl());
+            let user = users.find(x => x.id === idFromUrl());
 
             // only update password if entered
             if (!params.password) {
@@ -92,19 +92,19 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         function deleteUser() {
             if (!isLoggedIn()) return unauthorized();
 
-            users = users.filter((x: { id: number; }) => x.id !== idFromUrl());
+            users = users.filter(x => x.id !== idFromUrl());
             localStorage.setItem(usersKey, JSON.stringify(users));
             return ok();
         }
 
         // helper functions
 
-        function ok(body?: { token?: string; id: any; username: any; firstName: any; lastName: any; } | undefined) {
+        function ok(body?) {
             return of(new HttpResponse({ status: 200, body }))
                 .pipe(delay(500)); // delay observable to simulate server api call
         }
 
-        function error(message: string) {
+        function error(message) {
             return throwError({ error: { message } })
                 .pipe(materialize(), delay(500), dematerialize()); // call materialize and dematerialize to ensure delay even if an error is thrown (https://github.com/Reactive-Extensions/RxJS/issues/648);
         }
@@ -114,7 +114,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 .pipe(materialize(), delay(500), dematerialize());
         }
 
-        function basicDetails(user: { id: any; username: any; firstName: any; lastName: any; }) {
+        function basicDetails(user) {
             const { id, username, firstName, lastName } = user;
             return { id, username, firstName, lastName };
         }

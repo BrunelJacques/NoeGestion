@@ -11,8 +11,8 @@ export class AlertComponent implements OnInit, OnDestroy {
     @Input() fade = true;
 
     alerts: Alert[] = [];
-    alertSubscription: Subscription = new Subscription;
-    routeSubscription: Subscription = new Subscription;
+    alertSubscription: Subscription;
+    routeSubscription: Subscription;
 
     constructor(private router: Router, private alertService: AlertService) { }
 
@@ -72,7 +72,7 @@ export class AlertComponent implements OnInit, OnDestroy {
     }
 
     cssClass(alert: Alert) {
-        if (!alert) return null;
+        if (!alert) return;
 
         const classes = ['alert', 'alert-dismissable', 'mt-4', 'container'];
                 

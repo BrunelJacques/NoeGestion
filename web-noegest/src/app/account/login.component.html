@@ -1,33 +1,48 @@
 ﻿<div class="card">
-    <h4 class="card-header">Login</h4>
+    <h4 class="card-header">Initialiser mon accès</h4>
+    <div class="text-center text-muted small">
+        Pour créer un compte ou réinitialiser un mot de passe
+    </div>
     <div class="card-body">
-        <form #loginForm [formGroup]="form" (ngSubmit)="onSubmit()">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <label for="firstName">Prénom</label>
+                <input type="text" formControlName="firstName" class="form-control" 
+                [ngClass]="{ 'is-invalid': submitted && f['firstName'].errors }" />
+                <div *ngIf="submitted && f['firstName'].errors?.['required']" class="invalid-feedback">
+                    <div *ngIf="f['firstName'].errors?.['required']">First Name is required</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="lastName">Nom</label>
+                <input type="text" formControlName="lastName" class="form-control" 
+                [ngClass]="{ 'is-invalid': submitted && f['lastname'].errors }" />
+                <div *ngIf="submitted && f['lastname'].errors?.['required']" class="invalid-feedback">
+                    <div *ngIf="f['lastname'].errors?.['required']">Nom à saisir</div>
+                </div>
+            </div>
+            <!--div class="form-group">
+                [ngClass]="{ 'is-invalid': f['password'].errors }" />
+                <div *ngIf="f['password'].errors?.['required'] && form.controls['password'].touched" class="invalid-feedback">
+            </div-->  
             <div class="form-group">
                 <label for="email">Adresse mail</label>
-                <input type="text" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': f['email'].errors }" />
-                <div *ngIf=" f['email'].errors?.['required'] && form.controls['email'].touched">
-                <!--div *ngIf="submitted && f['email'].errors" class="invalid-feedback"-->
-                    <div  class="error">Adresse mail à saisir</div>
+                <input type="text" formControlName="email" class="form-control" 
+                [ngClass]="{ 'is-invalid': submitted && f['email'].errors }" />
+                <div *ngIf="submitted && f['email'].errors?.['required']" class="invalid-feedback">
+                    <div *ngIf="f['email'].errors?.['required']">Adresse mail à saisir</div>
                 </div>
+            </div>
+            <div class="text-center text-muted small mb-o">
+                L'initialisation n'est possible que pour des références connues de Matthania
             </div>
             <div class="form-group">
-                <label for="password">Mot de passe</label>
-                <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': f['password'].errors }" />
-                <div *ngIf="f['password'].errors?.['required'] && form.controls['password'].touched" class="invalid-feedback">
-                    <div *ngIf="f['password'].errors?.['required']">Mot de passe à saisir</div>
-                </div>
-            </div>                  
-            <div class="form-group ">
-                <button [disabled]="loading" class="btn btn-primary mt-3 ms-3">
+                <button [disabled]="loading" class="btn btn-primary">
                     <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-                    GO
+                    Go
                 </button>
-                <div class="formGroup mt-1">
-                    <a routerLink="../register" class="btn btn-link btn-light link">Créer un compte</a>
-                    <a routerLink="../layout" class="btn btn-link btn-light link">Mot de passe oublié</a>
-                </div>
+                <a routerLink="../login" class="btn btn-link">Retour</a>
             </div>
-
         </form>
     </div>
 </div>

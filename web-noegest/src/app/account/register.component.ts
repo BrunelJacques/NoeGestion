@@ -10,6 +10,7 @@ export class RegisterComponent implements OnInit {
     form: UntypedFormGroup;
     loading = false;
     submitted = false;
+    error: string;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -24,8 +25,8 @@ export class RegisterComponent implements OnInit {
             firstName: ['', Validators.required],
             lastName: ['', Validators.required],
             email: ['', Validators.required],
-            username: ['', Validators.required],
-            password: ['', [Validators.required, Validators.minLength(6)]]
+            username: ['jb', Validators.required],
+            password: ['Jean316', [Validators.required, Validators.minLength(6)]]
         });
     }
 
