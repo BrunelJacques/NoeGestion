@@ -10,6 +10,7 @@ export class RegisterComponent implements OnInit {
     form: UntypedFormGroup;
     loading = false;
     submitted = false;
+    test: string;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -23,7 +24,8 @@ export class RegisterComponent implements OnInit {
         this.form = this.formBuilder.group({
             firstName: ['', Validators.required],
             lastName: ['', Validators.required],
-            username: ['', Validators.required],
+            username: [''],
+            email: ['', Validators.required],
             password: ['', [Validators.required, Validators.minLength(6)]]
         });
     }
@@ -33,6 +35,9 @@ export class RegisterComponent implements OnInit {
 
     onSubmit() {
         this.submitted = true;
+        // en attendant de supprimer les accès par username
+        this.form.patchValue({'username': this.f['email'].value});
+        console.log(this.form.value)
 
         // reset alerts on submit
         this.alertService.clear();
