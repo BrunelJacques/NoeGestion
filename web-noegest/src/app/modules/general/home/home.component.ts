@@ -30,6 +30,6 @@ export class HomeComponent implements OnInit {
       document.getElementsByTagName('head')[0].appendChild(s);
     }
   }
-  //jb appName = environment.application.common_name
-  appName = 'environment.application.common_name'
+  appName = environment.appName
+  //appName = 'environment.application.common_name'
 }

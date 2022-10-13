@@ -1,11 +1,11 @@
-.navbar.navbar-dark .navbar-nav .nav-item .nav-link {
+.navbar-nav .nav-item .nav-link {
   color: white;
   font-weight: 500;
   border-top: 1px solid #09238d;
   border-bottom: 1px solid #09238d;
 }
 
-.navbar.navbar-dark .navbar-nav .nav-item .nav-link:hover {
+.navbar-nav .nav-item .nav-link:hover {
   color: yellow;
   border-top: 1px solid yellow;
   border-bottom: 1px solid yellow;
@@ -55,4 +55,53 @@
 
 .nga-footer .hint:hover {
   opacity: 0.8;
+}
+
+
+.nav-link {
+  margin-left: 0.2rem!important;
+  padding: 0.7rem 1rem!important;
+  border-bottom: 1px solid #999;
+  width: 140px;
+  font-size: 14px;
+}
+
+.nav-item {
+  background-color: #235680;
+}
+
+.navbar {
+  z-index: 1;
+  -webkit-box-shadow: 0 9px 6px -6px #999;
+  -moz-box-shadow: 0 9px 6px -6px #999;
+  box-shadow: 0 9px 6px -6px #999;
+  padding: 0.3rem !important;
+}
+
+.navbar-nav {
+  margin-top: 4px; /* attention à l'incidence collapse grand écran*/
+}
+
+.navbar-expand-md {
+  background-color:  #3f729b;
+}
+
+.navbar-toggler {
+  border-width: 2px;
+  border-color: white !important;
+}
+
+.nga-navbar {
+  background: #3f729b ;      
+}
+
+.nga-link {
+  background: #3f729b ;      
+}
+
+.navbar-toggler:focus  {
+  background: #447cd0 ;      
+  border-width: 2px;
+  border-color: whitesmoke!important;
+  box-shadow: 0px 0px 15px white;
 }

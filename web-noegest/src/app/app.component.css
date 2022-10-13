@@ -1,11 +1,11 @@
-.navbar.navbar-dark .navbar-nav .nav-item .nav-link {
+.navbar.navbar-light .navbar-nav .nav-item .nav-link {
   color: white;
   font-weight: 500;
   border-top: 1px solid #09238d;
   border-bottom: 1px solid #09238d;
 }
 
-.navbar.navbar-dark .navbar-nav .nav-item .nav-link:hover {
+.navbar.navbar-light .navbar-nav .nav-item .nav-link:hover {
   color: yellow;
   border-top: 1px solid yellow;
   border-bottom: 1px solid yellow;
