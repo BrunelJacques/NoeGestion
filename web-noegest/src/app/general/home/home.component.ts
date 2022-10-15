@@ -31,5 +31,5 @@ export class HomeComponent implements OnInit {
     }
   }
   appName = environment.appName
-  //appName = 'environment.application.common_name'
+
 }

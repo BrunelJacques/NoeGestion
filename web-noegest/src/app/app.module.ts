@@ -10,7 +10,7 @@ import { fakeBackendProvider } from './_helpers';
 import { AppRoutingModule } from './app-routing.module';
 import { JwtInterceptor, ErrorInterceptor } from './_helpers';
 
-import { AlertComponent } from './_components';
+import { AlertComponent } from './_alert';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './general/home/home.component';
 import { NotFoundComponent } from './general/not-found/not-found.component';
