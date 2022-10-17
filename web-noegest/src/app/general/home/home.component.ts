@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { environment } from 'src/environments/environment';
+import { AccountService } from '../_services';
+
 
 @Component({
   selector: 'app-home',
@@ -9,16 +11,21 @@ import { environment } from 'src/environments/environment';
 })
 
 export class HomeComponent implements OnInit {
+  choixAppli: string;
 
 
   constructor(
     @Inject(PLATFORM_ID)
     private platformId: object,
-  ) {}
+    private accountService: AccountService
+  ) { }
 
   ngOnInit(): void {
     this.loadScript('assets/params/js/index.js');
+    this.choixAppli = this.accountService.getChoix()
   }
+
+
 
   loadScript(name: string): void {
 
@@ -31,5 +38,13 @@ export class HomeComponent implements OnInit {
     }
   }
   appName = environment.appName
+
+  stocks() {
+    this.accountService.setChoix('stocks');
+  }
+
+  kms() {
+    this.accountService.setChoix('kms');
+  }
 
 }
