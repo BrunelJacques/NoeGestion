@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 
-import { AccountService } from '@app/_services';
-import { User } from '@app/_models'; 
+import { AccountService } from '@app/general/_services';
+import { User } from '@app/general/_models'; 
 
 @Component({
   selector: 'app-header',
