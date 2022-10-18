@@ -9,10 +9,14 @@ import { User } from '@app/general/_models';
 
 @Injectable({ providedIn: 'root' })
 
+export class ChoixAppli {
+    value: string = 'nul';
+}
+
 export class AccountService {
     private userSubject: BehaviorSubject<User>;
     public user: Observable<User>;
-    public choixAppli: string = '';
+    //public choixAppli: Observable<ChoixAppli>;
 
     constructor(
         private router: Router,
@@ -55,12 +59,7 @@ export class AccountService {
         return this.http.get<User>(`${environment.apiUrl}/users/${id}`);
     }
 
-    getChoix() {
-        return this.choixAppli
-    }
-
-    setChoix(choixAppli:string ) {
-        this.choixAppli = choixAppli
-    }
-    
+    //jb getChoix() {
+    //    return this.choixAppli
+    //}
 }

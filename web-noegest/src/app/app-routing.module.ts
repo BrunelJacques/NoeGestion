@@ -12,6 +12,7 @@ const stocksModule = () => import('./stocks/stocks.module').then(x => x.StocksMo
 const routes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
     { path: 'account', loadChildren: accountModule },
+    { path: 'stocks', loadChildren: stocksModule },
 
     // otherwise redirect to home
     //{ path: '**', redirectTo: '' }

@@ -3,7 +3,8 @@ import { Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 
 import { AccountService } from '@app/general/_services';
-import { User } from '@app/general/_models'; 
+import { User } from '@app/general/_models';
+//jb import { ChoixAppli } from '@app/general/_services';
 
 @Component({
   selector: 'app-header',
@@ -13,17 +14,19 @@ import { User } from '@app/general/_models';
 
 export class HeaderComponent implements OnInit {
   title = 'matthania';
-  user = new User()
+  user = new User();
+  //jb choixAppli = new ChoixAppli();
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: object,
     private accountService: AccountService) {
       this.accountService.user.subscribe(x => this.user = x);
-  }
+      //jb this.accountService.choixAppli.subscribe(x => this.choixAppli = x);
+
+      //jb console.log(this.choixAppli)
+    }
 
   ngOnInit(): void {
-    console.log(this.user)
-
     if (isPlatformBrowser(this.platformId)) {
       const navMain = document.getElementById('navbarCollapse');
       if (navMain) {

@@ -3,6 +3,7 @@ import { Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { environment } from 'src/environments/environment';
 import { AccountService } from '../_services';
+import { User } from '@app/general/_models';
 
 
 @Component({
@@ -11,18 +12,21 @@ import { AccountService } from '../_services';
 })
 
 export class HomeComponent implements OnInit {
-  choixAppli: string;
+  user = new User();
+  //jb choixAppli = void null;
 
 
   constructor(
     @Inject(PLATFORM_ID)
     private platformId: object,
-    private accountService: AccountService
-  ) { }
+    private accountService: AccountService) {
+      this.accountService.user.subscribe(x => this.user = x);
+      //jb this.accountService.choixAppli.subscribe(x => this.choixAppli = x)
+     }
 
   ngOnInit(): void {
     this.loadScript('assets/params/js/index.js');
-    this.choixAppli = this.accountService.getChoix()
+    //jb this.choixAppli = this.accountService.getChoix()
   }
 
 
@@ -39,12 +43,13 @@ export class HomeComponent implements OnInit {
   }
   appName = environment.appName
 
-  stocks() {
-    this.accountService.setChoix('stocks');
-  }
+  //stocks() {
+  //  this.choixAppli.value = 'stocks';
+  //  console.log(this.choixAppli)
+  //}
 
-  kms() {
-    this.accountService.setChoix('kms');
-  }
+  //kms() {
+  //  this.choixAppli.value = 'kms';
+  //}
 
 }
