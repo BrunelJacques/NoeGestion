@@ -43,13 +43,14 @@ export class HomeComponent implements OnInit {
   }
   appName = environment.appName
 
-  //stocks() {
-  //  this.choixAppli.value = 'stocks';
-  //  console.log(this.choixAppli)
-  //}
+  stocks() {
+    console.log('home/stocks')
+    //this.accountService.setChoix('stocks');
+  }
 
-  //kms() {
-  //  this.choixAppli.value = 'kms';
-  //}
+  kms() {
+    console.log('home/effectifs')
+    //this.accountService.setChoix('kms');
+  }
 
 }

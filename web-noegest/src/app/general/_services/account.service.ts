@@ -9,14 +9,10 @@ import { User } from '@app/general/_models';
 
 @Injectable({ providedIn: 'root' })
 
-export class ChoixAppli {
-    value: string = 'nul';
-}
-
 export class AccountService {
     private userSubject: BehaviorSubject<User>;
     public user: Observable<User>;
-    //public choixAppli: Observable<ChoixAppli>;
+    //public choixAppli: ChoixAppli;
 
     constructor(
         private router: Router,
@@ -24,6 +20,7 @@ export class AccountService {
     ) {
         this.userSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('user')));
         this.user = this.userSubject.asObservable();
+        //this.choixAppli = new ChoixAppli
     }
 
     public get userValue(): User {
@@ -59,7 +56,5 @@ export class AccountService {
         return this.http.get<User>(`${environment.apiUrl}/users/${id}`);
     }
 
-    //jb getChoix() {
-    //    return this.choixAppli
-    //}
+
 }
