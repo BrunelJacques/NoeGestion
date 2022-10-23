@@ -15,7 +15,7 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './general/home/home.component';
 import { NotFoundComponent } from './general/not-found/not-found.component';
 import { HeaderComponent } from './general/header/header.component';
-
+import { Globales } from './general/_models';
 
 @NgModule({
   declarations: [
@@ -35,9 +35,10 @@ import { HeaderComponent } from './general/header/header.component';
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-
     // provider used to create fake backend
-    fakeBackendProvider
+    fakeBackendProvider,
+    // variables globales
+    Globales
 ],
   bootstrap: [AppComponent]
 })

@@ -22,41 +22,43 @@
             Home
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link"
-          routerLink="/stocks/sorties">
-            <i class="fas fa-arrow-left"></i>
-            Sorties
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link"
-          routerLink="/stocks/entrees">
-            <i class="fas fa-arrow-right"></i>
-            Entrées
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link"
-          routerLink="/stocks/effectifs">
-            <i class="fas fa-people-group"></i>
-            Effectifs
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link"
-          routerLink="/stocks/prixjournees">
-            <i class="fas fa-euro-sign"></i>
-            PrixJournée
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link"
-          routerLink="/stocks/inventaire">
-            <i class="fas fa-list-ol"></i>
-            Inventaire
-          </a>
-        </li>          
+        <div *ngIf="choixAppli">
+          <li class="nav-item">
+            <a class="nav-link"
+            routerLink="/stocks/sorties">
+              <i class="fas fa-arrow-left"></i>
+              Sorties
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link"
+            routerLink="/stocks/entrees">
+              <i class="fas fa-arrow-right"></i>
+              Entrées
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link"
+            routerLink="/stocks/effectifs">
+              <i class="fas fa-people-group"></i>
+              Effectifs
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link"
+            routerLink="/stocks/prixjournees">
+              <i class="fas fa-euro-sign"></i>
+              PrixJournée
+            </a>
+          </li>
+            <li class="nav-item">
+            <a class="nav-link"
+            routerLink="/stocks/inventaire">
+              <i class="fas fa-list-ol"></i>
+              Inventaire
+            </a>
+          </li>          
+        </div>
         <li class="nav-item">
           <a class="nav-link"
           routerLink="/kms/depart">

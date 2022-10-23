@@ -7,3 +7,7 @@
     lastName!: string;
     token!: string;
 }
+
+export class ChoixAppli {
+    value!: string;
+}
