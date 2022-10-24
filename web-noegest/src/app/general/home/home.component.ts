@@ -3,7 +3,8 @@ import { Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { environment } from 'src/environments/environment';
 import { AccountService } from '../_services';
-import { Globales, User } from '@app/general/_models';
+import { User } from '@app/general/_models';
+import { LoginStateService } from '../_services';
 
 @Component({
   selector: 'app-home',
@@ -12,12 +13,12 @@ import { Globales, User } from '@app/general/_models';
 
 export class HomeComponent implements OnInit {
   user = new User();
-  choixAppli = Globales.choixAppli
 
   constructor(
     @Inject(PLATFORM_ID)
     private platformId: object,
     private accountService: AccountService,
+    private loginState: LoginStateService
     )
      {
       this.accountService.user.subscribe(x => this.user = x);
@@ -45,10 +46,13 @@ export class HomeComponent implements OnInit {
   appName = environment.appName
 
   stocks() {
-    this.choixAppli = 'stocks';
+    localStorage.setItem('choixAppli','stocks')
+    this.loginState.subject.next(true)
   }
 
   kms() {
+    localStorage.setItem('choixAppli','kms')
+    this.loginState.subject.next(false)
   }
 
 }

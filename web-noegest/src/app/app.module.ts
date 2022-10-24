@@ -15,7 +15,7 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './general/home/home.component';
 import { NotFoundComponent } from './general/not-found/not-found.component';
 import { HeaderComponent } from './general/header/header.component';
-import { Globales } from './general/_models';
+import { LoginStateService } from './general/_services';
 
 @NgModule({
   declarations: [
@@ -37,8 +37,7 @@ import { Globales } from './general/_models';
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     // provider used to create fake backend
     fakeBackendProvider,
-    // variables globales
-    Globales
+    LoginStateService,
 ],
   bootstrap: [AppComponent]
 })

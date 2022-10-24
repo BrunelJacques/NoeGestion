@@ -10,6 +10,8 @@ export class EffectifsComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    console.log(localStorage.getItem('choixAppli'))
+
   }
 
 }
