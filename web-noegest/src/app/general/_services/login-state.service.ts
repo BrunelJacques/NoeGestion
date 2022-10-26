@@ -6,7 +6,7 @@ import { BehaviorSubject } from 'rxjs';
 })
 
 export class LoginStateService {
-  public choixSubject$ = new BehaviorSubject<boolean>(false);
+  public choixSubject$ = new BehaviorSubject<string>('-');
   
   constructor() {}
 }

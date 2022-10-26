@@ -80,7 +80,7 @@
 }
 
 .navbar-nav {
-  margin-top: 4px; /* attention à l'incidence collapse grand écran*/
+  margin-top: 0; /* attention à l'incidence collapse grand écran*/
 }
 
 .navbar-expand-md {

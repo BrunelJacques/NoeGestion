@@ -9,6 +9,7 @@ import { LoginStateService } from '../_services/login-state.service';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
+  styleUrls: ['./home.component.css']
 })
 
 export class HomeComponent implements OnInit {
@@ -45,17 +46,17 @@ export class HomeComponent implements OnInit {
   }
   appName = environment.appName
 
-  emitSubject(val: boolean){
+  emitSubject(val: string){
     this.loginState.choixSubject$.next(val)
   };
 
   stocks() {
-    this.emitSubject(true)
+    this.emitSubject('stocks')
 
   }
 
   kms() {
-    this.emitSubject(false)
+    this.emitSubject('kms')
   }
 
 }

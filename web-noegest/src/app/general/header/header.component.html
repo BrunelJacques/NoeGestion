@@ -1,4 +1,3 @@
-<h2>{{choixAppli}}</h2>
 <header class="navbar navbar-expand-md nga-navbar">
   <nav class="container" aria-label="Main navigation">
     <a routerLink="/" class="navbar-brand" alt="Accueil">
@@ -7,6 +6,7 @@
       assets/params/images/noegest@1x.png" 
       width="170" height="40" alt="Logo">
     </a>
+    <span class="text-white">{{choixAppli}}</span>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
       data-bs-target="#navbarCollapse"  *ngIf="user"
       aria-controls="navbarCollapse" aria-expanded="false" 
@@ -23,7 +23,7 @@
             Home
           </a>
         </li>
-        <div *ngIf="choixAppli">
+        <span class="navbar-nav" *ngIf="choixAppli == 'stocks'">
           <li class="nav-item">
             <a class="nav-link"
             routerLink="/stocks/sorties">
@@ -59,22 +59,24 @@
               Inventaire
             </a>
           </li>          
-        </div>
-        <li class="nav-item">
-          <a class="nav-link"
-          routerLink="/kms/depart">
-            <i class="fas fa-car-side"></i>
-            KMdépart
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link"
-          aria-current="page"
-          routerLink="/kms/arrivee">
-            <i class="fas fa-car"></i>
-            KMarrivee
-          </a>
-        </li>
+        </span>
+        <span class="navbar-nav" *ngIf="choixAppli == 'kms'">
+          <li class="nav-item">
+            <a class="nav-link"
+            routerLink="/kms/depart">
+              <i class="fas fa-car-side"></i>
+              KMdépart
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link"
+            aria-current="page"
+            routerLink="/kms/arrivee">
+              <i class="fas fa-car"></i>
+              KMarrivee
+            </a>
+          </li>
+        </span>
       </ul>
       <div class="d-flex">
         <button type="button" 

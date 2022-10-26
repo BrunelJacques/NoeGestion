@@ -11,7 +11,7 @@ import { LoginStateService } from '@app/general/_services/login-state.service';
 export class EffectifsComponent implements OnInit {
 
   loginSub = new Subscription();
-  choixAppli: boolean = false;
+  choixAppli: string = 'effectifs';
 
   constructor(
     private loginState: LoginStateService

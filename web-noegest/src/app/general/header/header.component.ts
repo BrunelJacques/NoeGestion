@@ -17,7 +17,7 @@ export class HeaderComponent implements OnInit {
   title = 'matthania';
   user = new User();
   loginSub = new Subscription();
-  choixAppli: boolean = false;
+  choixAppli: string = 'header';
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: object,
@@ -50,7 +50,7 @@ export class HeaderComponent implements OnInit {
 
   logout() {
     this.accountService.logout();
-    this.loginState.choixSubject$.next(false)
+    this.loginState.choixSubject$.next('logout')
   }
 
   
