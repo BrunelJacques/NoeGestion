@@ -11,18 +11,15 @@ import { LoginStateService } from '@app/general/_services/login-state.service';
 export class EffectifsComponent implements OnInit {
 
   loginSub = new Subscription();
-  choixAppli = 'effectifs init choix appli';
-  loginState: LoginStateService
+  choixAppli: boolean = false;
 
-  constructor() {}
+  constructor(
+    private loginState: LoginStateService
+  ) {}
 
   ngOnInit(): void {
-    console.log('effectifs ngOnInit')
-    //this.loginState.choixSubject$.subscribe(
-    //  (value) => (this.choixAppli = value)
-    //);
-    //this.loginState.choixSubject$.subscribe(
-    //  (value) => (console.log(value))
-    //);
+    this.loginSub = this.loginState.choixSubject$.subscribe(
+      (value) => (this.choixAppli = value)
+    );
   }
 }
