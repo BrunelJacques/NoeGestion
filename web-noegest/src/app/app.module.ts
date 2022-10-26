@@ -15,7 +15,9 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './general/home/home.component';
 import { NotFoundComponent } from './general/not-found/not-found.component';
 import { HeaderComponent } from './general/header/header.component';
-import { LoginStateService } from './general/_services';
+import { LoginStateService } from './general/_services/login-state.service';
+
+
 
 @NgModule({
   declarations: [

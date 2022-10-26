@@ -1,3 +1,4 @@
+<h2>{{choixAppli}}</h2>
 <header class="navbar navbar-expand-md nga-navbar">
   <nav class="container" aria-label="Main navigation">
     <a routerLink="/" class="navbar-brand" alt="Accueil">
@@ -22,7 +23,7 @@
             Home
           </a>
         </li>
-        <div *ngIf="isLoggedIn">
+        <div *ngIf="choixAppli">
           <li class="nav-item">
             <a class="nav-link"
             routerLink="/stocks/sorties">

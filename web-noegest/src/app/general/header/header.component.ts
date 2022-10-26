@@ -3,9 +3,9 @@ import { Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { Subscription } from 'rxjs';
 
-import { AccountService } from '@app/general/_services';
 import { User } from '@app/general/_models';
-import { LoginStateService } from '@app/general/_services';
+import { AccountService } from '@app/general/_services';
+import { LoginStateService } from '../_services/login-state.service';
 
 @Component({
   selector: 'app-header',
@@ -16,23 +16,21 @@ import { LoginStateService } from '@app/general/_services';
 export class HeaderComponent implements OnInit {
   title = 'matthania';
   user = new User();
-  choixAppli = localStorage.getItem('choixAppli')
   loginSub = new Subscription();
-  isLoggedIn = false
-
+  choixAppli: boolean = false;
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: object,
+    private loginState: LoginStateService,
     private accountService: AccountService,
-    private loginState: LoginStateService
     ) {
       this.accountService.user.subscribe(x => this.user = x);
-      console.log(this.choixAppli);
-
     };
 
-
   ngOnInit(): void {
+    this.loginSub = this.loginState.choixSubject$.subscribe(
+      (value) => (this.choixAppli = value)
+    );
     if (isPlatformBrowser(this.platformId)) {
       const navMain = document.getElementById('navbarCollapse');
       if (navMain) {
@@ -43,17 +41,16 @@ export class HeaderComponent implements OnInit {
         }
       }
     };
-    this.loginSub = this.loginState.subject.subscribe(
-      (value) => (this.isLoggedIn = value)
-    );
+
   }
 
   ngOnDestroy(): void {
     this.loginSub.unsubscribe();
   }
-  
+
   logout() {
     this.accountService.logout();
+    this.loginState.choixSubject$.next(false)
   }
 
   
