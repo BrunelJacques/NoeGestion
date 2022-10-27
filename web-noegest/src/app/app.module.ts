@@ -15,7 +15,7 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './general/home/home.component';
 import { NotFoundComponent } from './general/not-found/not-found.component';
 import { HeaderComponent } from './general/header/header.component';
-import { LoginStateService } from './general/_services/login-state.service';
+import { ChoixAppliService } from './general/_services/choix-appli.service';
 
 
 
@@ -39,7 +39,7 @@ import { LoginStateService } from './general/_services/login-state.service';
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     // provider used to create fake backend
     fakeBackendProvider,
-    LoginStateService,
+    ChoixAppliService,
 ],
   bootstrap: [AppComponent]
 })

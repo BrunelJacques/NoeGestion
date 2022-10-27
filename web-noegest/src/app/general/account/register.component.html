@@ -16,7 +16,7 @@
             <div class="form-group">
                 <label for="lastName">Nom</label>
                 <input type="text" formControlName="lastName" class="form-control" 
-                [ngClass]="{ 'is-invalid': submitted && f['lastname'].errors }" />
+                    [ngClass]="{ 'is-invalid': submitted && f['lastname'].errors }" />
                 <div *ngIf="submitted && f['lastname'].errors?.['required']" class="invalid-feedback">
                     <div *ngIf="f['lastname'].errors?.['required']">Nom à saisir</div>
                 </div>

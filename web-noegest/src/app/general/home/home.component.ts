@@ -4,7 +4,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { environment } from 'src/environments/environment';
 import { AccountService } from '../_services';
 import { User } from '@app/general/_models';
-import { LoginStateService } from '../_services/login-state.service';
+import { ChoixAppliService } from '../_services/choix-appli.service';
 
 @Component({
   selector: 'app-home',
@@ -19,17 +19,17 @@ export class HomeComponent implements OnInit {
     @Inject(PLATFORM_ID)
     private platformId: object,
     private accountService: AccountService,
-    private loginState: LoginStateService,
+    private choixAppliService: ChoixAppliService,
     )
      {
       this.accountService.user.subscribe(x => this.user = x);
-      this.loginState.choixSubject$.subscribe((x => console.log('home constructor subcribe choixSubject: '+x)))
+      this.choixAppliService.choixSubject$.subscribe((x => console.log('home constructor subcribe choixSubject: '+x)))
      }
      ;
     
   ngOnInit(): void {
     this.loadScript('assets/params/js/index.js');
-    this.loginState.choixSubject$.subscribe(
+    this.choixAppliService.choixSubject$.subscribe(
       (value) => (console.log('home ngONInit subscribe: ' + value))
     );
   }
@@ -47,7 +47,7 @@ export class HomeComponent implements OnInit {
   appName = environment.appName
 
   emitSubject(val: string){
-    this.loginState.choixSubject$.next(val)
+    this.choixAppliService.choixSubject$.next(val)
   };
 
   stocks() {

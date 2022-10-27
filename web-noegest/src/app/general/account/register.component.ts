@@ -2,10 +2,10 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
-
 import { AccountService, AlertService } from '@app/general/_services';
 
 @Component({ templateUrl: 'register.component.html' })
+
 export class RegisterComponent implements OnInit {
     form: UntypedFormGroup;
     loading = false;

@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 
 import { User } from '@app/general/_models';
 import { AccountService } from '@app/general/_services';
-import { LoginStateService } from '../_services/login-state.service';
+import { ChoixAppliService } from '../_services/choix-appli.service';
 
 @Component({
   selector: 'app-header',
@@ -16,19 +16,19 @@ import { LoginStateService } from '../_services/login-state.service';
 export class HeaderComponent implements OnInit {
   title = 'matthania';
   user = new User();
-  loginSub = new Subscription();
+  choixSub = new Subscription();
   choixAppli: string = 'header';
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: object,
-    private loginState: LoginStateService,
+    private choixAppliService: ChoixAppliService,
     private accountService: AccountService,
     ) {
       this.accountService.user.subscribe(x => this.user = x);
     };
 
   ngOnInit(): void {
-    this.loginSub = this.loginState.choixSubject$.subscribe(
+    this.choixSub = this.choixAppliService.choixSubject$.subscribe(
       (value) => (this.choixAppli = value)
     );
     if (isPlatformBrowser(this.platformId)) {
@@ -45,12 +45,12 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    this.loginSub.unsubscribe();
+    this.choixSub.unsubscribe();
   }
 
   logout() {
     this.accountService.logout();
-    this.loginState.choixSubject$.next('logout')
+    this.choixAppliService.choixSubject$.next('logout')
   }
 
   

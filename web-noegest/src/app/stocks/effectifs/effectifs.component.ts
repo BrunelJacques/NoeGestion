@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { LoginStateService } from '@app/general/_services/login-state.service';
+import { ChoixAppliService } from '@app/general/_services/choix-appli.service';
 
 @Component({
   selector: 'app-effectifs',
@@ -10,15 +10,15 @@ import { LoginStateService } from '@app/general/_services/login-state.service';
 
 export class EffectifsComponent implements OnInit {
 
-  loginSub = new Subscription();
+  choixSub = new Subscription();
   choixAppli: string = 'effectifs';
 
   constructor(
-    private loginState: LoginStateService
+    private choixAppliService: ChoixAppliService
   ) {}
 
   ngOnInit(): void {
-    this.loginSub = this.loginState.choixSubject$.subscribe(
+    this.choixSub = this.choixAppliService.choixSubject$.subscribe(
       (value) => (this.choixAppli = value)
     );
   }

@@ -5,7 +5,7 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 
-export class LoginStateService {
+export class ChoixAppliService {
   public choixSubject$ = new BehaviorSubject<string>('-');
   
   constructor() {}
