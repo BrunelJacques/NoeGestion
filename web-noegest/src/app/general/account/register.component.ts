@@ -6,6 +6,7 @@ import { first } from 'rxjs/operators';
 import { AccountService, AlertService } from '../_services';
 
 @Component({ templateUrl: 'register.component.html' })
+
 export class RegisterComponent implements OnInit {
     form: UntypedFormGroup;
     loading = false;
