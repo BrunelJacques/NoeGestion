@@ -7,9 +7,8 @@ import { ValidationErrors } from '@angular/forms';
   providedIn : 'root'
 })
 export class ParamsValidator
-{
 
-  constructor() {}
+{  constructor() {}
 
   public static campValidator(control : AbstractControl) : ValidationErrors | null
   {

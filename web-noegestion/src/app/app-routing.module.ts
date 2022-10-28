@@ -6,6 +6,7 @@ import { CompteComponent } from './components/general/home/compte/compte.compone
 import { StSortiesComponent } from './components/stsorties/stsorties.component';
 import { HomeComponent } from './components/general/home/home.component';
 import { SortieComponent } from './components/stsorties/sortie/sortie.component';
+import { StsortieComponent } from './components/stsorties/stsortie/stsortie.component';
 import { StEntreesComponent } from './components/stentrees/stentrees.component';
 import { StEffectifsComponent } from './components/steffectifs/steffectifs.component';
 import { StInventaireComponent } from './components/stinventaire/stinventaire.component';
@@ -23,6 +24,7 @@ export const ROUTES: Routes = [
   { path: 'km', component: KmDepartComponent },
   { path: 'sorties', component: StSortiesComponent, },
   { path: 'sortie', component: SortieComponent, canActivate: [AuthGuard] },
+  { path: 'stsortie', component: StsortieComponent},
   { path: 'sortie/:id', component: SortieComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent, canActivate: [AuthGuard] },
   { path: 'compte', component: CompteComponent, canActivate: [AuthGuard] },

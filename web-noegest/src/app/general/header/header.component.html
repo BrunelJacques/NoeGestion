@@ -23,7 +23,7 @@
             Home
           </a>
         </li>
-        <span class="navbar-nav" *ngIf="choixAppli == 'stocks'">
+        <span class="navbar-nav" *ngIf="choixAppli == 'stocks' || choixAppli == '-'">
           <li class="nav-item">
             <a class="nav-link"
             routerLink="/stocks/sorties">
@@ -60,7 +60,7 @@
             </a>
           </li>          
         </span>
-        <span class="navbar-nav" *ngIf="choixAppli == 'kms'">
+        <span class="navbar-nav" *ngIf="choixAppli == 'kms' || choixAppli == '-'">
           <li class="nav-item">
             <a class="nav-link"
             routerLink="/kms/depart">

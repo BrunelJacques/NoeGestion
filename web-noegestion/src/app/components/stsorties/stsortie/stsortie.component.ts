@@ -11,5 +11,6 @@ export class StsortieComponent implements OnInit {
   @Input()
   mvt!: Mouvement;
   constructor(public activeModal: NgbActiveModal) {}
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 }
