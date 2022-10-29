@@ -1,1 +1,44 @@
-<p>params works!</p>
+<div class="card">
+  <h5 class="card-header">Paramètres de liste</h5>
+  <button type="button" class="close btn btn-primary bi-reply" 
+    aria-label="Close" 
+    (click)="goBack()">
+    retour
+  </button>
+</div>
+<form [formGroup]="paramsForm" class="form-group was-validated"  
+(ngSubmit)="onSubmitForm()">  
+  <label for="jour">Date:</label>
+  <input type= "date" id="jour" formControlName="jour" 
+        class="form-control" 
+        min="2020-01-01" max="2099-12-31">
+  <label for="origine">Vers :</label>
+  <select id="origine" name="origine"
+    (change)="onOrigineChange($event)"
+    formControlName="origine" 
+    class="form-control" required aria-label="select example">
+    <option value="">Choisissez</option>
+    <option value="cuisine">Repas en cuisine</option>
+    <option value="camp">Camp Extérieur</option>
+    <option value="odIn">Régularisation</option>
+  </select>
+  <label class="invalid-feedback">!!! mauvais choix </label>
+  <app-camp *ngIf="origine == 'camp'" [(camp)]="camp">
+  </app-camp>
+  <label for="tva">Tva mtt:</label>
+  <select id="tva" name="tva" formControlName="tva" class="form-control">
+    <option value="ttc">en TTC</option>
+    <option value="ht">en HT</option>
+  </select>
+  <hr>
+  <app-repas [(repas)]="repas"></app-repas>
+  <div class="modal-footer align-items-center>">
+    <label class="small">(vers_{{params.location}})</label>
+    <button id="ok" class="btn btn-primary bi-check" 
+            type="submit"
+            [disabled]="paramsForm.invalid"
+            >
+      &nbsp;ok
+    </button>
+  </div> 
+</form>
