@@ -1,0 +1,13 @@
+<div >
+  <label for="repas">Repas :</label>
+  <select id="repas" name="repas"
+      class="form-control-sm" 
+      placeholder="saisir" 
+      (change)="onChange()" >
+      <!--[(ngModel)]="repas"-->
+    <option value="matin">repas du matin</option>
+    <option value="midi">repas de midi</option>
+    <option value="soir">repas du soir</option>
+    <option value="">non précisé</option>
+  </select>
+</div>
