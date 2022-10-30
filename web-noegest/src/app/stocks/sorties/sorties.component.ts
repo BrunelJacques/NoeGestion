@@ -49,7 +49,7 @@ export class SortiesComponent implements OnInit {
           this.mvts = data;
           console.log(data);
         },
-        error: (e) => if != 'Not Foundconsole.error(e)
+        error: (e) => console.error(e)
       });
   }
 
