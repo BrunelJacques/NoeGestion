@@ -1007,7 +1007,7 @@ export class InMemoryDataService implements InMemoryDbService {
           libelle: "23 Camp corse s1",
         },  
     ];
-    return { mvts: mvts, camps: camps };
+    return { mvts: mvts };
   }
   // Overrides the genId method to ensure that a hero always has an id.
   // If the heroes array is empty,
