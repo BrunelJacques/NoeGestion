@@ -15,7 +15,7 @@ import { DatePipe } from '@angular/common';
 export class SortiesComponent implements OnInit {
   params = PARAMS
   selectedMvt?: Mouvement;
-  mvts: Mouvement[] = [];
+  sorties: Mouvement[] = [];
   today: Date = new Date();
   pipe = new DatePipe('en-US');
   todayWithPipe = null;
@@ -31,7 +31,14 @@ export class SortiesComponent implements OnInit {
     PARAMS.location= "sorties"
     this.todayWithPipe = this.pipe.transform(Date.now(), 'dd/MM/yyyy')
     this.datepipe.transform(Date.now(), 'yyyy/MM/dd')
+
+    
   }/*  */
+
+  getSorties(): void {
+    this.sortiesService.getSorties()
+    .subscribe(sorties => this.sorties = sorties);
+  }
 
   loadScript(name: string): void {
     const s = document.createElement('script');
@@ -46,7 +53,7 @@ export class SortiesComponent implements OnInit {
       .subscribe({
         next: (data) => {
           console.log("2");
-          this.mvts = data;
+          this.sorties = data;
           console.log(data);
         },
         error: (e) => {

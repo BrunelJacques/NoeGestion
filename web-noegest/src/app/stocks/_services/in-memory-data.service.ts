@@ -11,7 +11,7 @@ export class InMemoryDataService implements InMemoryDbService {
     let mvts = [
       {
         id: 7879,
-        jour: "2021-08-05",
+        jour: "2022-10-31",
         origine: "repas",
         article_id: 17,
         article: "BANANES KG",
@@ -36,7 +36,7 @@ export class InMemoryDataService implements InMemoryDbService {
       },
       {
         id: 7878,
-        jour: "2021-08-02",
+        jour: "2022-10-02",
         origine: "repas",
         article_id: 17,
         article: "BANANES KG",
@@ -61,7 +61,7 @@ export class InMemoryDataService implements InMemoryDbService {
       },
       {
           id: 7939,
-          jour: "2021-08-02",
+          jour: "2022-10-02",
           origine: "repas",
           article_id: 27,
           article: "BEURRE PLQ 250G PIEC",
@@ -86,7 +86,7 @@ export class InMemoryDataService implements InMemoryDbService {
       },
       {
           id: 7957,
-          jour: "2021-08-02",
+          jour: "2022-10-02",
           origine: "repas",
           article_id: 29,
           article: "BISC COOKIES PAQUET",
@@ -111,7 +111,7 @@ export class InMemoryDataService implements InMemoryDbService {
       },
       {
           id: 8068,
-          jour: "2021-08-02",
+          jour: "2022-10-02",
           origine: "repas",
           article_id: 58,
           article: "CAROTTES FRAICHES KG",
@@ -136,7 +136,7 @@ export class InMemoryDataService implements InMemoryDbService {
       },
       {
           id: 8092,
-          jour: "2021-08-02",
+          jour: "2022-10-02",
           origine: "repas",
           article_id: 62,
           article: "CEREALES DU matin",
@@ -161,7 +161,7 @@ export class InMemoryDataService implements InMemoryDbService {
       },
       {
           id: 8148,
-          jour: "2021-08-02",
+          jour: "2022-10-02",
           origine: "Repas",
           article_id: 76,
           article: "CHIPS X 30GRS",
@@ -186,7 +186,7 @@ export class InMemoryDataService implements InMemoryDbService {
       },
       {
           id: 8147,
-          jour: "2021-08-02",
+          jour: "2022-10-02",
           origine: "repas",
           article_id: 76,
           article: "CHIPS X 30GRS",
@@ -211,7 +211,7 @@ export class InMemoryDataService implements InMemoryDbService {
       },
       {
           id: 8197,
-          jour: "2021-08-02",
+          jour: "2022-10-02",
           origine: "repas",
           article_id: 79,
           article: "CHOC/PDR NESQUIK KG",
@@ -236,7 +236,7 @@ export class InMemoryDataService implements InMemoryDbService {
       },
       {
           id: 8218,
-          jour: "2021-08-02",
+          jour: "2022-10-02",
           origine: "repas",
           article_id: 96,
           article: "COMPOTE COUPELLES 100GRS",
@@ -261,7 +261,7 @@ export class InMemoryDataService implements InMemoryDbService {
       },
       {
           id: 8236,
-          jour: "2021-08-02",
+          jour: "2022-10-02",
           origine: "repas",
           article_id: 100,
           article: "CONCOMBRES PIECES",
@@ -286,7 +286,7 @@ export class InMemoryDataService implements InMemoryDbService {
       },
       {
           id: 8290,
-          jour: "2021-08-02",
+          jour: "2022-10-02",
           origine: "repas",
           article_id: 115,
           article: "CREME FR LIQU L/C 1L",
@@ -311,7 +311,7 @@ export class InMemoryDataService implements InMemoryDbService {
       },
       {
           id: 8323,
-          jour: "2021-08-02",
+          jour: "2022-10-02",
           origine: "repas",
           article_id: 130,
           article: "EAU MINERALE 1L5",
@@ -336,7 +336,7 @@ export class InMemoryDataService implements InMemoryDbService {
       },
       {
           id: 8479,
-          jour: "2021-08-02",
+          jour: "2022-10-02",
           origine: "repas",
           article_id: 170,
           article: "FROMAGE PORTIONS",
@@ -361,7 +361,7 @@ export class InMemoryDataService implements InMemoryDbService {
       },
       {
           id: 8478,
-          jour: "2021-08-02",
+          jour: "2022-10-02",
           origine: "repas",
           article_id: 170,
           article: "FROMAGE PORTIONS",
@@ -386,7 +386,7 @@ export class InMemoryDataService implements InMemoryDbService {
       },
       {
           id: 8550,
-          jour: "2021-08-02",
+          jour: "2022-10-02",
           origine: "repas",
           article_id: 186,
           article: "HUILE OLIVE 1L",
@@ -411,7 +411,7 @@ export class InMemoryDataService implements InMemoryDbService {
       },
       {
           id: 8570,
-          jour: "2021-08-02",
+          jour: "2022-10-02",
           origine: "repas",
           article_id: 187,
           article: "HUILE TOURNESOL  X 1L",
@@ -436,7 +436,7 @@ export class InMemoryDataService implements InMemoryDbService {
       },
       {
           id: 8598,
-          jour: "2021-08-02",
+          jour: "2022-10-02",
           origine: "repas",
           article_id: 189,
           article: "JAMBON BLANC X 16 TR",
@@ -461,7 +461,7 @@ export class InMemoryDataService implements InMemoryDbService {
       },
       {
           id: 8597,
-          jour: "2021-08-02",
+          jour: "2022-10-02",
           origine: "repas",
           article_id: 189,
           article: "JAMBON BLANC X 16 TR",
@@ -486,7 +486,7 @@ export class InMemoryDataService implements InMemoryDbService {
       },
       {
           id: 8668,
-          jour: "2021-08-02",
+          jour: "2022-10-02",
           origine: "repas",
           article_id: 202,
           article: "LAIT UHT 1L",
@@ -511,7 +511,7 @@ export class InMemoryDataService implements InMemoryDbService {
       },
       {
           id: 8761,
-          jour: "2021-08-02",
+          jour: "2022-10-02",
           origine: "repas",
           article_id: 225,
           article: "MELONS CANTALOU PC",
@@ -536,7 +536,7 @@ export class InMemoryDataService implements InMemoryDbService {
       },
       {
           id: 8823,
-          jour: "2021-08-02",
+          jour: "2022-10-02",
           origine: "repas",
           article_id: 251,
           article: "NUTELLA POT KG",
@@ -561,7 +561,7 @@ export class InMemoryDataService implements InMemoryDbService {
       },
       {
           id: 8851,
-          jour: "2021-08-02",
+          jour: "2022-10-02",
           origine: "repas",
           article_id: 254,
           article: "OEUFS LIQUIDE 1LITRE",
@@ -586,7 +586,7 @@ export class InMemoryDataService implements InMemoryDbService {
       },
       {
           id: 8911,
-          jour: "2021-08-02",
+          jour: "2022-10-02",
           origine: "repas",
           article_id: 268,
           article: "PAINS RESTAURANTS",
@@ -611,7 +611,7 @@ export class InMemoryDataService implements InMemoryDbService {
       },
       {
           id: 8973,
-          jour: "2021-08-02",
+          jour: "2022-10-02",
           origine: "repas",
           article_id: 279,
           article: "PECHES FRAICHES   KG",
@@ -636,7 +636,7 @@ export class InMemoryDataService implements InMemoryDbService {
       },
       {
           id: 8972,
-          jour: "2021-08-02",
+          jour: "2022-10-02",
           origine: "repas",
           article_id: 279,
           article: "PECHES FRAICHES   KG",
@@ -661,7 +661,7 @@ export class InMemoryDataService implements InMemoryDbService {
       },
       {
           id: 8971,
-          jour: "2021-08-02",
+          jour: "2022-10-02",
           origine: "repas",
           article_id: 279,
           article: "PECHES FRAICHES   KG",
@@ -686,7 +686,7 @@ export class InMemoryDataService implements InMemoryDbService {
       },
       {
           id: 9012,
-          jour: "2021-08-02",
+          jour: "2022-10-02",
           origine: "repas",
           article_id: 289,
           article: "PLAQ FEUIL CONG UNITE",
@@ -711,7 +711,7 @@ export class InMemoryDataService implements InMemoryDbService {
       },
       {
           id: 9091,
-          jour: "2021-08-02",
+          jour: "2022-10-02",
           origine: "repas",
           article_id: 321,
           article: "PRUNES FRAICHES KG",
@@ -736,7 +736,7 @@ export class InMemoryDataService implements InMemoryDbService {
       },
       {
           id: 9135,
-          jour: "2021-08-02",
+          jour: "2022-10-02",
           origine: "repas",
           article_id: 338,
           article: "RIZ LONG GR US KG",
@@ -761,7 +761,7 @@ export class InMemoryDataService implements InMemoryDbService {
       },
       {
           id: 9158,
-          jour: "2021-08-02",
+          jour: "2022-10-02",
           origine: "repas",
           article_id: 344,
           article: "SALADES DIVERSES",
@@ -786,7 +786,7 @@ export class InMemoryDataService implements InMemoryDbService {
       },
       {
           id: 9157,
-          jour: "2021-08-02",
+          jour: "2022-10-02",
           origine: "repas",
           article_id: 344,
           article: "SALADES DIVERSES",
@@ -811,7 +811,7 @@ export class InMemoryDataService implements InMemoryDbService {
       },
       {
           id: 9156,
-          jour: "2021-08-02",
+          jour: "2022-10-02",
           origine: "repas",
           article_id: 344,
           article: "SALADES DIVERSES",
@@ -836,7 +836,7 @@ export class InMemoryDataService implements InMemoryDbService {
       },
       {
           id: 9208,
-          jour: "2021-08-02",
+          jour: "2022-10-02",
           origine: "repas",
           article_id: 366,
           article: "SUCRE MORCEAUX KG",
@@ -861,7 +861,7 @@ export class InMemoryDataService implements InMemoryDbService {
       },
       {
           id: 9215,
-          jour: "2021-08-02",
+          jour: "2022-10-02",
           origine: "repas",
           article_id: 367,
           article: "SUCRE POUDRE X KG",
@@ -886,7 +886,7 @@ export class InMemoryDataService implements InMemoryDbService {
       },
       {
           id: 9245,
-          jour: "2021-08-02",
+          jour: "2022-10-02",
           origine: "repas",
           article_id: 376,
           article: "TARTE POMME 10PARTS",
@@ -911,7 +911,7 @@ export class InMemoryDataService implements InMemoryDbService {
       },
       {
           id: 9278,
-          jour: "2021-08-02",
+          jour: "2022-10-02",
           origine: "repas",
           article_id: 385,
           article: "TOMAT FARC GEL  UNITE",
@@ -936,7 +936,7 @@ export class InMemoryDataService implements InMemoryDbService {
       },
       {
           id: 9284,
-          jour: "2021-08-02",
+          jour: "2022-10-02",
           origine: "repas",
           article_id: 387,
           article: "TOMATES FRAICHES",
@@ -961,7 +961,7 @@ export class InMemoryDataService implements InMemoryDbService {
       },
       {
           id: 9336,
-          jour: "2021-08-02",
+          jour: "2022-10-02",
           origine: "repas",
           article_id: 402,
           article: "VINAIGRE DIVERS",
@@ -1017,8 +1017,11 @@ export class InMemoryDataService implements InMemoryDbService {
   //What's important here is the part <T extends Hero | Crises>: It means that 
   //type T can be either Mvts or Camps: So it will be invoked if the parameter 
   //passed is either of type Mouvement[] or Camp[].
-  genId<T extends Mouvement | Camp>(myTable: T[]): number {
-    return myTable.length > 0 ? Math.max(...myTable.map(t => t.id)) + 1 : 11;
+  //genId<T extends Mouvement | Camp>(myTable: T[]): number {
+  //  return myTable.length > 0 ? Math.max(...myTable.map(t => t.id)) + 1 : 11;
+  //}
+  genId(mvts: Mouvement[]): number {
+    return mvts.length > 0 ? Math.max(...mvts.map(mouvement => mouvement.id)) + 1 : 11;
   }
 };
 

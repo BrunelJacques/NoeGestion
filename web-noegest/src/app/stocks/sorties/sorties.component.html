@@ -42,7 +42,7 @@
     [class.selected]="mvt === selectedMvt"
     (click)="openSortie(mvt)"
     > -->
-    <tr *ngFor="let mvt of mvts;">
+    <tr *ngFor="let mvt of sorties;">
         <td class="item" routerLink="/sortie/{{mvt.id}}">  {{mvt.article}}</td>
         <td class= "ctnbtn">
           <button type="button" class="btn btn-primary" (click)="openMvt(mvt)">...</button>

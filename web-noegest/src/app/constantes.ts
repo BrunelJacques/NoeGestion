@@ -9,6 +9,6 @@ export class Constantes {
 
   //orientation vers django ou inMemory 
   //public SORTIES_URL = this.BASE_URL + '/sorties';
-  public SORTIES_URL = 'api.mvts';
+  public SORTIES_URL = 'api/stocks/sorties';
 
 }
