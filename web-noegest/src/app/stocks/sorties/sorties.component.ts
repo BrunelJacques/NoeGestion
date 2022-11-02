@@ -21,7 +21,7 @@ export class SortiesComponent implements OnInit {
   todayWithPipe = null;
 
   constructor(
-    private sortiesService: MvtService,
+    private mvtService: MvtService,
     public datepipe: DatePipe
     ) { }
 
@@ -36,7 +36,7 @@ export class SortiesComponent implements OnInit {
   }/*  */
 
   getSorties(): void {
-    this.sortiesService.getSorties()
+    this.mvtService.getSorties()
     .subscribe(sorties => this.sorties = sorties);
   }
 
@@ -49,7 +49,7 @@ export class SortiesComponent implements OnInit {
 
   retrieveTutorials(): void {
     console.log("1");
-    this.sortiesService.getSorties()
+    this.mvtService.getSorties()
       .subscribe({
         next: (data) => {
           console.log("2");
