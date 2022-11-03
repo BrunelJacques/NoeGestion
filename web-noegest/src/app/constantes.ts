@@ -4,11 +4,13 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class Constantes {
-  public BASE_URL = "http://localhost:8000";
-  public EFFECTIFS_URL = this.BASE_URL + '/effectifs';
-
   //orientation vers django ou inMemory 
-  //public SORTIES_URL = this.BASE_URL + '/sorties';
-  public SORTIES_URL = 'api/stocks/sorties';
+  //public BASE_URL = "http://localhost:8000";
+  public  BASE_URL = "api" 
+
+
+  public EFFECTIFS_URL = this.BASE_URL + '/effectifs';
+  public MVTS_URL = this.BASE_URL + '/mvts';
+  public SORTIES_URL = this.BASE_URL + 'api/sorties';
 
 }

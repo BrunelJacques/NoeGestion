@@ -1007,21 +1007,17 @@ export class InMemoryDataService implements InMemoryDbService {
           libelle: "23 Camp corse s1",
         },  
     ];
-    return { mvts };
+    return { mvts, camps };
   }
-  // Overrides the genId method to ensure that a hero always has an id.
-  // If the heroes array is empty,
-  // the method below returns the initial number (11).
-  // if the array is not empty, the method below returns the highest id + 1.
-
-  //What's important here is the part <T extends Hero | Crises>: It means that 
-  //type T can be either Mvts or Camps: So it will be invoked if the parameter 
-  //passed is either of type Mouvement[] or Camp[].
-  //genId<T extends Mouvement | Camp>(myTable: T[]): number {
-  //  return myTable.length > 0 ? Math.max(...myTable.map(t => t.id)) + 1 : 11;
-  //}
-  genId(mvts: Mouvement[]): number {
+  /* Overrides the genId method to ensure that a hero always has an id.
+    If the heroes array is empty,
+    the method below returns the initial number (11).
+    if the array is not empty, the method below returns the highest id + 1.
+  */
+  /*
+    genId(mvts: Mouvement[]): number {
     return mvts.length > 0 ? Math.max(...mvts.map(mouvement => mouvement.id)) + 1 : 11;
   }
+  */
 };
 
