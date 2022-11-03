@@ -1,54 +1,51 @@
 
 
-<h3 class="container">Bienvenue dans {{appName}}!</h3>
 
-<div>
-    <h4 class="container">Choisissez votre appli: </h4>
-
-    <div class="container">
-        <hr>
-        <div class="col-sm-12 col-md-8 col-lg-8 col-xl-8 mb-2">
-            <div class="card bg-light mb-3" >
-                <a routerLink="/stocks/sorties">
-                    <div class="card-header" (click)="stocks()" >
-                        <div class="row">
-                            <div class="col-10 px-1">
-                            <h5 class="card-title">Gestion des Stocks</h5>
-                            <p class="card-text">Suivi des mouvements de stocks et calcul d'un prix de journée</p>
-                            </div>
-                            <div class="col-2 px-0" id=image>
-                                <img src="assets/params/images/epicerie@1x.jpg" 
-                                srcset="assets/params/images/epicerie@3x.jpg,
-                                assets/params/images/epicerie@2x.jpg,
-                                assets/params/images/epicerie@1x.jpg"
-                                width="50" height="50">
-                            </div>
+<div class="container">
+    <h3>Bienvenue dans {{appName}}!</h3>
+    <h4>Choisissez votre appli: </h4>
+    <hr>
+    <div class="col-sm-12 col-md-8 col-lg-8 col-xl-8 mb-2">
+        <div class="card bg-light mb-3" >
+            <a routerLink="/stocks/sorties">
+                <div class="card-header" (click)="stocks()" >
+                    <div class="row">
+                        <div class="col-10 px-1">
+                        <h5 class="card-title">Gestion des Stocks</h5>
+                        <p class="card-text">Suivi des mouvements de stocks et calcul d'un prix de journée</p>
+                        </div>
+                        <div class="col-2 px-0" id=image>
+                            <img src="assets/params/images/epicerie@1x.jpg" 
+                            srcset="assets/params/images/epicerie@3x.jpg,
+                            assets/params/images/epicerie@2x.jpg,
+                            assets/params/images/epicerie@1x.jpg"
+                            width="50" height="50">
                         </div>
                     </div>
-                </a>
-            </div>
-            <div class="card bg-light mb-3">
-                <a routerLink="/km">
-                    <div class="card-header" (click)="kms()">
-                        <div class="row" >
-                            <div class="col-10 px-1">
-                            <h5 class="card-title">Kms véhicules</h5>
-                            <p class="card-text">Suivi du kilométrage des véhicules pour affecter le coût</p>
-                            </div>
-                            <div class="col-2 px-0" id=image>
-                                <img src="assets/params/images/epicerie@2x.jpg"
-                                srcset="assets/params/images/minibus@3x.jpg,
-                                assets/params/images/epicerie@2x.jpg,
-                                assets/params/images/epicerie@3x.jpg"
-                                width="50" height="50">                
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
+                </div>
+            </a>
         </div>
-        <hr>
+        <div class="card bg-light mb-3">
+            <a routerLink="/km">
+                <div class="card-header" (click)="kms()">
+                    <div class="row" >
+                        <div class="col-10 px-1">
+                        <h5 class="card-title">Kms véhicules</h5>
+                        <p class="card-text">Suivi du kilométrage des véhicules pour affecter le coût</p>
+                        </div>
+                        <div class="col-2 px-0" id=image>
+                            <img src="assets/params/images/epicerie@2x.jpg"
+                            srcset="assets/params/images/minibus@3x.jpg,
+                            assets/params/images/epicerie@2x.jpg,
+                            assets/params/images/epicerie@3x.jpg"
+                            width="50" height="50">                
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
     </div>
-
-    <script src="assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <hr>
 </div>
+
+<script src="assets/bootstrap/js/bootstrap.bundle.min.js"></script>

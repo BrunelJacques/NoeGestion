@@ -7,7 +7,7 @@
   </button>
 </div>
 <form [formGroup]="paramsForm" class="form-group was-validated"  
-(ngSubmit)="onSubmitForm()">  
+(ngSubmit)="onSubmitForm()"> 
   <label for="jour">Date:</label>
   <input type= "date" id="jour" formControlName="jour" 
         class="form-control" 
@@ -25,6 +25,7 @@
   <label class="invalid-feedback">!!! mauvais choix </label>
   <app-camp *ngIf="origine == 'camp'" [(camp)]="camp">
   </app-camp>
+
   <label for="tva">Tva mtt:</label>
   <select id="tva" name="tva" formControlName="tva" class="form-control">
     <option value="ttc">en TTC</option>
