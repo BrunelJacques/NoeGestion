@@ -1,29 +1,37 @@
 <header class="navbar navbar-expand-md navbar-dark fixed-top nga-navbar">
   <nav class="container" aria-label="Main navigation">
-    <a routerLink="/" class="navbar-brand" alt="Accueil">
-      <img src="assets/params/images/noegest@1x.png"
-      srcset="assets/params/images/noegest@2x.png,
-      assets/params/images/noegest@1x.png" 
-      width="170" height="40" alt="Logo">
-    </a>
-    <span class="text-white">{{choixAppli}}</span>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
-      data-bs-target="#navbarCollapse"  *ngIf="user"
-      aria-controls="navbarCollapse" aria-expanded="false" 
-      aria-label="Toggle navigation">
+<!--header class="container-fluid fixed-top"-->
+  <!--nav class="row navbar navbar-expand-lg"-->
+    <div class="col-auto" style="width: 190;">
+      <a routerLink="/" class="navbar-brand" alt="Accueil">
+        <img src="assets/params/images/noegest@1x.png"
+        srcset="assets/params/images/noegest@2x.png,
+        assets/params/images/noegest@1x.png" 
+        width="170" height="40" alt="Logo">
+      </a>
+      <span class="text-white">{{choixAppli}}</span>
+    </div>
+
+    <button class="col-auto navbar-toggler" type="button" data-bs-toggle="collapse" 
+        data-bs-target="#navbarNav" aria-controls="navbarNav" 
+        aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarCollapse">
-      <ul class="navbar-nav mx-auto">
+    
+    <div class="col-5 col-md-8 col-xl-9 collapse navbar-collapse " 
+        id="navbarNav" toggle="collapse" data-target=".navbar-collapse"  >
+      <ul class="col-auto navbar-nav" id="home">
         <li class="nav-item">
           <a class="nav-link" 
           aria-current="page" 
-          routerLink="/">
+          routerLink="/" href="#">
             <i class="fas fa-home me-1"></i>
             Home
           </a>
         </li>
-        <span class="navbar-nav" *ngIf="choixAppli == 'stocks' || choixAppli == '-'">
+      </ul>
+      <span class="navbar-nav" *ngIf="choixAppli == 'stocks' || choixAppli == '-'">
+        <ul class="col-auto navbar-nav" id="menustock">
           <li class="nav-item">
             <a class="nav-link"
             routerLink="/stocks/sorties">
@@ -59,8 +67,10 @@
               Inventaire
             </a>
           </li>          
-        </span>
-        <span class="navbar-nav" *ngIf="choixAppli == 'kms' || choixAppli == '-'">
+        </ul>
+      </span>      
+      <span class="navbar-nav" *ngIf="choixAppli == 'kms' || choixAppli == '-'">
+        <ul class="col-auto navbar-nav"id="menukms">
           <li class="nav-item">
             <a class="nav-link"
             routerLink="/kms/depart">
@@ -76,17 +86,14 @@
               KMarrivee
             </a>
           </li>
-        </span>
-      </ul>
-      <div class="d-flex">
-        <button type="button" 
-        class="btn btn-sm btn-outline-light me-2"
-        (click)="logout()">
-          <i class="fas fa-sign-out-alt me-2"></i>
-          Logout / Login
-        </button>
-      </div>
+        </ul>
+      </span>
+      <button type="button" 
+      class="col-auto btn btn-sm btn-outline-light me-2"
+      (click)="logout()">
+        <i class="fas fa-sign-out-alt me-2"></i>
+        Logout / Login
+      </button>
     </div>
   </nav>
 </header>
-

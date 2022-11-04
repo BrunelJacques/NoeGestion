@@ -32,7 +32,7 @@ export class HeaderComponent implements OnInit {
       (value) => (this.choixAppli = value)
     );
     if (isPlatformBrowser(this.platformId)) {
-      const navMain = document.getElementById('navbarCollapse');
+      const navMain = document.getElementById('navbarNav');
       if (navMain) {
         navMain.onclick = function onClick() {
           if (navMain) {
