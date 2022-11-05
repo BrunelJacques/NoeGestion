@@ -2,7 +2,7 @@
   <h5 class="card-header">Paramètres de liste</h5>
   <button type="button" class="close btn btn-primary bi-reply" 
     aria-label="Close" 
-    (click)="goBack()">
+    (click)="okBack()">
     retour
   </button>
 </div>
@@ -31,15 +31,5 @@
     <option value="ttc">en TTC</option>
     <option value="ht">en HT</option>
   </select>
-  <hr>
   <app-repas [(repas)]="repas"></app-repas>
-  <div class="modal-footer align-items-center>">
-    <label class="small">(vers_{{params.location}})</label>
-    <button id="ok" class="btn btn-primary bi-check" 
-            type="submit"
-            [disabled]="paramsForm.invalid"
-            >
-      &nbsp;ok
-    </button>
-  </div> 
 </form>
