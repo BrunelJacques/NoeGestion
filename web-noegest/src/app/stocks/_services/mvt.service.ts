@@ -8,18 +8,15 @@ import { Mouvement } from '../_models/Mouvement';
 import { Camp } from '../_models/camp';
 import {Constantes} from "../../constantes";
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root'})
+
 export class MvtService {
 
-  httpOptions = {
-    headers: new HttpHeaders({'Content-Type': 'application/json'})
-  };
+  httpOptions = { headers: new HttpHeaders({'Content-Type': 'application/json'})};
 
   constructor(
-    private http: HttpClient,
     private constantes: Constantes,
+    private http: HttpClient,
   ) {}
 
   getSorties(): Observable<Mouvement[]> {

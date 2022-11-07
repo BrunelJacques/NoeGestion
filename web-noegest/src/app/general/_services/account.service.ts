@@ -1,7 +1,7 @@
 ﻿import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { environment } from '@environments/environment';
@@ -36,6 +36,15 @@ export class AccountService {
             }));
     }
 
+    /*/ accès à in-memory-data
+    login(username: string, password: string): Observable<any> {
+        const url = `api/users`;
+        return this.http.get<User>(url).pipe(
+          tap(_ => this.log(`fetched user id=${username}`)),
+          catchError(this.handleError<User[]>(`getUsers id=${username}`))
+        );
+      }*/
+
     logout() {
         // remove user from local storage and set current user to null
         localStorage.removeItem('user');
@@ -47,4 +56,16 @@ export class AccountService {
         return this.http.post(`${environment.apiUrl}/account/register`, user);
     }
 
+
+  // gestion erreur façon Tour of Heroes
+  private handleError<T>(operation = 'operation', result?: T) {
+    return (error: any): Observable<T> => {
+      console.error(error); // log to console instead
+      this.log(`${operation} failed: ${error.message}`);
+      // Let the app keep running by returning an empty result.
+      return of(result as T);
+    };
+  }
+
+    private log(message: string) {console.log(message)}
 }

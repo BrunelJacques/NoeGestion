@@ -16,7 +16,7 @@ export class ParamsValidatorService {
     if (origine != 'camp')
       return null;
     const camp = control.get('camp').value;
-    if (camp == '') 
+    if ((camp == 'saisie obligatoire') || (camp == '')) 
       return { invalidParams : true };
 
     return null;
