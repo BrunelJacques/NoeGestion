@@ -1,5 +1,6 @@
 
 export interface Params {
+  id: string;
   jour: Date;
   origine: string;
   repas: string;
@@ -10,6 +11,7 @@ export interface Params {
 }
 
 export const  PARAMS: Params= {
+    id: "0",
     jour: new Date(),
     origine: "cuisine",
     repas: "",

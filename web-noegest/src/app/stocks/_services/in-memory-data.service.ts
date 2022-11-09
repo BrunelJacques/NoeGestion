@@ -988,12 +988,10 @@ export class InMemoryDataService implements InMemoryDbService {
   let camps = [
     {
       id: 0,
-      code: "00",
       libelle: "00 Non affecté",
     },  
     {
       id: 1,
-      code: "10",
       libelle: "10 Cuisine Pasto", 
     },  
     {

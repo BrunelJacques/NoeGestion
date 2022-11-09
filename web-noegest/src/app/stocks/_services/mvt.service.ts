@@ -28,7 +28,7 @@ export class MvtService {
       }
 
   getCamps(): Observable<Camp[]> {
-    return this.http.get<Camp[]>(this.constantes.MVTS_URL)
+    return this.http.get<Camp[]>(this.constantes.CAMPS_URL)
       .pipe(
         tap(_ => this.log('fetched camps')),
         catchError(this.handleError<Camp[]>('getCamps', []))

@@ -10,8 +10,10 @@ export class Constantes {
   public AUTH_API = 'http://localhost:8080/api/auth/';
 
   public USERS_URL = this.BASE_URL + '/users';
+  public PARAMS_URL = this.BASE_URL + '/params';
   public EFFECTIFS_URL = this.BASE_URL + '/effectifs';
   public MVTS_URL = this.BASE_URL + '/mvts';
-  public SORTIES_URL = this.BASE_URL + 'api/sorties';
+  public CAMPS_URL = this.BASE_URL + '/camps';
+  public SORTIES_URL = this.BASE_URL + '/sorties';
 
 }

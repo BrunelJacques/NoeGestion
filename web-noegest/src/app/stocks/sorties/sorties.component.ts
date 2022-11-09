@@ -19,6 +19,7 @@ export class SortiesComponent implements OnInit {
   today: Date = new Date();
   pipe = new DatePipe('en-US');
   todayWithPipe = null;
+  
 
   constructor(
     private mvtService: MvtService,
@@ -27,17 +28,10 @@ export class SortiesComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadScript('assets/params/js/index.js');
-    this.retrieveTutorials();
+    this.getSorties();
     PARAMS.location= "sorties"
     this.todayWithPipe = this.pipe.transform(Date.now(), 'dd/MM/yyyy')
-    this.datepipe.transform(Date.now(), 'yyyy/MM/dd')
-
-    
-  }/*  */
-
-  getSorties(): void {
-    this.mvtService.getSorties()
-    .subscribe(sorties => this.sorties = sorties);
+    this.datepipe.transform(Date.now(), 'yyyy/MM/dd') 
   }
 
   loadScript(name: string): void {
@@ -47,12 +41,10 @@ export class SortiesComponent implements OnInit {
     document.getElementsByTagName('head')[0].appendChild(s);
   }
 
-  retrieveTutorials(): void {
-    console.log("1");
+  getSorties(): void {
     this.mvtService.getSorties()
       .subscribe({
         next: (data) => {
-          console.log("2");
           this.sorties = data;
           console.log(data);
         },

@@ -23,13 +23,33 @@
     <option value="odIn">Régularisation</option>
   </select>
   <label class="invalid-feedback">!!! mauvais choix </label>
-  <app-camp *ngIf="origine == 'camp'" [(camp)]="camp">
-  </app-camp>
+
+  <label for="camp">Camp:</label>
+  <select formControlName="camp"
+    *ngIf="origine == 'camp'"
+    class="form-control" required>
+    <option [ngValue]="" disabled>Choisir un camp</option>
+    <option *ngFor="let camp of camps" 
+      [ngValue]="camp.id">
+      {{camp.libelle}}
+    </option>
+  </select>
 
   <label for="tva">Tva mtt:</label>
   <select id="tva" name="tva" formControlName="tva" class="form-control">
     <option value="ttc">en TTC</option>
     <option value="ht">en HT</option>
   </select>
-  <app-repas [(repas)]="repas"></app-repas>
+
+  
+  <label for="repas">Repas:</label>
+  <select formControlName="repas"
+    class="form-control" required>
+    <option [ngValue]="" disabled>destination</option>
+    <option *ngFor="let repas of repass" 
+      [ngValue]="repas.code">
+      {{repas.libelle}}
+    </option>
+  </select>
+
 </form>

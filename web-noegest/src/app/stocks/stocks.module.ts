@@ -12,8 +12,6 @@ import { OneSortieComponent } from './one-sortie/one-sortie.component';
 import { SortiesComponent } from './sorties/sorties.component';
 import { PrixJourneeComponent } from './prix-journee/prix-journee.component';
 import { ParamsComponent } from './params/params.component';
-import { RepasComponent } from './params/repas/repas.component';
-import { CampComponent } from './params/camp/camp.component';
 
 
 @NgModule({
@@ -32,8 +30,6 @@ import { CampComponent } from './params/camp/camp.component';
         SortiesComponent,
         PrixJourneeComponent,
         ParamsComponent,
-        RepasComponent,
-        CampComponent,
     ],
     providers: [DatePipe]
 })
