@@ -1011,16 +1011,8 @@ export class InMemoryDataService implements InMemoryDbService {
       libelle: "23 Camp corse s1",
     },  
   ];
-  let users = [
-    {
-      firstName: "operateur",
-      lastName: "Matthania",
-      email: "jb2",
-      username: "jb2",
-      password: "Jean316",
-    },  
-  ];
-  return { mvts, camps, users };
+ 
+  return { mvts, camps };
   }
   /* Overrides the genId method to ensure that a hero always has an id.
   If the heroes array is empty,
