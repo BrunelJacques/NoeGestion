@@ -5,7 +5,10 @@ import { delay, materialize, dematerialize } from 'rxjs/operators';
 
 // array in local storage for registered users
 const usersKey = 'angular-registration-login-users';
+const paramsKey = 'angular-registration-stocks-lsparams';
 let users = JSON.parse(localStorage.getItem(usersKey)) || [];
+// local storage params
+let lsparams = JSON.parse(localStorage.getItem(paramsKey)) || [];
 
 @Injectable()
 export class FakeBackendInterceptor implements HttpInterceptor {
@@ -22,6 +25,10 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                     return register();
                 case url.endsWith('/users') && method === 'GET':
                     return getUsers();
+                case url.endsWith('stocks/setparams') && method === 'POST':
+                    return setParams();
+                case url.endsWith('stocks/getparams') && method === 'GET':
+                    return getParams();
                 default:
                     // pass through any requests not handled above
                     return next.handle(request);
@@ -57,6 +64,28 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             if (!isLoggedIn()) return unauthorized();
             return ok(users.map(x => basicDetails(x)));
         }
+
+        function getParams() {
+            if (!isLoggedIn()) return unauthorized();
+            // only one possible record
+            return ok(lsparams.first());
+        }
+
+        function setParams() {
+            if (!isLoggedIn()) return unauthorized();
+            const params = body
+            if (lsparams.length === 0) {
+                // first record
+                lsparams.push(params);
+                localStorage.setItem(paramsKey, JSON.stringify(lsparams));
+                return ok();
+            }
+            // update and save record
+            let record = lsparams.first()
+            Object.assign(record, params);
+            localStorage.setItem(usersKey, JSON.stringify(lsparams));
+        }
+
 
         // helper functions
 

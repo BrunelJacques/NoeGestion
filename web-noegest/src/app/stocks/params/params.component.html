@@ -46,7 +46,7 @@
   <select formControlName="repas"
     class="form-control" required>
     <option [ngValue]="" disabled>destination</option>
-    <option *ngFor="let repas of repass" 
+    <option *ngFor="let repas of lstrepas" 
       [ngValue]="repas.code">
       {{repas.libelle}}
     </option>

@@ -46,7 +46,6 @@ export class SortiesComponent implements OnInit {
       .subscribe({
         next: (data) => {
           this.sorties = data;
-          console.log(data);
         },
         error: (e) => {
           if (e != 'Not Found') {

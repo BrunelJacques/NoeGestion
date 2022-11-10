@@ -26,9 +26,11 @@ export class ParamsService {
   }
 
   // stockage de l'info en local
-  save(params: Params) {
-    return this.http.post(`${environment.apiUrl}/stocks/params`, params);
+  setParams(params: Params) {
+    return this.http.post(`${environment.apiUrl}/stocks/setparams`, params);
   }
 
-
+  getParams() {
+    return this.http.get<Params[]>(`${environment.apiUrl}/stocks/getparams`);
+  }
 }

@@ -22,7 +22,7 @@ export class MvtService {
   getSorties(): Observable<Mouvement[]> {
     return this.http.get<Mouvement[]>(this.constantes.MVTS_URL)
       .pipe(
-        tap(_ => this.log('fetched mvts')),
+        //tap(_ => this.log('fetched mvts')),
         catchError(this.handleError<Mouvement[]>('getSorties', []))
       );
       }
@@ -30,7 +30,7 @@ export class MvtService {
   getCamps(): Observable<Camp[]> {
     return this.http.get<Camp[]>(this.constantes.CAMPS_URL)
       .pipe(
-        tap(_ => this.log('fetched camps')),
+        //tap(_ => this.log('fetched camps')),
         catchError(this.handleError<Camp[]>('getCamps', []))
       );
       }

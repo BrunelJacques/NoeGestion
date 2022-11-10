@@ -5,6 +5,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { ParamsValidatorService} from '../_services/params-validator.service';
 import { MvtService } from '../_services/mvt.service';
+import { ParamsService } from '../_services/params.service';
 import { Camp } from '../_models/camp';
 
 @Component({
@@ -14,7 +15,6 @@ import { Camp } from '../_models/camp';
   providers: [DatePipe,]
 })
 export class ParamsComponent implements OnInit {
-  params = PARAMS;
   closeResult = '';
   repas = "";
   origine = "";
@@ -22,19 +22,25 @@ export class ParamsComponent implements OnInit {
   camps: Camp[] = [];
   paramsForm!: FormGroup;
   jour = "";
-  repass = [
+  lstrepas = [
     { code: "matin", libelle: "repas du matin" },
     { code: "midi", libelle: "repas de midi" },
     { code: "soir", libelle: "repas du soir" },
     { code: "",  libelle: "non précisé" },
   ];
+  params:any
 
   constructor(
     private mvtService: MvtService,
+    private paramsService: ParamsService,
     private datePipe: DatePipe,
     private formBuilder: FormBuilder,
     private location: Location,
-  ) {
+    ) {
+    this.params = this.paramsService.getParams()
+    if (!this.params.value) { console.log('init params')
+      this.params = PARAMS
+    }
     this.location = location
     this.origine = this.params.origine
     this.camp = this.params.camp
@@ -56,6 +62,7 @@ export class ParamsComponent implements OnInit {
     // NOTE Validateur de haut niveau
     { validator : ParamsValidatorService.campValidator });
     this.getCamps();
+
   }
 
   okBack(): void {
@@ -63,16 +70,16 @@ export class ParamsComponent implements OnInit {
     this.params.origine = this.paramsForm.value.origine,
     this.params.camp = this.paramsForm.value.camp,
     this.params.tva = this.paramsForm.value.tva,
-    this.params.repas = this.paramsForm.value.repas,
-    this.goBack()
+    this.params.repas = this.paramsForm.value.repas
+    this.paramsService.setParams(this.params)
   }
+
   onSubmitForm(){
     this.okBack()
+    this.goBack()
   }
 
   goBack(): void {
-    console.log(this.params )
-    this.params.repas = this.paramsForm.value.repas,
     this.location.back();
   }
 
