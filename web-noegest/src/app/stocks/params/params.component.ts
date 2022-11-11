@@ -55,6 +55,7 @@ export class ParamsComponent implements OnInit {
     });
     this.getParams();
     this.getCamps();
+    this.origine = this.params.origine
   }
 
   okBack(): void {
@@ -64,11 +65,11 @@ export class ParamsComponent implements OnInit {
     this.params.tva = this.paramsForm.value.tva,
     this.params.repas = this.paramsForm.value.repas
     this.setParams()
+    this.goBack()
   }
 
   onSubmitForm(){
     this.okBack()
-    this.goBack()
   }
 
   goBack(): void {

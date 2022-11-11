@@ -14,7 +14,6 @@ let lstparams = JSON.parse(localStorage.getItem(paramsKey)) || [];
 export class FakeBackendInterceptor implements HttpInterceptor {
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         const { url, method, headers, body } = request;
-        console.log('intercept ', url, method)
         return handleRoute();
 
         function handleRoute() {

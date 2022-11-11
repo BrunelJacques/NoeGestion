@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { InMemoryDbService } from 'angular-in-memory-web-api';
 import { Mouvement } from '../_models/Mouvement';
-import { User } from '@app/general/_models';
 
 @Injectable({
   providedIn: 'root'
@@ -1011,29 +1010,15 @@ export class InMemoryDataService implements InMemoryDbService {
       libelle: "23 Camp corse s1",
     },  
   ];
- 
-  let lstparams = [
-    {
-      id: 0,
-      jour: new Date(),
-      origine: "camp",
-      repas: "soir",
-      camp: 2,
-      fournisseur: "",
-      tva: "ht",
-      location: "init",
-      modif: new Date()
-    }
-  ];
- 
-  return { mvts, camps, lstparams };
+   
+  return { mvts, camps };
   }
+
   /* Overrides the genId method to ensure that a hero always has an id.
   If the heroes array is empty,
   the method below returns the initial number (11).
   if the array is not empty, the method below returns the highest id + 1.
   */
-
   genId(mvts: Mouvement[]): number {
   return mvts.length > 0 ? Math.max(...mvts.map(mouvement => mouvement.id)) + 1 : 11;
   }

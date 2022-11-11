@@ -18,7 +18,7 @@ export class SortiesComponent implements OnInit {
   sorties: Mouvement[] = [];
   today: Date = new Date();
   pipe = new DatePipe('en-US');
-  todayWithPipe = null;
+  jour = null;
   
 
   constructor(
@@ -30,7 +30,7 @@ export class SortiesComponent implements OnInit {
     this.loadScript('assets/params/js/index.js');
     this.getSorties();
     PARAMS.location= "sorties"
-    this.todayWithPipe = this.pipe.transform(Date.now(), 'dd/MM/yyyy')
+    this.jour = this.pipe.transform(this.params.jour, 'dd/MM/yyyy')
     this.datepipe.transform(Date.now(), 'yyyy/MM/dd') 
   }
 
