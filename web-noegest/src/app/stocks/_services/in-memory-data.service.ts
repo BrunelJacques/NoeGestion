@@ -1012,7 +1012,21 @@ export class InMemoryDataService implements InMemoryDbService {
     },  
   ];
  
-  return { mvts, camps };
+  let lstparams = [
+    {
+      id: 0,
+      jour: new Date(),
+      origine: "camp",
+      repas: "soir",
+      camp: 2,
+      fournisseur: "",
+      tva: "ht",
+      location: "init",
+      modif: new Date()
+    }
+  ];
+ 
+  return { mvts, camps, lstparams };
   }
   /* Overrides the genId method to ensure that a hero always has an id.
   If the heroes array is empty,

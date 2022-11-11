@@ -3,10 +3,9 @@ import { Location } from '@angular/common';
 import { PARAMS } from '../_models/params';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
-import { ParamsValidatorService} from '../_services/params-validator.service';
 import { MvtService } from '../_services/mvt.service';
-import { ParamsService } from '../_services/params.service';
 import { Camp } from '../_models/camp';
+import { Params } from '../_models/params';
 
 @Component({
   selector: 'app-params',
@@ -28,23 +27,18 @@ export class ParamsComponent implements OnInit {
     { code: "soir", libelle: "repas du soir" },
     { code: "",  libelle: "non précisé" },
   ];
-  params:any
+  params: any
+  lstparams: Params[] = []
 
   constructor(
     private mvtService: MvtService,
-    private paramsService: ParamsService,
+    //private paramsService: ParamsService,
     private datePipe: DatePipe,
     private formBuilder: FormBuilder,
-    private location: Location,
-    ) {
-    this.params = this.paramsService.getParams()
-    if (!this.params.value) { console.log('init params')
-      this.params = PARAMS
-    }
+    private location: Location,    
+  ){
+    this.params = PARAMS    
     this.location = location
-    this.origine = this.params.origine
-    this.camp = this.params.camp
-    this.repas = this.params.repas
   }
 
   onOrigineChange(neworigine: any) {
@@ -58,11 +52,9 @@ export class ParamsComponent implements OnInit {
       camp: this.params.camp,
       repas: [this.params.repas,],
       tva: [this.params.tva, Validators.required],
-    },
-    // NOTE Validateur de haut niveau
-    { validator : ParamsValidatorService.campValidator });
+    });
+    this.getParams();
     this.getCamps();
-
   }
 
   okBack(): void {
@@ -71,7 +63,7 @@ export class ParamsComponent implements OnInit {
     this.params.camp = this.paramsForm.value.camp,
     this.params.tva = this.paramsForm.value.tva,
     this.params.repas = this.paramsForm.value.repas
-    this.paramsService.setParams(this.params)
+    this.mvtService.setParams(this.params.id, this.params.jour)
   }
 
   onSubmitForm(){
@@ -82,6 +74,29 @@ export class ParamsComponent implements OnInit {
   goBack(): void {
     this.location.back();
   }
+
+  /*zzgetParams() {
+    this.params = this.mvtService.getParams()
+    if (!this.params.value) {
+      console.log('init params')
+      this.params = PARAMS
+    }
+  }*/
+
+  getParams(): void {
+    this.mvtService.getParams()
+      .subscribe({
+        next: (data) => {
+          this.lstparams = data;
+        },
+        error: (e) => {
+          if (e != 'Not Found') {
+            console.error(e)
+          }
+        }
+      })
+  }
+
 
   getCamps(): void {
     this.mvtService.getCamps()
@@ -94,6 +109,6 @@ export class ParamsComponent implements OnInit {
             console.error(e)
           }
         }
-      });
+      })
   }
 }

@@ -46,6 +46,7 @@ export class AccountService {
     }
 
     register(user: User) {
+        console.log(`${environment.apiUrl}/account/register`,user)
         return this.http.post(`${environment.apiUrl}/account/register`, user);
     }
 }

@@ -14,7 +14,7 @@ let lsparams = JSON.parse(localStorage.getItem(paramsKey)) || [];
 export class FakeBackendInterceptor implements HttpInterceptor {
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         const { url, method, headers, body } = request;
-
+        console.log('intercept ', url)
         return handleRoute();
 
         function handleRoute() {
@@ -25,9 +25,9 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                     return register();
                 case url.endsWith('/users') && method === 'GET':
                     return getUsers();
-                case url.endsWith('stocks/setparams') && method === 'POST':
+                case url.endsWith('/params') && method === 'POST':
                     return setParams();
-                case url.endsWith('stocks/getparams') && method === 'GET':
+                case url.endsWith('/params') && method === 'GET':
                     return getParams();
                 default:
                     // pass through any requests not handled above
@@ -36,7 +36,6 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         }
 
         // route functions
-
         function authenticate() {
             const { email, password } = body;
             const user = users.find(x => x.email === email && x.password === password);
@@ -66,9 +65,9 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         }
 
         function getParams() {
-            if (!isLoggedIn()) return unauthorized();
+            //if (!isLoggedIn()) return unauthorized();
             // only one possible record
-            return ok(lsparams.first());
+            return ok(lsparams.map(x => x));
         }
 
         function setParams() {
