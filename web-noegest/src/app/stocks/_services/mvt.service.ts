@@ -58,9 +58,9 @@ export class MvtService {
   }
 
   // stockage de l'info en local
-  setParams(id, date) {
-    console.log(`${environment.apiUrl}/params`, date)
-    return this.http.post<Params>(`${environment.apiUrl}/params`, {id, date})
+  setParams(params) {
+    console.log(`${environment.apiUrl}/params`, params)
+    return this.http.post<Params>(`${environment.apiUrl}/params`, params)
       .pipe(map(params => {
         // store params details and jwt token in local storage to keep params logged in between page refreshes
         localStorage.setItem('params', JSON.stringify(params));

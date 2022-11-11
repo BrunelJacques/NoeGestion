@@ -63,7 +63,7 @@ export class ParamsComponent implements OnInit {
     this.params.camp = this.paramsForm.value.camp,
     this.params.tva = this.paramsForm.value.tva,
     this.params.repas = this.paramsForm.value.repas
-    this.mvtService.setParams(this.params.id, this.params.jour)
+    this.setParams()
   }
 
   onSubmitForm(){
@@ -75,13 +75,12 @@ export class ParamsComponent implements OnInit {
     this.location.back();
   }
 
-  /*zzgetParams() {
-    this.params = this.mvtService.getParams()
-    if (!this.params.value) {
-      console.log('init params')
-      this.params = PARAMS
-    }
-  }*/
+  setParams(): void {
+    this.mvtService.setParams(this.params as Params)
+      .subscribe(params => {
+        this.lstparams.push(params);
+      });
+  }
 
   getParams(): void {
     this.mvtService.getParams()

@@ -5,16 +5,16 @@ import { delay, materialize, dematerialize } from 'rxjs/operators';
 
 // array in local storage for registered users
 const usersKey = 'angular-registration-login-users';
-const paramsKey = 'angular-registration-stocks-lsparams';
+const paramsKey = 'angular-registration-stocks-lstparams';
 let users = JSON.parse(localStorage.getItem(usersKey)) || [];
 // local storage params
-let lsparams = JSON.parse(localStorage.getItem(paramsKey)) || [];
+let lstparams = JSON.parse(localStorage.getItem(paramsKey)) || [];
 
 @Injectable()
 export class FakeBackendInterceptor implements HttpInterceptor {
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         const { url, method, headers, body } = request;
-        console.log('intercept ', url)
+        console.log('intercept ', url, method)
         return handleRoute();
 
         function handleRoute() {
@@ -67,22 +67,23 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         function getParams() {
             //if (!isLoggedIn()) return unauthorized();
             // only one possible record
-            return ok(lsparams.map(x => x));
+            return ok(lstparams.map(x => x));
         }
 
         function setParams() {
             if (!isLoggedIn()) return unauthorized();
             const params = body
-            if (lsparams.length === 0) {
+            if (lstparams.length === 0) {
                 // first record
-                lsparams.push(params);
-                localStorage.setItem(paramsKey, JSON.stringify(lsparams));
+                lstparams.push(params);
+                localStorage.setItem(paramsKey, JSON.stringify(lstparams));
                 return ok();
             }
             // update and save record
-            let record = lsparams.first()
+            let record = lstparams[0]
             Object.assign(record, params);
-            localStorage.setItem(usersKey, JSON.stringify(lsparams));
+            localStorage.setItem(paramsKey, JSON.stringify(lstparams));
+
         }
 
 
