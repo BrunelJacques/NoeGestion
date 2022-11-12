@@ -3,7 +3,8 @@ import { HttpRequest, HttpResponse, HttpHandler, HttpEvent, HttpInterceptor, HTT
 import { Observable, of, throwError } from 'rxjs';
 import { delay, materialize, dematerialize } from 'rxjs/operators';
 
-// array in local storage for registered users
+// array in local storage for registered users and params
+//" AppDataLocalGoogleChromeUser DataDefault Stockage local " sous Windows,"
 const usersKey = 'angular-registration-login-users';
 const paramsKey = 'angular-registration-stocks-lstparams';
 let users = JSON.parse(localStorage.getItem(usersKey)) || [];
@@ -84,7 +85,6 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             localStorage.setItem(paramsKey, JSON.stringify(lstparams));
 
         }
-
 
         // helper functions
 

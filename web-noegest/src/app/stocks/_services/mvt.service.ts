@@ -58,16 +58,8 @@ export class MvtService {
   }
 
   // stockage de l'info en local
-  setParams(params) {
-    console.log(`${environment.apiUrl}/params`, params)
-    return this.http.post<Params>(`${environment.apiUrl}/params`, params)
-      .pipe(map(params => {
-        // store params details and jwt token in local storage to keep params logged in between page refreshes
-        localStorage.setItem('params', JSON.stringify(params));
-        this.paramsSubject.next(params);
-        return params;
-    }))
-    ;
+  setParams(params: Params) {
+    return this.http.post(`${environment.apiUrl}/params`, params);
   }
 
   // gestion erreur façon Tour of Heroes

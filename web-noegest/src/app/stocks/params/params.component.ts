@@ -6,6 +6,8 @@ import { DatePipe } from '@angular/common';
 import { MvtService } from '../_services/mvt.service';
 import { Camp } from '../_models/camp';
 import { Params } from '../_models/params';
+import { first } from 'rxjs';
+import { AlertService } from '@app/general/_services';
 
 @Component({
   selector: 'app-params',
@@ -29,13 +31,15 @@ export class ParamsComponent implements OnInit {
   ];
   params: any
   lstparams: Params[] = []
+  loading = false
 
   constructor(
     private mvtService: MvtService,
     //private paramsService: ParamsService,
     private datePipe: DatePipe,
     private formBuilder: FormBuilder,
-    private location: Location,    
+    private location: Location,
+    private alertService: AlertService,
   ){
     this.params = PARAMS    
     this.location = location
@@ -60,7 +64,7 @@ export class ParamsComponent implements OnInit {
 
   okBack(): void {
     this.params.jour = new Date(this.paramsForm.value.jour),
-    this.params.origine = this.paramsForm.value.origine,
+    this.params.origine = this.paramsForm.value.origine, 
     this.params.camp = this.paramsForm.value.camp,
     this.params.tva = this.paramsForm.value.tva,
     this.params.repas = this.paramsForm.value.repas
@@ -77,10 +81,19 @@ export class ParamsComponent implements OnInit {
   }
 
   setParams(): void {
-    this.mvtService.setParams(this.params as Params)
-      .subscribe(params => {
-        this.lstparams.push(params);
-      });
+    this.loading = true;
+    this.mvtService.setParams(this.paramsForm.value)
+        .pipe(first())
+        .subscribe({
+            next: () => {
+                this.alertService.success('Registration successful', { keepAfterRouteChange: true });
+                //this.router.navigate(['../login'], { relativeTo: this.route });
+            },
+            error: error => {
+                this.alertService.error(error);
+                this.loading = false;
+            }
+        });
   }
 
   getParams(): void {
