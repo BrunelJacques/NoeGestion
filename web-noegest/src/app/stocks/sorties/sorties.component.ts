@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Mouvement } from '../_models/mouvement';
 import { MvtService } from '../_services/mvt.service';
-import { PARAMS } from '../_models/params';
+import { Location } from '@angular/common';
+import { Params } from '../_models/params';
 import { OneSortieComponent } from '../one-sortie/one-sortie.component';
 import { DatePipe } from '@angular/common';
-
 
 @Component({
   selector: 'app-sorties',
@@ -13,13 +13,13 @@ import { DatePipe } from '@angular/common';
 })
 
 export class SortiesComponent implements OnInit {
-  params = PARAMS
+  params: Params
   selectedMvt?: Mouvement;
   sorties: Mouvement[] = [];
   today: Date = new Date();
   pipe = new DatePipe('en-US');
   jour = null;
-  
+  location = Location
 
   constructor(
     private mvtService: MvtService,
@@ -28,10 +28,8 @@ export class SortiesComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadScript('assets/params/js/index.js');
+    this.getParams();
     this.getSorties();
-    PARAMS.location= "sorties"
-    this.jour = this.pipe.transform(this.params.jour, 'dd/MM/yyyy')
-    this.datepipe.transform(Date.now(), 'yyyy/MM/dd') 
   }
 
   loadScript(name: string): void {
@@ -54,6 +52,22 @@ export class SortiesComponent implements OnInit {
         }
       });
   }
+
+  getParams(): void {
+    this.mvtService.getParams()
+      .subscribe({
+        next: (data) => {
+          this.params = data[0];
+          this.jour = this.pipe.transform(this.params.jour, 'dd/MM/yyyy')
+        },
+        error: (e) => {
+          if (e != 'Not Found') {
+            console.error(e)
+          }
+        }
+      })
+  }
+
 
 }
 

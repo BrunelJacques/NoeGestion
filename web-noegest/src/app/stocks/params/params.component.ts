@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
-import { PARAMS } from '../_models/params';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { MvtService } from '../_services/mvt.service';
@@ -41,8 +40,7 @@ export class ParamsComponent implements OnInit {
     private location: Location,
     private alertService: AlertService,
   ){
-    this.params = PARAMS    
-    this.location = location
+    this.getParams();
   }
 
   onOrigineChange(neworigine: any) {
@@ -50,21 +48,15 @@ export class ParamsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.paramsForm = this.formBuilder.group({
-      jour: this.datePipe.transform(this.params.jour, 'yyyy-MM-dd'),
-      origine: this.params.origine,
-      camp: this.params.camp,
-      repas: [this.params.repas,],
-      tva: [this.params.tva, Validators.required],
-    });
     this.getParams();
     this.getCamps();
-    this.origine = this.params.origine
+    this.paramsForm = this.formBuilder.group({
+    });
   }
 
   okBack(): void {
     this.params.jour = new Date(this.paramsForm.value.jour),
-    this.params.origine = this.paramsForm.value.origine, 
+    this.params.origine = this.paramsForm.value.origine,
     this.params.camp = this.paramsForm.value.camp,
     this.params.tva = this.paramsForm.value.tva,
     this.params.repas = this.paramsForm.value.repas
@@ -77,7 +69,7 @@ export class ParamsComponent implements OnInit {
   }
 
   goBack(): void {
-    this.location.back();
+    this.params.location.back();
   }
 
   setParams(): void {
@@ -86,7 +78,11 @@ export class ParamsComponent implements OnInit {
         .pipe(first())
         .subscribe({
             next: () => {
-                this.alertService.success('Registration successful', { keepAfterRouteChange: true });
+              this.jour= this.datePipe.transform(this.params.jour, 'yyyy-MM-dd'),
+              this.camp= this.params.camp,
+              this.repas= this.params.repas,
+              //this.tva= this.params.tva,
+              this.alertService.success('Registration successful', { keepAfterRouteChange: true });
                 //this.router.navigate(['../login'], { relativeTo: this.route });
             },
             error: error => {
