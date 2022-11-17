@@ -21,37 +21,48 @@ export class ParamsComponent implements OnInit {
   camp = "";
   camps: Camp[] = [];
   paramsForm!: FormGroup;
-  jour = "";
+  jour = null
   lstrepas = [
     { code: "matin", libelle: "repas du matin" },
     { code: "midi", libelle: "repas de midi" },
     { code: "soir", libelle: "repas du soir" },
     { code: "",  libelle: "non précisé" },
   ];
-  params: any
+  pipe = new DatePipe('en-US');
+  params = new Params
   lstparams: Params[] = []
   loading = false
 
   constructor(
     private mvtService: MvtService,
-    //private paramsService: ParamsService,
     private datePipe: DatePipe,
     private formBuilder: FormBuilder,
     private location: Location,
     private alertService: AlertService,
-  ){
-    this.getParams();
-  }
+  ){}
 
   onOrigineChange(neworigine: any) {
     this.origine = neworigine.target.value
   }
 
   ngOnInit(): void {
-    this.getParams();
     this.getCamps();
     this.paramsForm = this.formBuilder.group({
+      origine: this.params.origine,
+      tva: this.params.tva,
+      repas: this.params.repas,
     });
+    this.mvtService.getParams()
+      .pipe(first())
+      .subscribe(x => {
+        this.params = x[0],
+        console.log('params.component1',this.params)
+      });
+    console.log('params.component2',this.params),
+    this.paramsForm.setValue(this.params),
+    this.jour = this.pipe.transform(this.params.jour, 'dd/MM/yyyy')
+    this.paramsForm.setValue({jour: this.params.jour})
+    this.onOrigineChange(this.params.origine)  
   }
 
   okBack(): void {
@@ -69,7 +80,7 @@ export class ParamsComponent implements OnInit {
   }
 
   goBack(): void {
-    this.params.location.back();
+    this.location.back();
   }
 
   setParams(): void {
@@ -78,7 +89,7 @@ export class ParamsComponent implements OnInit {
         .pipe(first())
         .subscribe({
             next: () => {
-              this.jour= this.datePipe.transform(this.params.jour, 'yyyy-MM-dd'),
+              this.jour= this.datePipe.transform(this.params.jour, 'dd/MM/yyyy'),
               this.camp= this.params.camp,
               this.repas= this.params.repas,
               //this.tva= this.params.tva,
@@ -91,21 +102,6 @@ export class ParamsComponent implements OnInit {
             }
         });
   }
-
-  getParams(): void {
-    this.mvtService.getParams()
-      .subscribe({
-        next: (data) => {
-          this.lstparams = data;
-        },
-        error: (e) => {
-          if (e != 'Not Found') {
-            console.error(e)
-          }
-        }
-      })
-  }
-
 
   getCamps(): void {
     this.mvtService.getCamps()

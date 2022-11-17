@@ -49,7 +49,6 @@ export class MvtService {
   }
 
   getParams():  Observable<Params[]> {
-    console.log('getParams')
     return this.http.get<Params[]>(this.constantes.PARAMS_URL)
       .pipe(
         tap(_ => this.log('fetched params')),
@@ -72,5 +71,5 @@ export class MvtService {
     };
   }
 
-  private log(message: string) {console.log(message)}
+  private log(message: string) {console.log('mvtService.log',message)}
 }

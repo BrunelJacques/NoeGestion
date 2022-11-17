@@ -9,13 +9,13 @@
 <form [formGroup]="paramsForm" class="form-group was-validated"
 (ngSubmit)="onSubmitForm()">
   <label for="jour">Date:</label>
-  <input type= "date" id="jour" formControlName="params.jour"
+  <input type= "date" id="jour" formControlName="jour"
         class="form-control"
         min="2020-01-01" max="2099-12-31">
   <label for="origine">Vers :</label>
   <select id="origine" name="origine"
     (change)="onOrigineChange($event)"
-    formControlName="params.origine"
+    formControlName="origine"
     class="form-control" required aria-label="select example">
     <option value="">Choisissez</option>
     <option value="cuisine">Repas en cuisine</option>
@@ -35,14 +35,14 @@
     </select>
   </div>
   <label for="tva">Tva mtt:</label>
-  <select id="tva" name="tva" formControlName="params.tva" class="form-control">
+  <select id="tva" name="tva" formControlName="tva" class="form-control">
     <option value="ttc">en TTC</option>
     <option value="ht">en HT</option>
   </select>
 
 
   <label for="repas">Repas:</label>
-  <select formControlName="params.repas"
+  <select formControlName="repas"
     class="form-control" required>
     <option [ngValue]="" disabled>destination</option>
     <option *ngFor="let repas of lstrepas"

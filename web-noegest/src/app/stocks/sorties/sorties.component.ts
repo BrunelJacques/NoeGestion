@@ -13,7 +13,7 @@ import { DatePipe } from '@angular/common';
 })
 
 export class SortiesComponent implements OnInit {
-  params: Params
+  params = new Params
   selectedMvt?: Mouvement;
   sorties: Mouvement[] = [];
   today: Date = new Date();
@@ -24,12 +24,13 @@ export class SortiesComponent implements OnInit {
   constructor(
     private mvtService: MvtService,
     public datepipe: DatePipe
-    ) { }
+    ) {
+      this.getParams();
+      this.getSorties();  
+     }
 
   ngOnInit(): void {
     this.loadScript('assets/params/js/index.js');
-    this.getParams();
-    this.getSorties();
   }
 
   loadScript(name: string): void {
