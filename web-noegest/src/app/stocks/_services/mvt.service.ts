@@ -71,5 +71,5 @@ export class MvtService {
     };
   }
 
-  private log(message: string) {console.log('mvtService.log',message)}
+  private log(message: string) {console.log('mvtService: ',message)}
 }

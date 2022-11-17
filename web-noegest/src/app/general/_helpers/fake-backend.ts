@@ -2,6 +2,8 @@
 import { HttpRequest, HttpResponse, HttpHandler, HttpEvent, HttpInterceptor, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { delay, materialize, dematerialize } from 'rxjs/operators';
+import { Params } from '@app/stocks/_models/params';
+import { PARAMS } from '@app/stocks/_models/params';
 
 // array in local storage for registered users and params
 //" AppDataLocalGoogleChromeUser DataDefault Stockage local " sous Windows,"
@@ -65,13 +67,29 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         }
 
         function getParams() {
-            //if (!isLoggedIn()) return unauthorized();
-            // only one possible record
+            if (!lstparams[0].jour){ initParams() }           
+            // only one record is possible
             return ok(lstparams.map(x => x));
         }
 
+        function initParams() {
+            //if (!isLoggedIn()) { return unauthorized(); }
+
+            if (lstparams.length === 0) {
+                // first record
+                lstparams.push(PARAMS);
+                localStorage.setItem(paramsKey, JSON.stringify(lstparams));
+                return ok();
+            }
+            // update and save record
+            let record = lstparams[0]
+            Object.assign(record, PARAMS);
+            localStorage.setItem(paramsKey, JSON.stringify(lstparams));
+        }
+
+
         function setParams() {
-            if (!isLoggedIn()) return unauthorized();
+            //if (!isLoggedIn()) return unauthorized();
             const params = body
             if (lstparams.length === 0) {
                 // first record

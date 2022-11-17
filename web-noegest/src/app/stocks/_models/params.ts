@@ -15,7 +15,7 @@ export const  PARAMS: Params= {
   id: 0,
   jour: new Date(),
   origine: "cuisine",
-  repas: "",
+  repas: "midi",
   camp: "",
   fournisseur: "",
   tva: "ttc",
