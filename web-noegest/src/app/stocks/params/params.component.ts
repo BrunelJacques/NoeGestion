@@ -21,7 +21,7 @@ export class ParamsComponent implements OnInit {
   camp = "";
   camps: Camp[] = [];
   paramsForm!: FormGroup;
-  jour = null
+  jour = ""
   lstrepas = [
     { code: "matin", libelle: "repas du matin" },
     { code: "midi", libelle: "repas de midi" },
@@ -46,23 +46,15 @@ export class ParamsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getParams();
     this.getCamps();
     this.paramsForm = this.formBuilder.group({
-      origine: this.params.origine,
-      tva: this.params.tva,
-      repas: this.params.repas,
+      jour:new Date,
+      origine: "",
+      camp: "",
+      tva: "",
+      repas: "",
     });
-    this.mvtService.getParams()
-      .pipe(first())
-      .subscribe(x => {
-        this.params = x[0],
-        console.log('params.component1',this.params)
-      });
-    console.log('params.component2',this.params),
-    this.paramsForm.setValue(this.params),
-    this.jour = this.pipe.transform(this.params.jour, 'dd/MM/yyyy')
-    this.paramsForm.setValue({jour: this.params.jour})
-    this.onOrigineChange(this.params.origine)  
   }
 
   okBack(): void {
@@ -81,6 +73,22 @@ export class ParamsComponent implements OnInit {
 
   goBack(): void {
     this.location.back();
+  }
+
+  getParams(): void {
+    this.mvtService.getParams()
+      .subscribe({
+        next: (data) => {
+          this.params = data[0];
+          this.paramsForm.patchValue(this.params)
+          this.origine = this.params.origine
+        },
+        error: (e) => {
+          if (e != 'Not Found') {
+            console.error(e)
+          }
+        }
+      });
   }
 
   setParams(): void {

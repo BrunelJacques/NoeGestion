@@ -66,8 +66,9 @@ export class SortiesComponent implements OnInit {
             console.error(e)
           }
         }
-      })
-  }
+      });
+    console.log(this.jour) 
+    }
 
 
 }

@@ -23,19 +23,15 @@ export class HomeComponent implements OnInit {
     )
      {
       this.accountService.user.subscribe(x => this.user = x);
-      this.choixAppliService.choixSubject$.subscribe((x => console.log('home constructor subcribe choixSubject: '+x)))
+      //this.choixAppliService.choixSubject$.subscribe((x => console.log('home constructor subcribe choixSubject: '+x)))
      }
      ;
     
   ngOnInit(): void {
     this.loadScript('assets/params/js/index.js');
-    this.choixAppliService.choixSubject$.subscribe(
-      (value) => (console.log('home ngONInit subscribe: ' + value))
-    );
   }
 
   loadScript(name: string): void {
-
     if (isPlatformBrowser(this.platformId)) {
       const s = document.createElement('script');
       s.type = 'text/javascript';
