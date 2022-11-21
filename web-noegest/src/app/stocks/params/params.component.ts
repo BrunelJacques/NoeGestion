@@ -7,6 +7,7 @@ import { Camp } from '../_models/camp';
 import { Params } from '../_models/params';
 import { first } from 'rxjs';
 import { AlertService } from '@app/general/_services';
+import { stringify } from 'querystring';
 
 @Component({
   selector: 'app-params',
@@ -23,15 +24,21 @@ export class ParamsComponent implements OnInit {
   paramsForm!: FormGroup;
   jour = ""
   lstrepas = [
-    { code: "matin", libelle: "repas du matin" },
-    { code: "midi", libelle: "repas de midi" },
-    { code: "soir", libelle: "repas du soir" },
-    { code: "",  libelle: "non précisé" },
+    { code: "matin", libelle: "Repas du matin" },
+    { code: "midi", libelle: "Repas de midi" },
+    { code: "soir", libelle: "Repas du soir" },
+    { code: "tout",  libelle: "Pour tout repas" },
   ];
+  lstorigine = [
+    { code:  "cuisine", libelle: "Repas en cuisine" },
+    { code:  "camp", libelle: "Camp Extérieur" },
+    { code:  "odIn", libelle: "Régularisation" },
+    { code:  "tout", libelle: "Tout" },
+  ]
   pipe = new DatePipe('en-US');
   params = new Params
   lstparams: Params[] = []
-  loading = false
+  loading = true
 
   constructor(
     private mvtService: MvtService,
@@ -40,11 +47,7 @@ export class ParamsComponent implements OnInit {
     private location: Location,
     private alertService: AlertService,
   ){}
-
-  onOrigineChange(neworigine: any) {
-    this.origine = neworigine.target.value
-  }
-
+  
   ngOnInit(): void {
     this.getParams();
     this.getCamps();
@@ -57,6 +60,11 @@ export class ParamsComponent implements OnInit {
     });
   }
 
+  onOrigineChange(neworigine: any) {
+    this.origine = neworigine.target.value
+    console.log(this.origine)
+  }
+
   okBack(): void {
     this.params.jour = new Date(this.paramsForm.value.jour),
     this.params.origine = this.paramsForm.value.origine,
@@ -67,21 +75,24 @@ export class ParamsComponent implements OnInit {
     this.goBack()
   }
 
-  onSubmitForm(){
-    this.okBack()
-  }
-
   goBack(): void {
     this.location.back();
   }
 
+  onSubmitForm(){
+    this.okBack()
+  }
+
   getParams(): void {
+    this.loading = true;
     this.mvtService.getParams()
       .subscribe({
         next: (data) => {
           this.params = data[0];
           this.paramsForm.patchValue(this.params)
-          this.origine = this.params.origine
+          this.paramsForm.patchValue({origine: "cuisine"})
+          this.origine = "cuisine"
+          this.loading = false
         },
         error: (e) => {
           if (e != 'Not Found') {
@@ -89,26 +100,6 @@ export class ParamsComponent implements OnInit {
           }
         }
       });
-  }
-
-  setParams(): void {
-    this.loading = true;
-    this.mvtService.setParams(this.paramsForm.value)
-        .pipe(first())
-        .subscribe({
-            next: () => {
-              this.jour= this.datePipe.transform(this.params.jour, 'dd/MM/yyyy'),
-              this.camp= this.params.camp,
-              this.repas= this.params.repas,
-              //this.tva= this.params.tva,
-              this.alertService.success('Registration successful', { keepAfterRouteChange: true });
-                //this.router.navigate(['../login'], { relativeTo: this.route });
-            },
-            error: error => {
-                this.alertService.error(error);
-                this.loading = false;
-            }
-        });
   }
 
   getCamps(): void {
@@ -124,4 +115,16 @@ export class ParamsComponent implements OnInit {
         }
       })
   }
+  
+  setParams(): void {
+    this.mvtService.setParams(this.paramsForm.value)
+        .pipe(first())
+        .subscribe({
+            next: () => {},
+            error: error => {
+                this.alertService.error(error);
+            }
+        });
+  }
+
 }
