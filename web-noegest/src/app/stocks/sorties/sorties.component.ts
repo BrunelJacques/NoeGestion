@@ -19,7 +19,7 @@ export class SortiesComponent implements OnInit {
   today: Date = new Date();
   pipe = new DatePipe('en-US');
   jour = null;
-  location = Location
+  parent = Location
 
   constructor(
     private mvtService: MvtService,
@@ -30,14 +30,6 @@ export class SortiesComponent implements OnInit {
      }
 
   ngOnInit(): void {
-    this.loadScript('assets/params/js/index.js');
-  }
-
-  loadScript(name: string): void {
-    const s = document.createElement('script');
-    s.type = 'text/javascript';
-    s.src = name;
-    document.getElementsByTagName('head')[0].appendChild(s);
   }
 
   getSorties(): void {

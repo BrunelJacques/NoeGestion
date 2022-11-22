@@ -1,6 +1,6 @@
 export class Camp {
   constructor(
-    public id: number,
+    public id: string,
     public libelle: string,
   ){}
 }

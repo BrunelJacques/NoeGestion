@@ -48,12 +48,6 @@
     </select>
   </div>
 
-  <!--label for="tva">Tva mtt:</label>
-  <select id="tva" name="tva" formControlName="tva" class="form-control">
-    <option value="ttc">en TTC</option>
-    <option value="ht">en HT</option>
-  </select-->
-
   <div *ngIf="!(origine.endsWith('camp'))">
     <label for="repas">Repas:</label>
     <select formControlName="repas"
@@ -65,4 +59,14 @@
       </option>
     </select>
   </div>
+
+  <label for="tva">Tva mtt:</label>
+  <select id="tva" name="tva" formControlName="tva" class="form-control">
+    <option value="ttc">en TTC</option>
+    <option value="ht">en HT</option>
+  </select>
+
+  <label for="fournisseur">Fournisseur:</label>
+  <input id="fournisseur" name="fournisseur" formControlName="fournisseur" class="form-control">
+
 </form>

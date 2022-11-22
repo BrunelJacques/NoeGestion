@@ -7,7 +7,7 @@ export class Params {
   camp: string;
   fournisseur: string;
   tva: string;
-  location: string;
+  parent: string;
   modif: Date
 }
 
@@ -15,10 +15,10 @@ export const  PARAMS: Params= {
   id: 0,
   jour: new Date(),
   origine: "cuisine",
-  repas: "midi",
+  repas: "tous",
   camp: "",
   fournisseur: "",
   tva: "ttc",
-  location: "home",
+  parent: "",
   modif: new Date()
 }
