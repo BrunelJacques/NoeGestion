@@ -3,6 +3,7 @@ import { Mouvement } from '../_models/mouvement';
 import { MvtService } from '../_services/mvt.service';
 import { Location } from '@angular/common';
 import { Params } from '../_models/params';
+import { hoursDelta } from '../../general/_helpers/fonctions-perso';
 import { OneSortieComponent } from '../one-sortie/one-sortie.component';
 import { DatePipe } from '@angular/common';
 
@@ -46,11 +47,20 @@ export class SortiesComponent implements OnInit {
       });
   }
 
+  ajusteParams(params:Params){
+    if (hoursDelta(new Date(params.modif),new Date()) > 6) {
+      console.log(params.jour)
+      console.log(this.today)
+      //params.jour = new Date()
+    };
+    return params
+  }
+
   getParams(): void {
     this.mvtService.getParams()
       .subscribe({
         next: (data) => {
-          this.params = data[0];
+          this.params = this.ajusteParams(data[0]);
           this.jour = this.pipe.transform(this.params.jour, 'dd/MM/yyyy')
         },
         error: (e) => {
