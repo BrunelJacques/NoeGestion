@@ -89,9 +89,8 @@ export class ParamsComponent implements OnInit {
       .subscribe({
         next: (data) => {
           this.params = data[0];
+          this.origine =  this.params.origine
           this.paramsForm.patchValue(this.params)
-          this.paramsForm.patchValue({origine: "cuisine"})
-          this.origine = "cuisine"
           this.loading = false
         },
         error: (e) => {
