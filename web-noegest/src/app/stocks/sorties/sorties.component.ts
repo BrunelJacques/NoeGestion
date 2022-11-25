@@ -56,16 +56,14 @@ export class SortiesComponent implements OnInit {
     if (hoursDelta(new Date(params.modif),new Date()) > 6) {
       params = deepCopy(this.params0)
       params.jour = new Date()
-      params.parent = "raz"
+      params.parent = "razz"
     };
     this.mvtService.setParams(params)
       .pipe(first())
       .subscribe({
           next: () => {},
-          error: error => {
-              this.alertService.error(error);
-          }
-      });
+          error: error => {this.alertService.error("");}
+          });
     return params
   }
 
