@@ -43,7 +43,7 @@ export class MvtService {
   getCamps(): Observable<Camp[]> {
     return this.http.get<Camp[]>(this.constantes.CAMPS_URL)
       .pipe(
-        tap(_ => this.log('fetched camps')),
+        //tap(_ => this.log('fetched camps')),
         catchError(this.handleError<Camp[]>('getCamps', []))
       );
   }
@@ -51,13 +51,14 @@ export class MvtService {
   getParams():  Observable<Params[]> {
     return this.http.get<Params[]>(this.constantes.PARAMS_URL)
       .pipe(
-        tap(_ => this.log('fetched params')),
+        //tap(_ => this.log('fetched params')),
         catchError(this.handleError<Params[]>('getParams', []))
       );
   }
 
   // stockage de l'info en local
   setParams(params: Params) {
+    console.log('mvtServices ', params)
     return this.http.post(`${environment.apiUrl}/params`, params);
   }
 
@@ -71,5 +72,5 @@ export class MvtService {
     };
   }
 
-  private log(message: string) {console.log('mvtService: ',message)}
+  private log(message: string) {console.log('mvtService.log: ',message)}
 }

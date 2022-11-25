@@ -6,6 +6,7 @@ import { Camp } from '../_models/camp';
 import { Params } from '../_models/params';
 import { first } from 'rxjs';
 import { AlertService } from '@app/general/_services';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-params',
@@ -19,7 +20,8 @@ export class ParamsComponent implements OnInit {
   camp = "";
   camps: Camp[] = [];
   paramsForm!: FormGroup;
-  jour = ""
+  pipe = new DatePipe('en-US');
+  jour = this.pipe.transform(new Date(), 'yyyy-MM-dd')
   lstrepas = [
     { code: "matin", libelle: "Repas du matin" },
     { code: "midi", libelle: "Repas de midi" },
@@ -52,26 +54,25 @@ export class ParamsComponent implements OnInit {
       camp: "",
       tva: "",
       repas: "",
-      fournisseur:""
+      fournisseur:"",
+      parent:""
     });
   }
 
   onOrigineChange(neworigine: any) {
     this.origine = neworigine.target.value
-    console.log(this.origine)
   }
 
   okBack(): void {
-    console.log(this.paramsForm.value.jour)
-    console.log(new Date())
     this.params.jour = new Date(this.paramsForm.value.jour),
     this.params.origine = this.paramsForm.value.origine,
     this.params.camp = this.paramsForm.value.camp,
-    this.params.repas = this.paramsForm.value.repas
-    this.params.fournisseur = this.paramsForm.value.fournisseur
+    this.params.repas = this.paramsForm.value.repas,
+    this.params.fournisseur = this.paramsForm.value.fournisseur,
+    this.params.parent += '-params',
     this.params.tva = this.paramsForm.value.tva,
-    this.params.modif = new Date()
-    this.setParams()
+    this.params.modif = new Date(),
+    this.setParams(),
     this.goBack()
   }
 
@@ -89,8 +90,10 @@ export class ParamsComponent implements OnInit {
       .subscribe({
         next: (data) => {
           this.params = data[0];
+          console.log(typeof(this.params.jour))
           this.origine =  this.params.origine
           this.paramsForm.patchValue(this.params)
+          this.paramsForm.patchValue({'jour':this.pipe.transform(this.params.jour, 'yyyy-MM-dd')})
           this.loading = false
         },
         error: (e) => {
@@ -116,8 +119,7 @@ export class ParamsComponent implements OnInit {
   }
   
   setParams(): void {
-
-    this.mvtService.setParams(this.paramsForm.value)
+    this.mvtService.setParams(this.params)
         .pipe(first())
         .subscribe({
             next: () => {},

@@ -1,14 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Mouvement } from '../_models/mouvement';
 import { MvtService } from '../_services/mvt.service';
-import { Location } from '@angular/common';
 import { Params, PARAMS } from '../_models/params';
 import { hoursDelta, deepCopy } from '../../general/_helpers/fonctions-perso';
 import { OneSortieComponent } from '../one-sortie/one-sortie.component';
 import { DatePipe } from '@angular/common';
 import { first } from 'rxjs';
 import { AlertService } from '@app/general/_services';
-
 
 @Component({
   selector: 'app-sorties',
@@ -23,8 +21,8 @@ export class SortiesComponent implements OnInit {
   sorties: Mouvement[] = [];
   today: Date = new Date();
   pipe = new DatePipe('en-US');
-  jour = null;
-  parent = Location
+  jour = "";
+  loading = true
 
   constructor(
     private mvtService: MvtService,
@@ -32,7 +30,7 @@ export class SortiesComponent implements OnInit {
     private alertService: AlertService
     ) {
       this.getParams();
-      this.getSorties();  
+      this.getSorties();
      }
 
   ngOnInit(): void {
@@ -53,28 +51,32 @@ export class SortiesComponent implements OnInit {
   }
 
   ajusteParams(params:Params){
-    // 6 heures après le dernier paramétrage, on réinitialise Params
+    // >6 heures après le dernier paramétrage, on réinitialise Params
+    params.parent += "+sorties"
     if (hoursDelta(new Date(params.modif),new Date()) > 6) {
       params = deepCopy(this.params0)
+      params.jour = new Date()
+      params.parent = "raz"
     };
-    params.parent = "sorties"
-    this.mvtService.setParams(this.params)
+    this.mvtService.setParams(params)
       .pipe(first())
       .subscribe({
           next: () => {},
           error: error => {
               this.alertService.error(error);
           }
-    });
+      });
     return params
   }
 
   getParams(): void {
+    this.loading = true;
     this.mvtService.getParams()
       .subscribe({
         next: (data) => {
           this.params = this.ajusteParams(data[0]);
           this.jour = this.pipe.transform(this.params.jour, 'dd/MM/yyyy')
+          this.loading = false
         },
         error: (e) => {
           if (e != 'Not Found') {
@@ -82,9 +84,7 @@ export class SortiesComponent implements OnInit {
           }
         }
       });
-    console.log(this.jour) 
-    }
-
+  }
 
 }
 
