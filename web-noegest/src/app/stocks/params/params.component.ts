@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Pipe} from '@angular/core';
 import { Location } from '@angular/common';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MvtService } from '../_services/mvt.service';
 import { Camp } from '../_models/camp';
 import { Params } from '../_models/params';
@@ -8,25 +8,27 @@ import { first } from 'rxjs';
 import { AlertService } from '@app/general/_services';
 import { DatePipe } from '@angular/common';
 
+
 @Component({
   selector: 'app-params',
   templateUrl: './params.component.html',
   styleUrls: ['./params.component.less'],
 })
+
 export class ParamsComponent implements OnInit {
   closeResult = '';
   repas = "";
   origine = "";
   camp = "";
   camps: Camp[] = [];
-  paramsForm!: FormGroup;
+  paramsForm!: UntypedFormGroup;
   pipe = new DatePipe('en-US');
   jour = this.pipe.transform(new Date(), 'yyyy-MM-dd')
   lstrepas = [
     { code: "matin", libelle: "Repas du matin" },
     { code: "midi", libelle: "Repas de midi" },
     { code: "soir", libelle: "Repas du soir" },
-    { code: "tout",  libelle: "Pour tout repas" },
+    { code: "tous",  libelle: "Pour tout repas" },
   ];
   lstorigine = [
     { code:  "cuisine", libelle: "Repas en cuisine" },
@@ -37,10 +39,12 @@ export class ParamsComponent implements OnInit {
   params = new Params
   lstparams: Params[] = []
   loading = true
+  submitted = false
+
 
   constructor(
     private mvtService: MvtService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private parent: Location,
     private alertService: AlertService,
   ){}
@@ -50,17 +54,25 @@ export class ParamsComponent implements OnInit {
     this.getCamps();
     this.paramsForm = this.formBuilder.group({
       jour:new Date,
-      origine: "",
-      camp: "",
+      origine: ["", Validators.required],
+      camp: ["", Validators.required],
       tva: "",
-      repas: "",
+      repas: ["", Validators.required],
       fournisseur:"",
-      parent:""
+      parent:['', Validators.required],
     });
   }
 
+  // convenience getter for easy access to form fields
+  get f() { return this.paramsForm.controls; }
+
+
   onOrigineChange(neworigine: any) {
     this.origine = neworigine.target.value
+    if (this.origine != "camp"){
+      this.paramsForm.get("camp").disable()
+    } 
+    {this.paramsForm.get("camp").enable()} 
   }
 
   okBack(): void {
@@ -81,6 +93,16 @@ export class ParamsComponent implements OnInit {
   }
 
   onSubmitForm(){
+    this.submitted = true;
+
+    // reset alerts on submit
+    this.alertService.clear();
+
+    // stop here if form is invalid    
+    if (this.paramsForm.invalid) {
+        return;
+    }
+    this.loading = true;
     this.okBack()
   }
 
@@ -90,12 +112,13 @@ export class ParamsComponent implements OnInit {
       .subscribe({
         next: (data) => {
           this.params = data[0];
-          console.log(typeof(this.params.jour))
           this.origine =  this.params.origine
           this.paramsForm.patchValue(this.params)
           this.paramsForm.patchValue({'jour':this.pipe.transform(this.params.jour, 'yyyy-MM-dd')})
           this.loading = false
-        },
+          if (this.origine != "camp"){
+            this.paramsForm.get("camp").disable()
+          }},        
         error: (e) => {
           if (e != 'Not Found') {
             console.error(e)

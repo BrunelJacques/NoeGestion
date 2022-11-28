@@ -88,7 +88,6 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         }
 
         function setParams() {
-            console.log('fake ------')
             //if (!isLoggedIn()) return unauthorized();
             const params = body
             if (lstparams.length === 0) {
@@ -100,7 +99,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             // update and save record
             let record = deepCopy(lstparams[0])
             lstparams[0] = Object.assign({},record, params);
-            console.log('fake : ',lstparams[0])
+            //console.log('fake : ',lstparams[0])
             localStorage.setItem(paramsKey, JSON.stringify(lstparams));
         }
 

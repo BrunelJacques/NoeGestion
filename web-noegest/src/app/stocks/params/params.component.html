@@ -1,10 +1,13 @@
 
 
   <h5 class="card-header">Paramètres de liste</h5>
+
+<form [formGroup]="paramsForm" class="form-group was-validated"
+(ngSubmit)="onSubmitForm()">
   <div>
     <button [disabled]="loading" type="button" class="close btn btn-primary"
       aria-label="Ok"
-      (click)="okBack()">
+      (click)="onSubmitForm()">
       <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
       retour ok
     </button>
@@ -16,12 +19,11 @@
       <i class="fas fa-turn-up"></i>
     </button>
   </div>
-<form [formGroup]="paramsForm" class="form-group was-validated"
-(ngSubmit)="onSubmitForm()">
   <label for="jour">Date:</label>
-  <input type= "date" id="jour" formControlName="jour"
-        class="form-control"
-        min="2020-01-01" max="2099-12-31">
+  <input
+      type= "date" id="jour" formControlName="jour"
+      class="form-control"
+      min="2020-01-01" max="2099-12-31">
 
   <label for="origine">Vers :</label>
   <select id="origine" name="origine"
@@ -36,16 +38,20 @@
   </select>
 
   <label class="invalid-feedback">!!! mauvais choix </label>
-  <div *ngIf="origine.endsWith('camp')">
+  <div class="form-group" *ngIf="origine.endsWith('camp')">
     <label for="camp">Camp:</label>
-    <select formControlName="camp"
-        class="form-control" required>
+    <select type="text"  formControlName="camp" 
+      class="form-control" required
+      [ngClass]="{ 'is-invalid': submitted && f.camp.errors}">
       <option [ngValue]="" disabled>Choisir un camp</option>
       <option *ngFor="let camp of camps"
         [ngValue]="camp.id">
         {{camp.libelle}}
       </option>
-    </select>
+    </select> 
+    <div *ngIf="submitted && f.camp.errors" class="invalid-feedback">
+      <div *ngIf="f.camp.errors.required">Choisissez un camp extérieur ou choisissez une autre destination</div>
+    </div>
   </div>
 
   <div *ngIf="!(origine.endsWith('camp'))">
@@ -59,17 +65,17 @@
       </option>
     </select>
   </div>
+  <div *ngIf="params.parent && params.parent.endsWith('entrees')">
+    <label for="tva">Tva mtt:</label>
+    <select id="tva" name="tva" formControlName="tva" class="form-control">
+      <option value="ttc">en TTC</option>
+      <option value="ht">en HT</option>
+    </select>
 
-  <label for="tva">Tva mtt:</label>
-  <select id="tva" name="tva" formControlName="tva" class="form-control">
-    <option value="ttc">en TTC</option>
-    <option value="ht">en HT</option>
-  </select>
-
-  <label for="fournisseur">Fournisseur:</label>
-  <input id="fournisseur" name="fournisseur" formControlName="fournisseur" class="form-control">
-
-  <label for="parent">Parent:</label>
-  <input id="parent" name="parent" formControlName="parent" class="form-control">
+    <label for="fournisseur">Fournisseur:</label>
+    <input id="fournisseur" name="fournisseur" formControlName="fournisseur" class="form-control">
+  </div>
+  <!--label for="parent">Parent:</label>
+  <input id="parent" name="parent" formControlName="parent" class="form-control"-->
 
 </form>

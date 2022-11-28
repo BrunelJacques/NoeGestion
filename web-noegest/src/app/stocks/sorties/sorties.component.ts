@@ -52,11 +52,10 @@ export class SortiesComponent implements OnInit {
 
   ajusteParams(params:Params){
     // >6 heures après le dernier paramétrage, on réinitialise Params
-    params.parent += "+sorties"
+    params.parent = "sorties"
     if (hoursDelta(new Date(params.modif),new Date()) > 6) {
       params = deepCopy(this.params0)
-      params.jour = new Date()
-      params.parent = "razz"
+      params.parent = "raz-sorties"
     };
     this.mvtService.setParams(params)
       .pipe(first())

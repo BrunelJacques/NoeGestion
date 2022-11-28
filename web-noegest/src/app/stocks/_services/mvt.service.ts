@@ -58,7 +58,7 @@ export class MvtService {
 
   // stockage de l'info en local
   setParams(params: Params) {
-    console.log('mvtServices ', params)
+    //console.log('mvtServices ', params)
     return this.http.post(`${environment.apiUrl}/params`, params);
   }
 
