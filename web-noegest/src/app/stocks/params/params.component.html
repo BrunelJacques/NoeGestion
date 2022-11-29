@@ -3,11 +3,10 @@
   <h5 class="card-header">Paramètres de liste</h5>
 
 <form [formGroup]="paramsForm" class="form-group was-validated"
-(ngSubmit)="onSubmitForm()">
+(ngSubmit)="onSubmit()">
   <div>
-    <button [disabled]="loading" type="button" class="close btn btn-primary"
-      aria-label="Ok"
-      (click)="onSubmitForm()">
+    <button [disabled]="loading" type="submit" class="close btn btn-primary"
+      aria-label="Ok">
       <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
       retour ok
     </button>

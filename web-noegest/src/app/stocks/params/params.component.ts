@@ -1,4 +1,4 @@
-import { Component, OnInit, Pipe} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MvtService } from '../_services/mvt.service';
@@ -23,7 +23,7 @@ export class ParamsComponent implements OnInit {
   camps: Camp[] = [];
   paramsForm!: UntypedFormGroup;
   pipe = new DatePipe('en-US');
-  jour = this.pipe.transform(new Date(), 'yyyy-MM-dd')
+  today = new Date();
   lstrepas = [
     { code: "matin", libelle: "Repas du matin" },
     { code: "midi", libelle: "Repas de midi" },
@@ -35,11 +35,11 @@ export class ParamsComponent implements OnInit {
     { code:  "camp", libelle: "Camp Extérieur" },
     { code:  "odIn", libelle: "Régularisation" },
     { code:  "tout", libelle: "Tout" },
-  ]
-  params = new Params
-  lstparams: Params[] = []
-  loading = true
-  submitted = false
+  ];
+  params = new Params;
+  lstparams: Params[] = [];
+  loading = true;
+  submitted = false;
 
 
   constructor(
@@ -53,13 +53,13 @@ export class ParamsComponent implements OnInit {
     this.getParams();
     this.getCamps();
     this.paramsForm = this.formBuilder.group({
-      jour:new Date,
+      jour: this.today.toISOString().split("T")[0],
       origine: ["", Validators.required],
       camp: ["", Validators.required],
       tva: "",
       repas: ["", Validators.required],
       fournisseur:"",
-      parent:['', Validators.required],
+      //parent:['', Validators.required],
     });
   }
 
@@ -92,7 +92,7 @@ export class ParamsComponent implements OnInit {
     this.parent.back();
   }
 
-  onSubmitForm(){
+  onSubmit(){
     this.submitted = true;
 
     // reset alerts on submit
@@ -112,13 +112,22 @@ export class ParamsComponent implements OnInit {
       .subscribe({
         next: (data) => {
           this.params = data[0];
+          this.params.jour = new Date(this.params.jour) //reprise du type date pour toISOString
           this.origine =  this.params.origine
-          this.paramsForm.patchValue(this.params)
-          this.paramsForm.patchValue({'jour':this.pipe.transform(this.params.jour, 'yyyy-MM-dd')})
+          //this.paramsForm.patchValue({'jour':this.pipe.transform(this.params.jour, 'yyyy-MM-dd')})
+          this.paramsForm.patchValue({
+            'jour': this.params.jour.toISOString().split("T")[0],
+            'origine': this.params.origine,
+            'camp': this.params.camp,
+            'tva': this.params.tva,
+            'repas': this.params.repas,
+            'fournisseur':this.params.fournisseur,
+          })
           this.loading = false
           if (this.origine != "camp"){
             this.paramsForm.get("camp").disable()
-          }},        
+          }
+        },        
         error: (e) => {
           if (e != 'Not Found') {
             console.error(e)

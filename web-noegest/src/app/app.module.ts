@@ -18,7 +18,6 @@ import { HeaderComponent } from './general/header/header.component';
 import { ChoixAppliService } from './general/_services/choix-appli.service';
 
 
-
 @NgModule({
   declarations: [
     AppComponent,
