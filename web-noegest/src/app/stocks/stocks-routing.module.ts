@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from '@app/general/_helpers';
 
-import { LayoutComponent } from './layout.component';
 import { SortiesComponent } from './sorties/sorties.component';
 import { OneSortieComponent } from './one-sortie/one-sortie.component';
 import { EntreesComponent } from './entrees/entrees.component';
@@ -14,7 +13,7 @@ import { ParamsComponent } from './params/params.component';
 
 const routes: Routes = [
     {
-        path: '', component: LayoutComponent,
+        path: '',
         children: [
             { path: 'sorties', component: SortiesComponent, canActivate: [AuthGuard] },
             { path: 'onesortie/:id', component: OneSortieComponent, canActivate: [AuthGuard] },

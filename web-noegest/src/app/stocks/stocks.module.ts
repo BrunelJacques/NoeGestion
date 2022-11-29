@@ -3,7 +3,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule, DatePipe } from '@angular/common';
 
 import { StocksRoutingModule } from './stocks-routing.module';
-import { LayoutComponent } from './layout.component';
 import { InventaireComponent } from './inventaire/inventaire.component';
 import { EffectifsComponent } from './effectifs/effectifs.component';
 import { EntreesComponent } from './entrees/entrees.component';
@@ -21,7 +20,6 @@ import { ParamsComponent } from './params/params.component';
         StocksRoutingModule,
     ],
     declarations: [
-        LayoutComponent,
         InventaireComponent,
         EffectifsComponent,
         EntreesComponent,
