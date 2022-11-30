@@ -33,7 +33,8 @@ export class MvtService {
   }
 
   getSorties(): Observable<Mouvement[]> {
-    return this.http.get<Mouvement[]>(this.constantes.MVTS_URL)
+    //this.filteredvalues = mvts.filter(t=>t.category ==='Science');
+    return (this.http.get<Mouvement[]>(this.constantes.MVTS_URL))
       .pipe(
         //tap(_ => this.log('fetched mvts')),
         catchError(this.handleError<Mouvement[]>('getSorties', []))

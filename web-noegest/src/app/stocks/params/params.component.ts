@@ -31,9 +31,9 @@ export class ParamsComponent implements OnInit {
     { code: "tous",  libelle: "Pour tout repas" },
   ];
   lstorigine = [
-    { code:  "cuisine", libelle: "Repas en cuisine" },
+    { code:  "repas", libelle: "Repas en cuisine" },
     { code:  "camp", libelle: "Camp Extérieur" },
-    { code:  "odIn", libelle: "Régularisation" },
+    { code:  "od-out", libelle: "Régularisation" },
     { code:  "tout", libelle: "Tout" },
   ];
   params = new Params;

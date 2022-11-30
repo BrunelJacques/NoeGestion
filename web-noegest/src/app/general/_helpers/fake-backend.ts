@@ -21,18 +21,20 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
         function handleRoute() {
             switch (true) {
+                // Les params ont vocation à rester stockés en local
+                case url.endsWith('/params') && method === 'POST':
+                    return setParams();
+                case url.endsWith('/params') && method === 'GET':
+                    return getParams();
+                // L'authentification doit être géré par le serveur
                 case url.endsWith('/account/authenticate') && method === 'POST':
                     return authenticate();
                 case url.endsWith('/account/register') && method === 'POST':
                     return register();
                 case url.endsWith('/users') && method === 'GET':
-                    return getUsers();
-                case url.endsWith('/params') && method === 'POST':
-                    return setParams();
-                case url.endsWith('/params') && method === 'GET':
-                    return getParams();
+                    return getUsers();    
                 default:
-                    // pass through any requests not handled above
+                    // pass through any requests not handled above, tels les accès data          
                     return next.handle(request);
             }    
         }
@@ -104,7 +106,6 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         }
 
         // helper functions
-
         function ok(body?) {
             return of(new HttpResponse({ status: 200, body }))
                 .pipe(delay(500)); // delay observable to simulate server api call

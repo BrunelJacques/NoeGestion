@@ -5,7 +5,7 @@ import { Params, PARAMS } from '../_models/params';
 import { hoursDelta, deepCopy } from '../../general/_helpers/fonctions-perso';
 import { OneSortieComponent } from '../one-sortie/one-sortie.component';
 import { DatePipe } from '@angular/common';
-import { first } from 'rxjs';
+import { first, map } from 'rxjs';
 import { AlertService } from '@app/general/_services';
 
 @Component({
@@ -36,9 +36,15 @@ export class SortiesComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  getSorties(): void {
+
+  filtre(jour){
+    return (this.pipe.transform(jour) == this.pipe.transform(this.params.jour))
+  }
+
+  getSorties(): any {
     this.mvtService.getSorties()
-      .subscribe({
+    .pipe(map(data => data.filter(mvt => this.filtre(mvt.jour))))
+    .subscribe({
         next: (data) => {
           this.sorties = data;
         },

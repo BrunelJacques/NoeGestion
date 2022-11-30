@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { InMemoryDbService } from 'angular-in-memory-web-api';
-import { Mouvement } from '../_models/Mouvement';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +12,7 @@ export class InMemoryDataService implements InMemoryDbService {
       jour: "2022-10-31",
       origine: "repas",
       article_id: 17,
-      article: "BANANES KG",
+      article: "BANANAS",
       nbUnitesVente: "1.0000",
       qteMouvement: -6.253,
       prixUnit: "1.8884",
@@ -35,7 +34,7 @@ export class InMemoryDataService implements InMemoryDbService {
     },
     {
       id: 7878,
-      jour: "2022-10-02",
+      jour: "2022-10-31",
       origine: "repas",
       article_id: 17,
       article: "BANANES KG",
@@ -60,7 +59,7 @@ export class InMemoryDataService implements InMemoryDbService {
     },
     {
         id: 7939,
-        jour: "2022-10-02",
+        jour: "2022-10-31",
         origine: "repas",
         article_id: 27,
         article: "BEURRE PLQ 250G PIEC",
@@ -85,7 +84,7 @@ export class InMemoryDataService implements InMemoryDbService {
     },
     {
         id: 7957,
-        jour: "2022-10-02",
+        jour: "2022-10-31",
         origine: "repas",
         article_id: 29,
         article: "BISC COOKIES PAQUET",
@@ -110,7 +109,7 @@ export class InMemoryDataService implements InMemoryDbService {
     },
     {
         id: 8068,
-        jour: "2022-10-02",
+        jour: "2022-10-31",
         origine: "repas",
         article_id: 58,
         article: "CAROTTES FRAICHES KG",
@@ -135,7 +134,7 @@ export class InMemoryDataService implements InMemoryDbService {
     },
     {
         id: 8092,
-        jour: "2022-10-02",
+        jour: "2022-10-31",
         origine: "repas",
         article_id: 62,
         article: "CEREALES DU matin",
@@ -983,44 +982,35 @@ export class InMemoryDataService implements InMemoryDbService {
         analytique: "00",
         transfertCompta: null
     }
-  ];
-  let camps = [
-    {
-      id: 0,
-      libelle: "00 Non affecté",
-    },  
-    {
-      id: 10,
-      libelle: "10 Cuisine Pasto", 
-    },  
-    {
-      id: 31,
-      libelle: "31 Camp Montagne",
-    },  
-    {
-      id: 22,
-      libelle: "22 Camp aventure",
-    },
-    {
-      id: 21,
-      libelle: "21 Camp découverte",
-    },
-    { 
-      id: 23,
-      libelle: "23 Camp corse s1",
-    },  
-  ];
-   
-  return { mvts, camps };
+    ];
+    let camps = [
+        {
+        id: 0,
+        libelle: "00 Non affecté",
+        },  
+        {
+        id: 10,
+        libelle: "10 Cuisine Pasto", 
+        },  
+        {
+        id: 31,
+        libelle: "31 Camp Montagne",
+        },  
+        {
+        id: 22,
+        libelle: "22 Camp aventure",
+        },
+        {
+        id: 21,
+        libelle: "21 Camp découverte",
+        },
+        { 
+        id: 23,
+        libelle: "23 Camp corse s1",
+        },  
+    ];
+    return { mvts, camps };
   }
-
-  /* Overrides the genId method to ensure that a hero always has an id.
-  If the heroes array is empty,
-  the method below returns the initial number (11).
-  if the array is not empty, the method below returns the highest id + 1.
-  */
-  genId(mvts: Mouvement[]): number {
-  return mvts.length > 0 ? Math.max(...mvts.map(mouvement => mouvement.id)) + 1 : 11;
-  }
+  
 };
 
