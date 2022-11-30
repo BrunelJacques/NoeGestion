@@ -53,7 +53,7 @@ export class ParamsComponent implements OnInit {
     this.getParams();
     this.getCamps();
     this.paramsForm = this.formBuilder.group({
-      jour: this.today.toISOString().split("T")[0],
+      jour: [this.today.toISOString().split("T")[0],Validators.required],
       origine: ["", Validators.required],
       camp: ["", Validators.required],
       tva: "",

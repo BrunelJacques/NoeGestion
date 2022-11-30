@@ -22,8 +22,14 @@
   <input
       type= "date" id="jour" formControlName="jour"
       class="form-control"
-      min="2020-01-01" max="2099-12-31">
-
+      min="2020-01-01" max="2099-12-31"
+      [ngClass]="{ 'is-invalid': f.jour.errors}">
+  <div *ngIf="f.jour.errors" class="invalid-feedback">
+    <div *ngIf="f.jour.errors.required">
+      Choisissez une date ou abandonnez!
+    </div>
+  </div>
+  
   <label for="origine">Vers :</label>
   <select id="origine" name="origine"
     (change)="onOrigineChange($event)"
@@ -36,7 +42,6 @@
     </option>
   </select>
 
-  <label class="invalid-feedback">!!! mauvais choix </label>
   <div class="form-group" *ngIf="origine.endsWith('camp')">
     <label for="camp">Camp:</label>
     <select type="text"  formControlName="camp" 
