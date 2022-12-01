@@ -9,20 +9,20 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class RepasComponent  implements OnInit {
   repasForm!: FormGroup;
 
-  @Input() repas: string;
+  @Input() service: string;
   @Output() repasChange = new EventEmitter<string>();
-  
+
   onChange(){
     this.repasChange.emit(this.repas)
   }
- 
+
   constructor(
     private formBuilder: FormBuilder,
   ) {}
 
   ngOnInit(): void {
     this.repasForm = this.formBuilder.group({
-      repas: [this.repas, Validators.required],
+      service: [this.repas, Validators.required],
     });
 
   }

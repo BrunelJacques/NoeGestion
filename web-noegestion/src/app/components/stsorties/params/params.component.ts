@@ -28,7 +28,7 @@ export class ParamsComponent implements OnInit {
     this.location = location
     this.origine = this.params.origine
     this.camp = this.params.camp
-    this.repas = this.params.repas
+    this.repas = this.params.service
   }
 
   onOrigineChange(neworigine: any) {
@@ -40,7 +40,7 @@ export class ParamsComponent implements OnInit {
       jour: this.datePipe.transform(this.params.jour, 'yyyy-MM-dd'),
       origine: this.params.origine,
       camp: this.params.camp,
-      repas: [this.params.repas,],
+      service: [this.params.service,],
       tva: [this.params.tva, Validators.required],
     },
     // NOTE Validateur de haut niveau
@@ -52,7 +52,7 @@ export class ParamsComponent implements OnInit {
     this.params.origine = this.paramsForm.value.origine,
     this.params.camp = this.camp,
     this.params.tva = this.paramsForm.value.tva,
-    this.params.repas = this.paramsForm.value.repas,
+    this.params.service = this.paramsForm.value.repas,
     this.goBack()
   }
   onSubmitForm(){
@@ -61,7 +61,7 @@ export class ParamsComponent implements OnInit {
 
   goBack(): void {
     console.log(this.params )
-    this.params.repas = this.paramsForm.value.repas,
+    this.params.service = this.paramsForm.value.repas,
     this.location.back();
   }
 }

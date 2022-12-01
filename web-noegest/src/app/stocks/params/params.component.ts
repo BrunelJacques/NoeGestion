@@ -17,24 +17,24 @@ import { DatePipe } from '@angular/common';
 
 export class ParamsComponent implements OnInit {
   closeResult = '';
-  repas = "";
+  service = "";
   origine = "";
   camp = "";
   camps: Camp[] = [];
   paramsForm!: UntypedFormGroup;
   pipe = new DatePipe('en-US');
   today = new Date();
-  lstrepas = [
-    { code: "matin", libelle: "Repas du matin" },
-    { code: "midi", libelle: "Repas de midi" },
-    { code: "soir", libelle: "Repas du soir" },
-    { code: "tous",  libelle: "Pour tout repas" },
+  lstservice = [
+    { code: "matin", libelle: "Service du matin" },
+    { code: "midi", libelle: "Service de midi" },
+    { code: "soir", libelle: "Service du soir" },
+    { code: "tous",  libelle: "Autre ou tout service" },
   ];
   lstorigine = [
     { code:  "repas", libelle: "Repas en cuisine" },
     { code:  "camp", libelle: "Camp Extérieur" },
     { code:  "od-out", libelle: "Régularisation" },
-    { code:  "tout", libelle: "Tout" },
+    { code:  "tout", libelle: "Toute ligne (ss filtre)" },
   ];
   params = new Params;
   lstparams: Params[] = [];
@@ -57,7 +57,7 @@ export class ParamsComponent implements OnInit {
       origine: ["", Validators.required],
       camp: ["", Validators.required],
       tva: "",
-      repas: ["", Validators.required],
+      service: ["", Validators.required],
       fournisseur:"",
       //parent:['', Validators.required],
     });
@@ -69,17 +69,27 @@ export class ParamsComponent implements OnInit {
 
   onOrigineChange(neworigine: any) {
     this.origine = neworigine.target.value
-    if (this.origine != "camp"){
-      this.paramsForm.get("camp").disable()
-    } 
-    {this.paramsForm.get("camp").enable()} 
+    this.majOrigine(this.origine)
+  }
+
+  majOrigine(origine){
+    if (origine.endsWith("camp"))
+    { this.paramsForm.get("camp").enable()} 
+    else {this.paramsForm.get("camp").disable()}
+
+    if (origine.endsWith("repas"))
+    { this.paramsForm.get("service").enable()} 
+    else {
+      this.paramsForm.patchValue({"service":""})
+      this.paramsForm.get("service").disable()
+    }
   }
 
   okBack(): void {
     this.params.jour = new Date(this.paramsForm.value.jour),
     this.params.origine = this.paramsForm.value.origine,
     this.params.camp = this.paramsForm.value.camp,
-    this.params.repas = this.paramsForm.value.repas,
+    this.params.service = this.paramsForm.value.service,
     this.params.fournisseur = this.paramsForm.value.fournisseur,
     this.params.parent += '-params',
     this.params.tva = this.paramsForm.value.tva,
@@ -120,13 +130,11 @@ export class ParamsComponent implements OnInit {
             'origine': this.params.origine,
             'camp': this.params.camp,
             'tva': this.params.tva,
-            'repas': this.params.repas,
+            'service': this.params.service,
             'fournisseur':this.params.fournisseur,
           })
           this.loading = false
-          if (this.origine != "camp"){
-            this.paramsForm.get("camp").disable()
-          }
+          this.majOrigine(this.origine)
         },        
         error: (e) => {
           if (e != 'Not Found') {

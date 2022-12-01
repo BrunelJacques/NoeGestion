@@ -139,11 +139,11 @@ class Effectifs(models.Model):
     id = models.BigAutoField(primary_key=True)
     jour = models.DateField()
     midiclients = models.IntegerField(db_column='midiClients')  # Field name made lowercase.
-    midirepas = models.IntegerField(db_column='midiRepas')  # Field name made lowercase.
+    midirepas = models.IntegerField(db_column='midiService')  # Field name made lowercase.
     soirclients = models.IntegerField(db_column='soirClients')  # Field name made lowercase.
-    soirrepas = models.IntegerField(db_column='soirRepas')  # Field name made lowercase.
+    soirrepas = models.IntegerField(db_column='soirService')  # Field name made lowercase.
     prevuclients = models.IntegerField(db_column='prevuClients')  # Field name made lowercase.
-    prevurepas = models.IntegerField(db_column='prevuRepas')  # Field name made lowercase.
+    prevurepas = models.IntegerField(db_column='prevuService')  # Field name made lowercase.
     ordi = models.CharField(max_length=32)
     datesaisie = models.DateField(db_column='dateSaisie', blank=True, null=True)  # Field name made lowercase.
     analytique = models.ForeignKey(Geanalytiques, models.DO_NOTHING, blank=True, null=True)

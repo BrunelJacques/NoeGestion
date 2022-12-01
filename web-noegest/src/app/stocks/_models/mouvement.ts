@@ -7,7 +7,7 @@ export class Mouvement {
     public nbunitesvente: any,
     public qtemouvement: number,
     public prixunit: number,
-    public repas: number,
+    public service: number,
     public nbrations: any,
     public rayon: string,
     public analytique: number,

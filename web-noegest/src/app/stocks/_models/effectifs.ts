@@ -3,11 +3,11 @@ export class Effectifs {
   public jour: Date;
   public analytique?: number;
   public midiclients?: number;
-  public midirepas?: number;
+  public midiservice?: number;
   public soirclients?: number;
-  public soirrepas?: number;
+  public soirservice?: number;
   public prevuclients?: number;
-  public prevurepas?: number;
+  public prevuservice?: number;
   public ordi?: string;
   public datesaisie: Date;
 }

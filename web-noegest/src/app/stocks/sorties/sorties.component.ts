@@ -19,7 +19,6 @@ export class SortiesComponent implements OnInit {
   params = new Params
   selectedMvt?: Mouvement;
   sorties: Mouvement[] = [];
-  today: Date = new Date();
   pipe = new DatePipe('en-US');
   jour = "";
   loading = true
@@ -37,13 +36,31 @@ export class SortiesComponent implements OnInit {
   }
 
 
-  filtre(jour){
-    return (this.pipe.transform(jour) == this.pipe.transform(this.params.jour))
+  filtre(mvt){
+    let ret = true
+    // filtre sur le date
+    if (this.pipe.transform(mvt.jour) != this.pipe.transform(this.params.jour)) {
+      ret = false
+    }
+    // filtre sur l'origine du mouvement
+    if ((this.params.origine != 'tout') && (mvt.origine != this.params.origine)) {
+      ret = false
+    }
+    // filtre sur le service
+    if (
+      (mvt.origine == 'repas') 
+        && (this.params.origine != 'tout') 
+        && (this.params.service != 'tous')
+        && (mvt.service != this.params.service)
+      ){
+      ret = false
+    }
+    return ret
   }
 
   getSorties(): any {
     this.mvtService.getSorties()
-    .pipe(map(data => data.filter(mvt => this.filtre(mvt.jour))))
+    .pipe(map(data => data.filter(mvt => this.filtre(mvt))))
     .subscribe({
         next: (data) => {
           this.sorties = data;

@@ -6,7 +6,7 @@
     <span *ngIf="!(params.origine == 'camp')">{{params.origine}}</span>
     <span *ngIf="params.origine == 'camp'">Vers: '{{params.camp}}'</span>
     &nbsp;
-    <span *ngIf="params.origine != 'camp'">Repas '{{params.repas}}'&nbsp;</span>
+    <span *ngIf="params.origine == 'repas'">Service '{{params.service}}'&nbsp;</span>
     <a class="fas fa-pencil me-1" routerLink="/stocks/params">
       <span class = "small">params</span>
     </a>
@@ -24,7 +24,7 @@
     <span> {{magasin}} {{rayon}}</span>
 
 </div>
-<div class="table-responsive">
+<div class="table-responsive" style="max-width:1000px;">
 <table class="table table-striped" >
   <thead class="table-light">
     <tr>

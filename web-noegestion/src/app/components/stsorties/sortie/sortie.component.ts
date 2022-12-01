@@ -39,7 +39,7 @@ export class SortieComponent implements OnInit {
       prixUnit: ['0', ], //Validators.pattern("^[0-9]") ne valide pas!!
       qteMouvement: ['0',Validators.pattern("^[0-9]")],
       article: ['', Validators.required],
-      repas: ['', Validators.required],
+      service: ['', Validators.required],
     });
     // get return url from route parameters or default to '/'
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
@@ -54,14 +54,14 @@ export class SortieComponent implements OnInit {
           article: this.sortie.article,
           qteMouvement: -1 * this.sortie.qtemouvement,
           prixUnit: this.sortie.prixunit,
-          repas: this.sortie.repas,
+          service: this.sortie.repas,
         })
 
       this.repas = this.getRepasString(this.sortie.repas);
       });
   } */
 
-  getRepasString(idrepas: number): string{
+  getRepasString(idservice: number): string{
     if (idrepas == 1){
       return "matin"
     }
@@ -71,9 +71,9 @@ export class SortieComponent implements OnInit {
     else return "piyou"
   }
 
-  onRepasChange(newrepas: any) {
+  onRepasChange(newservice: any) {
     this.sortieForm.patchValue({
-      repas: newrepas,
+      service: newrepas,
     })
   }
 
