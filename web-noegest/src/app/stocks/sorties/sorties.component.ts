@@ -32,8 +32,7 @@ export class SortiesComponent implements OnInit {
       this.getSorties();
      }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
 
   filtre(mvt){

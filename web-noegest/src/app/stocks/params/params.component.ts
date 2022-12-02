@@ -30,12 +30,22 @@ export class ParamsComponent implements OnInit {
     { code: "soir", libelle: "Service du soir" },
     { code: "tous",  libelle: "Autre ou tout service" },
   ];
-  lstorigine = [
+
+  lstorigine = [];
+
+  lstorigine_sorties = [
     { code:  "repas", libelle: "Repas en cuisine" },
     { code:  "camp", libelle: "Camp Extérieur" },
-    { code:  "od-out", libelle: "Régularisation" },
+    { code:  "od_out", libelle: "Régularisation" },
     { code:  "tout", libelle: "Toute ligne (ss filtre)" },
   ];
+  lstorigine_entrees = [
+    { code:  "achat", libelle: "Achats fournisseur" },
+    { code:  "retour", libelle: "Retour de camp" },
+    { code:  "od_in", libelle: "Régularisation" },
+    { code:  "tout", libelle: "Toute ligne (ss filtre)" },
+  ];
+
   params = new Params;
   lstparams: Params[] = [];
   loading = true;
@@ -133,6 +143,9 @@ export class ParamsComponent implements OnInit {
             'service': this.params.service,
             'fournisseur':this.params.fournisseur,
           })
+          if (this.params.parent == 'sorties') 
+            {this.lstorigine = this.lstorigine_sorties}
+          else {this.lstorigine = this.lstorigine_entrees}    
           this.loading = false
           this.majOrigine(this.origine)
         },        
