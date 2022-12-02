@@ -1,9 +1,9 @@
-from django.contrib import admin
+import django.contrib.admin as admin
 
 # Register your models here, pour les gérer avec interface admin.
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from rest_framework_simplejwt import token_blacklist
+import rest_framework_simplejwt.token_blacklist as token_blacklist
 
 from appli.models import Mouvements, Articles, Effectifs, Inventaires, User
 
@@ -83,7 +83,6 @@ class CustomUserAdmin(UserAdmin):
 
 
 class OutstandingTokenAdmin(token_blacklist.admin.OutstandingTokenAdmin):
-
     def has_delete_permission(self, *args, **kwargs):
         return True  # or whatever logic you want
 

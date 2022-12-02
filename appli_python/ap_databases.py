@@ -77,6 +77,6 @@ def GetChampsTableNoegest(nomTable):
 if __name__ == "__main__":
     os.chdir("..")
     print(os.getcwd())
-    #CreateBaseDjango(dbConfig='default')
-    ret = GetChampsTableNoegest('stArticles')
+    CreateBaseDjango(dbConfig='default')
+    #ret = GetChampsTableNoegest('stArticles')
     print()

@@ -1,8 +1,6 @@
 # Recueil de fonctions diversesimport datetime
 import datetime
 import unicodedata
-
-import phonenumbers
 import re
 
 from outils.xconst import *
@@ -324,11 +322,6 @@ def FmtPercent(montant):
 
 def FmtDate(date):
     return DateToFr(date)
-
-
-def FmtTelephone(texte: str) -> str:
-    return phonenumbers.format_number(phonenumbers.parse(texte, 'FR'),
-                                      phonenumbers.PhoneNumberFormat.NATIONAL)
 
 
 def FmtBool(value):
