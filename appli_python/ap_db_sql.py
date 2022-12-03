@@ -1034,6 +1034,7 @@ if __name__ == "__main__":
     os.chdir("..")
     db = DB()
     db.AfficheTestOuverture()
+    print(db.IsDatabaseExits())
 
     #db.DropUneTable('cpta_journaux')
     #db.CreationUneTable(DB_TABLES,'stEffectifs')

@@ -79,4 +79,4 @@ if __name__ == "__main__":
     print(os.getcwd())
     CreateBaseDjango(dbConfig='default')
     #ret = GetChampsTableNoegest('stArticles')
-    print()
+
