@@ -36,13 +36,16 @@ def CreateBaseDjango(dbConfig='default'):
         return
     db.AfficheTestOuverture()
     mess = 'ko'
-    if not db.IsDatabaseExits():
-        db.CreateBaseMySql(ifExist=False)
-        if not db.echec:
-            mess = "Base '%s' créée"%(db.nomBase)
-    else:
-        mess = "la base '%s' existait préalablement"%(db.nomBase)
-    print(mess)
+    try:
+        if not db.IsDatabaseExits():
+            db.CreateBaseMySql(ifExist=False)
+            if not db.echec:
+                mess = "Base '%s' créée"%(db.nomBase)
+        else:
+            mess = "la base '%s' existait préalablement"%(db.nomBase)
+        print(mess)
+    except:
+        pass
 
     # lancement migrate
     print(os.getcwd())

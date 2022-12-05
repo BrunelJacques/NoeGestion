@@ -1,4 +1,5 @@
 .db.sqlite3/
 .serveur_dgango/settings.py
-.outils/test.py
+/outils/test.py
 /web-noegest/.angular/cache/
+/noegest.db

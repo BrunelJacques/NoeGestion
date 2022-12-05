@@ -143,7 +143,7 @@ export class ParamsComponent implements OnInit {
             'service': this.params.service,
             'fournisseur':this.params.fournisseur,
           })
-          if (this.params.parent == 'sorties') 
+          if (this.params.parent.endsWith('sorties')) 
             {this.lstorigine = this.lstorigine_sorties}
           else {this.lstorigine = this.lstorigine_entrees}    
           this.loading = false

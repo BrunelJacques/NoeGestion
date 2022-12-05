@@ -98,7 +98,7 @@ class Analytiques(models.Model):
     params = models.TextField(blank=True, default='')
     axe = models.CharField(max_length=32, blank=True, default='')
     saisie = models.DateField(auto_now=True, null=True)
-    obsolete = models.BooleanField(default=False, null=True)
+    obsolete = models.BooleanField(default=False)
 
     class Meta:
         db_table = 'ge_analytiques'
@@ -122,9 +122,9 @@ class Articles(models.Model):
     qte_saison = models.IntegerField(blank=True, null=True, help_text="Seuil souhaitable en haute saison")
     prix_moyen = models.DecimalField(max_digits=10, decimal_places=4, blank=True, null=True, help_text="Prix unitaire moyen historique du stock")
     prix_actuel = models.DecimalField(max_digits=10, decimal_places=4, blank=True, null=True, help_text="Dernier prix TTC unitaire livré ou de réappro")
-    dernier_achat = models.DateField(blank=True, null=True, help_text="Date de dernière entrée avec prix saisi")
-    ordi = models.CharField(max_length=32, default='', null=True, help_text="Nom de l'ordi utilisé pour l'entrée ou la modif")
-    saisie = models.DateField(blank=True, null=True, help_text="Date de l'entrée ou la modif de l'item")
+    dernier_achat = models.DateField(null=True, help_text="Date de dernière entrée avec prix saisi")
+    ordi = models.CharField( blank=True, max_length=32, help_text="Nom de l'ordi utilisé pour l'entrée ou la modif")
+    saisie = models.DateField(null=True, help_text="Date de l'entrée ou la modif de l'item")
 
     def __str__(self): return self.nom_court
 
@@ -142,7 +142,7 @@ class Effectifs(models.Model):
     prevu_clients = models.IntegerField()
     prevu_repas = models.IntegerField()
     ordi = models.CharField(max_length=32)
-    saisie = models.DateField(blank=True, null=True)
+    saisie = models.DateField(null=True)
 
     class Meta:
         db_table = 'st_effectifs'
@@ -155,12 +155,12 @@ class Inventaires(models.Model):
     libelle = models.CharField(max_length=128, db_index=True, help_text=" Conserve le nom historique")
     unite_stock = models.CharField(max_length=8,help_text="Unité de base pour compter, accompagne le nom")
     qte_stock = models.DecimalField(max_digits=10, decimal_places=4, default=0)
-    prix_moyen = models.DecimalField(max_digits=10, decimal_places=4, blank=True, null=True)
-    prix_actuel = models.DecimalField(max_digits=10, decimal_places=4, blank=True, null=True)
-    montant = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    modifiable = models.BooleanField(blank=True, null=True)
-    ordi = models.CharField(max_length=32)
-    saisie = models.DateField(blank=True, null=True)
+    prix_moyen = models.DecimalField(max_digits=10, decimal_places=4, null=True)
+    prix_actuel = models.DecimalField(max_digits=10, decimal_places=4, null=True)
+    montant = models.DecimalField(max_digits=10, decimal_places=2, null=True)
+    modifiable = models.BooleanField(null=True)
+    ordi = models.CharField(null=True, max_length=32)
+    saisie = models.DateField(null=True)
 
     class Meta:
         db_table = 'st_inventaires'
@@ -171,15 +171,16 @@ class Mouvements(models.Model):
     jour = models.DateField()
     analytique_code = models.ForeignKey(Analytiques, models.DO_NOTHING,)
     origine = models.CharField(max_length=8,db_index=True)
-    fournisseur = models.CharField(max_length=32, db_index=True)
-    nb_colis = models.DecimalField(max_digits=10, decimal_places=4)
-    qtemouvement = models.DecimalField(max_digits=10, decimal_places=4)
-    prixunit = models.DecimalField(max_digits=10, decimal_places=4)
+    fournisseur = models.CharField(max_length=32, db_index=True, blank=True, default='')
     article_id = models.ForeignKey(Articles, models.DO_NOTHING)
-    service = models.IntegerField(blank=True, null=True, help_text="Service repas concerné")
-    transfert = models.DateField(blank=True, null=True, help_text="non modifiable si transféré")
-    ordi = models.CharField(max_length=32)
-    datesaisie = models.DateField(blank=True, null=True)
+    nbcolis = models.DecimalField(max_digits=6, decimal_places=0, default=0)
+    qtemouvement = models.DecimalField(max_digits=8, decimal_places=2)
+    prixunit = models.DecimalField(max_digits=10, decimal_places=4)
+    service = models.IntegerField(default=3, help_text="Service repas concerné")
+    nbrations = models.DecimalField(max_digits=6, decimal_places=0, default=0)
+    transfert = models.DateField(null=True, help_text="non modifiable si transféré")
+    ordi = models.CharField(max_length=32, blank=True, default="")
+    datesaisie = models.DateField(null=True)
 
     class Meta:
         db_table = 'st_mouvements'
