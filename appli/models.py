@@ -177,9 +177,9 @@ class Mouvements(models.Model):
     qtemouvement = models.DecimalField(max_digits=8, decimal_places=2)
     prixunit = models.DecimalField(max_digits=10, decimal_places=4)
     service = models.IntegerField(default=3, help_text="Service repas concerné")
-    nbrations = models.DecimalField(max_digits=6, decimal_places=0, default=0)
-    transfert = models.DateField(null=True, help_text="non modifiable si transféré")
-    ordi = models.CharField(max_length=32, blank=True, default="")
+    nbrations = models.DecimalField(max_digits=8, decimal_places=4, default=0, help_text="Nbre de ration par qteMouvement")
+    transfert = models.DateField(null=True, help_text="non modifiable si date de transfert")
+    ordi = models.CharField(max_length=32, blank=True, default="", help_text="pour tracer les mouvements")
     datesaisie = models.DateField(null=True)
 
     class Meta:
