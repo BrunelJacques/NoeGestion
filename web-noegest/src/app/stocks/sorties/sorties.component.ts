@@ -7,6 +7,7 @@ import { OneSortieComponent } from '../one-sortie/one-sortie.component';
 import { DatePipe } from '@angular/common';
 import { first, map } from 'rxjs';
 import { AlertService } from '@app/general/_services';
+import { Constantes } from '@app/constantes';
 
 @Component({
   selector: 'app-sorties',
@@ -23,6 +24,10 @@ export class SortiesComponent implements OnInit {
   jour = "";
   loading = true
 
+  constantes = Constantes
+  lstorigine_codes = this.constantes.LSTORIGINE_SORTIES.map((x)=>x.code) ;
+  lstservice = this.constantes.LSTSERVICE
+
   constructor(
     private mvtService: MvtService,
     public datepipe: DatePipe,
@@ -35,21 +40,25 @@ export class SortiesComponent implements OnInit {
   ngOnInit(): void {}
 
 
-  filtre(mvt){
+  filtre(mvt: Mouvement){
     let ret = true
     // filtre sur le date
     if (this.pipe.transform(mvt.jour) != this.pipe.transform(this.params.jour)) {
       ret = false
     }
-    // filtre sur l'origine du mouvement
-    if ((this.params.origine != 'tout') && (mvt.origine != this.params.origine)) {
+    // filtre sur le type d'origine du mouvement
+    else if ( !this.lstorigine_codes.includes(mvt.origine )) {
+      ret = false
+    }
+    // filtre sur l'origine filtrée du mouvement
+    else if ((this.params.origine != 'tout') && (mvt.origine != this.params.origine)) {
       ret = false
     }
     // filtre sur le service
-    if (
+    else if (
       (mvt.origine == 'repas') 
         && (this.params.origine != 'tout') 
-        && (this.params.service != 'tous')
+        && (this.params.service != 0)
         && (mvt.service != this.params.service)
       ){
       ret = false

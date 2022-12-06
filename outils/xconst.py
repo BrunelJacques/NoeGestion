@@ -18,10 +18,11 @@ LISTE_MOIS_ABREGE =[("Janv."), ("Fév."), ("Mars"), ("Avril"), ("Mai"), ("Juin")
                     ("Août"), ("Sept."), ("Oct."), ("Nov."), ("Déc.")]
 
 REPAS_CHOICES = [
+        ('tous', 'Tout service'),
         ('matin', 'service Matin'),
         ('midi', 'service Midi'),
         ('soir', 'service Soir'),
-        ('tous', 'Tout service'),
+        ('5eme', '5eme Repas'),
     ]
 
 ORIGINE_CHOICES = [

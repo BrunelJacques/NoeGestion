@@ -9,7 +9,7 @@ import { Camp } from '../_models/camp';
 import { Params } from '../_models/params';
 
 import { environment } from '@environments/environment';
-import { Constantes } from "../../constantes";
+import { Constantes } from '@app/constantes';
 
 @Injectable({ providedIn: 'root'})
 

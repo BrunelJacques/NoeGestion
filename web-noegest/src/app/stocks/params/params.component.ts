@@ -7,6 +7,7 @@ import { Params } from '../_models/params';
 import { first } from 'rxjs';
 import { AlertService } from '@app/general/_services';
 import { DatePipe } from '@angular/common';
+import { Constantes } from '@app/constantes';
 
 
 @Component({
@@ -24,28 +25,14 @@ export class ParamsComponent implements OnInit {
   paramsForm!: UntypedFormGroup;
   pipe = new DatePipe('en-US');
   today = new Date();
-  lstservice = [
-    { code: "matin", libelle: "Service du matin" },
-    { code: "midi", libelle: "Service de midi" },
-    { code: "soir", libelle: "Service du soir" },
-    { code: "tous",  libelle: "Autre ou tout service" },
-  ];
 
+  constantes = Constantes
+  lstservice = this.constantes.LSTSERVICE;
   lstorigine = [];
+  lstorigine_sorties = this.constantes.LSTORIGINE_SORTIES;
+  lstorigine_entrees = this.constantes.LSTORIGINE_ENTREES;
 
-  lstorigine_sorties = [
-    { code:  "repas", libelle: "Repas en cuisine" },
-    { code:  "camp", libelle: "Camp Extérieur" },
-    { code:  "od_out", libelle: "Régularisation" },
-    { code:  "tout", libelle: "Toute ligne (ss filtre)" },
-  ];
-  lstorigine_entrees = [
-    { code:  "achat", libelle: "Achats fournisseur" },
-    { code:  "retour", libelle: "Retour de camp" },
-    { code:  "od_in", libelle: "Régularisation" },
-    { code:  "tout", libelle: "Toute ligne (ss filtre)" },
-  ];
-
+  lstservice_code = this.lstservice.map((x) => x.code)
   params = new Params;
   lstparams: Params[] = [];
   loading = true;
@@ -99,7 +86,7 @@ export class ParamsComponent implements OnInit {
     this.params.jour = new Date(this.paramsForm.value.jour),
     this.params.origine = this.paramsForm.value.origine,
     this.params.camp = this.paramsForm.value.camp,
-    this.params.service = this.paramsForm.value.service,
+    this.params.service = this.lstservice_code.indexOf(this.paramsForm.value.service),
     this.params.fournisseur = this.paramsForm.value.fournisseur,
     this.params.parent += '-params',
     this.params.tva = this.paramsForm.value.tva,
@@ -135,13 +122,15 @@ export class ParamsComponent implements OnInit {
           this.params.jour = new Date(this.params.jour) //reprise du type date pour toISOString
           this.origine =  this.params.origine
           //this.paramsForm.patchValue({'jour':this.pipe.transform(this.params.jour, 'yyyy-MM-dd')})
+          if (!this.params.service || this.params.service < 0){ 
+            this.params.service = 0 }
           this.paramsForm.patchValue({
             'jour': this.params.jour.toISOString().split("T")[0],
             'origine': this.params.origine,
             'camp': this.params.camp,
             'tva': this.params.tva,
-            'service': this.params.service,
-            'fournisseur':this.params.fournisseur,
+            'service': this.lstservice[this.params.service].code,
+            'fournisseur': this.params.fournisseur,
           })
           if (this.params.parent.endsWith('sorties')) 
             {this.lstorigine = this.lstorigine_sorties}

@@ -3,7 +3,7 @@ export class Params {
   id: number;
   jour: Date;
   origine: string;
-  service: string;
+  service: number;
   camp: string;
   fournisseur: string;
   tva: string;
@@ -15,7 +15,7 @@ export const  PARAMS: Params= {
   id: 0,
   jour: new Date(),
   origine: "tout",
-  service: "tous",
+  service: 0,
   camp: "",
   fournisseur: "",
   tva: "ttc",
