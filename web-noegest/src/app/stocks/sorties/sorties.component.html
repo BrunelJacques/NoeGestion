@@ -26,14 +26,15 @@
     <span> {{magasin}} {{rayon}}</span>
 
 </div-->
-<div class="table-responsive" style="max-width:1000px;">
+<div class="table-responsive">
 <table class="table table-striped" >
   <thead class="table-light">
     <tr>
+      <th class="col-1 center">-</th>
       <th class="col-7 center">Article</th>
-      <th class="col-1 item">Qté</th>
-      <th class="col-2  item">Coût</th>
-      <th class="col-1 item">Serv.</th>
+      <th class="col-1 item">Sortis</th>
+      <th class="col-2  center">Coût</th>
+      <th class="col-1 item">Service</th>
       <th class="col-1 item">pour</th>
     </tr>
   </thead>
@@ -44,18 +45,14 @@
     (click)="openSortie(mvt)"
     > -->
     <tr *ngFor="let mvt of sorties;">
-      <td class="" routerLink="/sortie/{{mvt.id}}">
-        <span class="left">
-          <a class="fas fa-pencil me-1 ctnbtn"></a>
-        </span>
-        <span class= "item small">
-          {{mvt.article_nom}}
-        </span>
+      <td class="left" routerLink="/sortie/{{mvt.id}}">
+        <a class="fas fa-pencil me-1 ctnbtn"></a>
       </td>
-        <td class= "item" routerLink="/sortie/{{mvt.id}}"> {{mvt.qtemouvement * -1 | number : '1.0-4'}} </td>
-        <td class= "item" routerLink="/sortie/{{mvt.id}}"> {{mvt.qtemouvement * -1 * mvt.prixunit | number : '1.0-2'}} </td>
-        <td class= "item" routerLink="/sortie/{{mvt.id}}"> {{mvt.service}} </td>
-        <td class= "col item" routerLink="/sortie/{{mvt.id}}"> {{mvt.nbrations}} </td>
+      <td class= "item small"> {{mvt.article_nom}} </td>
+      <td class= "item" routerLink="/sortie/{{mvt.id}}"> {{mvt.qtemouvement * -1 | number : '1.0-4'}} </td>
+      <td class= "item" routerLink="/sortie/{{mvt.id}}"> {{mvt.qtemouvement * -1 * mvt.prixunit | number : '1.2-2'}} </td>
+      <td class= "center" routerLink="/sortie/{{mvt.id}}"> {{mvt.service}} </td>
+      <td class= "col item" routerLink="/sortie/{{mvt.id}}"> {{mvt.nbrations}} </td>
     </tr>
   </tbody>
 </table>

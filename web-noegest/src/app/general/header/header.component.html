@@ -1,7 +1,12 @@
 <header class="navbar navbar-expand-lg navbar-dark fixed-top nga-navbar">
   <nav class="container" aria-label="Main navigation">
-<!--header class="container-fluid fixed-top"-->
-  <!--nav class="row navbar navbar-expand-lg"-->
+
+    <button class="col-auto navbar-toggler" type="button" data-bs-toggle="collapse" 
+      data-bs-target="#navbarNav" aria-controls="navbarNav" 
+      aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
     <div class="col-auto" style="width: 190;">
       <a routerLink="/" class="navbar-brand" alt="Accueil">
         <img src="assets/params/images/noegest@1x.png"
@@ -12,11 +17,17 @@
       <span class="text-white">{{choixAppli}}</span>
     </div>
 
-    <button class="col-auto navbar-toggler" type="button" data-bs-toggle="collapse" 
+    <button type="button" 
+      class="logout"
+      (click)="logout()">
+        <i class="fas fa-sign-out-alt me-2"></i>
+    </button>
+
+    <!--button class="col-auto navbar-toggler" type="button" data-bs-toggle="collapse" 
         data-bs-target="#navbarNav" aria-controls="navbarNav" 
         aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
-    </button>
+    </button-->
       
     <div class="col-3 col-md-10 col-xl-8 collapse navbar-collapse " 
         id="navbarNav" toggle="collapse" data-target=".navbar-collapse"  >
