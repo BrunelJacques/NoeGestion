@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { AccountService } from './general/_services';
 import { User } from './general/_models';
 
-@Component({ selector: 'app', templateUrl: 'app.component.html'})
+@Component({ selector: 'app-root', templateUrl: 'app.component.html'})
 export class AppComponent {
     user: User;
   title: any;
