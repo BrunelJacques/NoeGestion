@@ -6,7 +6,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./not-found.component.css']
 })
 export class NotFoundComponent {
-
-  constructor() { }
+  title = "demo angular 'MY APPLI' ng new myappli ";
 
 }

@@ -1,9 +1,12 @@
 ﻿<div class="card">
-    <h4 class="card-header">Initialiser mon accès</h4>
-    <div class="text-center text-muted small">
-        Pour créer un compte ou réinitialiser un mot de passe
+<div class="card-container">
+    <div class="short card-header card-small">
+        <h4 >Initialiser mon accès</h4>
+        <div class="short text-center text-muted small">
+            Pour créer un compte ou réinitialiser un mot de passe
+        </div>
     </div>
-    <div class="card-body">
+    <div class="short card-body card-small">
         <form [formGroup]="form" (ngSubmit)="onSubmit()">
             <div class="form-group">
                 <label for="firstName">Prénom</label>
@@ -30,7 +33,7 @@
                     <div *ngIf="f.email.errors.required">L'adresse mail est obligatoire</div>
                 </div>
             </div>
-            <div class="text-center text-muted small mb-o">
+            <div class="text-center text-muted small short mb-o">
                 L'initialisation n'est possible que pour des références connues de Matthania
             </div>
             <div class="form-group">
@@ -53,4 +56,5 @@
             </div>
         </form>
     </div>
+</div>
 </div>
