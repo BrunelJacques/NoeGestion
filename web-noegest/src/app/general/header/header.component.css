@@ -1,3 +1,29 @@
+.navbar {
+  z-index: 1;
+  -webkit-box-shadow: 0 9px 6px -6px #999;
+  -moz-box-shadow: 0 9px 6px -6px #999;
+  box-shadow: 0 9px 6px -6px #999;
+  padding: 0.3rem !important;
+  background-color:  #3f729b;
+}
+
+.navbar-toggler{
+  padding: 0 3px;
+  border-width: 2px;
+  border-color: white !important;
+}
+
+.navbar-toggler:focus  {
+  background: #447cd0 ;
+  border-width: 2px;
+  border-color: whitesmoke!important;
+  box-shadow: 0px 0px 15px white;
+}
+
+.navbar-toggler-icon {
+  height: 30px;
+  width: 25px;
+}
 .navbar-nav .nav-item .nav-link {
   color: white;
   font-weight: 500;
@@ -26,39 +52,6 @@
   color: rgba(255, 255, 255, 0.75);
 }
 
-.nga-logo {
-  font-weight: 700;
-}
-
-.nga-logo:hover {
-  color: rgba(255, 255, 255, 0.75);
-}
-
-.nga-footer {
-  background-color: #212121;
-  color: white;
-}
-
-.nga-footer a {
-  color: white;
-  text-decoration: none
-}
-
-.nga-footer a:hover,
-.nga-footer a:focus {
-  color: yellow;
-  text-decoration: underline;
-}
-
-.nga-footer .hint {
-  background-color: #1976d2;
-}
-
-.nga-footer .hint:hover {
-  opacity: 0.8;
-}
-
-
 .nav-link {
   margin-left: 0.2rem!important;
   padding: 0.7rem 0rem!important;
@@ -69,15 +62,7 @@
 
 .nav-item {
   background-color: #235680;
-}
-
-.navbar {
-  z-index: 1;
-  -webkit-box-shadow: 0 9px 6px -6px #999;
-  -moz-box-shadow: 0 9px 6px -6px #999;
-  box-shadow: 0 9px 6px -6px #999;
-  padding: 0.3rem !important;
-  background-color:  #3f729b;
+  max-width: 200px;
 }
 
 .navbar-nav {
@@ -85,28 +70,14 @@
 }
 
 
-.navbar-toggler {
-  border-width: 2px;
-  border-color: white !important;
-}
-
 .nga-navbar {
   background: #3f729b ;
 }
 
-.nga-link {
-  background: #3f729b ;
-}
-
-.navbar-toggler:focus  {
-  background: #447cd0 ;
-  border-width: 2px;
-  border-color: whitesmoke!important;
-  box-shadow: 0px 0px 15px white;
-}
-
 .container {
-  margin-left: 0% !important;
+  margin-left: 0;
+  min-width: 360px;
+  max-width: 380px;
 }
 
 .btn {
@@ -114,8 +85,19 @@
 }
 
 .logout {
-  border: 1;
+  width: 40px;
+  height: 40px;
   padding: 0;
+  margin-right: 6px;
+  background-color: #3f729b;
+}
+
+i {
+  color: whitesmoke;
+  background-color: #3f729b;
+}
+.ombre {
+  border: 1;
   border-color: whitesmoke!important;
   box-shadow: 0px 0px 15px white;
 }
