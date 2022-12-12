@@ -1,89 +1,95 @@
-
-
-  <h5 class="card-header">Paramètres de liste</h5>
-
-<form [formGroup]="paramsForm" class="form-group was-validated"
-(ngSubmit)="onSubmit()">
-  <div>
-    <button [disabled]="loading" type="submit" class="close btn btn-primary"
-      aria-label="Ok">
-      <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-      retour ok
-    </button>
-    &nbsp;
-    <button type="button" class="close btn btn-secondary"
-      aria-label="Close"
-      (click)="goBack()">
-      abandon
-      <i class="fas fa-turn-up"></i>
-    </button>
-  </div>
-  <label for="jour">Date:</label>
-  <input
-      type= "date" id="jour" formControlName="jour"
-      class="form-control"
-      min="2020-01-01" max="2099-12-31"
-      [ngClass]="{ 'is-invalid': f.jour.errors}">
-  <div *ngIf="f.jour.errors" class="invalid-feedback">
-    <div *ngIf="f.jour.errors.required">
-      Choisissez une date ou abandonnez!
+<div class="row justify-content-center fondecran">
+<div class="col-sm-10 col-md-8">
+  <div class="card col ">
+    <div class="col">
+      <h5 class="card-header">Paramètres de liste</h5>
+      <div class="card-body">
+        <button type="submit" [disabled]="loading" class="btn btn-primary"
+          aria-label="Ok"
+          (click)="onSubmit()">
+          <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+          retour ok
+        </button>
+        &nbsp;
+        <button type="button" class="close btn btn-secondary"
+          aria-label="Close"
+          (click)="goBack()">
+          abandon
+          <i class="fas fa-turn-up"></i>
+        </button>
+      </div>
     </div>
-  </div>
-  
-  <label for="origine">Vers :</label>
-  <select id="origine" name="origine"
-    (change)="onOrigineChange($event)"
-    formControlName="origine"
-    class="form-control" required aria-label="origine">
-    <option [ngValue]="" disabled>Filtrer les {{params.parent}} pour :</option>
-    <option *ngFor="let origine of lstorigine"
-      [ngValue]="origine.code">
-      {{origine.libelle}}
-    </option>
-  </select>
+    <form [formGroup]="paramsForm" class="form-group was-validated"
+        (ngSubmit)="onSubmit()">
+      <label for="jour">Date:</label>
+      <input
+          type= "date" id="jour" formControlName="jour"
+          class="form-control"
+          min="2020-01-01" max="2099-12-31"
+          [ngClass]="{ 'is-invalid': f.jour.errors}">
+      <div *ngIf="f.jour.errors" class="invalid-feedback">
+        <div *ngIf="f.jour.errors.required">
+          Choisissez une date ou abandonnez!
+        </div>
+      </div>
+      
+      <label for="origine">Vers :</label>
+      <select id="origine" name="origine"
+        (change)="onOrigineChange($event)"
+        formControlName="origine"
+        class="form-control" required aria-label="origine">
+        <option [ngValue]="" disabled>Filtrer les {{params.parent}} pour :</option>
+        <option *ngFor="let origine of lstorigine"
+          [ngValue]="origine.code">
+          {{origine.libelle}}
+        </option>
+      </select>
 
-  <div class="form-group" *ngIf="origine.endsWith('camp')">
-    <label for="camp">Camp:</label>
-    <select type="text"  formControlName="camp" 
-      class="form-control" required
-      [ngClass]="{ 'is-invalid': submitted && f.camp.errors}">
-      <option [ngValue]="" disabled>Choisir un camp</option>
-      <option *ngFor="let camp of camps"
-        [ngValue]="camp.id">
-        {{camp.libelle}}
-      </option>
-    </select> 
-    <div *ngIf="submitted && f.camp.errors" class="invalid-feedback">
-      <div *ngIf="f.camp.errors.required">Choisissez un camp extérieur ou choisissez une autre destination</div>
-    </div>
-  </div>
+      <div class="form-group" *ngIf="origine.endsWith('camp')">
+        <label for="camp">Camp:</label>
+        <select type="text"  formControlName="camp" 
+          class="form-control" required
+          [ngClass]="{ 'is-invalid': submitted && f.camp.errors}">
+          <option [ngValue]="" disabled>Choisir un camp</option>
+          <option *ngFor="let camp of camps"
+            [ngValue]="camp.id">
+            {{camp.libelle}}
+          </option>
+        </select> 
+        <div *ngIf="submitted && f.camp.errors" class="invalid-feedback">
+          <div *ngIf="f.camp.errors.required">Choisissez un camp extérieur ou choisissez une autre destination</div>
+        </div>
+      </div>
 
-  <!--div *ngIf="(origine.endsWith('repas'))"-->
-  <div>
-    <label for="service">Service:</label>
-    <select formControlName="service"
-      class="form-control" required>
-      <option [ngValue]="" disabled>Lignes pour les services :</option>
-      <option *ngFor="let service of lstservice"
-        [ngValue]="service.code">
-        {{service.libelle}}
-      </option>
-    </select>
-    <div *ngIf="submitted && f.service.errors" class="invalid-feedback">
-      <div *ngIf="f.service.errors.required">Choisissez un service de repas ou 'pour tout'</div>
-    </div>
-  </div>
-  <div *ngIf="params.parent && params.parent.endsWith('entrees')">
-    <label for="tva">Tva mtt:</label>
-    <select id="tva" name="tva" formControlName="tva" class="form-control">
-      <option value="ttc">en TTC</option>
-      <option value="ht">en HT</option>
-    </select>
+      <!--div *ngIf="(origine.endsWith('repas'))"-->
+      <div>
+        <label for="service">Service:</label>
+        <select formControlName="service"
+          class="form-control" required>
+          <option [ngValue]="" disabled>Lignes pour les services :</option>
+          <option *ngFor="let service of lstservice"
+            [ngValue]="service.code">
+            {{service.libelle}}
+          </option>
+        </select>
+        <div *ngIf="submitted && f.service.errors" class="invalid-feedback">
+          <div *ngIf="f.service.errors.required">Choisissez un service de repas ou 'pour tout'</div>
+        </div>
+      </div>
+      <div *ngIf="params.parent && params.parent.endsWith('entrees')">
+        <label for="tva">Tva mtt:</label>
+        <select id="tva" name="tva" formControlName="tva" class="form-control">
+          <option value="ttc">en TTC</option>
+          <option value="ht">en HT</option>
+        </select>
 
-    <label for="fournisseur">Fournisseur:</label>
-    <input id="fournisseur" name="fournisseur" formControlName="fournisseur" class="form-control">
-  </div>
-  <!--label for="parent">Parent:</label>
-  <input id="parent" name="parent" formControlName="parent" class="form-control"-->
+        <label for="fournisseur">Fournisseur:</label>
+        <input id="fournisseur" name="fournisseur" formControlName="fournisseur" class="form-control">
+      </div>
+      <!--label for="parent">Parent:</label>
+      <input id="parent" name="parent" formControlName="parent" class="form-control"-->
 
-</form>
+    </form>
+  </div>
+</div>
+</div>
