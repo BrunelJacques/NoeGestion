@@ -1,12 +1,14 @@
-﻿<div class="card">
-<div class="card-container">
+﻿<div class="card-container">
+<div class="card">
+  <div class="col">
     <div class=" card-header">
         <h4 >Initialiser mon accès</h4>
         <div class="short text-center text-muted small">
             Pour créer un compte ou réinitialiser un mot de passe
         </div>
     </div>
-    <div class="short card-body card-small">
+  </div>
+    <div class="card-body">
         <form [formGroup]="form" (ngSubmit)="onSubmit()">
             <div class="form-group">
                 <label for="firstName">Prénom</label>
@@ -58,3 +60,4 @@
     </div>
 </div>
 </div>
+ 
