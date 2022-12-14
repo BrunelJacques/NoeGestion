@@ -1,11 +1,12 @@
-
 <div class="card-container">
   <div class="card">
     <div class="col">
       <h5 class="card-header">Paramètres de liste</h5>
       <div class="card-body">
-        <button type="submit" [disabled]="loading" class="btn btn-primary"
-          aria-label="Ok"
+        <button type="submit" 
+          [disabled]="loading" 
+          class="btn btn-primary"
+          aria-label="Confirm"
           (click)="onSubmit()">
           <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
           retour ok
@@ -19,7 +20,8 @@
         </button>
       </div>
     </div>
-    <form [formGroup]="paramsForm" class="form-group was-validated"
+    <form [formGroup]="paramsForm" 
+        class="form-group short was-validated"
         (ngSubmit)="onSubmit()">
       <label for="jour">Date:</label>
       <input
@@ -88,7 +90,6 @@
       </div>
       <!--label for="parent">Parent:</label>
       <input id="parent" name="parent" formControlName="parent" class="form-control"-->
-
     </form>
   </div>
 </div>
