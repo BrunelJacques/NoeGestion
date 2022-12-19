@@ -32,6 +32,18 @@ export class MvtService {
   this.params = this.paramsSubject.asObservable();
   }
 
+   /** GET mvt by id. Will 404 if id not found */
+  getMvt(id: number): Observable<Mouvement> {
+    return this.http.get<Mouvement>(this.constantes.MVTS_URL).pipe(
+      tap(_ => this.log(`fetched mvt id=${id}`)),
+      catchError(this.handleError<Mouvement>(`getMvt id=${id}`))
+    );
+  }
+ 
+  updateMvt(id): Observable<Mouvement[]> {
+    return id
+  };
+
   getSorties(): Observable<Mouvement[]> {
     //this.filteredvalues = mvts.filter(t=>t.category ==='Science');
     return (this.http.get<Mouvement[]>(this.constantes.MVTS_URL))
