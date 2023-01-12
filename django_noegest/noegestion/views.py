@@ -2,22 +2,47 @@ from typing import Any
 
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework import status, parsers
-from rest_framework.generics import RetrieveUpdateDestroyAPIView
-from rest_framework.parsers import JSONParser
-from rest_framework.permissions import AllowAny, IsAuthenticated
-from rest_framework.request import Request
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from rest_framework.decorators import api_view
 
 from .models import Mouvements, Articles, Effectifs, Inventaires
 from .renderers import UserJSONRenderer
 from .serializers import MouvementsSerializer, ArticlesSerializer, EffectifsSerializer, InventairesSerializer, \
-    RegistrationSerializer, LoginSerializer, UserSerializer, LogoutSerializer
+    RegistrationSerializer, LoginSerializer, LogoutSerializer
 from outils import xconst
 
+#------------ By example
+from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.authtoken.models import Token
+from rest_framework.response import Response
 
+from .models import User
+from .permissions import IsUserOrReadOnly
+from .serializers import UserSerializer
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = (IsUserOrReadOnly, IsAuthenticated)
+
+
+class UserLogIn(ObtainAuthToken):
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data,
+                                           context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        token = Token.objects.get(user=user)
+        return Response({
+            'token': token.key,
+            'id': user.pk,
+            'username': user.username
+        })
+
+#------------ déclartions pour stocks
+"""
 @csrf_exempt
 def mouvements(request: Request) -> JsonResponse:
     jour = request.GET.get('jour', None)
@@ -39,7 +64,6 @@ def mouvements(request: Request) -> JsonResponse:
     else:
         return JsonResponse(None, status=status.HTTP_400_BAD_REQUEST)
 
-
 @csrf_exempt
 @api_view(['GET', 'PUT', 'DELETE'])
 def mouvement(request: Request, id: int) -> JsonResponse:
@@ -60,18 +84,17 @@ def mouvement(request: Request, id: int) -> JsonResponse:
         return JsonResponse({'message': 'Article bel et bien supprimé, comme on dit !'},
                             status=status.HTTP_204_NO_CONTENT)
 
-
 @csrf_exempt
 @api_view(['GET'])
 def sorties(request: Request) -> JsonResponse:
-    """Cette fonction retourne les sorties
 
-    Une sortie est un mouvement qui a pour origine un repas.
-    On peut passer en paramètre dans l'URL une valeur 'jour'
-    Dans ce cas la fonction ne renvoie que les sorties du jour
-    On récupère le résultat de la requête, que l'on met dans
-    un serializer, puis on le renvoie au format JSON.
-    """
+    #Cette fonction retourne les sorties
+
+    #Une sortie est un mouvement qui a pour origine un repas.
+    #On peut passer en paramètre dans l'URL une valeur 'jour'
+    #Dans ce cas la fonction ne renvoie que les sorties du jour
+    #On récupère le résultat de la requête, que l'on met dans
+    #un serializer, puis on le renvoie au format JSON.
 
     jour = request.GET.get('jour', None)
     origine = request.GET.get('origine', 'repas')
@@ -83,7 +106,6 @@ def sorties(request: Request) -> JsonResponse:
         return JsonResponse(sorties_serializer.data, safe=False)
     else:
         return JsonResponse(None, status=status.HTTP_400_BAD_REQUEST)
-
 
 @csrf_exempt
 @api_view(['GET', 'POST'])
@@ -109,7 +131,6 @@ def articles(request: Request) -> JsonResponse:
             return JsonResponse(articles_serializer.data, status=status.HTTP_201_CREATED)
         return JsonResponse(articles_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
 @csrf_exempt
 @api_view(['GET', 'PUT', 'DELETE'])
 def article(request: Request, id: int) -> JsonResponse:
@@ -131,7 +152,6 @@ def article(request: Request, id: int) -> JsonResponse:
         return JsonResponse({'message': 'Article bel et bien supprimé, comme on dit !'},
                             status=status.HTTP_204_NO_CONTENT)
 
-
 @csrf_exempt
 @api_view(['GET', 'POST'])
 def effectifs(request: Request) -> JsonResponse:
@@ -149,7 +169,6 @@ def effectifs(request: Request) -> JsonResponse:
             effectifs_serializer.save()
             return JsonResponse(effectifs_serializer.data, status=status.HTTP_201_CREATED)
         return JsonResponse(effectifs_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 @csrf_exempt
 @api_view(['GET', 'PUT', 'DELETE'])
@@ -173,7 +192,6 @@ def effectif(request: Request, id: int) -> JsonResponse:
                             status=status.HTTP_204_NO_CONTENT)
     return JsonResponse(None, status=status.HTTP_400_BAD_REQUEST)
 
-
 @csrf_exempt
 @api_view(['GET'])
 def choix(request: Request) -> JsonResponse:
@@ -188,7 +206,6 @@ def choix(request: Request) -> JsonResponse:
                             json_dumps_params={'indent': 2})
     else:
         return JsonResponse(None, status=status.HTTP_400_BAD_REQUEST)
-
 
 @csrf_exempt
 @api_view(['GET', 'POST'])
@@ -211,7 +228,6 @@ def inventaires(request: Request) -> JsonResponse:
             return JsonResponse(inventaire_serializer.data, status=status.HTTP_201_CREATED)
         return JsonResponse(inventaire_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
 @csrf_exempt
 @api_view(['GET', 'PUT', 'DELETE'])
 def inventaire(request: Request, id: int) -> JsonResponse:
@@ -233,20 +249,18 @@ def inventaire(request: Request, id: int) -> JsonResponse:
         return JsonResponse({'message': 'Inventaire bel et bien supprimé, comme on dit !'},
                             status=status.HTTP_204_NO_CONTENT)
 
-
 class RegistrationAPIView(APIView):
     permission_classes = (AllowAny,)
     renderer_classes = (UserJSONRenderer,)
     serializer_class = RegistrationSerializer
 
     def post(self, request: Request) -> Response:
-        """Return user response after a successful registration."""
+        #Return user response after a successful registration.
         user_request = request.data.get('user', {})
         serializer = self.serializer_class(data=user_request)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-
 
 class LoginAPIView(APIView):
     permission_classes = (AllowAny,)
@@ -254,7 +268,7 @@ class LoginAPIView(APIView):
     serializer_class = LoginSerializer
 
     def post(self, request: Request) -> Response:
-        """Return user after login."""
+        #Return user after login.#
         user = request.data.get('user', {})
 
         serializer = self.serializer_class(data=user)
@@ -263,7 +277,6 @@ class LoginAPIView(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
-
 
 class UserRetrieveUpdateAPIView(RetrieveUpdateDestroyAPIView):
     permission_classes = (IsAuthenticated,)
@@ -277,12 +290,12 @@ class UserRetrieveUpdateAPIView(RetrieveUpdateDestroyAPIView):
     ]
 
     def get(self, request: Request, *args: tuple[Any], **kwargs: dict[str, Any]) -> Response:
-        """Get request."""
+        #Get request.
         serializer = self.serializer_class(request.user, context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def patch(self, request: Request, *args: tuple[Any], **kwargs: dict[str, Any]) -> Response:
-        """Patch method."""
+        #Patch method
         serializer_data = request.data.get('user', {})
 
         serializer = UserSerializer(request.user, data=serializer_data, partial=True)
@@ -294,16 +307,16 @@ class UserRetrieveUpdateAPIView(RetrieveUpdateDestroyAPIView):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
 class LogoutAPIView(APIView):
     serializer_class = LogoutSerializer
 
     permission_classes = (IsAuthenticated,)
 
     def post(self, request: Request) -> Response:
-        """Validate token and save."""
+        #Validate token and save.
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
         return Response(status=status.HTTP_204_NO_CONTENT)
+"""
