@@ -1,5 +1,4 @@
 .db.sqlite3/
-/outils/test.py
 /web-noegest/.angular/cache/
-/django_angular_auth/
 /django_noegest/django_noegest/settings.py
+/noegestion-venv/

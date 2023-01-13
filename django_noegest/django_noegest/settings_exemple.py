@@ -2,7 +2,7 @@
 A renommer en settings.py
 Résultat du tuto:
 https://mattermost.com/blog/user-authentication-with-the-django-rest-framework-and-angular/
-puis paramétrer la databaseDefault avec de vrais accès
+puis paramétrer la  DATABASES 'default' avec de vrais accès
 """
 import os
 from pathlib import Path
