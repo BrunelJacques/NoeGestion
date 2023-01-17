@@ -8,6 +8,19 @@
     token!: string;
 }
 
+export interface LoggedInUser {
+    id: number,
+    token: string,
+    username: string
+  }
+
+export interface UserCredentials {
+    username: string,
+    password: string
+  }
+ 
 export class ChoixAppli {
     value!: string;
 }
+ 
+ 
