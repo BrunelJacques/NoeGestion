@@ -1,0 +1,7 @@
+django-cors-headers
+djangorestframework
+mysqlclient
+Pillow
+pytz
+sqlparse
+tzdata
