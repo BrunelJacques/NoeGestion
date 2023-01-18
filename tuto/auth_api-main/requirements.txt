@@ -1,7 +1,7 @@
-django-cors-headers==3.13.0
-djangorestframework==3.14.0
-mysqlclient==2.1.1
-Pillow==9.4.0
-pytz==2022.7
-sqlparse==0.4.3
-tzdata==2022.7
+django-cors-headers
+djangorestframework
+mysqlclient
+Pillow
+pytz
+sqlparse
+tzdata
