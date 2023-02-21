@@ -50,10 +50,10 @@ class Analytiques(models.Model):
     code_id = models.CharField(primary_key=True, unique=True, max_length=8)
     label = models.CharField(max_length=200)
     abrege = models.CharField(max_length=32)
-    params = models.TextField(blank=True, default='')
+    params = models.TextField(null=True, default='')
     axe = models.CharField(max_length=32, blank=True, default='')
     saisie = models.DateField(auto_now=True, null=True)
-    obsolete = models.BooleanField(default=False)
+    obsolete = models.BooleanField(default=False, null=True)
 
     class Meta:
         managed = True
