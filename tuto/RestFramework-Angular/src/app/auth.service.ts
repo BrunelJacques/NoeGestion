@@ -12,7 +12,7 @@ export class AuthService {
 
    logIn(username: string, password: string): Observable<LoggedInUser> {
      return this.http.post(
-       'http://127.0.0.1:8000/api-user-login/', { username, password }
+       'http://localhost:8000/admin/login', { username, password }
        ) as Observable<LoggedInUser>;
    }
 
