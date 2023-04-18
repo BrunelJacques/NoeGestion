@@ -1,6 +1,8 @@
 # coding: utf-8
 
-"""Vous pouvez personnaliser votre administration avec les options suivantes:
+"""Personnaliser votre administration
+
+avec les options suivantes:
 AdminSite.site_header	Texte renseigné dans la balise h1 en haut de page. Par défaut la valeur est Django Administration
 AdminSite.site_title	Texte renseigné à la fin de la balise title de chaque page. Par défaut la valeur est Django site admin
 AdminSite.index_title	Le texte renseigné au haut de la page d'index de l'administration. Par défaut: Site administration
@@ -12,8 +14,10 @@ logout_template	path vers le template de logout
 password_change_template	template pour le changement de mot de passe
 password_change_done_template	template pour la confirmation du changement de mot de passe"""
 
-from django.db import models
-from django.utils import timezone
+import django.db.models as models
+import django.utils.timezone as timezone
+
+# origine python.doctor
 
 PRODUCT_STATUS = (
     (0, 'Offline'),
@@ -85,3 +89,25 @@ class ProductAttributeValue(models.Model):
 
     def __unicode__(self):
         return "{0} [{1}]".format(self.value, self.product_attribute)
+
+# origine doc django
+
+class Publication(models.Model):
+    title = models.CharField(max_length=30)
+
+    class Meta:
+        ordering = ["title"]
+
+    def __str__(self):
+        return self.title
+
+
+class Article(models.Model):
+    headline = models.CharField(max_length=100)
+    publications = models.ManyToManyField(Publication)
+
+    class Meta:
+        ordering = ["headline"]
+
+    def __str__(self):
+        return self.headline

@@ -1,5 +1,5 @@
-from django.contrib import admin
-from backoffice.models import *
+import django.contrib.admin as admin
+from .models import *
 
 # Register your models here, ceux de l'appli qui seront gérés à la mano via admin.
 
@@ -25,7 +25,15 @@ class ProductAdmin(admin.ModelAdmin):
     list_editable = ["name", "price_ht", "price_ttc"]
     date_hierarchy = 'date_creation'
 # -------------------------------------------------------------------
+
+class ArticleAdmin(admin.ModelAdmin):
+    model = Article
+    list_display = ["headline"]
+# -------------------------------------------------------------------
+
 admin.site.register(Product, ProductAdmin)
 admin.site.register(ProductItem, ProductItemAdmin)
 admin.site.register(ProductAttribute)
 admin.site.register(ProductAttributeValue)
+admin.site.register(Publication)
+admin.site.register(Article, ArticleAdmin)

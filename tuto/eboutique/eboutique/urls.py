@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# coding: utf-8
+
 """
 URL configuration for eboutique project.
 
@@ -14,13 +17,23 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.contrib import admin
 from django.urls import path
-from backoffice.views import Home, LoginView, LogoutView
-from django.views.generic import TemplateView
+from backoffice.views import Home, LoginView, LogoutView, TestTemplate
+from backoffice.models import *
+from django.views.generic import *
 from django.contrib.auth.decorators import login_required
 
 admin.autodiscover()
+
+class ProductsView(ListView):
+    # pour test listview liste tous les id des product
+    model = Product
+    template_name = "template/product_list.html"
+    context_object_name = "products"
+    #queryset = Product.objects.filter(id__gt=400)
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,5 +41,7 @@ urlpatterns = [
     path('', LoginView.as_view()),
     path('logout/', LogoutView.as_view()),
     path('backoffice/',login_required(TemplateView.as_view(template_name='backoffice/index.html'))),
-
+    path('test/template/', TestTemplate),
+    #path('listview', ListView.as_view(model=Product,template_name='backoffice/product_list.html')),
+    path('listview',ProductsView.as_view()),
 ]
