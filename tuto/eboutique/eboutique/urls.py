@@ -20,7 +20,7 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path
-from backoffice.views import Home, LoginView, LogoutView, TestTemplate
+from backoffice.views import *
 from backoffice.models import *
 from django.views.generic import *
 from django.contrib.auth.decorators import login_required
@@ -43,5 +43,6 @@ urlpatterns = [
     path('backoffice/',login_required(TemplateView.as_view(template_name='backoffice/index.html'))),
     path('test/template/', TestTemplate),
     #path('listview', ListView.as_view(model=Product,template_name='backoffice/product_list.html')),
-    path('listview',ProductsView.as_view()),
+    path('listview/',ProductsView.as_view()),
+    path('product/<int:id>',ProductView.as_view())
 ]
