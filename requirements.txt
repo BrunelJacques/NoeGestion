@@ -1,10 +1,8 @@
-django
-django-cors-headers==3.13.0
-djangorestframework==3.14.0
-Dj-rest-auth
-django-allauth
+Django==4.2
+djangorestframework==3.14
 mysqlclient==2.1.1
-Pillow==9.4.0
-pytz==2022.7
-sqlparse==0.4.3
-tzdata==2022.7
+Pygments==2.7.4
+requests==2.26.0
+django-cors-headers==3.13.0
+djangorestframework_simplejwt==4.7.2
+

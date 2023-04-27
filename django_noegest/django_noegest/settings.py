@@ -38,10 +38,16 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'rest_framework.authtoken',
+    'rest_framework_simplejwt',
     'corsheaders',
     'noegestion',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 100,
+    'DEFAULT_AUTHENTICATION_CLASSES': ('rest_framework_simplejwt.authentication.JWTAuthentication',)
+}
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -53,8 +59,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
-AUTH_USER_MODEL = 'noegestion.User'
 
 ROOT_URLCONF = 'django_noegest.urls'
 
@@ -82,10 +86,12 @@ WSGI_APPLICATION = 'django_noegest.wsgi.application'
 
 DATABASES = {
     'default': {
-        'sqlite': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'noegestion',
+        'USER': 'operateur-43',
+        'PASSWORD': 'MPdemo-43',
+        'HOST': '192.168.1.43',
+        'PORT': '3306'
     },
     'lan':{
         'ENGINE': 'django.db.backends.mysql',
@@ -129,6 +135,9 @@ LANGUAGE_CODE = 'fr-fr'
 TIME_ZONE = 'Europe/Paris'
 
 USE_I18N = True
+
+USE_L10N = True
+
 USE_TZ = True
 
 DATE_INPUT_FORMATS = ('%d/%m/%Y','%Y-%m-%d')
@@ -136,7 +145,7 @@ DATE_INPUT_FORMATS = ('%d/%m/%Y','%Y-%m-%d')
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -147,16 +156,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
-REST_FRAMEWORK = {
-   'DEFAULT_PERMISSION_CLASSES': [
-       'rest_framework.permissions.IsAuthenticated',
-   ],
-   'DEFAULT_AUTHENTICATION_CLASSES': (
-       'rest_framework.authentication.SessionAuthentication',
-       'rest_framework.authentication.TokenAuthentication',
-   )
-}
 
 CORS_ALLOWED_ORIGINS = [
    "http://localhost:4200",
