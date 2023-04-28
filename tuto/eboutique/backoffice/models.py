@@ -52,8 +52,8 @@ class ProductItem(models.Model):
     product = models.ForeignKey('Product',
                                 related_name="product_item",
                                 on_delete=models.CASCADE)
-    code = models.CharField(max_length=10, null=True, blank=True, unique=True)
-    code_ean13 = models.CharField(max_length=13,null=True)
+    code = models.CharField(max_length=10, blank=True)
+    code_ean13 = models.CharField(max_length=13,null=True, unique=True)
     attributes = models.ManyToManyField("ProductAttributeValue",
                                         related_name="product_item",
                                         blank=True)

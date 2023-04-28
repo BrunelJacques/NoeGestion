@@ -26,18 +26,12 @@ REPAS_CHOICES = [
     ]
 
 ORIGINE_CHOICES = [
-        ('entrees', (
-            ('achat', 'Achats'),
-            ('retour', 'Retour de camp'),
-            ('od_in', 'Correctif entrée'),
-        )
-         ),
-        ('sorties', (
-            ('repas', 'Repas en cuisine'),
-            ('camp', 'Sortie pour camp'),
-            ('od_out', 'Correctif sortie')
-        )
-         )
+        ('achat', 'Entrée par Achats'),
+        ('retour', 'Entrée Retour de camp'),
+        ('od_in', 'Entrée Corrective'),
+        ('repas', 'Sortie Repas en cuisine'),
+        ('camp', 'Sortie pour camp'),
+        ('od_out', 'Sortie Corrective')
     ]
 
 MAGASIN_CHOICES = [
