@@ -1,13 +1,19 @@
-from django.urls import path, include, reverse_lazy
-from django.conf.urls.static import static
 from django.contrib import admin
-from django.views.generic.base import RedirectView
-from rest_framework.routers import DefaultRouter
+from django.urls import path, include
+from rest_framework import routers
+from noegestion.views import *
 
-router = DefaultRouter()
+# Ici nous créons notre routeur
+router = routers.SimpleRouter()
+# Puis lui déclarons une url basée sur le mot clé ‘category’ et notre view
+# afin que l’url générée soit celle que nous souhaitons ‘/api/category/’
+router.register('starticle', StArticleViewset, basename='starticle')
+router.register('stfournisseur', StFournisseurViewset, basename='stfournisseur')
+router.register('strayon', StRayonViewset, basename='strayon')
+router.register('stmagasin', StMagasinViewset, basename='stmagasin')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/v1/', include(router.urls)),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('api-auth/', include('rest_framework.urls')),
+    path('api/', include(router.urls))
 ]

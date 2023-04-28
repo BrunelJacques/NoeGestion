@@ -47,9 +47,9 @@ class StFournisseur(models.Model):
 class StArticle(models.Model):
     nom = models.CharField(unique=True, max_length=128)
     nom_court = models.CharField(unique=True, max_length=32, db_index=True)
-    unite_stock = models.CharField(max_length=8,
+    unite_stock = models.CharField(max_length=8,default='unit',
                                    help_text="Unité de base pour compter, accompagne le nom")
-    unite_colis = models.CharField(max_length=8,
+    unite_colis = models.CharField(max_length=8,default='pqt',
                                    help_text="Utilisé lors des entrées pour un prix au conditionnement")
     colis_par = models.DecimalField(max_digits=10, decimal_places=4, default=1,
                                     help_text="Nbre d'unités stock par unité de colis")
