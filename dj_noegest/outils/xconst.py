@@ -17,6 +17,7 @@ LISTE_NB_MINI_JOURS_MOIS = [31,28,31,30,31,30,31,31,30,31,30,31]
 LISTE_MOIS_ABREGE =[("Janv."), ("Fév."), ("Mars"), ("Avril"), ("Mai"), ("Juin"), ("Juil."),
                     ("Août"), ("Sept."), ("Oct."), ("Nov."), ("Déc.")]
 
+# en dur car utilisé dans les fonctions
 REPAS_CHOICES = [
         ('tous', 'Tout service'),
         ('matin', 'service Matin'),
@@ -34,21 +35,23 @@ ORIGINE_CHOICES = [
         ('od_out', 'Sortie Corrective')
     ]
 
+# init model StMagasin
 MAGASIN_CHOICES = [
         ('FRI', 'Frigo'),
         ('SUR', 'Congel'),
         ('RES', 'Reserve')
     ]
 
+# init model StRayon
 RAYON_CHOICES = [
-    ('BSS', 'Boissons'),
-    ('CND', 'Condiments'),
-    ('FCL', 'Féculents'),
-    ('FRS', 'Frais'),
-    ('FRT', 'Fruits'),
-    ('LGM', 'Légumes'),
-    ('PSS', 'Poisson'),
-    ('SCR', 'Sucré'),
-    ('VND', 'Viande'),
-]
+        ('BSS', 'Boissons'),
+        ('CND', 'Condiments'),
+        ('FCL', 'Féculents'),
+        ('FRS', 'Frais'),
+        ('FRT', 'Fruits'),
+        ('LGM', 'Légumes'),
+        ('PSS', 'Poisson'),
+        ('SCR', 'Sucré'),
+        ('VND', 'Viande'),
+    ]
 

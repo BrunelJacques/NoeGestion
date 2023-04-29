@@ -7,7 +7,6 @@ from noegestion.serializers import *
 class StArticleViewset(ModelViewSet):
 
     serializer_class = StArticleSerializer
-
     def get_queryset(self, *args, **kwargs):
         return StArticle.objects.all()
     

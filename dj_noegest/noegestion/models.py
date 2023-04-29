@@ -10,11 +10,10 @@ class StMagasin(models.Model):
     position = models.PositiveSmallIntegerField("Position", null=True)
 
     class Meta:
-        verbose_name = "Lieu de stockage"
+        verbose_name = "StMagasin: Lieu de stockage"
         ordering = ["position"]
 
     def __unicode__(self):
-        verbose_name = "Magasin entrepôt"
         return self.id
 
 
@@ -25,7 +24,7 @@ class StRayon(models.Model):
     position = models.PositiveSmallIntegerField("Position", null=True)
 
     class Meta:
-        verbose_name = "Rayon magasin"
+        verbose_name = "StRayon: Subdivisions de magasin"
         ordering = ["position"]
 
     def __unicode__(self):
@@ -37,7 +36,7 @@ class StFournisseur(models.Model):
     nom = models.CharField(max_length=30, unique=True)
 
     class Meta:
-        verbose_name = "Fournisseurs"
+        verbose_name = "StFournisseur: approvisionnements d'article"
         ordering = ["nom"]
 
     def __unicode__(self):
@@ -80,7 +79,7 @@ class StArticle(models.Model):
 
 
     class Meta:
-        verbose_name = "Article stock"
+        verbose_name = "StArticle: Items de stock géré"
         ordering = ["nom_court"]
 
     def __str__(self):
@@ -100,7 +99,7 @@ class GeAnalytique(models.Model):
     def __str__(self): return self.abrege
 
     class Meta:
-        verbose_name = 'Codes Analytiques de gestion'
+        verbose_name = 'GeAnalytique: Gestion générale, codes analytique'
         ordering = ['id',]
 
 
@@ -132,7 +131,7 @@ class StMouvement(models.Model):
 
 
     class Meta:
-        verbose_name = "Mouvements de stock"
+        verbose_name = "StMouvement: Entrées et sorties de stock "
         indexes = [models.Index(fields=['jour','article','sens','origine']),
                    models.Index(fields=['article','sens','jour'])]
 
@@ -153,7 +152,7 @@ class StEffectif(models.Model):
 
 
     class Meta:
-        verbose_name = "Effectifs repas"
+        verbose_name = "StEffectifs: Présents aux repas quotidien"
         indexes = [models.Index(fields=["jour",]),]
 
     def __str__(self):
@@ -175,10 +174,10 @@ class StInventaire(models.Model):
     montant = models.DecimalField(max_digits=10, decimal_places=2, null=True)
     modifiable = models.BooleanField(null=True)
     ordi = models.CharField(null=True, max_length=32)
-    saisie = models.DateField(auto_now=True,help_text="Date de l'entrée de l'item")
+    saisie = models.DateField(default=date.today(),help_text="Date de l'entrée de l'item")
 
     class Meta:
-        verbose_name = "Inventaire archivé du stock"
+        verbose_name = "StInventaire: archivages d'états de stock"
         indexes = [models.Index(fields=["jour", 'article']),]
 
     def __str__(self):
