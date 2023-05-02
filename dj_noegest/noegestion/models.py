@@ -53,14 +53,17 @@ class StArticle(models.Model):
     colis_par = models.DecimalField(max_digits=10, decimal_places=4, default=1,
                                     help_text="Nbre d'unités stock par unité de colis")
     magasin = models.ForeignKey('StMagasin',
-                                on_delete=models.DO_NOTHING)
+                                on_delete=models.DO_NOTHING,
+                                )
     rayon = models.ForeignKey('StRayon', default=1,related_name='articles',
-                              on_delete=models.RESTRICT)
+                              on_delete=models.RESTRICT,
+                              )
     rations = models.DecimalField(max_digits=10, decimal_places=4, blank=False, default=1,
                                   help_text="Nbre de rations par unité de stock")
     fournisseur = models.ForeignKey('StFournisseur', default=1,related_name='articles',
                                     on_delete=models.RESTRICT,
-                                    help_text="Fournisseur habituel")
+                                    help_text="Fournisseur habituel"
+                                    )
     qte_stock = models.DecimalField(max_digits=10,decimal_places=4,default=0,db_index=True,
                                     help_text="recalculé régulièrement pour inventaire")
     tx_tva = models.DecimalField(max_digits=10, decimal_places=4, default=5.5,
@@ -77,6 +80,7 @@ class StArticle(models.Model):
                              help_text="Nom de l'ordi utilisé pour l'entrée ou la modif")
     saisie = models.DateField(auto_now=True,help_text="Date de l'entrée de l'item")
 
+    obsolete = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = "StArticle: Items de stock géré"
@@ -91,7 +95,7 @@ class GeAnalytique(models.Model):
     id = models.CharField(primary_key=True, max_length=5)
     label = models.CharField(unique=True, max_length=200)
     abrege = models.CharField(max_length=32)
-    params = models.TextField(null=True, default='')
+    params = models.TextField(null=True, blank=True,default='')
     axe = models.CharField(max_length=32, blank=True, default='')
     saisie = models.DateField(auto_now=True,help_text="Date de l'entrée de l'item")
     obsolete = models.BooleanField(default=False)
@@ -109,18 +113,21 @@ class StMouvement(models.Model):
                                help_text="Entrée +1, Sortie -1")
     origine = models.CharField(max_length=8,db_index=True,choices=xconst.ORIGINE_CHOICES,
                                default='od_out',help_text="Type de mouvement selon sens")
-    article = models.ForeignKey("StArticle", to_field="nom_court",
-                                on_delete=models.RESTRICT)
+    article = models.ForeignKey("StArticle",
+                                on_delete=models.RESTRICT,
+                                )
     analytique = models.ForeignKey("GeAnalytique",
-                                   on_delete=models.SET("deleted"))
+                                   on_delete=models.SET("deleted"),
+                                   )
     fournisseur = models.ForeignKey("StFournisseur", models.SET_NULL, null=True,
-                                    help_text="Le fournisseur habituel de l'article est proposé")
+                                    help_text="Le fournisseur habituel de l'article est proposé"
+                                    )
     nbcolis = models.DecimalField(max_digits=6, decimal_places=0, null=True, default=0,
                                   help_text="Pour les achats, nombre d'unité de vente")
     qtemouvement = models.DecimalField(max_digits=8, decimal_places=2,
                                        help_text="Nombre d'unité stockées")
     prixunit = models.DecimalField(max_digits=10, decimal_places=4)
-    service = models.IntegerField(default='tous',choices=xconst.REPAS_CHOICES,
+    service = models.IntegerField(default=0,choices=xconst.REPAS_CHOICES,
                                   help_text="Service repas concerné")
     nbrations = models.DecimalField(max_digits=8, decimal_places=4,
                                     help_text="Nbre de ration par qteMouvement", null=True)
@@ -162,19 +169,20 @@ class StEffectif(models.Model):
 
 
 class StInventaire(models.Model):
-    jour = models.DateField()
-    article = models.CharField(max_length=32, db_index=True,
-                               help_text=" Conserve le nom_court historique")
-    libelle = models.CharField(max_length=128, db_index=True,
+    jour = models.DateField(help_text="Date de l'inventaire")
+    article = models.ForeignKey("StArticle", models.SET_NULL, null=True,
+                               help_text=" Id historique de l'article")
+    article_nom = models.CharField(max_length=128,null=True,
                                help_text=" Conserve le nom historique")
     unite_stock = models.CharField(max_length=8,help_text="Unité de base pour compter, accompagne le nom")
     qte_stock = models.DecimalField(max_digits=10, decimal_places=4, default=0)
     prix_moyen = models.DecimalField(max_digits=10, decimal_places=4, null=True)
     prix_actuel = models.DecimalField(max_digits=10, decimal_places=4, null=True)
-    montant = models.DecimalField(max_digits=10, decimal_places=2, null=True)
+    montant = models.DecimalField(max_digits=10, decimal_places=2, null=True,
+                                  help_text="Montant arrété pour la compta")
     modifiable = models.BooleanField(null=True)
     ordi = models.CharField(null=True, max_length=32)
-    saisie = models.DateField(default=date.today(),help_text="Date de l'entrée de l'item")
+    saisie = models.DateField(auto_now=True,help_text="Date de l'entrée de l'item")
 
     class Meta:
         verbose_name = "StInventaire: archivages d'états de stock"

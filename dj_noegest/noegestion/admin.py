@@ -21,7 +21,14 @@ class StMagasinAdmin(admin.ModelAdmin):
     model = StMagasin
     list_display = ["nom","position","id"]
 
+
+class GeAnalytiqueAdmin(admin.ModelAdmin):
+    model = GeAnalytique
+    list_display = ["label","abrege","axe","id"]
+
+
 # Connection model - liste d'affichage
+admin.site.register(GeAnalytique, GeAnalytiqueAdmin)
 
 admin.site.register(StMagasin, StMagasinAdmin)
 

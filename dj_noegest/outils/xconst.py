@@ -19,11 +19,11 @@ LISTE_MOIS_ABREGE =[("Janv."), ("Fév."), ("Mars"), ("Avril"), ("Mai"), ("Juin")
 
 # en dur car utilisé dans les fonctions
 REPAS_CHOICES = [
-        ('tous', 'Tout service'),
-        ('matin', 'service Matin'),
-        ('midi', 'service Midi'),
-        ('soir', 'service Soir'),
-        ('5eme', '5eme Repas'),
+        (0, 'Tous'),
+        (1, 'Matin'),
+        (2, 'Midi'),
+        (3, 'Soir'),
+        (4, '5eme'),
     ]
 
 ORIGINE_CHOICES = [
