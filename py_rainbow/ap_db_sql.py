@@ -18,6 +18,7 @@ import datetime
 from outils                     import xformat
 from dj_noegest.settings    import DATABASES
 
+
 class DB():
     # accès à une base de donnees par son nom dans settings
     def __init__(self, dbConfig='default',mute=False):
@@ -48,8 +49,11 @@ class DB():
             self.isNetwork = False
         else: self.isNetwork = True
 
-        if not self.isNetwork and not 'PATH' in self.cfgParams:
-            mess = "bd fichier sans HOST doit avoir un PATH"
+        if not self.isNetwork:
+            if not 'NAME' in self.cfgParams:
+                mess = "Base locale doit avoir une clé 'NAME'"
+            elif not str(self.cfgParams['NAME'])[-6:] != "sqlite3":
+                mess = "Base locale doit avoir une path se terminant par sqlite3"
 
         if 'ENGINE' in self.cfgParams:
             lsttypes = self.cfgParams['ENGINE'].lower().split('.')
@@ -73,22 +77,18 @@ class DB():
         # lancement de la connexion local
         if not self.isNetwork:
             # test de présence du fichier
-            nomFichier = self.cfgParams['PATH']
-            if not nomFichier[-1] in ('/','\\'):
-                nomFichier += '/'
+            nomFichier = str(self.cfgParams['NAME'])
             nomFichier = nomFichier.replace('\\','/')
-            nomFichier += self.cfgParams['NAME']
             self.nomBase = nomFichier
             self.OuvertureFichierLocal(nomFichier)
-            # connecte
-            self.ConnexionFichierLocal(self.cfgParams)
+            if not self.echec:
+                # connecte
+                self.ConnexionFichierLocal(self.cfgParams)
         else: # cas d'une connexion réseau
             self.ConnexionFichierReseau(self.cfgParams, mute=mute)
-
+        if self.erreur:
+            print("ECHEC db: ",self.erreur)
         # fin de l'init self.erreur est alimenté par les méthodes connexions
-        if self.echec:
-            if not mute:
-                raise NameError(self.erreur)
 
     # Méthodes pour la Connexion ----------------------------------------------
 
@@ -121,11 +121,12 @@ class DB():
         accroche = ['Ouverture réussie ',"Echec d'ouverture "][self.echec]
         accroche += info
         retour = ['avec succès', ' SANS SUCCES !\n'][self.echec]
-        mess = "%s\n\nLa connexion vers '%s' s'est réalisé %s" % (accroche,self.nomBase, retour)
+        mess = "%s\nLa connexion vers '%s' s'est réalisé %s" % (accroche,self.nomBase, retour)
         if self.echec and self.erreur:
             mess += '\nErreur: %s'%self.erreur
         elif self.erreur:
             mess += '\nMais %s'%self.erreur
+        mess +="\n"
         print(mess)
         return mess
 
@@ -236,8 +237,8 @@ class DB():
             print("xDB.ConnectAcessOdbc:La connexion à la base access %s a echoué : \nErreur détectée :%s" %(self.nomBase,err))
             self.erreur = err
 
-    """Connexion bd access 2002
-    
+    #Connexion bd access 2002
+    """
     def ConnectAcessADO(self):
         # Important ne tourne qu'avec: 32bit MS driver - 32bit python!
         # N'est pas compatible access 95, mais lit comme access 2002
@@ -926,69 +927,49 @@ class DB():
                         listeIndex.append(str(index[2]))
         return listeIndex
 
-    def MaFonctionTest(self):
-        import mysql
-        cnx = mysql.connector.connect(host='192.168.1.43',
-                                      user='root',
-                                      database='matthania_data',
-                                      password='xxxxx')
-        cursor = cnx.cursor()
+def MaFonctionTest():
+    import mysql
 
-        query = ("SELECT * FROM utilisateurs")
+    dbconfig = DATABASES["default"]
+    dbkwds = {  "host":dbconfig['HOST'],
+                "user":dbconfig['USER'],
+                "database":dbconfig['NAME'],
+                "password":dbconfig['PASSWORD']}       
+    cnx = mysql.connector.connect(**dbkwds)
+    cursor = cnx.cursor()
 
-        cursor.execute(query)
+    query = ("SHOW TABLES")
 
-        for ligne in cursor:
-          print(ligne)
+    cursor.execute(query)
 
-        cursor.close()
-        cnx.close()
+    for ligne in cursor:
+      print(ligne)
 
-        import pymysql.cursors
+    cursor.close()
+    cnx.close()
 
-        # Connect to the database
+    import pymysql.cursors
 
-        connection = pymysql.connect(host='192.168.1.43',
-                                     user='operateur-43',
-                                     password='MPdemo-43',
-                                     db='noegestion',
-                                     charset='utf8mb4',
-                                     cursorclass=pymysql.cursors.DictCursor)
+    # Connect to the database
+    connection = pymysql.connect(**dbkwds)
 
-        try:
-            with connection.cursor() as cursor:
-                # Read a single record
-                sql = "SELECT * FROM `magasin` "
-                cursor.execute(sql,)
-                for ligne in cursor:
-                    print(ligne)
+    try:
+        with connection.cursor() as cursor:
+            # Read a single record
+            sql = "SHOW TABLES"
+            cursor.execute(sql,)
+            for ligne in cursor:
+                print(ligne)
 
-                result = cursor.fetchmany(size=2)
-                print(result)
+            result = cursor.fetchmany(size=2)
+            print(result)
 
+        # connection is not autocommit by default. So you must commit to save
+        # your changes.
+        connection.commit()
 
-            with connection.cursor() as cursor:
-                # Create a new record
-                sql = "SELECT IDutilisateur FROM utilisateurs;"
-                cursor.execute(sql, ('IDutilisateur',))
-                result = cursor.fetchone()
-                print(result)
-
-            # connection is not autocommit by default. So you must commit to save
-            # your changes.
-            connection.commit()
-
-            with connection.cursor() as cursor:
-                # Read a single record
-                sql = "SELECT `id`, `password` FROM `users` WHERE `email`=%s"
-                cursor.execute(sql, ('webmaster@python.org',))
-                result = cursor.fetchone()
-                print(result)
-
-        finally:
-            connection.close()
-
-# Upgrade BD selon jeu de paramètres façon: NoeXpy.srcNoelite.DBshema.py
+    finally:
+        connection.close()
 
 def Init_tables(parent=None, mode='creation',tables=None,
                 db_tables=None,db_ix=None,db_pk=None):
@@ -1036,13 +1017,25 @@ def Init_tables(parent=None, mode='creation',tables=None,
 
     db.Close() # fermeture pour prise en compte de la création
 
-if __name__ == "__main__":
-    os.chdir("..")
-    db = DB()
-    db.AfficheTestOuverture()
-    print(db.IsDatabaseExits())
+def TestPresenceDATABASES():
+    dbs = {}
+    ix = 0
+    nbok = 0
+    for dbconfig in DATABASES.keys():
+        dbs[ix] = DB(dbConfig=dbconfig)
+        dbs[ix].AfficheTestOuverture(info="Base %s"%dbconfig)
+        if dbs[ix].echec == 0:
+            nbok += 1
+        ix +=1
+    print ("ouvertures ok : %d / %d"%(nbok, ix))
+    if nbok != ix:
+        print("ECHEC : %d"%(ix - nbok,))
 
-    #db.DropUneTable('cpta_journaux')
-    #db.CreationUneTable(DB_TABLES,'stEffectifs')
-    #db.CreationTables(None,dicTables=DB_TABLES,tables=['stArticles','stEffectifs','stMouvements','stInventaires','cpta_analytiques'])
-    #db.CreationTousIndex(None,DB_PK,['stEffectifs',])
+
+if __name__ == "__main__":
+    print(os.getcwd())
+    MaFonctionTest()
+    """
+    TestPresenceDATABASES()
+    """
+

@@ -7,7 +7,6 @@
 # Licence:         Licence GNU GPL
 #------------------------------------------------------------------------
 
-import wx
 import sys
 import GestionDB
 import datetime
@@ -67,88 +66,6 @@ def ListeToStr(lst=[], separateur=", "):
     chaine = separateur.join([str(x) for x in lst])
     if chaine == "": chaine = "*"
     return chaine
-
-# ----- Fonctions affichage -----------------------------
-def GetAttente(parent=None,mess="Travail en cours",titre="Veuillez patienter..."):
-    # parent doit être une fenêtre graphique wx
-    busy = wx.lib.agw.pybusyinfo.PyBusyInfo
-    return busy(mess, title=titre,
-                parent = parent,
-                )
-
-def BoucleFrameOuverte(nom, WindowEnCours) :
-    """ Est utilisée dans FrameOuverte """
-    for children in WindowEnCours.GetChildren():
-        if children.GetName() == nom : return children
-        if len(children.GetChildren()) > 0 :
-            tmp = BoucleFrameOuverte(nom, children)
-            if tmp != None : return tmp
-    return None
-
-def FrameOuverte(nom) :
-    """ Permet de savoir si une frame est ouverte ou pas..."""
-    topWindow = wx.GetApp().GetTopWindow() 
-    # Analyse le TopWindow
-    if topWindow.GetName() == nom : return True
-    # Analyse les enfants de topWindow
-    reponse = BoucleFrameOuverte(nom, topWindow)
-    return reponse
-
-# modifie le wx.StaticText pour gérer le redimensionnement
-class StaticWrapText(wx.StaticText):
-    """A StaticText-like widget which implements word wrapping."""
-    def __init__(self, *args, **kwargs):
-        wx.StaticText.__init__(self, *args, **kwargs)
-
-        # store the initial label
-        self.__label = super(StaticWrapText, self).GetLabel()
-
-        # listen for sizing events
-        self.Bind(wx.EVT_SIZE, self.OnSize)
-        
-    def SetLabel(self, newLabel):
-        """Store the new label and recalculate the wrapped version."""
-        self.__label = newLabel
-        self.__wrap()
-
-    def GetLabel(self):
-        """Returns the label (unwrapped)."""
-        return self.__label
-    
-    def __wrap(self):
-        """Wraps the words in label."""
-        words = self.__label.split()
-        lines = []
-
-        # get the maximum width (that of our parent)
-        max_width = self.GetParent().GetVirtualSizeTuple()[0]-20 # J'ai ajouté le -20 ici
-        
-        index = 0
-        current = []
-
-        for word in words:
-            current.append(word)
-
-            if self.GetTextExtent(" ".join(current))[0] > max_width:
-                del current[-1]
-                lines.append(" ".join(current))
-
-                current = [word]
-
-        # pick up the last line of text
-        lines.append(" ".join(current))
-
-        # set the actual label property to the wrapped version
-        super(StaticWrapText, self).SetLabel("\n".join(lines))
-
-        # refresh the widget
-        self.Refresh()
-        
-    def OnSize(self, event):
-        # dispatch to the wrap method which will 
-        # determine if any changes are needed
-        self.__wrap()
-        self.GetParent().Layout()
 
 # ------------------------------------------------------------------------
 
@@ -444,132 +361,6 @@ def EnvoyerMail(adresses = [], sujet="", message=""):
 
 # -----------------------------------------  Affiche l'aide -----------------------------------------------------------------------------------
 
-def Aide(numItem=None):
-    """ Appel du module d'aide de Windows """
-    
-##    # Demande le nom du fichier
-##    import Aide
-##    frm = Aide.Aide(None)
-##    frm.ShowModal()
-##    return
-    
-##    # ------- TEMPORAIRE : ---------------
-##    txtMessage = _("Le système d'aide n'est pas encore fonctionnel (actuellement en cours de rédaction).\n\nVous pouvez tout de même trouver actuellement de l'aide sur le forum de TeamWorks à l'adresse suivante : \nhttp://teamworks.forumactif.com (ou cliquez dans la barre de menu sur 'Aide' puis 'Accéder au Forum').")
-##    dlg = wx.MessageDialog(None, txtMessage, _("Aide"), wx.OK | wx.ICON_INFORMATION)
-##    dlg.ShowModal()
-##    dlg.Destroy()
-##    return
-
-    
-    # -----------------------------------------------    
-    nomPage = ""
-    nomAncre = ""
-    
-    dictAide = {
-        1 : ("Leplanning", "", "planning"),
-        2 : ("ImprimeruneDUE", "", "Edition DUE"),
-        3 : ("Envoyerunmailgroup", "", "Envoi mail groupé"),
-        4 : ("Creerunnouveaufichier", "", "Créer un nouveau fichier"),
-        5 : ("Imprimerunelistedeprsences", "", "Impression d'une liste de présences"),
-        6 : ("Lescontrats", "", "Impression d'un contrat ou d'une DUE"),
-        7 : ("Laprotectionparmotdepasse", "", "Saisie du mot de passe d'ouverture"),
-        8 : ("Lescatgoriesdeprsences", "", "Config Catégories de présences"),
-        9 : ("Lespriodesdevacances", "", "Saisie d'une période de vacances"),
-        10 : ("Lestypesdecontrats", "", "Config types de contrats"),
-        11 : ("Lescatgoriesdeprsences", "", "Saisie d'une cat de présences"),
-        12 : ("Personnes", "", "Panneau Personnes"),
-        13 : ("Lesvaleursdepoints", "", "Saisie val point"),
-        14 : ("Appliquerunmodledeprsences", "creer_modele", "Saisie d'un modèle"),
-        15 : ("Lespaysetnationalits", "", "Config pays"),
-        16 : ("Lestypesdepices", "", "Config types pièces"),
-        17 : ("Lasauvegardeautomatique", "", "Panel sauvegarde automatique"),
-        18 : ("Creerunesauvegarde", "", "Créer une sauvegarde occasionnelle"),
-        19 : ("Restaurerunesauvegarde", "", "Restaurer une sauvegarde"),
-        20 : ("Leschampsdecontrats", "", "Saisie champs contrats"),
-        21 : ("Ladresse", "", "Gestion des villes"),
-        22 : ("Imprimerunefichedefrais", "", "Impression frais"),
-        23 : ("Lespaysetnationalits", "", "Saisir un pays"),
-        24 : ("Lestypesdesituations", "", "Config situations"),
-        25 : ("Gestiondesfraisdedplacements", "", "Gestion des frais"),
-        26 : ("Laprotectionparmotdepasse", "", "Config Password"),
-        27 : ("Lesvaleursdepoints", "", "Config val_point"),
-        28 : ("Rechercherdesmisesjour", "", "Updater"),
-        29 : ("Crerunepice", "", "Saisie pièces"),
-        30 : ("Imprimerdesphotosdepersonnes", "", "Impression_photo"),
-        31 : ("Lesmodlesdecontrats", "", "wiz création modele contrat"),
-        32 : ("Laprotectionparmotdepasse", "", "Saisie pwd"),
-        33 : ("Saisirunetcheunique", "", "Saisie d'une présence"),
-        34 : ("Lesjoursfris", "", "Config jours fériés"),
-        35 : ("Leschampsdecontrats", "", "Config champs contrats"),
-        36 : ("Enregistrerunremboursement", "", "Saisie remboursement"),
-        37 : ("Imprimeruncontrat", "", "wiz édition contrat"),
-        38 : ("Lesclassifications", "", "Config classifications"),
-        39 : ("Lesjoursfris", "", "Saisie jour férié"),
-        40 : ("Appliquerunmodledeprsences", "", "Application modèle de présences"),
-        41 : ("Lestypesdecontrats", "", "Saisie types contrats"),
-        42 : ("Attribuerunephoto", "", "Editeur photo"),
-        43 : ("Lespriodesdevacances", "", "Config périodes vacances"),
-        44 : ("Enregistrerundplacement", "", "Saisie déplacement"),
-        45 : ("Lesgadgets", "", "Config gadgets"),
-        46 : ("ExporterlespersonnesdansMSOutl", "", "Export Outlook"),
-        47 : ("Ouvrirunfichier", "", "Ouvrir un fichier"),
-        48 : ("Lestypesdequalifications", "", "Config types diplomes"),
-        49 : ("Assistantdemarrage", "", "Assistant démarrage"),
-        50 : ("Lestypesdepices", "", "Saisie types pièces"),
-        51 : ("Lecalendrier", "", "Le calendrier"),
-        52 : ("Lesmodlesdecontrats", "", "Config modeles contrats"),
-        53 : ("Lalistedespersonnes", "Options", "Config liste personnes"),
-        54 : ("Creruncontrat", "", "wiz creation contrats"),
-        55 : ("Lalistedespersonnes", "export_liste", "export liste personnes"),
-        56 : ("Lalistedespersonnes", "Imprimer_liste", "Imprimer liste Personnes"),
-        57 : ("Laficheindividuelle", "", "Fiche individuelle"),
-        58 : ("Lagestiondesscnarios", "", "Les scénarios"),
-        59 : ("Lesstatistiques", "", "Les statistiques"),
-        60 : ("Lagestiondesutilisateurs", "", "La gestion des utilisateurs réseau"),
-        } # NumItem : nomPage, nomAncre, Description
-    
-    if numItem != None :
-        nomPage, nomAncre, description = dictAide[numItem]
-    
-    if "linux" in sys.platform :
-        
-        # Aide LINUX : sur internet
-        
-        # Préparation du fichier chm
-        nomFichier = "http://www.clsh-lannilis.com/teamworks/aide/tw.htm"
-        # Préparation de la page HTML
-        if nomPage != "" :
-            page = "?" + nomPage + ".html"
-        else:
-            page = ""
-        # Préparation de l'ancre
-        if nomAncre != "" :
-            ancre = "#" + nomAncre
-        else:
-            ancre = ""
-        # Ouverture de la page internet
-        LanceFichierExterne(nomFichier + page + ancre)
-            
-    else:
-        # Aide WINDOWS avec le CHM
-        
-        # Préparation du fichier chm
-        nomFichier = "Aide/teamworks.chm"
-        # Préparation de la page HTML
-        if nomPage != "" :
-            page = "::/" + nomPage + ".html"
-        else:
-            page = ""
-        # Préparation de l'ancre
-        if nomAncre != "" :
-            ancre = "#" + nomAncre
-        else:
-            ancre = ""
-        # Ouverture du module d'aide
-        commande = 'hh.exe "'+ nomFichier  + page + ancre + '"'
-        from subprocess import Popen
-        Popen(commande)
-
 def RecupNomCadrePersonne(IDpersonne):
     """ Récupère le nom du cadre de décoration pour une personne donnée """
     DB = GestionDB.DB()        
@@ -582,69 +373,6 @@ def RecupNomCadrePersonne(IDpersonne):
     if cadre_photo == "" : return None
     return cadre_photo
 
-def AfficheStatsProgramme():
-    """ Affiche des stats du programme """
-    listeResultats = []
-    nbreDialogs = 0
-    nbreFrames = 0
-    nbreImpressionsOL = 0
-    nbreImpressionsPDF = 0
-    nbreLignesTotal = 0
-    nbreBoitesDialogue = 0
-    nbreFonctions = 0
-    
-    # Recherche les fichiers python
-    print("Lancement de l'analyse...")
-
-    listeFichiers = {}
-    for rep in ("Dlg", "Ctrl", "Ol", "Utils"):
-        if rep not in listeFichiers:
-            listeFichiers[rep] = []
-        listeFichiers[rep] = os.listdir(os.getcwd() + "/" + rep)
-
-    for rep, liste in listeFichiers.items() :
-        for nomFichier in liste:
-            if nomFichier.endswith(".py") :
-                fichier = open(rep + "/" + nomFichier, 'r')
-                nbreLignes = 0
-                for line in fichier :
-                    # Compte le nombre de lignes
-                    nbreLignes += 1
-                    # Recherche d'un wx.Dialog
-                    if "wx.Dialog.__init__" in line : nbreDialogs += 1
-                    # Recherche une impression ObjectListview
-                    if "prt.Print()" in line : nbreImpressionsOL += 1
-                    # Recherche une impression PDF avec reportlab
-                    if "doc.build(story)" in line : nbreImpressionsPDF += 1
-                    # Recherche des boîtes de dialogue
-                    if "wx.MessageDialog(" in line : nbreBoitesDialogue += 1
-                    # Recherche le nbre de fonctions
-                    if " def " in line : nbreFonctions += 1
-
-                fichier.close()
-                # Mémorise les résultats
-                listeResultats.append((nomFichier, nbreLignes))
-                nbreLignesTotal += nbreLignes
-    
-    # Nbre tables
-    from Data.DATA_Tables import DB_DATA
-    nbreTables = len(list(DB_DATA.keys())) + 2
-    
-    # Affiche les résultats
-    for nomFichier, nbreLignes in listeResultats :
-        print("%s ---> %d lignes" % (nomFichier, nbreLignes))
-    print("----------------------------------------")
-    print("Nbre total de lignes = %d lignes" % nbreLignesTotal)
-    print("Nbre total de modules = %s modules" % len(listeResultats))
-    print("Nbre total de fonctions = %d" % nbreFonctions) 
-    print("----------------------------------------")
-    print("Nbre total de wx.Dialog = %d" % nbreDialogs)
-    print("Nbre total d'impressions ObjectlistView = %d" % nbreImpressionsOL) 
-    print("Nbre total d'impressions PDF = %d" % nbreImpressionsPDF) 
-    print("Nbre total de boites de dialogue = %d" % nbreBoitesDialogue) 
-    print("----------------------------------------")
-    print("Nbre tables de données = %d" % nbreTables)
-
 def GetRepertoireProjet(fichier=""):
     frozen = getattr(sys, 'frozen', '')
     if not frozen:
@@ -652,14 +380,6 @@ def GetRepertoireProjet(fichier=""):
     else :
         chemin = os.path.dirname(sys.executable)
     return os.path.join(chemin, fichier)
-
-def GetTopWindow(onlyGeneral=False):
-    topWindow = wx.GetApp().GetTopWindow()
-    if onlyGeneral:
-        if topWindow.GetName() == "general":
-             return topWindow
-        else: return None
-    return topWindow
 
 def GetVersionLogiciel(datee=False):
     """ Recherche du texte version du logiciel dans fichier versions """
@@ -748,81 +468,5 @@ def GenerationIDdoc():
     return IDdoc
 
 
-def InsertThemeDansOL():
-    """ Pour insérer la prise en charge des thèmes dans les OL """
-    # Get fichiers
-    listeFichiers = os.listdir(os.getcwd())
-    indexFichier = 0
-    for nomFichier in listeFichiers :
-        if nomFichier.endswith("py") and nomFichier.startswith("DATA_") == False :
-            #print "%d/%d :  %s..." % (indexFichier, len(listeFichiers), nomFichier)
-
-            # Ouverture des fichiers
-            fichier = open(nomFichier, "r")
-            dirty = False
-
-            listeLignes = []
-            for ligne in fichier :
-
-                # Insertion de l'import
-                if "from ObjectListView" in ligne :
-                    listeLignes.append("\n")
-                    listeLignes.append("import UTILS_Interface\n")
-                    dirty = True
-
-                # Insertion de l'import
-                if "self.oddRowsBackColor =" in ligne :
-                    ligne = """        self.oddRowsBackColor = UTILS_Interface.GetValeur("couleur_tres_claire", wx.Colour(240, 251, 237))\n"""
-                    dirty = True
-
-                listeLignes.append(ligne)
-
-            # Clôture des fichiers
-            fichier.close()
-
-            # Ecriture du nouveau fichier
-            if dirty == True :
-                nouveauFichier = open("New/%s" % nomFichier, "w")
-                for ligne in listeLignes :
-                    nouveauFichier.write(ligne)
-                nouveauFichier.close()
-
-        indexFichier += 1
-
-    print("Fini !!!!!!!!!!!!!!!!!")
-
 if __name__ == "__main__":
-
-    app = wx.App(0)
-
-    import wx.lib.dialogs as dialogs
-    image = wx.Bitmap("Static/Images/32x32/Activite.png", wx.BITMAP_TYPE_ANY)
-    message2 = "Ceci est un message super méga long qui doit prendre pas mal de place !\n" * 50
-    dlg = dialogs.MultiMessageDialog(None, "Ceci est le message 1", caption = "Message Box", msg2=message2, style = wx.ICON_EXCLAMATION | wx.OK | wx.CANCEL, icon=None, btnLabels={wx.ID_OK : "Ok", wx.ID_CANCEL : "Annuler"})
-    attente = GetAttente(dlg)
-    dlg.ShowModal()
-    attente = GetAttente(dlg,"Suite")
-    del attente
-    dlg.Destroy()
-    app.MainLoop()
-    
-    # Recherche de modules
-##    listeModules = RechercheModules("OL_Liste_comptes.py")
-##    for x in listeModules :
-##        print x
-##    print "-------------------- Modules trouves : %d --------------------" % len(listeModules) 
-    
-    # Créer des données virtuelles dans DB
-    #InsertThemeDansOL()
-
-    # Génération d'un nom de document
-    #print GenerationNomDoc("document", "pdf")
-    
-    #VideRepertoireUpdates(forcer=True)
-
-    #InsertCodeToolTip()
-    #CreerDonneesVirtuellesLocations(1000)
-
-    #InsertCode()
-
     pass

@@ -39,9 +39,9 @@ def CreateBaseDjango(dbConfig='default'):
         if not db.IsDatabaseExits():
             db.CreateBaseMySql(ifExist=False)
             if not db.echec:
-                mess = "Base '%s' créée"%(db.nomBase)
+                mess = "Base '%s' créée"%(db.nomBase,)
         else:
-            mess = "la base '%s' existait préalablement"%(db.nomBase)
+            mess = "la base '%s' existait préalablement"%(db.nomBase,)
         print(mess)
     except:
         pass
@@ -53,7 +53,7 @@ def CreateBaseDjango(dbConfig='default'):
 
 def GetChampsTableNoethys(nomTable):
     # retourne une liste des champs par dic DB_schema
-    from srcNoelite.DB_schema import DB_TABLES as tables_noethys
+    from Noethys.DATA_Tables import DB_DATA as tables_noethys
     # alternative d'accès si absence du projet NoeXpy dans le path
     """
     import sys
@@ -79,6 +79,6 @@ def GetChampsTableNoegest(nomTable):
 if __name__ == "__main__":
     os.chdir("..")
     print(os.getcwd())
-    CreateBaseDjango(dbConfig='default')
+    #CreateBaseDjango(dbConfig='default')
     #ret = GetChampsTableNoegest('stArticles')
-
+    #_Manage()

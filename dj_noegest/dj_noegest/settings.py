@@ -93,17 +93,17 @@ DATABASES = {
         'HOST': '192.168.1.43',
         'PORT': '3306'
     },
-    'lan':{
+    'lan_noethys':{
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'noegestion',
+        'NAME': 'matthania_data',
         'USER': 'operateur-43',
         'PASSWORD': 'MPdemo-43',
         'HOST': '192.168.1.43',
         'PORT': '3306'
     },
-    'sqlite': {
+    'sqlite_noegestion': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': BASE_DIR / 'noegestion',
     }
 }
 
