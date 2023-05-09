@@ -86,12 +86,8 @@ WSGI_APPLICATION = 'dj_noegest.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'noegestion',
-        'USER': 'operateur-43',
-        'PASSWORD': 'MPdemo-43',
-        'HOST': '192.168.1.43',
-        'PORT': '3306'
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     },
     'lan_noethys':{
         'ENGINE': 'django.db.backends.mysql',
@@ -103,7 +99,7 @@ DATABASES = {
     },
     'sqlite_noegestion': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'noegestion',
+        'NAME': BASE_DIR /  'db.sqlite3',
     }
 }
 

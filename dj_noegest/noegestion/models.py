@@ -136,7 +136,6 @@ class StMouvement(models.Model):
                             help_text="pour tracer les mouvements")
     saisie = models.DateField(auto_now=True,help_text="Date de l'entrée de l'item")
 
-
     class Meta:
         verbose_name = "StMouvement: Entrées et sorties de stock "
         indexes = [models.Index(fields=['jour','article','sens','origine']),
