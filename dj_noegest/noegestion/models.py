@@ -14,7 +14,10 @@ class StMagasin(models.Model):
         ordering = ["position"]
 
     def __unicode__(self):
-        return self.id
+        return self.nom
+
+    def __str__(self):
+        return self.nom
 
 
 class StRayon(models.Model):
@@ -29,7 +32,8 @@ class StRayon(models.Model):
 
     def __unicode__(self):
         return self.id
-
+    def __str__(self):
+        return self.nom
 
 class StFournisseur(models.Model):
 
@@ -42,6 +46,8 @@ class StFournisseur(models.Model):
     def __unicode__(self):
         return "{} {:d}".format(self.nom, self.id)
 
+    def __str__(self):
+        return self.nom
 
 class StArticle(models.Model):
     nom = models.CharField(unique=True, max_length=128)
@@ -54,9 +60,11 @@ class StArticle(models.Model):
                                     help_text="Nbre d'unités stock par unité de colis")
     magasin = models.ForeignKey('StMagasin',
                                 on_delete=models.DO_NOTHING,
+                                help_text="Lieu de stockage"
                                 )
     rayon = models.ForeignKey('StRayon', default=1,related_name='articles',
                               on_delete=models.RESTRICT,
+                              help_text="Catégorie de produit"
                               )
     rations = models.DecimalField(max_digits=10, decimal_places=4, blank=False, default=1,
                                   help_text="Nbre de rations par unité de stock")

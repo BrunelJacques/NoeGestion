@@ -35,7 +35,8 @@ export class AccountService {
   
      login(username: string, password: string): Observable<LoggedInUser> {
        return this.http.post(
-         'http://localhost:8000/api-user-login/', { username, password }
+        //'http://localhost:8000/api-user-login/', { username, password }
+        'http://localhost:8000/api/token/', { username, password }
          ) as Observable<LoggedInUser>;
      }
   

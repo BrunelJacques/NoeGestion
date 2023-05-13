@@ -7,15 +7,29 @@ from .models import *
 
 class StArticleAdmin(admin.ModelAdmin):
     model = StArticle
-    list_display = ["nom","magasin","rayon","qte_stock"]
+    list_display = ["nom","magasin_id","nom_rayon","nom_fournisseur","qte_stock"]
+
+    def nom_fournisseur(self, obj):
+        return obj.fournisseur.nom
+    nom_fournisseur.short_description = 'Commande à'
+
+    def nom_magasin(self, obj):
+        return obj.magasin.nom
+
+    def nom_rayon(self, obj):
+        return obj.rayon.nom
+    nom_rayon.short_description = 'Rayon'
+
 
 class StFournisseurAdmin(admin.ModelAdmin):
     model = StFournisseur
     list_display = ["nom"]
 
+
 class StRayonAdmin(admin.ModelAdmin):
     model = StRayon
     list_display = ["nom","position","id"]
+
 
 class StMagasinAdmin(admin.ModelAdmin):
     model = StMagasin
