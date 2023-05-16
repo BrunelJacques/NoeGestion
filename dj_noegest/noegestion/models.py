@@ -1,6 +1,8 @@
+import sys
+sys.path.append("..")
+from outils import xconst, xformat
+
 from django.db import models, transaction
-from outils import xconst
-from datetime import date
 #import requests # pour appels api externes transaction.atomic
 
 class StMagasin(models.Model):
@@ -8,7 +10,7 @@ class StMagasin(models.Model):
     id = models.CharField(max_length=5, primary_key=True)
     nom = models.CharField(max_length=30, unique=True)
     position = models.PositiveSmallIntegerField("Position", null=True)
-
+    z = xformat.DateFrToIso('31/12/2012')
     class Meta:
         verbose_name = "StMagasin: Lieu de stockage"
         ordering = ["position"]
@@ -35,6 +37,7 @@ class StRayon(models.Model):
     def __str__(self):
         return self.nom
 
+
 class StFournisseur(models.Model):
 
     nom = models.CharField(max_length=30, unique=True)
@@ -48,6 +51,7 @@ class StFournisseur(models.Model):
 
     def __str__(self):
         return self.nom
+
 
 class StArticle(models.Model):
     nom = models.CharField(unique=True, max_length=128)

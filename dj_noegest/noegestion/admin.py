@@ -1,6 +1,5 @@
 import django.contrib.admin as admin
 from .models import *
-
 # Register your models here, ceux de l'appli qui seront gérés à la mano via admin.
 
 # Affichage de la table en liste

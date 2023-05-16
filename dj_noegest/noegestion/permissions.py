@@ -2,7 +2,7 @@ from rest_framework.permissions import BasePermission
 
 
 class IsAdminAuthenticated(BasePermission):
-    # de base
+    # existe de base IsAdminUser, IsAuthenticated, IsAuthenticatedOrReadOnly, IsAdminUser...
 
     def has_permission(self, request, view):
         # Ne donnons l’accès qu’aux utilisateurs administrateurs authentifiés

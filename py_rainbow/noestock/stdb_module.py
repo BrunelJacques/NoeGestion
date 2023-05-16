@@ -320,7 +320,7 @@ class Inventaire:
             if qte != 0 and mtt != 0:
                 # compose [dte,article,qte,prixMoyen,montant,lastPrix]
                 llinventaire.append([
-                    xformat.datetime_to_str(fin, iso=True),
+                    xformat.Datetime_to_str(fin, iso=True),
                     article,
                     round(qte, 4),
                     pu,

@@ -1,8 +1,5 @@
 .db.sqlite3/
 /web-noegest/.angular/cache/
-/django_noegest/django_noegest/settings.py
 /noegestion-venv/
 /Lib/
-/tuto/django_auth-main/
-/tuto/RestFramework-Angular/
-/tuto/RestFramework-Django/
+/tuto/Watmore-angular-9-jwt-authentication/

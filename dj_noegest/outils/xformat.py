@@ -52,7 +52,7 @@ def DateToFr(date_):
             # sans séparateur et avec millenaire jjmmaaaaa
             strdate = date_[:2] + '/' + date_[2:4] + '/' + date_[-4:]
     elif isinstance(date_, datetime.date):
-        strdate = datetime_to_str(date_)
+        strdate = Datetime_to_str(date_)
     elif isinstance(date_, int):
         # format nombre aaaammjj
         date_ = str(date_)
@@ -95,7 +95,7 @@ def DateFrToIso(datefr):
 
 
 def DatetimeToIso(date_):
-    return datetime_to_str(date_, iso=True)
+    return Datetime_to_str(date_, iso=True)
 
 
 def DateFrToDatetime(datefr):
@@ -124,7 +124,7 @@ def DateFrToDatetime(datefr):
         return datefr
 
 
-def datetime_to_str(dte, iso=False):
+def Datetime_to_str(dte, iso=False):
     # Conversion d'une date datetime en chaîne
     deltaheure = ''
     if isinstance(dte, datetime.date):
@@ -178,7 +178,7 @@ def calcul_age(date_reference: datetime.date = datetime.date.today(), date_naiss
 
 def DecaleDateSql(dateIso, nbj=-1, iso=True):
     dt = DateToDatetime(dateIso) + datetime.timedelta(days=nbj)
-    return datetime_to_str(dt, iso)
+    return Datetime_to_str(dt, iso)
 
 
 def DecaleDateTime(date, nbj=-1):
@@ -225,7 +225,7 @@ def FinDeMois(date_):
             deltaheure = ''
 
         if len(date_.split('/')) == 3:
-            dtretour = datetime_to_str(dtretour) + deltaheure
+            dtretour = Datetime_to_str(dtretour) + deltaheure
         elif len(date_.split(('-'))) == 3:
             dtretour = DatetimeToIso(dtretour) + deltaheure
     return dtretour
@@ -251,7 +251,7 @@ def DebutDeMois(date_):
     # retour dans le format d'arrivée
     if isinstance(date_, str):
         if len(date_.split('/')) == 3:
-            dtretour = datetime_to_str(dtretour)
+            dtretour = Datetime_to_str(dtretour)
         elif len(date_.split(('-'))) == 3:
             dtretour = DatetimeToIso(dtretour)
     return dtretour

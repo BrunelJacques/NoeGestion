@@ -1,7 +1,6 @@
 from rest_framework.serializers import ModelSerializer
 from noegestion.models import StArticle,StMagasin,StFournisseur,StRayon
 
-
 class StArticleSerializer(ModelSerializer):
 
     class Meta:
