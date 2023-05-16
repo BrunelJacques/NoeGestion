@@ -1,5 +1,15 @@
 from rest_framework.serializers import ModelSerializer
 from noegestion.models import StArticle,StMagasin,StFournisseur,StRayon
+from django.contrib.auth.models import User
+
+class DjUserSerializer(ModelSerializer):
+
+    class Meta:
+        model = User
+        exclude = ['id',]
+
+
+
 
 class StArticleSerializer(ModelSerializer):
 
