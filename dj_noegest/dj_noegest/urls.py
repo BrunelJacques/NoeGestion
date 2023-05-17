@@ -12,7 +12,7 @@ router.register('starticle', StArticleViewset, basename='starticle')
 router.register('stfournisseur', StFournisseurViewset, basename='stfournisseur')
 router.register('strayon', StRayonViewset, basename='strayon')
 router.register('stmagasin', StMagasinViewset, basename='stmagasin')
-router.register('user', DjUserViewset, basename='user')
+router.register('users', UserViewset, basename='Users')
 
 urlpatterns = [
     path('admin/', admin.site.urls),

@@ -8,7 +8,6 @@ import { UserService, AuthenticationService } from '@app/_services';
 export class HomeComponent {
     loading = false;
     users: User[];
-    user: User;
 
     constructor(private userService: UserService) { }
 
@@ -16,7 +15,7 @@ export class HomeComponent {
         this.loading = true;
         this.userService.getAll().pipe(first()).subscribe(users => {
             this.loading = false;
-            this.users = users['results'];
+            this.users = users;
         });
     }
 }

@@ -9,7 +9,6 @@ export class UserService {
     constructor(private http: HttpClient) { }
 
     getAll() {
-        const u = this.http.get<User[]>(`${environment.apiUrl}/api/users`)
-        return this.http.get<User[]>(`${environment.apiUrl}/api/users`);
+        return this.http.get<User[]>(`${environment.apiUrl}/users`);
     }
 }

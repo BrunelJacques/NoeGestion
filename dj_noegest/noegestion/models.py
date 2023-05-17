@@ -5,7 +5,6 @@ from outils import xconst, xformat
 from django.db import models, transaction
 #import requests # pour appels api externes transaction.atomic
 
-
 class StMagasin(models.Model):
 
     id = models.CharField(max_length=5, primary_key=True)

@@ -1,14 +1,14 @@
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer, CharField
 from noegestion.models import StArticle,StMagasin,StFournisseur,StRayon
 from django.contrib.auth.models import User
 
-class DjUserSerializer(ModelSerializer):
 
+class UserSerializer(ModelSerializer):
+    firstname = CharField(source='first_name')
+    lastname = CharField(source='last_name')
     class Meta:
         model = User
-        exclude = ['id',]
-
-
+        fields = ['id','username','password','lastname','firstname',]
 
 
 class StArticleSerializer(ModelSerializer):
