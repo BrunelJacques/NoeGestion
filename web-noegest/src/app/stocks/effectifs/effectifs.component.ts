@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { ChoixAppliService } from '@app/general/_services/choix-appli.service';
+import { ChoixAppliService } from '@app/general/_services';
 
 @Component({
   selector: 'app-effectifs',

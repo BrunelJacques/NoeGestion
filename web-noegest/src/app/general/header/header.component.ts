@@ -4,7 +4,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { Subscription } from 'rxjs';
 
 import { User } from '@app/general/_models';
-import { AccountService } from '@app/general/_services';
+import { AuthenticationService } from '@app/general/_services';
 import { ChoixAppliService } from '../_services/choix-appli.service';
 
 @Component({
@@ -22,9 +22,9 @@ export class HeaderComponent implements OnInit {
   constructor(
     @Inject(PLATFORM_ID) private platformId: object,
     private choixAppliService: ChoixAppliService,
-    private accountService: AccountService,
+    private authenticationService: AuthenticationService,
     ) {
-      this.accountService.user.subscribe(x => this.user = x);
+      this.authenticationService.user.subscribe(x => this.user = x);
     };
 
   ngOnInit(): void {
@@ -49,7 +49,7 @@ export class HeaderComponent implements OnInit {
   }
 
   logout() {
-    this.accountService.logout();
+    this.authenticationService.logout();
     this.choixAppliService.choixSubject$.next('logout')
   }
 

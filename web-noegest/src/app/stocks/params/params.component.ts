@@ -5,7 +5,7 @@ import { MvtService } from '../_services/mvt.service';
 import { Camp } from '../_models/camp';
 import { Params } from '../_models/params';
 import { first } from 'rxjs';
-import { AlertService } from '@app/general/_services';
+import { AlertService } from '@app/general/_services/alert.service';
 import { DatePipe } from '@angular/common';
 import { Constantes } from '@app/constantes';
 

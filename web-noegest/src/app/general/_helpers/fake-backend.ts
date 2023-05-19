@@ -1,143 +1,164 @@
 ﻿import { Injectable } from '@angular/core';
-import { HttpRequest, HttpResponse, HttpHandler, HttpEvent, HttpInterceptor, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpRequest, HttpResponse, HttpHandler, HttpEvent, HttpInterceptor, HTTP_INTERCEPTORS, HttpHeaders } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
-import { delay, materialize, dematerialize } from 'rxjs/operators';
-import { PARAMS } from '@app/stocks/_models/params';
-import { deepCopy } from './fonctions-perso';
+import { delay, mergeMap, materialize, dematerialize } from 'rxjs/operators';
 
-// array in local storage for registered users and params
-//" AppDataLocalGoogleChromeUser DataDefault Stockage local " sous Windows,"
-const usersKey = 'angular-registration-login-users';
-const paramsKey = 'angular-registration-stocks-lstparams';
-let users = JSON.parse(localStorage.getItem(usersKey)) || [];
-// local storage params
-let lstparams = JSON.parse(localStorage.getItem(paramsKey)) || [];
+// array in local storage for users
+const usersKey = 'angular-14-jwt-refresh-token-users';
+const users: any[] = JSON.parse(localStorage.getItem(usersKey)!) || [];
+
+// add test user and save if users array is empty
+if (!users.length) {
+    users.push(
+        { id: 1,  firstName: 'jb', lastName: 'fake', username: 'jb', password: 'pr0V1522', refreshTokens: [] },
+        { id: 2,  firstName: 'Test', lastName: 'User', username: 'test', password: 'test', refreshTokens: [] },
+    );
+    localStorage.setItem(usersKey, JSON.stringify(users));
+}
 
 @Injectable()
 export class FakeBackendInterceptor implements HttpInterceptor {
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         const { url, method, headers, body } = request;
-        return handleRoute();
+
+        // wrap in delayed observable to simulate server api call
+        return of(null)
+            .pipe(mergeMap(handleRoute))
+            .pipe(materialize()) // call materialize and dematerialize to ensure delay even if an error is thrown (https://github.com/Reactive-Extensions/RxJS/issues/648)
+            .pipe(delay(500))
+            .pipe(dematerialize());
 
         function handleRoute() {
             switch (true) {
-                // Les params ont vocation à rester stockés en local
-                case url.endsWith('/params') && method === 'POST':
-                    return setParams();
-                case url.endsWith('/params') && method === 'GET':
-                    return getParams();
-                // L'authentification doit être géré par le serveur
-                case url.endsWith('/account/authenticate') && method === 'POST':
+                case url.endsWith('/users/authenticate') && method === 'POST':
                     return authenticate();
-                case url.endsWith('/account/register') && method === 'POST':
-                    return register();
+                case url.endsWith('/users/refresh-token') && method === 'POST':
+                    return refreshToken();
+                case url.endsWith('/users/revoke-token') && method === 'POST':
+                    return revokeToken();
                 case url.endsWith('/users') && method === 'GET':
-                    return getUsers();    
+                    return getUsers();
                 default:
-                    // pass through any requests not handled above, tels les accès data          
+                    // pass through any requests not handled above
                     return next.handle(request);
             }    
         }
 
         // route functions
+
         function authenticate() {
-            const { email, password } = body;
-            const user = users.find(x => x.email === email && x.password === password);
+            const { username, password } = body;
+            const user = users.find(x => x.username === username && x.password === password);
+            
             if (!user) return error('Username or password is incorrect');
+
+            // add refresh token to user
+            user.refreshTokens.push(generateRefreshToken());
+            localStorage.setItem(usersKey, JSON.stringify(users));
+
             return ok({
-                ...basicDetails(user),
-                token: 'fake-jwt-token'
+                id: user.id,
+                username: user.username,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                jwtToken: generateJwtToken()
             })
         }
 
-        function register() {
-            const user = body
+        function refreshToken() {
+            const refreshToken = getRefreshToken();
+            
+            if (!refreshToken) return unauthorized();
 
-            if (users.find(x => x.email === user.email)) {
-                return error('"le mail "' + user.email + '" existe déjà')
-            }
+            const user = users.find(x => x.refreshTokens.includes(refreshToken));
+            
+            if (!user) return unauthorized();
 
-            user.id = users.length ? Math.max(...users.map(x => x.id)) + 1 : 1;
-            users.push(user);
+            // replace old refresh token with a new one and save
+            user.refreshTokens = user.refreshTokens.filter((x: any) => x !== refreshToken);
+            user.refreshTokens.push(generateRefreshToken());
             localStorage.setItem(usersKey, JSON.stringify(users));
+
+            return ok({
+                id: user.id,
+                username: user.username,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                jwtToken: generateJwtToken()
+            })
+        }
+
+        function revokeToken() {
+            if (!isLoggedIn()) return unauthorized();
+            
+            const refreshToken = getRefreshToken();
+            const user = users.find(x => x.refreshTokens.includes(refreshToken));
+            
+            // revoke token and save
+            user.refreshTokens = user.refreshTokens.filter((x: any) => x !== refreshToken);
+            localStorage.setItem(usersKey, JSON.stringify(users));
+
             return ok();
         }
 
         function getUsers() {
             if (!isLoggedIn()) return unauthorized();
-            return ok(users.map(x => basicDetails(x)));
-        }
-
-        function getParams() {
-            if (!lstparams[0].jour){ initParams() }           
-            // only one record is possible
-            return ok(lstparams.map(x => x));
-        }
-
-        function initParams() {
-            //if (!isLoggedIn()) { return unauthorized(); }
-
-            if (lstparams.length === 0) {
-                // first record
-                lstparams.push(PARAMS);
-                localStorage.setItem(paramsKey, JSON.stringify(lstparams));
-                return ok();
-            }
-            // update and save record
-            let record = lstparams[0]
-            Object.assign(record, PARAMS);
-            localStorage.setItem(paramsKey, JSON.stringify(lstparams));
-        }
-
-        function setParams() {
-            //if (!isLoggedIn()) return unauthorized();
-            const params = body
-            if (lstparams.length === 0) {
-                // first record
-                lstparams.push(params);
-                localStorage.setItem(paramsKey, JSON.stringify(lstparams));
-                return ok();
-            }
-            // update and save record
-            let record = deepCopy(lstparams[0])
-            lstparams[0] = Object.assign({},record, params);
-            //console.log('fake : ',lstparams[0])
-            localStorage.setItem(paramsKey, JSON.stringify(lstparams));
+            return ok(users);
         }
 
         // helper functions
-        function ok(body?) {
+
+        function ok(body?: any) {
             return of(new HttpResponse({ status: 200, body }))
-                .pipe(delay(500)); // delay observable to simulate server api call
         }
 
-        function error(message) {
-            return throwError({ error: { message } })
-                .pipe(materialize(), delay(500), dematerialize()); // call materialize and dematerialize to ensure delay even if an error is thrown (https://github.com/Reactive-Extensions/RxJS/issues/648);
+        function error(message: string) {
+            return throwError(() => ({ error: { message } }));
         }
 
         function unauthorized() {
-            return throwError({ status: 401, error: { message: 'Unauthorized' } })
-                .pipe(materialize(), delay(500), dematerialize());
-        }
-
-        function basicDetails(user) {
-            const { id, email, firstName, lastName } = user;
-            return { id, email, firstName, lastName };
+            return throwError(() => ({ status: 401, error: { message: 'Unauthorized' } }));
         }
 
         function isLoggedIn() {
-            return headers.get('Authorization') === 'Bearer fake-jwt-token';
+            // check if jwt token is in auth header
+            const authHeader = headers.get('Authorization') || '';
+            if (!authHeader.startsWith('Bearer fake-jwt-token'))
+                return false;
+
+            // check if token is expired
+            const jwtToken = JSON.parse(atob(authHeader.split('.')[1]));
+            const tokenExpired = Date.now() > (jwtToken.exp * 1000);
+            if (tokenExpired)
+                return false;
+
+            return true;
         }
 
-        function idFromUrl() {
-            const urlParts = url.split('/');
-            return parseInt(urlParts[urlParts.length - 1]);
+        function generateJwtToken() {
+            // create token that expires in 15 minutes
+            const tokenPayload = { exp: Math.round(new Date(Date.now() + 15*60*1000).getTime() / 1000) }
+            return `fake-jwt-token.${btoa(JSON.stringify(tokenPayload))}`;
+        }
+
+        function generateRefreshToken() {
+            const token = new Date().getTime().toString();
+
+            // add token cookie that expires in 7 days
+            const expires = new Date(Date.now() + 7*24*60*60*1000).toUTCString();
+            document.cookie = `fakeRefreshToken=${token}; expires=${expires}; path=/`;
+
+            return token;
+        }
+
+        function getRefreshToken() {
+            // get refresh token from cookie
+            return (document.cookie.split(';').find(x => x.includes('fakeRefreshToken')) || '=').split('=')[1];
         }
     }
 }
 
-export const fakeBackendProvider = {
+export let fakeBackendProvider = {
     // use fake backend in place of Http service for backend-less development
     provide: HTTP_INTERCEPTORS,
     useClass: FakeBackendInterceptor,

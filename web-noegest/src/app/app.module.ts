@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { HttpClientInMemoryWebApiModule} from 'angular-in-memory-web-api';
+//import { HttpClientInMemoryWebApiModule} from 'angular-in-memory-web-api';
 //import { InMemoryDataService } from './stocks/_services/in-memory-data.service';
 //import { fakeBackendProvider } from './general/_helpers';
 
