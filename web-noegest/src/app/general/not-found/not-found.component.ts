@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-not-found',
@@ -6,6 +7,13 @@ import { Component } from '@angular/core';
   styleUrls: ['./not-found.component.css']
 })
 export class NotFoundComponent {
-  title = "demo angular 'MY APPLI' ng new myappli ";
+  title = "URL not found : ";
+  urlOrigine = ''
+  constructor(private router: Router) {}
 
+  ngOnInit() {
+    this.urlOrigine = this.router.url;
+    console.log(this.router.url);        
+    }
 }
+
