@@ -3,7 +3,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule, DatePipe } from '@angular/common';
 
 import { UtilsRoutingModule } from './utils-routing.module';
-import { InputDateComponent } from './input-date/input-date.component'
+import { InputDateComponent } from './input-date';
 
 
 @NgModule({

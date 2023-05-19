@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { InputDateComponent } from './input-date/input-date.component';
+import { InputDateComponent } from './input-date';
 
 const routes: Routes = [
     {
