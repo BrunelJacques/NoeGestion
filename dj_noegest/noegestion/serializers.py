@@ -1,14 +1,23 @@
+
 from rest_framework.serializers import ModelSerializer, CharField
 from noegestion.models import StArticle,StMagasin,StFournisseur,StRayon
 from django.contrib.auth.models import User
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 
-class UserSerializer(ModelSerializer):
-    firstname = CharField(source='first_name')
-    lastname = CharField(source='last_name')
-    class Meta:
-        model = User
-        fields = ['id','username','password','lastname','firstname',]
+# https://stackoverflow.com/questions/54544978/customizing-jwt-response-from-django-rest-framework-simplejwt
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    def validate(self, attrs):
+        data = super().validate(attrs)
+
+        # Add extra responses here
+        data['id'] = self.user.id
+        data['username'] = self.user.username
+        data['password'] = self.user.password
+        data['lastname'] = self.user.last_name
+        data['firstname'] = self.user.first_name
+        data['groups'] = self.user.groups.values_list('name', flat=True)
+        return data
 
 
 class StArticleSerializer(ModelSerializer):
