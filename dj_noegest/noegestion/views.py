@@ -8,7 +8,7 @@ from noegestion.serializers import *
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
-#@login_required
+@login_required
 def home(request):
     name = "l'inconnu %s" %request.user.username
     if hasattr(request.user,'last_name'):
@@ -16,10 +16,32 @@ def home(request):
                               request.user.first_name,
                               request.user.last_name)
     message = "Bonjour %s " %(name)
-    return render(request, 'noegestion/home.html', context={'message': message})
+    return render(request, 'home.html', context={'message': message})
 
 
+
+
+# https://stackoverflow.com/questions/54544978/customizing-jwt-response-from-django-rest-framework-simplejwt
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    def validate(self, attrs):
+        data = super().validate(attrs)
+        refresh = self.get_token(self.user)
+
+        # Add extra responses here
+        data['username'] = self.user.username
+        data['groups'] = self.user.groups.values_list('name', flat=True)
+        return data
+
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer
+
+# ---------------------------------------------------------------------------
 # via serialiser Rest
+
 class StArticleViewset(ModelViewSet):
 
     serializer_class = StArticleSerializer
