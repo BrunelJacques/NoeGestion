@@ -25,8 +25,9 @@ export class AuthenticationService {
     }
 
     login(username: string, password: string) {
-        return this.http.post<any>(`${environment.apiUrl}/users/authenticate`, { username, password }, { withCredentials: true })
+        return this.http.post<any>(`${environment.apiUrl}/api/token/`, { username, password }, { withCredentials: false })
             .pipe(map(user => {
+                user.jwtToken = user.access;
                 this.userSubject.next(user);
                 this.startRefreshTokenTimer();
                 return user;

@@ -29,7 +29,7 @@ class MyTokenObtainPairView(TokenObtainPairView):
 class StArticleViewset(ModelViewSet):
 
     serializer_class = StArticleSerializer
-    permission_classes = [IsAdminAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self, *args, **kwargs):
         return StArticle.objects.all()

@@ -28,5 +28,5 @@ urlpatterns = [
     path('api/token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
 
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('st/', include(router_st.urls))
+    path('api/', include(router_st.urls))
 ]

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MvtService } from '../_services/mvt.service';
+import { ParamsService } from '../_services/params.service';
 import { Camp } from '../_models/camp';
 import { Params } from '../_models/params';
 import { first } from 'rxjs';
@@ -41,6 +42,7 @@ export class ParamsComponent implements OnInit {
 
   constructor(
     private mvtService: MvtService,
+    private paramsService: ParamsService,
     private formBuilder: UntypedFormBuilder,
     private parent: Location,
     private alertService: AlertService,
@@ -115,7 +117,7 @@ export class ParamsComponent implements OnInit {
 
   getParams(): void {
     this.loading = true;
-    this.mvtService.getParams()
+    this.paramsService.getParams()
       .subscribe({
         next: (data) => {
           this.params = data[0];
@@ -161,14 +163,7 @@ export class ParamsComponent implements OnInit {
   }
   
   setParams(): void {
-    this.mvtService.setParams(this.params)
-        .pipe(first())
-        .subscribe({
-            next: () => {},
-            error: error => {
-                this.alertService.error(error);
-            }
-        });
+    this.paramsService.setParams(this.params)
   }
 
 }

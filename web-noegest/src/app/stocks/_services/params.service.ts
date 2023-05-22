@@ -1,36 +1,52 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { map, catchError, tap} from 'rxjs/operators';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { hoursDelta, deepCopy } from '../../general/_helpers/fonctions-perso';
 
-import { environment } from '@environments/environment';
-import { Params } from '../_models/params';
+import { Params,  PARAMS } from '../_models/params';
 
 @Injectable({ providedIn: 'root'})
 
 export class ParamsService {
   private paramsSubject: BehaviorSubject<Params>;
-  public params: Observable<Params>;
+  public params= new Subject<Params>();
+  public paramsobs= new Observable<any>;
+
+  public key: string = "stParams";
+  //public item: Params
 
   public get paramsValue(): Params {
      return this.paramsSubject.value;
   }
 
-  constructor(
-    private http: HttpClient
-  ) {
-    this.paramsSubject = new BehaviorSubject<Params>(
-      JSON.parse(localStorage.getItem('params'))
-      );
-    this.params = this.paramsSubject.asObservable();
+  constructor() {
+    this.paramsobs = this.params.asObservable();
   }
 
   // stockage de l'info en local
-  setParams(params: Params) {
-    return this.http.post(`${environment.apiUrl}/stocks/setparams`, params);
+  setParams(item: Params) {
+    localStorage.setItem(this.key, JSON.stringify(item))
   }
 
   getParams() {
-    return this.http.get<Params[]>(`${environment.apiUrl}/stocks/getparams`);
+    if (!(localStorage.getItem(this.key))){
+      this.setParams(PARAMS)
+    }
+    return JSON.parse(localStorage.getItem(this.key));
   }
+
+  ajusteParams(params:Params){
+    // >6 heures après le dernier paramétrage, on réinitialise Params
+    params.parent = "sorties"
+    if (!(params instanceof Object)){
+      params = deepCopy(PARAMS)
+    };
+    if (hoursDelta(new Date(params.modif),new Date()) > 6) {
+      params = deepCopy(PARAMS)
+      params.parent = "raz-sorties"
+    };
+    this.setParams(params)
+    return params
+  }
+
+
 }

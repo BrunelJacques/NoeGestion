@@ -2,13 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 
-import { catchError, map, of } from 'rxjs';
+import { catchError, of } from 'rxjs';
 
-import { Mouvement } from '../_models/Mouvement';
+import { Mouvement } from '../_models/mouvement';
 import { Camp } from '../_models/camp';
 import { Params } from '../_models/params';
 
-import { environment } from '@environments/environment';
 import { Constantes } from '@app/constantes';
 
 @Injectable({ providedIn: 'root'})
@@ -59,20 +58,6 @@ export class MvtService {
         //tap(_ => this.log('fetched camps')),
         catchError(this.handleError<Camp[]>('getCamps', []))
       );
-  }
-
-  getParams():  Observable<Params[]> {
-    return this.http.get<Params[]>(this.constantes.PARAMS_URL)
-      .pipe(
-        //tap(_ => this.log('fetched params')),
-        catchError(this.handleError<Params[]>('getParams', []))
-      );
-  }
-
-  // stockage de l'info en local
-  setParams(params: Params) {
-    //console.log('mvtServices ', params)
-    return this.http.post(`${environment.apiUrl}/params`, params);
   }
 
   // gestion erreur façon Tour of Heroes

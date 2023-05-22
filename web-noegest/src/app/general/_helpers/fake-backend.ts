@@ -10,8 +10,7 @@ const users: any[] = JSON.parse(localStorage.getItem(usersKey)!) || [];
 // add test user and save if users array is empty
 if (!users.length) {
     users.push(
-        { id: 1,  firstName: 'jb', lastName: 'fake', username: 'jb', password: 'pr0V1522', refreshTokens: [] },
-        { id: 2,  firstName: 'Test', lastName: 'User', username: 'test', password: 'test', refreshTokens: [] },
+        { id: 1,  firstName: 'Test', lastName: 'User', username: 'test', password: 'test', refreshTokens: [] },
     );
     localStorage.setItem(usersKey, JSON.stringify(users));
 }

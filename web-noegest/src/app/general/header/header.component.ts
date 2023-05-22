@@ -24,7 +24,7 @@ export class HeaderComponent implements OnInit {
     private choixAppliService: ChoixAppliService,
     private authenticationService: AuthenticationService,
     ) {
-      this.authenticationService.user.subscribe(x => this.user = x);
+      //this.authenticationService.user.subscribe(x => this.user = x);
     };
 
   ngOnInit(): void {

@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:4200',
+  // provider used to create fake backend, fakeBackendProvider en port 4200 django 8000
+  apiUrl: 'http://localhost:8000',
   appName: 'Noegest by Matthania'
 };
 

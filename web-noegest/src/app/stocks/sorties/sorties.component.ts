@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Mouvement } from '../_models/mouvement';
 import { MvtService } from '../_services/mvt.service';
+import { ParamsService } from '../_services/params.service'
 import { Params, PARAMS } from '../_models/params';
-import { hoursDelta, deepCopy } from '../../general/_helpers/fonctions-perso';
-import { OneSortieComponent } from '../one-sortie/one-sortie.component';
+//import { OneSortieComponent } from '../one-sortie/one-sortie.component';
 import { DatePipe } from '@angular/common';
 import { first, map } from 'rxjs';
 import { AlertService } from '@app/general/_services';
@@ -30,8 +30,8 @@ export class SortiesComponent implements OnInit {
 
   constructor(
     private mvtService: MvtService,
+    private paramsService: ParamsService,
     public datepipe: DatePipe,
-    private alertService: AlertService
     ) {
       this.getParams();
       this.getSorties();
@@ -56,8 +56,8 @@ export class SortiesComponent implements OnInit {
     }
     // filtre sur le service
     else if (
-      (mvt.origine == 'repas') 
-        && (this.params.origine != 'tout') 
+      (mvt.origine == 'repas')
+        && (this.params.origine != 'tout')
         && (this.params.service != 0)
         && (mvt.service != this.params.service)
       ){
@@ -68,45 +68,30 @@ export class SortiesComponent implements OnInit {
 
   getSorties(): any {
     this.mvtService.getSorties()
-    .pipe(map(data => data.filter(mvt => this.filtre(mvt))))
-    .subscribe({
-        next: (data) => {
-          this.sorties = data;
-        },
-        error: (e) => {
-          if (e != 'Not Found') {
-            console.error(e)
+      .pipe(map(data => data.filter(mvt => this.filtre(mvt))))
+      .subscribe({
+          next: (data) => {
+            this.sorties = data;
+          },
+          error: (e) => {
+            if (e != 'Not Found') {
+              console.error(e)
+            }
           }
-        }
-      });
+        });
   }
 
-  ajusteParams(params:Params){
-    // >6 heures après le dernier paramétrage, on réinitialise Params
-    params.parent = "sorties"
-    if (hoursDelta(new Date(params.modif),new Date()) > 6) {
-      params = deepCopy(this.params0)
-      params.parent = "raz-sorties"
-    };
-    this.mvtService.setParams(params)
-      .pipe(first())
-      .subscribe({
-          next: () => {},
-          error: error => {this.alertService.error("");}
-          });
-    return params
-  }
 
   getParams(): void {
     this.loading = true;
-    this.mvtService.getParams()
+    this.paramsService.getParams()
       .subscribe({
-        next: (data) => {
-          this.params = this.ajusteParams(data[0]);
-          this.jour = this.pipe.transform(this.params.jour, 'dd/MM/yyyy')
+        next: (data: Params) => {
+          this.params = data;
+          this.jour = this.pipe.transform(this.params.jour, 'dd/MM/yyyy');
           this.loading = false
         },
-        error: (e) => {
+        error: (e: string) => {
           if (e != 'Not Found') {
             console.error(e)
           }

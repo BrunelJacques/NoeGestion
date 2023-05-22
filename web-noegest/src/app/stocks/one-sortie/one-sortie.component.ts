@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MvtService } from '../_services/mvt.service';
+import { ParamsService } from '../_services/params.service';
 import { Camp } from '../_models/camp';
 import { Params } from '../_models/params';
 import { first } from 'rxjs';
@@ -37,6 +38,7 @@ export class OneSortieComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private mvtService: MvtService,
+    private paramsService: ParamsService,
     private formBuilder: UntypedFormBuilder,
     private location: Location,
 
@@ -73,7 +75,7 @@ export class OneSortieComponent implements OnInit {
 
   getParams(): void {
     this.loading = true;
-    this.mvtService.getParams()
+    this.paramsService.getParams()
       .subscribe({
         next: (data) => {
           this.params = data[0];
