@@ -53,6 +53,23 @@ class StFournisseur(models.Model):
         return self.nom
 
 
+class GeAnalytique(models.Model):
+    #État des stocks à une date donnée
+    id = models.CharField(primary_key=True, max_length=5)
+    label = models.CharField(unique=True, max_length=200)
+    abrege = models.CharField(max_length=32)
+    params = models.TextField(null=True, blank=True,default='')
+    axe = models.CharField(max_length=32, blank=True, default='')
+    saisie = models.DateField(auto_now=True,help_text="Date de l'entrée de l'item")
+    obsolete = models.BooleanField(default=False)
+
+    def __str__(self): return self.id
+
+    class Meta:
+        verbose_name = 'GeAnalytique: Gestion générale, codes analytique'
+        ordering = ['id',]
+
+
 class StArticle(models.Model):
     nom = models.CharField(unique=True, max_length=128)
     nom_court = models.CharField(unique=True, max_length=32, db_index=True)
@@ -100,23 +117,6 @@ class StArticle(models.Model):
 
     def __str__(self):
         return self.nom_court
-
-
-class GeAnalytique(models.Model):
-    #État des stocks à une date donnée
-    id = models.CharField(primary_key=True, max_length=5)
-    label = models.CharField(unique=True, max_length=200)
-    abrege = models.CharField(max_length=32)
-    params = models.TextField(null=True, blank=True,default='')
-    axe = models.CharField(max_length=32, blank=True, default='')
-    saisie = models.DateField(auto_now=True,help_text="Date de l'entrée de l'item")
-    obsolete = models.BooleanField(default=False)
-
-    def __str__(self): return self.abrege
-
-    class Meta:
-        verbose_name = 'GeAnalytique: Gestion générale, codes analytique'
-        ordering = ['id',]
 
 
 class StMouvement(models.Model):

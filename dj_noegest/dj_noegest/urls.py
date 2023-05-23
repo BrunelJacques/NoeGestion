@@ -10,7 +10,8 @@ from noegestion.views import *
 # Ici nous créons notre routeur
 router_st = routers.SimpleRouter()
 # Puis lui déclarons une url basée sur le mot clé ‘category’ et notre view
-# afin que l’url générée soit celle que nous souhaitons ‘/api/category/’
+
+router_st.register('stmouvement', StMouvementViewset, basename='stmouvement')
 router_st.register('starticle', StArticleViewset, basename='starticle')
 router_st.register('stfournisseur', StFournisseurViewset, basename='stfournisseur')
 router_st.register('strayon', StRayonViewset, basename='strayon')

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { hoursDelta, deepCopy } from '../../general/_helpers/fonctions-perso';
 
 import { Params,  PARAMS } from '../_models/params';
@@ -7,30 +7,28 @@ import { Params,  PARAMS } from '../_models/params';
 @Injectable({ providedIn: 'root'})
 
 export class ParamsService {
-  private paramsSubject: BehaviorSubject<Params>;
-  public params= new Subject<Params>();
-  public paramsobs= new Observable<any>;
-
+  public paramssubj= new Subject<Params>();
   public key: string = "stParams";
-  //public item: Params
 
-  public get paramsValue(): Params {
-     return this.paramsSubject.value;
+
+  paramsobj(): Observable<Params> {
+    return this.paramssubj.asObservable();
   }
-
+  
   constructor() {
-    this.paramsobs = this.params.asObservable();
-  }
+        if (!(localStorage.getItem(this.key))) {
+          this.setParams(PARAMS)
+        }
+        this.getParams
+      }
 
   // stockage de l'info en local
   setParams(item: Params) {
     localStorage.setItem(this.key, JSON.stringify(item))
+    this.paramssubj.next(item)
   }
 
   getParams() {
-    if (!(localStorage.getItem(this.key))){
-      this.setParams(PARAMS)
-    }
     return JSON.parse(localStorage.getItem(this.key));
   }
 

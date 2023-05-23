@@ -1,7 +1,6 @@
 
 from rest_framework.serializers import ModelSerializer, CharField
-from noegestion.models import StArticle,StMagasin,StFournisseur,StRayon
-from django.contrib.auth.models import User
+from noegestion.models import StArticle,StMagasin,StFournisseur,StRayon,StMouvement
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 
@@ -19,6 +18,16 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         data['groups'] = self.user.groups.values_list('name', flat=True)
         return data
 
+
+class StMouvementSerializer(ModelSerializer):
+
+    class Meta:
+        model = StMouvement
+        fields = [
+            "jour", "sens", "origine", "article", "article",
+            "nbcolis", "qtemouvement",
+            "prixunit", "service", "nbrations", "transfert",
+            "analytique", "fournisseur"]
 
 class StArticleSerializer(ModelSerializer):
 

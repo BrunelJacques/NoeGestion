@@ -2,8 +2,8 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly
 from rest_framework_simplejwt.views import TokenObtainPairView
 
-from noegestion.permissions import *
 from noegestion.serializers import *
+import datetime
 
 # pour test d'accès direct à django
 from django.shortcuts import render
@@ -24,6 +24,16 @@ def home(request):
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
+
+
+class StMouvementViewset(ModelViewSet):
+    serializer_class = StMouvementSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self,  *args, **kwargs):
+        origine = self.request.GET.get('origine', 'repas')
+        jour = self.request.GET.get('jour',str(datetime.date.today()))
+        return StMouvement.objects.filter(origine=origine,jour=jour)
 
 
 class StArticleViewset(ModelViewSet):

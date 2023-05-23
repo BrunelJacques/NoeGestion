@@ -84,7 +84,7 @@ export class SortiesComponent implements OnInit {
 
   getParams(): void {
     this.loading = true;
-    this.paramsService.getParams()
+    this.paramsService.paramssubj
       .subscribe({
         next: (data: Params) => {
           this.params = data;

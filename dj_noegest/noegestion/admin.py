@@ -4,6 +4,24 @@ from .models import *
 
 # Affichage de la table en liste
 
+class StMouvementAdmin(admin.ModelAdmin):
+    model = StMouvement
+    list_display = ["jour","sens","cle_origine","article","nom_article","nbcolis","qtemouvement",
+                    "prixunit","service","nbrations","transfert",
+                    "cle_analytique","fournisseur"]
+
+    def nom_article(self, obj):
+        return obj.article.nom
+    nom_article.short_description = 'Article Nom Long'
+
+    def cle_origine(self, obj):
+        return obj.origine
+
+    def cle_analytique(self, obj):
+        return obj.analytique
+    cle_analytique.short_description = 'camp'
+
+
 class StArticleAdmin(admin.ModelAdmin):
     model = StArticle
     list_display = ["nom","magasin_id","nom_rayon","nom_fournisseur","qte_stock"]
@@ -50,4 +68,6 @@ admin.site.register(StRayon, StRayonAdmin)
 admin.site.register(StFournisseur, StFournisseurAdmin)
 
 admin.site.register(StArticle, StArticleAdmin)
+
+admin.site.register(StMouvement, StMouvementAdmin)
 
