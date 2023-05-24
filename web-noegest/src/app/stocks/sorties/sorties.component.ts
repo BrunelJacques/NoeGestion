@@ -67,7 +67,7 @@ export class SortiesComponent implements OnInit {
   }
 
   getSorties(): any {
-    this.mvtService.getSorties()
+    this.mvtService.getSorties('repas','2022-09-17')
       .pipe(map(data => data.filter(mvt => this.filtre(mvt))))
       .subscribe({
           next: (data) => {

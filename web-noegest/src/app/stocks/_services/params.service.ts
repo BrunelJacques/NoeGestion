@@ -8,27 +8,30 @@ import { Params,  PARAMS } from '../_models/params';
 
 export class ParamsService {
   public paramssubj= new Subject<Params>();
-  public key: string = "stParams";
+  public params = PARAMS
+  private key: string = "stParams";
 
+  constructor() {
+    if (!(localStorage.getItem(this.key))) {
+      this.setParams(PARAMS)
+    }
+    else {
+      this.params = this.getStoredParams()
+      this.paramssubj.next(this.params)
+    }
+  }
 
   paramsobj(): Observable<Params> {
     return this.paramssubj.asObservable();
   }
   
-  constructor() {
-        if (!(localStorage.getItem(this.key))) {
-          this.setParams(PARAMS)
-        }
-        this.getParams
-      }
-
-  // stockage de l'info en local
+  // stockage de l'info en local & affectation subject
   setParams(item: Params) {
     localStorage.setItem(this.key, JSON.stringify(item))
     this.paramssubj.next(item)
   }
 
-  getParams() {
+  getStoredParams() {
     return JSON.parse(localStorage.getItem(this.key));
   }
 

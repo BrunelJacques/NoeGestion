@@ -2,7 +2,7 @@ BEGIN TRANSACTION;
 
 
 INSERT INTO `noegestion_geanalytique` (`id`, `label`, `abrege`, `params`, `axe`, `saisie`, `obsolete`) VALUES
-('00', 'Tous camps', 'Tous camps', '-', 'CONVOIS', '2023-01-01', 0),
+('00', 'Tous camps', 'Tous camps', '-', 'ACTIVITES', '2023-01-01', 0),
 ('10', 'Pasto indifférencié', 'Pasto', '-', 'ACTIVITES', '2023-01-01', 0),
 ('30', 'Neige pour tous les camps', 'Neige tous camps', '-', 'ACTIVITES', '2023-01-01', 0),
 ('40', 'AVENTURE TOUS CAMPS', 'AVENTURE TT', '-', 'ACTIVITES', '2023-01-01', 0),

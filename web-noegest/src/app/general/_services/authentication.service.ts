@@ -4,13 +4,15 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { environment } from '@environments/environment';
 import { User } from '../_models';
+import { Constantes } from '@app/constantes';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
+    private cst = new Constantes
     private userSubject: BehaviorSubject<User | null>;
     public user: Observable<User | null>;
+
 
     constructor(
         private router: Router,
@@ -24,8 +26,9 @@ export class AuthenticationService {
         return this.userSubject.value;
     }
 
+ 
     login(username: string, password: string) {
-        return this.http.post<any>(`${environment.apiUrl}/api/token/`, { username, password }, { withCredentials: false })
+        return this.http.post<any>(this.cst.TOKEN_URL, { username, password }, { withCredentials: false })
             .pipe(map(user => {
                 user.jwtToken = user.access;
                 this.userSubject.next(user);
@@ -35,14 +38,14 @@ export class AuthenticationService {
     }
 
     logout() {
-        this.http.post<any>(`${environment.apiUrl}/users/revoke-token`, {}, { withCredentials: true }).subscribe();
+        this.http.post<any>(this.cst.API_URL+'/logout/', {}, { withCredentials: true }).subscribe();
         this.stopRefreshTokenTimer();
         this.userSubject.next(null);
         this.router.navigate(['/login']);
     }
 
     refreshToken() {
-        return this.http.post<any>(`${environment.apiUrl}/users/refresh-token`, {}, { withCredentials: true })
+        return this.http.post<any>(this.cst.TOKENREFRESH_URL, {}, { withCredentials: true })
             .pipe(map((user) => {
                 this.userSubject.next(user);
                 this.startRefreshTokenTimer();
@@ -51,8 +54,8 @@ export class AuthenticationService {
         }
 
     register(user: User) {
-        console.log(`${environment.apiUrl}/authentication/register`,user)
-        return this.http.post(`${environment.apiUrl}/authentication/register`, user);
+        console.log(this.cst.API_URL+'/register',user)
+        return this.http.post(this.cst.API_URL+'/register', user);
     };
 
     // helper methods
@@ -67,11 +70,13 @@ export class AuthenticationService {
 
         // set a timeout to refresh the token a minute before it expires
         const expires = new Date(jwtToken.exp * 1000);
-        const timeout = expires.getTime() - Date.now() - (60 * 1000);
+        //const timeout = expires.getTime() - Date.now() - (60 * 1000);
+        const timeout = expires.getTime() - Date.now() - (60 * 1000) - 220000; //pour test
         this.refreshTokenTimeout = setTimeout(() => this.refreshToken().subscribe(), timeout);
     }
 
     private stopRefreshTokenTimer() {
         clearTimeout(this.refreshTokenTimeout);
     }
+ 
 }

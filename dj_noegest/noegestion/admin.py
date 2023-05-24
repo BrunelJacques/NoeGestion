@@ -55,7 +55,7 @@ class StMagasinAdmin(admin.ModelAdmin):
 
 class GeAnalytiqueAdmin(admin.ModelAdmin):
     model = GeAnalytique
-    list_display = ["label","abrege","axe","id"]
+    list_display = ["nom","abrege","axe","id"]
 
 
 # Connection model - liste d'affichage

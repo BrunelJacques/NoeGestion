@@ -1,18 +1,17 @@
 import { Injectable } from '@angular/core';
+import { environment } from '@environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class Constantes {
   //orientation vers django ou inMemory 
-  public BASE_URL = "http://localhost:8000";
-  public AUTH_API = 'http://localhost:8080/api/auth/';
-  public USERS_URL = this.BASE_URL + '/users';
-  public PARAMS_URL = this.BASE_URL + '/params';
-  public EFFECTIFS_URL = this.BASE_URL + '/effectifs';
-  public MVTS_URL = this.BASE_URL + '/mvts';
-  public CAMPS_URL = this.BASE_URL + '/camps';
-  public SORTIES_URL = this.BASE_URL + '/sorties';
+  public API_URL = environment.apiUrl;
+  public TOKEN_URL = this.API_URL + "/api-auth/token/"
+  public TOKENREFRESH_URL = this.API_URL + "/api-auth/token/refresh/"
+  public STEFFECTIF_URL = this.API_URL + '/api/steffectifs';
+  public STMOUVEMENT_URL = this.API_URL + '/api/stmouvement';
+  public CAMPS_URL = this.API_URL + '/api/geanalytique/?axe=ACTIVITES';
 
   // pour Stocks
   static LSTSERVICE = [

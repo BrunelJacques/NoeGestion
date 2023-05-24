@@ -26,6 +26,16 @@ class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
 
+class GeAnalytiqueViewset(ModelViewSet):
+    serializer_class = GeAnalytiqueSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self,  *args, **kwargs):
+        axe = self.request.GET.get('axe', 'ACTIVITES')
+        obsolete = self.request.GET.get('obsolete', False)
+        return GeAnalytique.objects.filter(axe=axe,obsolete=obsolete)
+
+
 class StMouvementViewset(ModelViewSet):
     serializer_class = StMouvementSerializer
     permission_classes = [IsAuthenticated]

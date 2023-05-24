@@ -16,6 +16,7 @@ export class MvtService {
 
   httpOptions = { headers: new HttpHeaders({'Content-Type': 'application/json'})};
   private paramsSubject: BehaviorSubject<Params>;
+  private url = ''
   public params: Observable<Params>;
 
   public get paramsValue(): Params {
@@ -33,7 +34,7 @@ export class MvtService {
 
    /** GET mvt by id. Will 404 if id not found */
   getMvt(id: number): Observable<Mouvement> {
-    return this.http.get<Mouvement>(this.constantes.MVTS_URL).pipe(
+    return this.http.get<Mouvement>(this.constantes.STMOUVEMENT_URL+"/?id="+id).pipe(
       tap(_ => this.log(`fetched mvt id=${id}`)),
       catchError(this.handleError<Mouvement>(`getMvt id=${id}`))
     );
@@ -43,9 +44,9 @@ export class MvtService {
     return id
   };
 
-  getSorties(): Observable<Mouvement[]> {
-    //this.filteredvalues = mvts.filter(t=>t.category ==='Science');
-    return (this.http.get<Mouvement[]>(this.constantes.MVTS_URL))
+  getSorties(origine: string,jour: string): Observable<Mouvement[]> {
+    this.url = this.constantes.STMOUVEMENT_URL+"/?origine="+origine+"&jour="+jour
+    return (this.http.get<Mouvement[]>(this.url))
       .pipe(
         //tap(_ => this.log('fetched mvts')),
         catchError(this.handleError<Mouvement[]>('getSorties', []))

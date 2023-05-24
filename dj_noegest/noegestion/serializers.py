@@ -1,6 +1,6 @@
 
 from rest_framework.serializers import ModelSerializer, CharField
-from noegestion.models import StArticle,StMagasin,StFournisseur,StRayon,StMouvement
+from noegestion.models import *
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 
@@ -19,6 +19,14 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         return data
 
 
+class GeAnalytiqueSerializer(ModelSerializer):
+
+    class Meta:
+        model = GeAnalytique
+        fields = [
+            "id", "nom", "abrege","params", ]
+
+
 class StMouvementSerializer(ModelSerializer):
 
     class Meta:
@@ -28,6 +36,7 @@ class StMouvementSerializer(ModelSerializer):
             "nbcolis", "qtemouvement",
             "prixunit", "service", "nbrations", "transfert",
             "analytique", "fournisseur"]
+
 
 class StArticleSerializer(ModelSerializer):
 

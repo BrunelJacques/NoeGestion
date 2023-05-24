@@ -56,7 +56,7 @@ class StFournisseur(models.Model):
 class GeAnalytique(models.Model):
     #État des stocks à une date donnée
     id = models.CharField(primary_key=True, max_length=5)
-    label = models.CharField(unique=True, max_length=200)
+    nom = models.CharField(unique=True, max_length=200)
     abrege = models.CharField(max_length=32)
     params = models.TextField(null=True, blank=True,default='')
     axe = models.CharField(max_length=32, blank=True, default='')
