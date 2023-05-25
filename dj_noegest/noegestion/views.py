@@ -21,9 +21,9 @@ def home(request):
     return render(request, 'home.html', context={'message': message})
 
 # via serialiser Rest
-
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
+    
 
 
 class GeAnalytiqueViewset(ModelViewSet):

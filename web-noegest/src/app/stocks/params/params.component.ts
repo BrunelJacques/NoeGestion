@@ -153,6 +153,7 @@ export class ParamsComponent implements OnInit {
       .subscribe({
         next: (data) => {
           this.camps = data;
+          console.log(this.camps['results'])
         },
         error: (e) => {
           if (e != 'Not Found') {

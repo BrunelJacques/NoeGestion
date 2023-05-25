@@ -32,9 +32,8 @@ class StMouvementSerializer(ModelSerializer):
     class Meta:
         model = StMouvement
         fields = [
-            "jour", "sens", "origine", "article", "article",
-            "nbcolis", "qtemouvement",
-            "prixunit", "service", "nbrations", "transfert",
+            "id","jour", "sens", "origine", "article", "article","nbcolis",
+            "qtemouvement","prixunit", "service", "nbrations", "transfert",
             "analytique", "fournisseur"]
 
 

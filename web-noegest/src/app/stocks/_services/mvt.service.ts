@@ -18,6 +18,7 @@ export class MvtService {
   private paramsSubject: BehaviorSubject<Params>;
   private url = ''
   public params: Observable<Params>;
+  public test:any
 
   public get paramsValue(): Params {
     return this.paramsSubject.value;
@@ -44,14 +45,15 @@ export class MvtService {
     return id
   };
 
-  getSorties(origine: string,jour: string): Observable<Mouvement[]> {
-    this.url = this.constantes.STMOUVEMENT_URL+"/?origine="+origine+"&jour="+jour
+  getSorties(): Observable<Mouvement[]> {
+    this.url = this.constantes.STMOUVEMENT_URL+"/?origine=repas&jour=2022-09-17";
     return (this.http.get<Mouvement[]>(this.url))
       .pipe(
-        //tap(_ => this.log('fetched mvts')),
-        catchError(this.handleError<Mouvement[]>('getSorties', []))
+        tap(_ => this.log('fetched mvts')),
+        catchError(this.handleError<Mouvement[]>('getSorties', [])
+        )
       );
-      }
+  }    
 
   getCamps(): Observable<Camp[]> {
     return this.http.get<Camp[]>(this.constantes.CAMPS_URL)

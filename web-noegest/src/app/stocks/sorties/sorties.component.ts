@@ -32,15 +32,15 @@ export class SortiesComponent implements OnInit {
     private mvtService: MvtService,
     private paramsService: ParamsService,
     public datepipe: DatePipe,
-    ) {
-      this.getParams();
-      this.getSorties();
-     }
+    ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getParams();
+    this.getSorties();
+  }
 
 
-  filtre(mvt: Mouvement){
+  filtre = function(mvt: Mouvement, index, array){
     let ret = true
     // filtre sur le date
     if (this.pipe.transform(mvt.jour) != this.pipe.transform(this.params.jour)) {
@@ -66,21 +66,22 @@ export class SortiesComponent implements OnInit {
     return ret
   }
 
-  getSorties(): any {
-    this.mvtService.getSorties('repas','2022-09-17')
-      .pipe(map(data => data.filter(mvt => this.filtre(mvt))))
-      .subscribe({
-          next: (data) => {
-            this.sorties = data;
-          },
-          error: (e) => {
-            if (e != 'Not Found') {
-              console.error(e)
-            }
-          }
-        });
-  }
 
+  getSorties(): void {
+    this.mvtService.getSorties()
+      .subscribe({
+        next: (data) => {
+          this.sorties = data['results'];
+          console.log(this.sorties)
+        },
+        error: (e) => {
+          if (e != 'Not Found') {
+            console.error(e)
+          }
+        }
+      })
+  }
+ 
 
   getParams(): void {
     this.loading = true;

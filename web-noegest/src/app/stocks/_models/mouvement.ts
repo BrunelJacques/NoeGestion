@@ -1,19 +1,17 @@
-export class Mouvement {
-  constructor(
-    public id: number,
-    public jour: string,
-    public analytique: number,
-    public origine: string,
-    public fournisseur: string,
-    public article_id: number,
-    public nbcolis: any,
-    public qtemouvement: number,
-    public prixunit: number,
-    public service: number,
-    public nbrations: any,
-    public article_nom: string,
-    public article_rayon: string,
-    public article_magasin: string,
-    public transfert: Date,
-  ){}
+export interface Mouvement {
+    id: number;
+    jour: string;
+    analytique: number;
+    origine: string;
+    fournisseur: string;
+    article_id: number;
+    nbcolis: any;
+    qtemouvement: number;
+    prixunit: number;
+    service: number;
+    nbrations: any;
+    article_nom: string;
+    article_rayon: string;
+    article_magasin: string;
+    transfert: Date;
 }

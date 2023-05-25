@@ -70,8 +70,8 @@ export class AuthenticationService {
 
         // set a timeout to refresh the token a minute before it expires
         const expires = new Date(jwtToken.exp * 1000);
-        //const timeout = expires.getTime() - Date.now() - (60 * 1000);
-        const timeout = expires.getTime() - Date.now() - (60 * 1000) - 220000; //pour test
+        const timeout = expires.getTime() - Date.now() - (60 * 1000);
+        //const timeout = expires.getTime() - Date.now() - (60 * 1000) - 220000; //pour test
         this.refreshTokenTimeout = setTimeout(() => this.refreshToken().subscribe(), timeout);
     }
 
