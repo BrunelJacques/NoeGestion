@@ -5,7 +5,6 @@ import { MvtService } from '../_services/mvt.service';
 import { ParamsService } from '../_services/params.service';
 import { Camp } from '../_models/camp';
 import { Params } from '../_models/params';
-import { first } from 'rxjs';
 import { AlertService } from '@app/general/_services/alert.service';
 import { DatePipe } from '@angular/common';
 import { Constantes } from '@app/constantes';
@@ -34,7 +33,7 @@ export class ParamsComponent implements OnInit {
   lstorigine_entrees = this.constantes.LSTORIGINE_ENTREES;
 
   lstservice_code = this.lstservice.map((x) => x.code)
-  params = new Params;
+  params: Params;
   lstparams: Params[] = [];
   loading = true;
   submitted = false;
@@ -117,7 +116,7 @@ export class ParamsComponent implements OnInit {
 
   getParams(): void {
     this.loading = true;
-    this.paramsService.paramssubj
+    this.paramsService.getParams()
       .subscribe({
         next: (data) => {
           this.params = data[0];
@@ -134,9 +133,9 @@ export class ParamsComponent implements OnInit {
             'service': this.lstservice[this.params.service].code,
             'fournisseur': this.params.fournisseur,
           })
-          if (this.params.parent.endsWith('sorties')) 
-            {this.lstorigine = this.lstorigine_sorties}
-          else {this.lstorigine = this.lstorigine_entrees}    
+          //if (this.params.parent.endsWith('sorties')) {
+          this.lstorigine = this.lstorigine_sorties
+          //  } else {this.lstorigine = this.lstorigine_entrees}    
           this.loading = false
           this.majOrigine(this.origine)
         },        

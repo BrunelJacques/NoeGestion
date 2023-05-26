@@ -35,10 +35,11 @@ export class MvtService {
 
    /** GET mvt by id. Will 404 if id not found */
   getMvt(id: number): Observable<Mouvement> {
-    return this.http.get<Mouvement>(this.constantes.STMOUVEMENT_URL+"/?id="+id).pipe(
-      tap(_ => this.log(`fetched mvt id=${id}`)),
-      catchError(this.handleError<Mouvement>(`getMvt id=${id}`))
-    );
+    return this.http.get<Mouvement>(this.constantes.STMOUVEMENT_URL+"/?id="+id)
+      .pipe(
+        tap(_ => this.log(`fetched mvt id=${id}`)),
+        catchError(this.handleError<Mouvement>(`getMvt id=${id}`))
+      );
   }
  
   updateMvt(id): Observable<Mouvement[]> {

@@ -1,8 +1,6 @@
-export class Camp {
-  constructor(
-    public id: string,
-    public libelle: string,
-  ){}
+export interface Camp {
+  id: string;
+  libelle: string;
 }
   
   

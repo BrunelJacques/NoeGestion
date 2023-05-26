@@ -29,7 +29,7 @@ export class OneSortieComponent implements OnInit {
   lstservice = this.constantes.LSTSERVICE;
   lstorigine = this.constantes.LSTORIGINE_SORTIES;
   lstservice_code = this.lstservice.map((x) => x.code)
-  params = new Params;
+  params: Params;
   lstparams: Params[] = [];
   loading = true;
   submitted = false;

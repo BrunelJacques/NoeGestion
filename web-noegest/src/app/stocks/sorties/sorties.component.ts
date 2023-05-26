@@ -5,8 +5,6 @@ import { ParamsService } from '../_services/params.service'
 import { Params, PARAMS } from '../_models/params';
 //import { OneSortieComponent } from '../one-sortie/one-sortie.component';
 import { DatePipe } from '@angular/common';
-import { first, map } from 'rxjs';
-import { AlertService } from '@app/general/_services';
 import { Constantes } from '@app/constantes';
 
 @Component({
@@ -17,8 +15,8 @@ import { Constantes } from '@app/constantes';
 
 export class SortiesComponent implements OnInit {
   params0 = PARAMS
-  params = new Params
-  selectedMvt?: Mouvement;
+  params:Params
+  selectedMvt: Mouvement;
   sorties: Mouvement[] = [];
   pipe = new DatePipe('en-US');
   jour = "";
@@ -71,8 +69,12 @@ export class SortiesComponent implements OnInit {
     this.mvtService.getSorties()
       .subscribe({
         next: (data) => {
-          this.sorties = data['results'];
-          console.log(this.sorties)
+          this.sorties = data['results'].filter((a,index,arr) => {
+            if (index > 10) {return false}; 
+            return true});
+            console.log(this.sorties);
+
+          //this.sorties = data['results'].filter(this.filtre);
         },
         error: (e) => {
           if (e != 'Not Found') {
@@ -85,7 +87,8 @@ export class SortiesComponent implements OnInit {
 
   getParams(): void {
     this.loading = true;
-    this.paramsService.paramssubj
+    this.params = this.paramsService.getStoredParams()
+    this.paramsService.getParams()
       .subscribe({
         next: (data: Params) => {
           this.params = data;

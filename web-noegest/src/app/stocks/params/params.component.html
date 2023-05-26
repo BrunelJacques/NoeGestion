@@ -40,7 +40,7 @@
         (change)="onOrigineChange($event)"
         formControlName="origine"
         class="form-control" required aria-label="origine">
-        <option [ngValue]="" disabled>Filtrer les {{params.parent}} pour :</option>
+        <!--option [ngValue]="" disabled>Filtrer les {{params.parent}} pour :</option-->
         <option *ngFor="let origine of lstorigine"
           [ngValue]="origine.code">
           {{origine.libelle}}
@@ -78,7 +78,7 @@
           <div *ngIf="f.service.errors.required">Choisissez un service de repas ou 'pour tout'</div>
         </div>
       </div>
-      <div *ngIf="params.parent && params.parent.endsWith('entrees')">
+      <!--div *ngIf="params.parent && params.parent.endsWith('entrees')"-->
         <label for="tva">Tva mtt:</label>
         <select id="tva" name="tva" formControlName="tva" class="form-control">
           <option value="ttc">en TTC</option>
@@ -87,7 +87,7 @@
 
         <label for="fournisseur">Fournisseur:</label>
         <input id="fournisseur" name="fournisseur" formControlName="fournisseur" class="form-control">
-      </div>
+      <!--/div-->
       <!--label for="parent">Parent:</label>
       <input id="parent" name="parent" formControlName="parent" class="form-control"-->
     </form>

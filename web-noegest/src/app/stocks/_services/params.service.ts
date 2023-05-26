@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, switchMap } from 'rxjs';
 import { hoursDelta, deepCopy } from '../../general/_helpers/fonctions-perso';
 
 import { Params,  PARAMS } from '../_models/params';
@@ -9,7 +9,9 @@ import { Params,  PARAMS } from '../_models/params';
 export class ParamsService {
   public paramssubj= new Subject<Params>();
   public params = PARAMS
-  private key: string = "stParams";
+  private key: string = "stParams"
+  dataparam$!: Observable<Params[]>;
+  
 
   constructor() {
     if (!(localStorage.getItem(this.key))) {
@@ -17,12 +19,17 @@ export class ParamsService {
     }
     else {
       this.params = this.getStoredParams()
-      this.paramssubj.next(this.params)
     }
   }
 
-  paramsobj(): Observable<Params> {
-    return this.paramssubj.asObservable();
+
+  ngOnInit(): void {
+    this.getParams()
+  }
+
+  getParams(): Observable<Params> {
+    this.paramssubj.next(this.params)
+    return this.paramssubj
   }
   
   // stockage de l'info en local & affectation subject
@@ -30,6 +37,7 @@ export class ParamsService {
     localStorage.setItem(this.key, JSON.stringify(item))
     this.paramssubj.next(item)
   }
+
 
   getStoredParams() {
     return JSON.parse(localStorage.getItem(this.key));

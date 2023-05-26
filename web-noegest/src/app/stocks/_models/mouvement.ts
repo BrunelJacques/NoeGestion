@@ -1,3 +1,5 @@
+import { Article } from './article';
+
 export interface Mouvement {
     id: number;
     jour: string;
@@ -5,6 +7,7 @@ export interface Mouvement {
     origine: string;
     fournisseur: string;
     article_id: number;
+    article: Article
     nbcolis: any;
     qtemouvement: number;
     prixunit: number;

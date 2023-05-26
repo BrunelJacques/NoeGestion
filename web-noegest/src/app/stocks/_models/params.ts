@@ -1,5 +1,5 @@
 
-export class Params {
+export interface Params {
   id: number;
   jour: Date;
   origine: string;

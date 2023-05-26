@@ -48,7 +48,7 @@
       <td class="left" routerLink="/stocks/onesortie/{{mvt.id}}">
         <a class="fas fa-pencil me-1 ctnbtn"></a>
       </td>
-      <td class= "item small"> {{mvt.article_nom}} </td>
+      <td class= "item small"> {{mvt.article.nom_court}} </td>
       <td class= "item" routerLink="/sortie/{{mvt.id}}"> {{mvt.qtemouvement * -1 | number : '1.0-4'}} </td>
       <td class= "item" routerLink="/sortie/{{mvt.id}}"> {{mvt.qtemouvement * -1 * mvt.prixunit | number : '1.2-2'}} </td>
       <td class= "center" routerLink="/sortie/{{mvt.id}}"> {{mvt.service}} </td>

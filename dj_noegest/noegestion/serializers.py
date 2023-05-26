@@ -27,23 +27,17 @@ class GeAnalytiqueSerializer(ModelSerializer):
             "id", "nom", "abrege","params", ]
 
 
-class StMouvementSerializer(ModelSerializer):
-
-    class Meta:
-        model = StMouvement
-        fields = [
-            "id","jour", "sens", "origine", "article", "article","nbcolis",
-            "qtemouvement","prixunit", "service", "nbrations", "transfert",
-            "analytique", "fournisseur"]
-
-
 class StArticleSerializer(ModelSerializer):
 
     class Meta:
         model = StArticle
-        exclude = ['id','saisie','dernier_achat']
-        #read_only_fields = ('id', )
-        
+        exclude = ['id']
+
+class StArticleNom(ModelSerializer):
+
+    class Meta:
+        model = StArticle
+        fields = ['id','nom','nom_court']
 
 class StFournisseurSerializer(ModelSerializer):
 
@@ -64,3 +58,15 @@ class StRayonSerializer(ModelSerializer):
     class Meta:
         model = StRayon
         exclude = ['id',]
+
+
+class StMouvementSerializer(ModelSerializer):
+    article = StArticleNom()
+    fournisseur = StFournisseurSerializer()
+
+    class Meta:
+        model = StMouvement
+        fields = [
+            "id", "jour", "sens", "origine", "article", "article", "nbcolis",
+            "qtemouvement", "prixunit", "service", "nbrations", "transfert",
+            "analytique", "fournisseur"]
