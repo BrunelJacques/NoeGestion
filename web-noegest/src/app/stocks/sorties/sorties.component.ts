@@ -86,9 +86,9 @@ export class SortiesComponent implements OnInit {
  
 
   getParams(): void {
+    this.params = this.params0
     this.loading = true;
-    this.params = this.paramsService.getStoredParams()
-    this.paramsService.getParams()
+    this.paramsService.paramssubject
       .subscribe({
         next: (data: Params) => {
           this.params = data;
@@ -101,6 +101,8 @@ export class SortiesComponent implements OnInit {
           }
         }
       });
+    this.paramsService.getParams()
+    console.log(this.params)
   }
 
 }

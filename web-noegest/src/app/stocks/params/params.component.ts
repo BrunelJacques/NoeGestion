@@ -116,7 +116,7 @@ export class ParamsComponent implements OnInit {
 
   getParams(): void {
     this.loading = true;
-    this.paramsService.getParams()
+    this.paramsService.paramssubject
       .subscribe({
         next: (data) => {
           this.params = data[0];
