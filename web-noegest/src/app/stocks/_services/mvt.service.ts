@@ -1,11 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
-
-import { catchError, of } from 'rxjs';
+import { BehaviorSubject, Observable, tap, catchError, of } from 'rxjs';
 
 import { Mouvement } from '../_models/mouvement';
-import { Camp } from '../_models/camp';
 import { Params } from '../_models/params';
 
 import { Constantes } from '@app/constantes';
@@ -55,14 +52,6 @@ export class MvtService {
         )
       );
   }    
-
-  getCamps(): Observable<Camp[]> {
-    return this.http.get<Camp[]>(this.constantes.CAMPS_URL)
-      .pipe(
-        //tap(_ => this.log('fetched camps')),
-        catchError(this.handleError<Camp[]>('getCamps', []))
-      );
-  }
 
   // gestion erreur façon Tour of Heroes
   private handleError<T>(operation = 'operation', result?: T) {

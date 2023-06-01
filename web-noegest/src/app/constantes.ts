@@ -11,7 +11,7 @@ export class Constantes {
   public TOKENREFRESH_URL = this.API_URL + "/api-auth/token/refresh/"
   public STEFFECTIF_URL = this.API_URL + '/api/steffectifs';
   public STMOUVEMENT_URL = this.API_URL + '/api/stmouvement';
-  public CAMPS_URL = this.API_URL + '/api/geanalytique/?axe=ACTIVITES';
+  public ANALYTIQUE_URL = this.API_URL + '/api/geanalytique/';
 
   // pour Stocks
   static LSTSERVICE = [
@@ -34,4 +34,5 @@ export class Constantes {
     { code:  "od_in", libelle: "Régularisation" },
     { code:  "tout", libelle: "Toute ligne (ss filtre)" },
   ];
+  static ANALYTIQUE_URL: string;
 }

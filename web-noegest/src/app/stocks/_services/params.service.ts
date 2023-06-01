@@ -1,29 +1,26 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable, Subject, catchError, of } from 'rxjs';
 import { hoursDelta, deepCopy } from '../../general/_helpers/fonctions-perso';
 
-import { Params,  PARAMS } from '../_models/params';
+import { Params,  PARAMS, Camp } from '../_models/params';
+import { Constantes } from '@app/constantes';
 
 @Injectable({ providedIn: 'root'})
 
 export class ParamsService {
   public paramssubject= new Subject<Params>();
-  public params = PARAMS
-  private key: string = "stParams"
-  dataparam$!: Observable<Params[]>;
-  
+  public params = PARAMS;
+  private key: string = "stParams";
+  public camps: Camp[] = [];
 
-  constructor() {
-    if (!(localStorage.getItem(this.key))) {
-      this.setParams(PARAMS)
-    }
-    else {
-      this.params = this.getStoredParams()
-    }
-  }
+  constructor(
+    private constantes: Constantes,
+    private http: HttpClient){}
 
 
   ngOnInit(): void {
+    this.getListCamps()
     this.getParams()
   }
 
@@ -36,7 +33,6 @@ export class ParamsService {
     localStorage.setItem(this.key, JSON.stringify(item))
     this.paramssubject.next(item)
   }
-
 
   getStoredParams() {
     return JSON.parse(localStorage.getItem(this.key));
@@ -57,4 +53,49 @@ export class ParamsService {
   }
 
 
+  list():Observable<Camp[]>{
+    return (this.http.get<Camp[]>( this.constantes.ANALYTIQUE_URL+"?axe=ACTIVITES&obsolete=False"));
+  }
+
+  getListCamps(): Camp[]{
+    
+    this.list().subscribe(
+      camps => {
+        console.log(camps)
+         this.camps = camps
+      }
+      // the first argument is a function which runs on success
+      /*
+      { next: (data) => this.camps = data,
+      // the second argument is a function which runs on error
+      error: err => console.error(err),
+      // the third argument is a function which runs on completion
+      complete:() => console.log('done loading posts')
+       }*/
+    );
+    return this.camps
+  }
+
+  getCamps():Observable<Camp[]>{
+    console.log(this.constantes.ANALYTIQUE_URL+"?axe=ACTIVITES&obsolete=False")    
+    return (this.http.get<Camp[]>(
+      Constantes.ANALYTIQUE_URL+"?axe=ACTIVITES&obsolete=False"
+    ))
+    .pipe(
+      catchError(this.handleError<Camp[]>('getCamps', []))
+    );
+  }
+
+  // gestion erreur façon Tour of Heroes
+  private handleError<T>(operation = 'operation', result?: T) {
+    return (error: any): Observable<T> => {
+      console.error(error); // log to console instead
+      this.log(`${operation} failed: ${error.message}`);
+      // Let the app keep running by returning an empty result.
+      return of(result as T);
+    };
+  }
+
+  private log(message: string) {console.log('mvtService.log: ',message)}
 }
+

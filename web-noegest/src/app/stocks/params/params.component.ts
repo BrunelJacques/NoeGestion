@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
-import { MvtService } from '../_services/mvt.service';
 import { ParamsService } from '../_services/params.service';
-import { Camp } from '../_models/camp';
+import { Camp } from '../_models/params';
 import { Params } from '../_models/params';
 import { AlertService } from '@app/general/_services/alert.service';
 import { DatePipe } from '@angular/common';
@@ -40,7 +39,6 @@ export class ParamsComponent implements OnInit {
 
 
   constructor(
-    private mvtService: MvtService,
     private paramsService: ParamsService,
     private formBuilder: UntypedFormBuilder,
     private parent: Location,
@@ -148,22 +146,11 @@ export class ParamsComponent implements OnInit {
   }
 
   getCamps(): void {
-    this.mvtService.getCamps()
-      .subscribe({
-        next: (data) => {
-          this.camps = data;
-          console.log(this.camps['results'])
-        },
-        error: (e) => {
-          if (e != 'Not Found') {
-            console.error(e)
-          }
-        }
-      })
-  }
+    this.camps = this.paramsService.getListCamps()
+      }
+  
   
   setParams(): void {
     this.paramsService.setParams(this.params)
   }
-
 }

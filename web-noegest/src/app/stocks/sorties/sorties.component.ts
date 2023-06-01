@@ -72,8 +72,6 @@ export class SortiesComponent implements OnInit {
           this.sorties = data['results'].filter((a,index,arr) => {
             if (index > 10) {return false}; 
             return true});
-            console.log(this.sorties);
-
           //this.sorties = data['results'].filter(this.filtre);
         },
         error: (e) => {

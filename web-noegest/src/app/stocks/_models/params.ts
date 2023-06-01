@@ -22,3 +22,10 @@ export const  PARAMS: Params= {
   parent: "",
   modif: new Date()
 }
+
+export interface Camp {
+  id: 0;
+  nom: string;
+  abrege: string;
+  params: any;
+}
