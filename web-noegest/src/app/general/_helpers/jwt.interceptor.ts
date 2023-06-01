@@ -19,8 +19,10 @@ export class JwtInterceptor implements HttpInterceptor {
             if (isRefresh) {          
                 request = request.clone({
                     setHeaders: { Authorization: `Bearer ${user.jwtToken}` },
-                    body: { refresh: '${user.refresh}' }
+                    body: { refresh: `${user.refresh}` }
+                    
                 });
+                console.log(request)
             }
             else {
                 request = request.clone({

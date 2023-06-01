@@ -12,7 +12,6 @@ export class AuthenticationService {
     private cst = new Constantes
     private userSubject: BehaviorSubject<User | null>;
     public user: Observable<User | null>;
-    private refreshtkn : string
 
 
     constructor(
@@ -35,7 +34,6 @@ export class AuthenticationService {
             { withCredentials: false}
             ).pipe(map(user => {
                 user.jwtToken = user.access;
-                this.refreshtkn = user.refresh;
                 this.userSubject.next(user);
                 this.startRefreshTokenTimer();
                 return user;
@@ -43,10 +41,10 @@ export class AuthenticationService {
     }
 
     refreshToken() {
-        console.log(this.refreshToken)
+        // le post sera intercepté et complété par JwtInterceptor
         return this.http.post<any>(
                 this.cst.TOKENREFRESH_URL,
-                { refresh: this.refreshtkn },
+                {},
                 { withCredentials: false }
                 )
             .pipe(map(user => {
@@ -66,7 +64,6 @@ export class AuthenticationService {
     }
 
 
-
     register(user: User) {
         console.log(this.cst.API_URL+'/register',user)
         return this.http.post(this.cst.API_URL+'/register', user);
@@ -84,8 +81,8 @@ export class AuthenticationService {
 
         // set a timeout to refresh the token a minute before it expires
         const expires = new Date(jwtToken.exp * 1000);
-        //const timeout = expires.getTime() - Date.now() - (60 * 1000);
-        const timeout = expires.getTime() - Date.now() - (60 * 1000) - 220000; //pour test
+        const timeout = expires.getTime() - Date.now() - (60 * 1000);
+        //const timeout = expires.getTime() - Date.now() - (60 * 1000) - 220000; //pour test plus rapides
         this.refreshTokenTimeout = setTimeout(() => this.refreshToken().subscribe(), timeout);
     }
 
