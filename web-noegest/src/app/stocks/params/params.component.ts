@@ -36,6 +36,7 @@ export class ParamsComponent implements OnInit {
   lstparams: Params[] = [];
   loading = true;
   submitted = false;
+  
 
 
   constructor(
@@ -47,13 +48,13 @@ export class ParamsComponent implements OnInit {
   
   ngOnInit(): void {
     this.getParams();
-    this.getCamps();
+  
     this.paramsForm = this.formBuilder.group({
       jour: [this.today.toISOString().split("T")[0],Validators.required],
-      origine: ["", Validators.required],
-      camp: ["", Validators.required],
-      tva: "",
-      service: ["", Validators.required],
+      origine: ["repas", Validators.required],
+      camp: ["00", Validators.required],
+      tva: "en TTC",
+      service: ["-", Validators.required],
       fournisseur:"",
       //parent:['', Validators.required],
     });
@@ -146,9 +147,8 @@ export class ParamsComponent implements OnInit {
   }
 
   getCamps(): void {
-    this.camps = this.paramsService.getListCamps()
+    this.camps = this.paramsService.getCamps()
       }
-  
   
   setParams(): void {
     this.paramsService.setParams(this.params)

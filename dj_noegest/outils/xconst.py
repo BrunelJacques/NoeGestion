@@ -27,6 +27,7 @@ REPAS_CHOICES = [
         (5, 'tous'),
 ]
 
+# en dur, non libre
 ORIGINE_CHOICES = [
         ('achat', 'Entrée par Achats'),
         ('retour', 'Entrée Retour de camp'),
@@ -36,14 +37,14 @@ ORIGINE_CHOICES = [
         ('od_out', 'Sortie Corrective')
     ]
 
-# init model StMagasin
+# init model StMagasin, modif libres possibles
 MAGASIN_CHOICES = [
         ('FRI', 'Frigo'),
         ('SUR', 'Congel'),
         ('RES', 'Reserve')
     ]
 
-# init model StRayon
+# init model StRayon, modif libres possibles
 RAYON_CHOICES = [
         ('BSS', 'Boissons'),
         ('CND', 'Condiments'),

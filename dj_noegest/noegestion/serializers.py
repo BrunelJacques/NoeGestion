@@ -43,7 +43,7 @@ class StFournisseurSerializer(ModelSerializer):
 
     class Meta:
         model = StFournisseur
-        exclude = ['id',]
+        exclude = []
 
 
 class StMagasinSerializer(ModelSerializer):

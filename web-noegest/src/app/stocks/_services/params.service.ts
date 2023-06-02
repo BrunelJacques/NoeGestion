@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, Subject, catchError, of } from 'rxjs';
+import { Observable, Subject, catchError, tap, of, map, first } from 'rxjs';
 import { hoursDelta, deepCopy } from '../../general/_helpers/fonctions-perso';
 
-import { Params,  PARAMS, Camp } from '../_models/params';
+import { Params,  PARAMS, Camp, Fournisseur, Rayon, Magasin } from '../_models/params';
 import { Constantes } from '@app/constantes';
 
 @Injectable({ providedIn: 'root'})
@@ -13,18 +13,20 @@ export class ParamsService {
   public params = PARAMS;
   private key: string = "stParams";
   public camps: Camp[] = [];
+  public fournisseurs: Fournisseur[] = [];
+  public rayons: Rayon[] = [];
+  public magasins: Magasin[] = [];
 
   constructor(
     private constantes: Constantes,
     private http: HttpClient){}
 
 
-  ngOnInit(): void {
-    this.getListCamps()
-    this.getParams()
-  }
-
   getParams() {
+    this.getCamps()
+    this.getFournisseurs()
+    this.getMagasins()
+    this.getRayons()
     this.paramssubject.next(this.params)
   }
   
@@ -53,37 +55,72 @@ export class ParamsService {
   }
 
 
-  list():Observable<Camp[]>{
-    return (this.http.get<Camp[]>( this.constantes.ANALYTIQUE_URL+"?axe=ACTIVITES&obsolete=False"));
-  }
-
-  getListCamps(): Camp[]{
-    
-    this.list().subscribe(
-      camps => {
-        console.log(camps)
-         this.camps = camps
-      }
-      // the first argument is a function which runs on success
-      /*
-      { next: (data) => this.camps = data,
-      // the second argument is a function which runs on error
-      error: err => console.error(err),
-      // the third argument is a function which runs on completion
-      complete:() => console.log('done loading posts')
-       }*/
-    );
+  getCamps() {
+    if (this.camps.length == 0) {
+      const url = this.constantes.GEANALYTIQUE_URL+"?axe=ACTIVITES&obsolete=False"
+      this.http.get<Camp[]>(url)
+        .pipe(
+          catchError(this.handleError<any>('getCamps',{'results':[]})),
+        )
+        .subscribe(
+          camps => {
+            this.camps = camps['results']
+            this.log(`lus: ${this.camps.length} camps`)
+          }
+        )
+    }
     return this.camps
   }
 
-  getCamps():Observable<Camp[]>{
-    console.log(this.constantes.ANALYTIQUE_URL+"?axe=ACTIVITES&obsolete=False")    
-    return (this.http.get<Camp[]>(
-      Constantes.ANALYTIQUE_URL+"?axe=ACTIVITES&obsolete=False"
-    ))
-    .pipe(
-      catchError(this.handleError<Camp[]>('getCamps', []))
-    );
+  getFournisseurs() {
+    if (this.fournisseurs.length == 0) {
+      const url = this.constantes.STFOURNISSEUR_URL
+      this.http.get<Fournisseur[]>(url)
+        .pipe(
+          catchError(this.handleError<any>('getFournisseurs',{'results':[]})),
+        )
+        .subscribe(
+          fournisseurs => {
+            this.fournisseurs = fournisseurs['results']
+            this.log(`lus: ${this.fournisseurs.length} fournisseurs`)
+          }
+        )
+    }
+    return this.fournisseurs
+  }
+
+  getRayons() {
+    if (this.rayons.length == 0) {
+      const url = this.constantes.STRAYON_URL
+      this.http.get<Rayon[]>(url)
+        .pipe(
+          catchError(this.handleError<any>('getRayons',{'results':[]})),
+        )
+        .subscribe(
+          rayons => {
+            this.rayons = rayons['results']
+            this.log(`lus: ${this.rayons.length} rayons`)
+          }
+        )
+    }
+    return this.rayons
+  }
+
+  getMagasins() {
+    if (this.magasins.length == 0) {
+      const url = this.constantes.STMAGASIN_URL
+      this.http.get<Magasin[]>(url)
+        .pipe(
+          catchError(this.handleError<any>('getMagasins',{'results':[]})),
+        )
+        .subscribe(
+          magasins => {
+            this.magasins = magasins['results']
+            this.log(`lus: ${this.magasins.length} magasins`)
+          }
+        )
+    }
+    return this.magasins
   }
 
   // gestion erreur façon Tour of Heroes

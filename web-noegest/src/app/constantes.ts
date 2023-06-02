@@ -11,7 +11,10 @@ export class Constantes {
   public TOKENREFRESH_URL = this.API_URL + "/api-auth/token/refresh/"
   public STEFFECTIF_URL = this.API_URL + '/api/steffectifs';
   public STMOUVEMENT_URL = this.API_URL + '/api/stmouvement';
-  public ANALYTIQUE_URL = this.API_URL + '/api/geanalytique/';
+  public GEANALYTIQUE_URL = this.API_URL + '/api/geanalytique/';
+  public STFOURNISSEUR_URL = this.API_URL + '/api/stfournisseur/';
+  public STRAYON_URL = this.API_URL + '/api/strayon/';
+  public STMAGASIN_URL = this.API_URL + '/api/stmagasin/';
 
   // pour Stocks
   static LSTSERVICE = [
@@ -20,6 +23,7 @@ export class Constantes {
     { code: "midi", libelle: "Service de midi" },
     { code: "soir", libelle: "Service du soir" },
     { code: "5eme", libelle: "5eme repas" },
+    { code:  "tout", libelle: "Toute ligne (ss filtre)" },
   ];
 
   static LSTORIGINE_SORTIES = [
@@ -34,5 +38,4 @@ export class Constantes {
     { code:  "od_in", libelle: "Régularisation" },
     { code:  "tout", libelle: "Toute ligne (ss filtre)" },
   ];
-  static ANALYTIQUE_URL: string;
 }

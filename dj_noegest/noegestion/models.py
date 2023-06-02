@@ -10,7 +10,7 @@ class StMagasin(models.Model):
     id = models.CharField(max_length=5, primary_key=True)
     nom = models.CharField(max_length=30, unique=True)
     position = models.PositiveSmallIntegerField("Position", null=True)
-    z = xformat.DateFrToIso('31/12/2012')
+
     class Meta:
         verbose_name = "StMagasin: Lieu de stockage"
         ordering = ["position"]

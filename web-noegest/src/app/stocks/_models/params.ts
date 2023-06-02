@@ -16,9 +16,9 @@ export const  PARAMS: Params= {
   jour: new Date(),
   origine: "tout",
   service: 0,
-  camp: "",
+  camp: "00",
   fournisseur: "",
-  tva: "ttc",
+  tva: "en TTC",
   parent: "",
   modif: new Date()
 }
@@ -28,4 +28,21 @@ export interface Camp {
   nom: string;
   abrege: string;
   params: any;
+}
+
+export interface Fournisseur {
+  id: 0;
+  nom: string;
+}
+
+export interface Rayon {
+  id: 0;
+  nom: string;
+  position: number;
+}
+
+export interface Magasin {
+  id: 0;
+  nom: string;
+  position: number;
 }
