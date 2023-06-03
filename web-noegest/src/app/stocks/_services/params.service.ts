@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, Subject, catchError, tap, of, map, first } from 'rxjs';
+import { Observable, BehaviorSubject, catchError, of } from 'rxjs';
 import { hoursDelta, deepCopy } from '../../general/_helpers/fonctions-perso';
 
 import { Params,  PARAMS, Camp, Fournisseur, Rayon, Magasin } from '../_models/params';
@@ -9,31 +9,34 @@ import { Constantes } from '@app/constantes';
 @Injectable({ providedIn: 'root'})
 
 export class ParamsService {
-  public paramssubject= new Subject<Params>();
-  public params = PARAMS;
+  public paramssubj$= new BehaviorSubject<Params>(PARAMS);
+  //public params = [PARAMS,];
+
   private key: string = "stParams";
   public camps: Camp[] = [];
   public fournisseurs: Fournisseur[] = [];
   public rayons: Rayon[] = [];
   public magasins: Magasin[] = [];
 
+
   constructor(
     private constantes: Constantes,
-    private http: HttpClient){}
+    private http: HttpClient){
+      this.initParams()
+    }
 
-
-  getParams() {
+  initParams() {
     this.getCamps()
     this.getFournisseurs()
     this.getMagasins()
     this.getRayons()
-    this.paramssubject.next(this.params)
+    this.paramssubj$.next(PARAMS)
   }
   
   // stockage de l'info en local & affectation subject
   setParams(item: Params) {
     localStorage.setItem(this.key, JSON.stringify(item))
-    this.paramssubject.next(item)
+    this.paramssubj$.next(item)
   }
 
   getStoredParams() {

@@ -33,7 +33,7 @@ export class SortiesComponent implements OnInit {
     ) {}
 
   ngOnInit(): void {
-    this.getParams();
+    //this.getParams();
     this.getSorties();
   }
 
@@ -83,10 +83,10 @@ export class SortiesComponent implements OnInit {
   }
  
 
-  getParams(): void {
+  /*-getParams(): void {
     this.params = this.params0
     this.loading = true;
-    this.paramsService.paramssubject
+    this.paramsService.paramssubj$
       .subscribe({
         next: (data: Params) => {
           this.params = data;
@@ -101,7 +101,7 @@ export class SortiesComponent implements OnInit {
       });
     this.paramsService.getParams()
     console.log(this.params)
-  }
+  }*/
 
 }
 

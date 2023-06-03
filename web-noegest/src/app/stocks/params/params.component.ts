@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { DatePipe } from '@angular/common';
+
 import { ParamsService } from '../_services/params.service';
 import { Camp } from '../_models/params';
 import { Params } from '../_models/params';
 import { AlertService } from '@app/general/_services/alert.service';
-import { DatePipe } from '@angular/common';
 import { Constantes } from '@app/constantes';
-
 
 @Component({
   selector: 'app-params',
@@ -16,7 +16,7 @@ import { Constantes } from '@app/constantes';
 })
 
 export class ParamsComponent implements OnInit {
-  closeResult = '';
+  params: Params;
   service = "";
   origine = "";
   camp = "";
@@ -32,8 +32,6 @@ export class ParamsComponent implements OnInit {
   lstorigine_entrees = this.constantes.LSTORIGINE_ENTREES;
 
   lstservice_code = this.lstservice.map((x) => x.code)
-  params: Params;
-  lstparams: Params[] = [];
   loading = true;
   submitted = false;
   
@@ -47,8 +45,7 @@ export class ParamsComponent implements OnInit {
   ){}
   
   ngOnInit(): void {
-    this.getParams();
-  
+    //this.paramsService.paramssubj$.subscribe( params => this.params = params );
     this.paramsForm = this.formBuilder.group({
       jour: [this.today.toISOString().split("T")[0],Validators.required],
       origine: ["repas", Validators.required],
@@ -58,11 +55,44 @@ export class ParamsComponent implements OnInit {
       fournisseur:"",
       //parent:['', Validators.required],
     });
+    this.getParams()
   }
 
   // convenience getter for easy access to form fields
   get f() { return this.paramsForm.controls; }
 
+  getParams(): void {
+    this.loading = true;
+    this.paramsService.paramssubj$
+      .subscribe({
+        next: (data) => {
+          this.params = data;
+          this.params.jour = new Date(this.params.jour) //reprise du type date pour toISOString
+          this.origine =  this.params.origine
+          //this.paramsForm.patchValue({'jour':this.pipe.transform(this.params.jour, 'yyyy-MM-dd')})
+          if (!this.params.service || this.params.service < 0){ 
+            this.params.service = 0 }
+          this.paramsForm.patchValue({
+            'jour': this.params.jour.toISOString().split("T")[0],
+            'origine': this.params.origine,
+            'camp': this.params.camp,
+            'tva': this.params.tva,
+            'service': this.lstservice[this.params.service].code,
+            'fournisseur': this.params.fournisseur,
+          })
+          //if (this.params.parent.endsWith('sorties')) {
+          this.lstorigine = this.lstorigine_sorties
+          //  } else {this.lstorigine = this.lstorigine_entrees}    
+          this.loading = false
+          this.majOrigine(this.origine)
+        },        
+        error: (e) => {
+          if (e != 'Not Found') {
+            console.error(e)
+          }
+        }
+      });
+  }
 
   onOrigineChange(neworigine: any) {
     this.origine = neworigine.target.value
@@ -91,7 +121,7 @@ export class ParamsComponent implements OnInit {
     this.params.parent += '-params',
     this.params.tva = this.paramsForm.value.tva,
     this.params.modif = new Date(),
-    this.setParams(),
+    this.setParams(this.params),
     this.goBack()
   }
 
@@ -110,47 +140,14 @@ export class ParamsComponent implements OnInit {
         return;
     }
     this.loading = true;
-    this.okBack()
-  }
-
-  getParams(): void {
-    this.loading = true;
-    this.paramsService.paramssubject
-      .subscribe({
-        next: (data) => {
-          this.params = data[0];
-          this.params.jour = new Date(this.params.jour) //reprise du type date pour toISOString
-          this.origine =  this.params.origine
-          //this.paramsForm.patchValue({'jour':this.pipe.transform(this.params.jour, 'yyyy-MM-dd')})
-          if (!this.params.service || this.params.service < 0){ 
-            this.params.service = 0 }
-          this.paramsForm.patchValue({
-            'jour': this.params.jour.toISOString().split("T")[0],
-            'origine': this.params.origine,
-            'camp': this.params.camp,
-            'tva': this.params.tva,
-            'service': this.lstservice[this.params.service].code,
-            'fournisseur': this.params.fournisseur,
-          })
-          //if (this.params.parent.endsWith('sorties')) {
-          this.lstorigine = this.lstorigine_sorties
-          //  } else {this.lstorigine = this.lstorigine_entrees}    
-          this.loading = false
-          this.majOrigine(this.origine)
-        },        
-        error: (e) => {
-          if (e != 'Not Found') {
-            console.error(e)
-          }
-        }
-      });
+    //this.okBack()
   }
 
   getCamps(): void {
     this.camps = this.paramsService.getCamps()
       }
   
-  setParams(): void {
-    this.paramsService.setParams(this.params)
+  setParams(params): void {
+    this.paramsService.setParams(params)
   }
 }

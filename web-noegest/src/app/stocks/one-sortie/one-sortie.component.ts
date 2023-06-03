@@ -73,7 +73,7 @@ export class OneSortieComponent implements OnInit {
 
   getParams(): void {
     this.loading = true;
-    this.paramsService.paramssubject
+    this.paramsService.paramssubj$
       .subscribe({
         next: (data) => {
           this.params = data[0];
