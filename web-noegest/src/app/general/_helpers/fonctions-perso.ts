@@ -1,3 +1,8 @@
+
+export function dateAnsi(date:Date):string {
+  return 
+}
+
 export  function hoursDelta(date1: Date, date2: Date): number {
       return Math.floor(((date2.getTime()) - (date1.getTime())) / 1000 / 60 / 60)
     }
@@ -15,7 +20,6 @@ export function deepCopy<T>(source: T): T {
         }, Object.create(Object.getPrototypeOf(source)))
   : source as T;
 }
-
 
 export function dpCopy(oldObj: any) {
   var newObj = oldObj;

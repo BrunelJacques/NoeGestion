@@ -7,6 +7,7 @@ import { Params, PARAMS } from '../_models/params';
 import { DatePipe } from '@angular/common';
 import { Constantes } from '@app/constantes';
 
+
 @Component({
   selector: 'app-sorties',
   templateUrl: './sorties.component.html',
@@ -14,34 +15,21 @@ import { Constantes } from '@app/constantes';
 })
 
 export class SortiesComponent implements OnInit {
-  params0 = PARAMS
-  params:Params
   selectedMvt: Mouvement;
   sorties: Mouvement[] = [];
-  pipe = new DatePipe('en-US');
+  datePipe = new DatePipe('en-US');
   jour = "";
-  loading = true
+  loading = true;
+  params: Params;
 
-  constantes = Constantes
+  constantes = Constantes;
   lstorigine_codes = this.constantes.LSTORIGINE_SORTIES.map((x)=>x.code) ;
   lstservice = this.constantes.LSTSERVICE
 
-  constructor(
-    private mvtService: MvtService,
-    private paramsService: ParamsService,
-    public datepipe: DatePipe,
-    ) {}
-
-  ngOnInit(): void {
-    //this.getParams();
-    this.getSorties();
-  }
-
-
-  filtre = function(mvt: Mouvement, index, array){
+  mvtsFilter = (mvt: Mouvement) => {
     let ret = true
     // filtre sur le date
-    if (this.pipe.transform(mvt.jour) != this.pipe.transform(this.params.jour)) {
+    if (mvt.jour != this.datePipe.transform(this.params.jour,'yyyy-MM-dd')) {
       ret = false
     }
     // filtre sur le type d'origine du mouvement
@@ -64,15 +52,28 @@ export class SortiesComponent implements OnInit {
     return ret
   }
 
+  constructor(
+    private mvtService: MvtService,
+    private paramsService: ParamsService,
+    ) {}
+   
+
+  ngOnInit(): void {
+    this.getParams();
+    this.getSorties();
+  }
+
 
   getSorties(): void {
     this.mvtService.getSorties()
       .subscribe({
         next: (data) => {
-          this.sorties = data['results'].filter((a,index,arr) => {
-            if (index > 10) {return false}; 
+          // limitation à 100 du nombre de lignes affichées
+          this.sorties = data['results'].filter((index: number) => {
+            if (index > 100) {return false}; 
             return true});
-          //this.sorties = data['results'].filter(this.filtre);
+          // filtrage selon les paramètres choisis
+          this.sorties = data['results'].filter(this.mvtsFilter);
         },
         error: (e) => {
           if (e != 'Not Found') {
@@ -82,15 +83,13 @@ export class SortiesComponent implements OnInit {
       })
   }
  
-
-  /*-getParams(): void {
-    this.params = this.params0
+  getParams(): void {
     this.loading = true;
     this.paramsService.paramssubj$
       .subscribe({
         next: (data: Params) => {
           this.params = data;
-          this.jour = this.pipe.transform(this.params.jour, 'dd/MM/yyyy');
+          this.jour = this.datePipe.transform(this.params.jour, 'dd/MM/yyyy');
           this.loading = false
         },
         error: (e: string) => {
@@ -99,9 +98,7 @@ export class SortiesComponent implements OnInit {
           }
         }
       });
-    this.paramsService.getParams()
-    console.log(this.params)
-  }*/
+  }
 
 }
 

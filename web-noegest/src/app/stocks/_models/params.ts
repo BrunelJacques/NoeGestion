@@ -1,4 +1,17 @@
 
+export const  PARAMS: Params= {
+  id: 0,
+  jour: new Date(2022,8,17),//valeur de démo, date du jour préférable
+  origine: "repas",
+  service: 0,
+  camp: "00",
+  fournisseur: "",
+  tva: "en TTC",
+  parent: "",
+  modif: new Date()
+}
+
+
 export interface Params {
   id: number;
   jour: Date;
@@ -9,18 +22,6 @@ export interface Params {
   tva: string;
   parent: string;
   modif: Date
-}
-
-export const  PARAMS: Params= {
-  id: 0,
-  jour: new Date(),
-  origine: "tout",
-  service: 0,
-  camp: "00",
-  fournisseur: "",
-  tva: "en TTC",
-  parent: "",
-  modif: new Date()
 }
 
 export interface Camp {

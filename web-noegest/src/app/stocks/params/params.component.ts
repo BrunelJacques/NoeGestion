@@ -32,6 +32,7 @@ export class ParamsComponent implements OnInit {
   lstorigine_entrees = this.constantes.LSTORIGINE_ENTREES;
 
   lstservice_code = this.lstservice.map((x) => x.code)
+  jour = "";
   loading = true;
   submitted = false;
   
@@ -65,9 +66,9 @@ export class ParamsComponent implements OnInit {
     this.loading = true;
     this.paramsService.paramssubj$
       .subscribe({
-        next: (data) => {
-          this.params = data;
-          this.params.jour = new Date(this.params.jour) //reprise du type date pour toISOString
+        next: (data:Params) => {
+        this.params = data;
+          this.jour = this.pipe.transform(this.params.jour, 'dd/MM/yyyy');
           this.origine =  this.params.origine
           //this.paramsForm.patchValue({'jour':this.pipe.transform(this.params.jour, 'yyyy-MM-dd')})
           if (!this.params.service || this.params.service < 0){ 

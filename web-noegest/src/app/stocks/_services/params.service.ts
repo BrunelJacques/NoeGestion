@@ -10,7 +10,6 @@ import { Constantes } from '@app/constantes';
 
 export class ParamsService {
   public paramssubj$= new BehaviorSubject<Params>(PARAMS);
-  //public params = [PARAMS,];
 
   private key: string = "stParams";
   public camps: Camp[] = [];
@@ -30,7 +29,8 @@ export class ParamsService {
     this.getFournisseurs()
     this.getMagasins()
     this.getRayons()
-    this.paramssubj$.next(PARAMS)
+    console.log(PARAMS.jour)
+    //this.paramssubj$.next(PARAMS)
   }
   
   // stockage de l'info en local & affectation subject
