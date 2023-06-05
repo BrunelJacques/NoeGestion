@@ -29,8 +29,6 @@ export class ParamsService {
     this.getFournisseurs()
     this.getMagasins()
     this.getRayons()
-    console.log(PARAMS.jour)
-    //this.paramssubj$.next(PARAMS)
   }
   
   // stockage de l'info en local & affectation subject

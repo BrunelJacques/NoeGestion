@@ -1,8 +1,9 @@
 ﻿import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { DatePipe } from '@angular/common';
 
 import { User } from '../_models';
 import { Constantes } from '@app/constantes';
@@ -12,11 +13,11 @@ export class AuthenticationService {
     private cst = new Constantes
     private userSubject: BehaviorSubject<User | null>;
     public user: Observable<User | null>;
-
+    datePipe = new DatePipe('en-US');
 
     constructor(
         private router: Router,
-        private http: HttpClient
+        private http: HttpClient,
     ) {
         this.userSubject = new BehaviorSubject<User | null>(null);
         this.user = this.userSubject.asObservable();
@@ -41,6 +42,7 @@ export class AuthenticationService {
     }
 
     refreshToken() {
+        //console.log('go refresh: ',this.datePipe.transform(Date.now(),'yyyy-MM-dd hh-mm-ss'))
         // le post sera intercepté et complété par JwtInterceptor
         return this.http.post<any>(
                 this.cst.TOKENREFRESH_URL,
@@ -77,12 +79,12 @@ export class AuthenticationService {
     private startRefreshTokenTimer() {
         // parse json object from base64 encoded jwt token
         const jwtBase64 = this.userValue!.jwtToken!.split('.')[1];
-        const jwtToken = JSON.parse(atob(jwtBase64));
+        const jwtToken = JSON.parse(window.atob(jwtBase64));
 
         // set a timeout to refresh the token a minute before it expires
         const expires = new Date(jwtToken.exp * 1000);
         const timeout = expires.getTime() - Date.now() - (60 * 1000);
-        //const timeout = expires.getTime() - Date.now() - (60 * 1000) - 220000; //pour test plus rapides
+        //const timeout = expires.getTime() - Date.now() - (120 * 1000) ; //pour test plus rapides
         this.refreshTokenTimeout = setTimeout(() => this.refreshToken().subscribe(), timeout);
     }
 

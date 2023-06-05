@@ -17,12 +17,10 @@ import { Constantes } from '@app/constantes';
 
 export class ParamsComponent implements OnInit {
   params: Params;
-  service = "";
   origine = "";
-  camp = "";
   camps: Camp[] = [];
   paramsForm!: UntypedFormGroup;
-  pipe = new DatePipe('en-US');
+  datePipe = new DatePipe('en-US');
   today = new Date();
 
   constantes = Constantes
@@ -32,7 +30,6 @@ export class ParamsComponent implements OnInit {
   lstorigine_entrees = this.constantes.LSTORIGINE_ENTREES;
 
   lstservice_code = this.lstservice.map((x) => x.code)
-  jour = "";
   loading = true;
   submitted = false;
   
@@ -68,7 +65,6 @@ export class ParamsComponent implements OnInit {
       .subscribe({
         next: (data:Params) => {
         this.params = data;
-          this.jour = this.pipe.transform(this.params.jour, 'dd/MM/yyyy');
           this.origine =  this.params.origine
           //this.paramsForm.patchValue({'jour':this.pipe.transform(this.params.jour, 'yyyy-MM-dd')})
           if (!this.params.service || this.params.service < 0){ 
