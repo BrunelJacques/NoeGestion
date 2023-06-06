@@ -47,7 +47,7 @@
         </option>
       </select>
 
-      <div class="form-group" *ngIf="origine.endsWith('camp')">
+      <div class="form-group" *ngIf="params.origine.endsWith('camp')">
         <label for="camp">Camp:</label>
         <select type="text"  formControlName="camp" 
           class="form-control" required
@@ -78,16 +78,26 @@
           <div *ngIf="f.service.errors.required">Choisissez un service de repas ou 'pour tout'</div>
         </div>
       </div>
-      <!--div *ngIf="params.parent && params.parent.endsWith('entrees')"-->
         <label for="tva">Tva mtt:</label>
         <select id="tva" name="tva" formControlName="tva" class="form-control">
           <option value="ttc">en TTC</option>
           <option value="ht">en HT</option>
         </select>
 
-        <label for="fournisseur">Fournisseur:</label>
-        <input id="fournisseur" name="fournisseur" formControlName="fournisseur" class="form-control">
-      <!--/div-->
+
+        <label for="fournisseur">Fournisseur :</label>
+        <select id="fournisseur" name="fournisseur"
+          formControlName="fournisseur"
+          class="form-control" required aria-label="fournisseur">
+          <option *ngFor="let fournisseur of fournisseurs"
+            [ngValue]="fournisseur.id">
+            {{fournisseur.nom}}
+          </option>
+        </select>
+
+
+
+        <!--/div-->
       <!--label for="parent">Parent:</label>
       <input id="parent" name="parent" formControlName="parent" class="form-control"-->
     </form>

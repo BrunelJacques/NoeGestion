@@ -17,11 +17,9 @@ import { Constantes } from '@app/constantes';
 
 export class ParamsComponent implements OnInit {
   params: Params;
-  origine = "";
   camps: Camp[] = [];
-  paramsForm!: UntypedFormGroup;
-  datePipe = new DatePipe('en-US');
-  today = new Date();
+  paramsForm: UntypedFormGroup;
+
 
   constantes = Constantes
   lstservice = this.constantes.LSTSERVICE;
@@ -29,23 +27,25 @@ export class ParamsComponent implements OnInit {
   lstorigine_sorties = this.constantes.LSTORIGINE_SORTIES;
   lstorigine_entrees = this.constantes.LSTORIGINE_ENTREES;
 
+  fournisseurs = [];
+
   lstservice_code = this.lstservice.map((x) => x.code)
   loading = true;
   submitted = false;
+
   
-
-
   constructor(
     private paramsService: ParamsService,
     private formBuilder: UntypedFormBuilder,
     private parent: Location,
     private alertService: AlertService,
+    private datePipe: DatePipe,
   ){}
   
   ngOnInit(): void {
     //this.paramsService.paramssubj$.subscribe( params => this.params = params );
     this.paramsForm = this.formBuilder.group({
-      jour: [this.today.toISOString().split("T")[0],Validators.required],
+      jour: [new Date(),Validators.required],
       origine: ["repas", Validators.required],
       camp: ["00", Validators.required],
       tva: "en TTC",
@@ -64,13 +64,11 @@ export class ParamsComponent implements OnInit {
     this.paramsService.paramssubj$
       .subscribe({
         next: (data:Params) => {
-        this.params = data;
-          this.origine =  this.params.origine
-          //this.paramsForm.patchValue({'jour':this.pipe.transform(this.params.jour, 'yyyy-MM-dd')})
+          this.params = data;
           if (!this.params.service || this.params.service < 0){ 
             this.params.service = 0 }
           this.paramsForm.patchValue({
-            'jour': this.params.jour.toISOString().split("T")[0],
+            'jour': this.datePipe.transform(this.params.jour, 'yyyy-MM-dd'),
             'origine': this.params.origine,
             'camp': this.params.camp,
             'tva': this.params.tva,
@@ -81,7 +79,7 @@ export class ParamsComponent implements OnInit {
           this.lstorigine = this.lstorigine_sorties
           //  } else {this.lstorigine = this.lstorigine_entrees}    
           this.loading = false
-          this.majOrigine(this.origine)
+          this.majOrigine(this.params.origine)
         },        
         error: (e) => {
           if (e != 'Not Found') {
@@ -89,11 +87,12 @@ export class ParamsComponent implements OnInit {
           }
         }
       });
+    this.fournisseurs = this.paramsService.fournisseurs
+    console.log(this.fournisseurs)
   }
 
   onOrigineChange(neworigine: any) {
-    this.origine = neworigine.target.value
-    this.majOrigine(this.origine)
+    this.majOrigine(neworigine.target.value)
   }
 
   majOrigine(origine){
