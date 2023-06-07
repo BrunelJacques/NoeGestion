@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Mouvement } from '../_models/mouvement';
 import { MvtService } from '../_services/mvt.service';
 import { ParamsService } from '../_services/params.service'
-import { Params, PARAMS } from '../_models/params';
+import { Params } from '../_models/params';
+import { NamemoduleService } from '@app/general/_services';
 //import { OneSortieComponent } from '../one-sortie/one-sortie.component';
 import { DatePipe } from '@angular/common';
 import { Constantes } from '@app/constantes';
@@ -53,9 +54,12 @@ export class SortiesComponent implements OnInit {
   }
 
   constructor(
+    private namemoduleService: NamemoduleService,
     private mvtService: MvtService,
     private paramsService: ParamsService,
-    ) {}
+    ) {
+      this.namemoduleService.setParentName("sorties")
+    }
    
 
   ngOnInit(): void {

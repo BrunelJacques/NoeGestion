@@ -5,14 +5,10 @@ import { Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { environment } from 'src/environments/environment';
 import { AuthenticationService } from '../_services';
-import { ChoixAppliService } from '../_services/choix-appli.service';
+import { NameappliService, NamemoduleService } from '../_services/namemodule.service';
 
 
 import { User } from '@app/general/_models';
-
-
-//import { first } from 'rxjs/operators';
-//import { UserService } from '../_services';
 
 
 
@@ -25,17 +21,18 @@ import { User } from '@app/general/_models';
 
 export class HomeComponent implements OnInit {
 
-user = new User();
+  user = new User();
+  appName = environment.appName
 
   constructor(
     @Inject(PLATFORM_ID)
     private platformId: object,
     private authenticationService: AuthenticationService,
-    private choixAppliService: ChoixAppliService,
+    private choixAppliService: NameappliService,
+    private namemoduleService: NamemoduleService,
     )
      {
       this.authenticationService.user.subscribe(x => this.user = x);
-      //this.choixAppliService.choixSubject$.subscribe((x => console.log('home constructor subcribe choixSubject: '+x)))
      }
      ;
     
@@ -52,36 +49,23 @@ user = new User();
       document.getElementsByTagName('head')[0].appendChild(s);
     }
   }
-  appName = environment.appName
+ 
 
-  emitSubject(val: string){
-    this.choixAppliService.choixSubject$.next(val)
+  emitLocation(name: string){
+    this.choixAppliService.choixSubject$.next(name)
+    this.namemoduleService.setParentName(name)
+
   };
 
   stocks() {
-    this.emitSubject('stocks')
+    this.emitLocation('stocks')
 
   }
 
   kms() {
-    this.emitSubject('kms')
+    this.emitLocation('kms')
   }
 
 } 
 
-
-/**export class HomeComponent {
-    loading = false;
-    users?: User[];
-
-    constructor(private userService: UserService) { }
-
-    ngOnInit() {
-        this.loading = true;
-        this.userService.getAll().pipe(first()).subscribe(users => {
-            this.loading = false;
-            this.users = users;
-        });
-    }
-}*/
 

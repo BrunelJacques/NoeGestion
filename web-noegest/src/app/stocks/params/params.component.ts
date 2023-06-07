@@ -8,6 +8,7 @@ import { Camp } from '../_models/params';
 import { Params } from '../_models/params';
 import { AlertService } from '@app/general/_services/alert.service';
 import { Constantes } from '@app/constantes';
+import { NamemoduleService } from '@app/general/_services';
 
 @Component({
   selector: 'app-params',
@@ -19,9 +20,10 @@ export class ParamsComponent implements OnInit {
   params: Params;
   camps: Camp[] = [];
   paramsForm: UntypedFormGroup;
+  parent: string = "";
 
 
-  constantes = Constantes
+  constantes = Constantes;
   lstservice = this.constantes.LSTSERVICE;
   lstorigine = [];
   lstorigine_sorties = this.constantes.LSTORIGINE_SORTIES;
@@ -37,9 +39,10 @@ export class ParamsComponent implements OnInit {
   constructor(
     private paramsService: ParamsService,
     private formBuilder: UntypedFormBuilder,
-    private parent: Location,
+    private location: Location,
     private alertService: AlertService,
     private datePipe: DatePipe,
+    private namemoduleService: NamemoduleService,
   ){}
   
   ngOnInit(): void {
@@ -51,9 +54,9 @@ export class ParamsComponent implements OnInit {
       tva: "en TTC",
       service: ["-", Validators.required],
       fournisseur:"",
-      //parent:['', Validators.required],
     });
     this.getParams()
+    this.parent = this.namemoduleService.getParentName()
   }
 
   // convenience getter for easy access to form fields
@@ -122,7 +125,7 @@ export class ParamsComponent implements OnInit {
   }
 
   goBack(): void {
-    this.parent.back();
+    this.location.back();
   }
 
   onSubmit(){

@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 
 import { User } from '@app/general/_models';
 import { AuthenticationService } from '@app/general/_services';
-import { ChoixAppliService } from '../_services/choix-appli.service';
+import { NameappliService } from '../_services/namemodule.service';
 
 @Component({
   selector: 'app-header',
@@ -21,7 +21,7 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: object,
-    private choixAppliService: ChoixAppliService,
+    private choixAppliService: NameappliService,
     private authenticationService: AuthenticationService,
     ) {
       //this.authenticationService.user.subscribe(x => this.user = x);
