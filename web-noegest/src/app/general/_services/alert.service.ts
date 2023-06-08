@@ -8,6 +8,11 @@ import { Alert, AlertType } from '../_models';
 export class AlertService {
     private subject = new Subject<Alert>();
     private defaultId = 'default-alert';
+    private defaultOptions = {
+        id: this.defaultId,
+        autoClose: true,
+        keepAfterRouteChange: false,
+    };
 
     // enable subscribing to alerts observable
     onAlert(id = this.defaultId): Observable<Alert> {
@@ -33,7 +38,7 @@ export class AlertService {
 
     // main alert method    
     alert(alert: Alert) {
-        alert.id = alert.id || this.defaultId;
+        alert = {...this.defaultOptions, ...alert }
         this.subject.next(alert);
     }
 

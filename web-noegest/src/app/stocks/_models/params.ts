@@ -1,7 +1,7 @@
 
 export const  PARAMS: Params= {
   id: 0,
-  jour: new Date(2022,8,17),//valeur de démo, date du jour préférable
+  jour: new Date(2022,8,17),//valeur pour démo, provisoire
   origine: "repas",
   service: 0,
   camp: "00",

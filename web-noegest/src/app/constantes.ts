@@ -18,12 +18,12 @@ export class Constantes {
 
   // pour Stocks
   static LSTSERVICE = [
-    { code: "tous",  libelle: "Tout service" },
-    { code: "matin", libelle: "Service du matin" },
-    { code: "midi", libelle: "Service de midi" },
-    { code: "soir", libelle: "Service du soir" },
-    { code: "5eme", libelle: "5eme repas" },
-    { code:  "tout", libelle: "Toute ligne (ss filtre)" },
+    { id: 0, code: "-",  libelle: "à préciser" },
+    { id: 1, code: "matin", libelle: "1 Service du matin" },
+    { id: 2, code: "midi", libelle: "2 Service de midi" },
+    { id: 3, code: "soir", libelle: "3 Service du soir" },
+    { id: 4, code: "5eme", libelle: "4 5eme repas" },
+    { id: 5, code: "tous", libelle: "5 Tout service" },
   ];
 
   static LSTORIGINE_SORTIES = [

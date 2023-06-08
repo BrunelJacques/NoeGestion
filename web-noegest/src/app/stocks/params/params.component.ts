@@ -139,7 +139,7 @@ export class ParamsComponent implements OnInit {
         return;
     }
     this.loading = true;
-    //this.okBack()
+    this.okBack()
   }
 
   getCamps(): void {

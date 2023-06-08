@@ -6,7 +6,9 @@ import { Alert, AlertType } from '@app/general/_models';
 import { AlertService } from '@app/general/_services';
 
 @Component({ selector: 'alert', templateUrl: 'alert.component.html' })
+
 export class AlertComponent implements OnInit, OnDestroy {
+
     @Input() id = 'default-alert';
     @Input() fade = true;
 
@@ -32,10 +34,10 @@ export class AlertComponent implements OnInit, OnDestroy {
 
                 // add alert to array
                 this.alerts.push(alert);
-
+                
                 // auto close alert if required
-                if (alert.autoClose) {
-                    setTimeout(() => this.removeAlert(alert), 3000);
+                if (alert.autoClose ) {
+                    setTimeout(() => this.removeAlert(alert), 6000);
                 }
            });
 

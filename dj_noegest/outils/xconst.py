@@ -18,7 +18,7 @@ LISTE_MOIS_ABREGE =[("Janv."), ("Fév."), ("Mars"), ("Avril"), ("Mai"), ("Juin")
                     ("Août"), ("Sept."), ("Oct."), ("Nov."), ("Déc.")]
 
 # en dur car utilisé dans les fonctions
-REPAS_CHOICES = [
+SERVICE_CHOICES = [
         (0, '-'),
         (1, 'matin'),
         (2, 'midi'),

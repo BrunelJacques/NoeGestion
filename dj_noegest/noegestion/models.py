@@ -139,7 +139,7 @@ class StMouvement(models.Model):
     qtemouvement = models.DecimalField(max_digits=8, decimal_places=2,
                                        help_text="Nombre d'unité stockées")
     prixunit = models.DecimalField(max_digits=10, decimal_places=4)
-    service = models.IntegerField(default=0,choices=xconst.REPAS_CHOICES,
+    service = models.IntegerField(default=0, choices=xconst.SERVICE_CHOICES,
                                   help_text="Service repas concerné")
     nbrations = models.DecimalField(max_digits=8, decimal_places=4,
                                     help_text="Nbre de ration par qteMouvement", null=True)

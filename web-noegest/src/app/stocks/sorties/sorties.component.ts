@@ -3,7 +3,7 @@ import { Mouvement } from '../_models/mouvement';
 import { MvtService } from '../_services/mvt.service';
 import { ParamsService } from '../_services/params.service'
 import { Params } from '../_models/params';
-import { NamemoduleService } from '@app/general/_services';
+import { AlertService, NamemoduleService } from '@app/general/_services';
 //import { OneSortieComponent } from '../one-sortie/one-sortie.component';
 import { DatePipe } from '@angular/common';
 import { Constantes } from '@app/constantes';
@@ -22,6 +22,7 @@ export class SortiesComponent implements OnInit {
   jour = "";
   loading = true;
   params: Params;
+  nblignesmax: number=60;
 
   constantes = Constantes;
   lstorigine_codes = this.constantes.LSTORIGINE_SORTIES.map((x)=>x.code) ;
@@ -57,6 +58,7 @@ export class SortiesComponent implements OnInit {
     private namemoduleService: NamemoduleService,
     private mvtService: MvtService,
     private paramsService: ParamsService,
+    private alertService: AlertService,
     ) {
       this.namemoduleService.setParentName("sorties")
     }
@@ -72,12 +74,19 @@ export class SortiesComponent implements OnInit {
     this.mvtService.getSorties()
       .subscribe({
         next: (data) => {
-          // limitation à 100 du nombre de lignes affichées
-          this.sorties = data['results'].filter((index: number) => {
-            if (index > 100) {return false}; 
-            return true});
+          // limitation du nombre de lignes affichées
+          this.sorties = data['results'].filter((mvt:Mouvement, index: number) => {
+            if (index > this.nblignesmax) 
+            { return false } 
+            {return true}
+          });
           // filtrage selon les paramètres choisis
-          this.sorties = data['results'].filter(this.mvtsFilter);
+          this.sorties = this.sorties.filter(this.mvtsFilter);
+          if (data['count'] > this.nblignesmax) {
+            this.alertService.warn(`Seulement ${this.nblignesmax} sur ${data['count']} on été affichées`)
+          }
+
+          if (this.sorties.length == 0) { this.alertService.info('Les paramètres choisis ont exclu toutes les lignes')}
         },
         error: (e) => {
           if (e != 'Not Found') {
