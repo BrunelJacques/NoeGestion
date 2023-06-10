@@ -25,6 +25,10 @@ export class AlertService {
     }
 
     error(message: string, options?: any) {
+        if (!options) {options = {
+            autoClose: false,
+            keepAfterRouteChange: true
+        }}
         this.alert(new Alert({ ...options, type: AlertType.Error, message }));
     }
 

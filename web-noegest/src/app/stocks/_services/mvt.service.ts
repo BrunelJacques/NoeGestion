@@ -1,34 +1,29 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BehaviorSubject, Observable, tap, catchError, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable, tap, catchError, of } from 'rxjs';
+//import { DatePipe } from '@angular/common';
 
 import { Mouvement } from '../_models/mouvement';
+import { ParamsService } from './params.service';
 import { Params } from '../_models/params';
 
 import { Constantes } from '@app/constantes';
+import { AlertService } from '@app/general/_services';
 
 @Injectable({ providedIn: 'root'})
 
 export class MvtService {
+  mvts: Mouvement[] = []
+  url: string
 
-  httpOptions = { headers: new HttpHeaders({'Content-Type': 'application/json'})};
-  private paramsSubject: BehaviorSubject<Params>;
-  private url = ''
-  public params: Observable<Params>;
-  public test:any
-
-  public get paramsValue(): Params {
-    return this.paramsSubject.value;
-  }
 
   constructor(
     private constantes: Constantes,
     private http: HttpClient,
-  ) {
-    this.paramsSubject = new BehaviorSubject<Params>(
-      JSON.parse(localStorage.getItem('params')));
-  this.params = this.paramsSubject.asObservable();
-  }
+    private paramsService: ParamsService,
+    private alertService: AlertService,
+    //private datePipe: DatePipe,
+  ) {}
 
    /** GET mvt by id. Will 404 if id not found */
   getMvt(id: number): Observable<Mouvement> {
@@ -38,20 +33,20 @@ export class MvtService {
         catchError(this.handleError<Mouvement>(`getMvt id=${id}`))
       );
   }
- 
+
   updateMvt(id): Observable<Mouvement[]> {
     return id
   };
 
-  getSorties(): Observable<Mouvement[]> {
-    this.url = this.constantes.STMOUVEMENT_URL+"/?origine=repas&jour=2022-09-17";
+  getSorties(urlparams): Observable<Mouvement[]> {
+    this.url = this.constantes.STMOUVEMENT_URL+urlparams;
     return (this.http.get<Mouvement[]>(this.url))
       .pipe(
         tap(_ => this.log('fetched mvts')),
         catchError(this.handleError<Mouvement[]>('getSorties', [])
         )
       );
-  }    
+  }
 
   // gestion erreur façon Tour of Heroes
   private handleError<T>(operation = 'operation', result?: T) {

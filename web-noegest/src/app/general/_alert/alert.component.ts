@@ -5,16 +5,19 @@ import { Subscription } from 'rxjs';
 import { Alert, AlertType } from '@app/general/_models';
 import { AlertService } from '@app/general/_services';
 
-@Component({ selector: 'alert', templateUrl: 'alert.component.html' })
+@Component({ 
+    selector: 'alert', 
+    templateUrl: 'alert.component.html',
+    styleUrls: ['alert.component.less']
+ })
 
 export class AlertComponent implements OnInit, OnDestroy {
-
     @Input() id = 'default-alert';
     @Input() fade = true;
 
     alerts: Alert[] = [];
-    alertSubscription: Subscription;
-    routeSubscription: Subscription;
+    alertSubscription!: Subscription;
+    routeSubscription!: Subscription;
 
     constructor(private router: Router, private alertService: AlertService) { }
 
@@ -34,7 +37,7 @@ export class AlertComponent implements OnInit, OnDestroy {
 
                 // add alert to array
                 this.alerts.push(alert);
-                
+
                 // auto close alert if required
                 if (alert.autoClose ) {
                     setTimeout(() => this.removeAlert(alert), 6000);
@@ -59,33 +62,30 @@ export class AlertComponent implements OnInit, OnDestroy {
         // check if already removed to prevent error on auto close
         if (!this.alerts.includes(alert)) return;
 
-        if (this.fade) {
-            // fade out alert
-            alert.fade = true;
+        // fade out alert if this.fade === true
+        const timeout = this.fade ? 250 : 0;
+        alert.fade = this.fade;
 
-            // remove alert after faded out
-            setTimeout(() => {
-                this.alerts = this.alerts.filter(x => x !== alert);
-            }, 250);
-        } else {
-            // remove alert
+        setTimeout(() => {
+            // filter alert out of array
             this.alerts = this.alerts.filter(x => x !== alert);
-        }
+        }, timeout);
     }
-
     cssClass(alert: Alert) {
         if (!alert) return;
 
-        const classes = ['alert', 'alert-dismissable', 'mt-4', 'container'];
-                
+        const classes = ['alert', 'alert-dismissible'];
+
         const alertTypeClass = {
-            [AlertType.Success]: 'alert alert-success',
-            [AlertType.Error]: 'alert alert-danger',
-            [AlertType.Info]: 'alert alert-info',
-            [AlertType.Warning]: 'alert alert-warning'
+            [AlertType.Success]: 'alert-success',
+            [AlertType.Error]: 'alert-danger',
+            [AlertType.Info]: 'alert-info',
+            [AlertType.Warning]: 'alert-warning'
         }
 
-        classes.push(alertTypeClass[alert.type]);
+        if (alert.type !== undefined) {
+            classes.push(alertTypeClass[alert.type]);
+        }
 
         if (alert.fade) {
             classes.push('fade');

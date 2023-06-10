@@ -1,4 +1,6 @@
-﻿<div *ngFor="let alert of alerts" class="{{cssClass(alert)}}">
-    <a class="close" (click)="removeAlert(alert)">&times;</a>
-    <span [innerHTML]="alert.message"></span>
+﻿<div class="card-body">
+    <div *ngFor="let alert of alerts" class="{{cssClass(alert)}}">
+        <div [innerHTML]="alert.message"></div>
+        <button type="button" class="btn-close" (click)="removeAlert(alert)"></button>
+    </div>
 </div>

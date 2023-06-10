@@ -18,9 +18,9 @@ import { Constantes } from '@app/constantes';
 export class SortiesComponent implements OnInit {
   selectedMvt: Mouvement;
   sorties: Mouvement[] = [];
-  datePipe = new DatePipe('en-US');
-  jour = "";
-  loading = true;
+  jour = ""
+  origine = ""
+  urlparams= "";
   params: Params;
   nblignesmax: number=60;
 
@@ -59,27 +59,28 @@ export class SortiesComponent implements OnInit {
     private mvtService: MvtService,
     private paramsService: ParamsService,
     private alertService: AlertService,
-    ) {
-      this.namemoduleService.setParentName("sorties")
-    }
-   
+    private datePipe: DatePipe,
+    ) { this.namemoduleService.setParentName("sorties") }
+
 
   ngOnInit(): void {
     this.getParams();
     this.getSorties();
   }
 
-
   getSorties(): void {
-    this.mvtService.getSorties()
+    const jour = this.datePipe.transform(this.params.jour, 'yyyy-MM-dd')
+    this.urlparams = `/?origine=${this.origine}&jour=${jour}`
+    this.mvtService.getSorties(this.urlparams)
       .subscribe({
         next: (data) => {
           // limitation du nombre de lignes affichées
-          this.sorties = data['results'].filter((mvt:Mouvement, index: number) => {
-            if (index > this.nblignesmax) 
-            { return false } 
-            {return true}
-          });
+          this.sorties = data['results']
+            .filter((mvt:Mouvement, index: number) => {
+              if (index > this.nblignesmax)
+              { return false }
+              {return true}
+            });
           // filtrage selon les paramètres choisis
           this.sorties = this.sorties.filter(this.mvtsFilter);
           if (data['count'] > this.nblignesmax) {
@@ -95,15 +96,14 @@ export class SortiesComponent implements OnInit {
         }
       })
   }
- 
+
   getParams(): void {
-    this.loading = true;
     this.paramsService.paramssubj$
       .subscribe({
         next: (data: Params) => {
           this.params = data;
           this.jour = this.datePipe.transform(this.params.jour, 'dd/MM/yyyy');
-          this.loading = false
+          this.origine = this.params.origine;
         },
         error: (e: string) => {
           if (e != 'Not Found') {
