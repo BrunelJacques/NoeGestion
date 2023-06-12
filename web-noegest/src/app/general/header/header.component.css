@@ -1,10 +1,20 @@
+.navbar-container {
+    display: flex;
+    justify-content: center;
+    max-width: 800px;
+    margin: 0 auto; /* Center horizontally */
+    position: fixed;
+    top: 0;/* Position fixe hauteur */
+    left: 0;
+    right: 0;
+    background-color:  #3f729b;
+  }
+
 .navbar {
   z-index: 1;
   -webkit-box-shadow: 0 9px 6px -6px #999;
   -moz-box-shadow: 0 9px 6px -6px #999;
   box-shadow: 0 9px 6px -6px #999;
-  padding: 0.3rem !important;
-  background-color:  #3f729b;
 }
 
 .navbar-toggler{

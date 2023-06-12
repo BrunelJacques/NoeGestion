@@ -1,59 +1,51 @@
-<h6 class= "container">Sorties de stock :
-  &nbsp;
-  <span *ngIf="params.origine == 'repas'">pour {{params.origine}} en cuisine</span>
-  <span *ngIf="params.origine == 'camp'">pour camp '{{params.camp}}'</span>
-  <span *ngIf="!['repas','camp'].includes(params.origine)">{{params.origine}}</span>
-</h6>
-<h6>
-  <span ng-controller="CtrlParams">
-    Le: {{jour}}
+<div class= "container no-newline">
+  <div class="no-secable">
+  <h6 >Sorties de stock :
     &nbsp;
-    <span *ngIf="params.origine == 'repas'">Service '{{lstservice[params.service].code}}'&nbsp;</span>
-    <a class="fas fa-gear me-1" routerLink="/stocks/params">
-      <span class = "small">params</span>
-    </a>
-  </span>
-</h6>
-
-<!--div class="sortie" *ngIf="selectedMvt " >
-    <h4 class="" >Sortie sélectionnée:</h4>
-    <div>
-        <label>article /  </label>
-        <label for="qte"> qté / </label>
-    </div>
-    <input class="input" id="art" [(ngModel)]= "selectedMvt.article" placeholder="article">
-    <input class="input" id="qte" [(ngModel)]="selectedMvt.qteMouvement" placeholder="qteMouvement">
-    <span> {{magasin}} {{rayon}}</span>
-
-</div-->
-<div class="table-responsive">
-<table class="table table-striped" >
-  <thead class="table-light">
-    <tr>
-      <th class="col-1 center">-</th>
-      <th class="col-7 center">Article</th>
-      <th class="col-1 item">Sortis</th>
-      <th class="col-2  center">Coût</th>
-      <th class="col-1 item">Service</th>
-      <th class="col-1 item">pour</th>
-    </tr>
-  </thead>
-  <tbody>
-    <!--appel modal via ts:
-    <tr *ngFor="let mvt of mvts;"
-    [class.selected]="mvt === selectedMvt"
-    (click)="openSortie(mvt)"
-    > -->
-    <tr *ngFor="let mvt of sorties;">
-      <td class="left" routerLink="/stocks/onesortie/{{mvt.id}}">
-        <a class="fas fa-pencil me-1 ctnbtn"></a>
-      </td>
-      <td class= "item small"> {{mvt.article.nom_court}} </td>
-      <td class= "item" routerLink="/sortie/{{mvt.id}}"> {{mvt.qtemouvement * -1 | number : '1.0-2'}} </td>
-      <td class= "item" routerLink="/sortie/{{mvt.id}}"> {{mvt.qtemouvement * -1000 * mvt.prixunit | number : '1.2-2'}} </td>
-      <td class= "center" routerLink="/sortie/{{mvt.id}}"> {{mvt.service}} </td>
-      <td class= "col item" routerLink="/sortie/{{mvt.id}}"> {{mvt.nbrations * 0.5| number : '1.0-2'}} </td>
-    </tr>
-  </tbody>
-</table>
+    <span *ngIf="params.origine == 'repas'">pour {{params.origine}} en cuisine</span>
+    <span *ngIf="params.origine == 'camp'">pour camp '{{params.camp}}'</span>
+    <span *ngIf="!['repas','camp'].includes(params.origine)">{{params.origine}}</span>
+  </h6>
+  </div>
+  <h6  >
+    <span class="left-span">
+      Le: {{jour}}
+      &nbsp;
+      <span *ngIf="params.origine == 'repas'">Repas '{{lstservice[params.service].code}}'&nbsp;</span>
+    </span>
+    <span class="right-span">
+      <a class="fas fa-gear fa-lg" routerLink="/stocks/params">
+        <span class="small">params</span>
+      </a>
+      <a class="fas fa-circle-plus fa-lg" routerLink="/stocks/params">
+        <span class="small">ajout</span>
+      </a>
+    </span>
+  </h6>
+  <div class="table-responsive">
+    <table class=" table-striped table" >
+    <thead >
+      <tr class="center coltitle">
+        <th class="col-1 coltitle">-</th>
+        <th class="col-7 ">Article</th>
+        <th class="col-1 ">Sortis</th>
+        <th class="col-2 ">Coût</th>
+        <th class="col-1 ">Repas</th>
+        <th class="col-1 ">pour</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let mvt of sorties;">
+        <td class="small" routerLink="/stocks/onesortie/{{mvt.id}}">
+          <a class="fas fa-pencil me-1 ctnbtn"></a>
+        </td>
+        <td class= "small"> {{mvt.article.nom_court}} </td>
+        <td routerLink="/sortie/{{mvt.id}}"> {{mvt.qtemouvement * -1 | number : '1.0-2'}} </td>
+        <td routerLink="/sortie/{{mvt.id}}"> {{mvt.qtemouvement * -1 * mvt.prixunit | number : '1.2-2'}} </td>
+        <td routerLink="/sortie/{{mvt.id}}"> {{mvt.service}} </td>
+        <td class= "col" routerLink="/sortie/{{mvt.id}}"> {{mvt.nbrations * 0.5| number : '1.0-2'}} </td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
 </div>

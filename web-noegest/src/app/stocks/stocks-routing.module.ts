@@ -10,12 +10,14 @@ import { EffectifsComponent } from './effectifs/effectifs.component';
 import { InventaireComponent } from './inventaire/inventaire.component';
 import { PrixJourneeComponent } from './prix-journee/prix-journee.component';
 import { ParamsComponent } from './params/params.component';
+import { HeadComponent } from '@app/general/head/head.component';
 
 const routes: Routes = [
     {
         path: '',
         children: [
-            { path: 'sorties', component: SortiesComponent, canActivate: [AuthGuard] },
+            { path: 'test', component: HeadComponent},
+            { path: 'sorties', component: SortiesComponent },
             { path: 'onesortie/:id', component: OneSortieComponent, canActivate: [AuthGuard] },
             { path: 'entrees', component: EntreesComponent, canActivate: [AuthGuard] },
             { path: 'oneentree/:id', component: OneEntreeComponent, canActivate: [AuthGuard] },

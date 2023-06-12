@@ -16,6 +16,7 @@ import { NotFoundComponent } from './general/not-found';
 import { HeaderComponent } from './general/header';
 import { NameappliService } from './general/_services/namemodule.service';
 import * as fr from '@angular/common/locales/fr';
+import { HeadComponent } from './general/head/head.component';
 
 
 @NgModule({
@@ -25,6 +26,7 @@ import * as fr from '@angular/common/locales/fr';
     AlertComponent,
     NotFoundComponent,
     HeaderComponent,
+    HeadComponent,
   ],
   imports: [
     BrowserModule,

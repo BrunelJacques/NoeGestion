@@ -23,9 +23,7 @@ export class HeaderComponent implements OnInit {
     @Inject(PLATFORM_ID) private platformId: object,
     private choixAppliService: NameappliService,
     private authenticationService: AuthenticationService,
-    ) {
-      //this.authenticationService.user.subscribe(x => this.user = x);
-    };
+    ) {};
 
   ngOnInit(): void {
     this.choixSub = this.choixAppliService.choixSubject$.subscribe(
