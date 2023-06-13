@@ -84,13 +84,6 @@
   background: #3f729b ;
 }
 
-.container {
-  margin-left: 0;
-  margin-right: 5px;
-  min-width: 360px;
-  max-width: 1000px;
-  
-}
 
 .btn {
   min-width: 140px !important;

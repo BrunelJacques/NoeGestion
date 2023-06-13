@@ -1,13 +1,11 @@
 <div class= "container no-newline">
-  <div class="no-secable">
-  <h6 >Sorties de stock :
+  <h6 class="no-secable">Sorties de stock :
     &nbsp;
     <span *ngIf="params.origine == 'repas'">pour {{params.origine}} en cuisine</span>
     <span *ngIf="params.origine == 'camp'">pour camp '{{params.camp}}'</span>
     <span *ngIf="!['repas','camp'].includes(params.origine)">{{params.origine}}</span>
   </h6>
-  </div>
-  <h6  >
+  <h6 class="justified" >
     <span class="left-span">
       Le: {{jour}}
       &nbsp;
@@ -17,6 +15,7 @@
       <a class="fas fa-gear fa-lg" routerLink="/stocks/params">
         <span class="small">params</span>
       </a>
+      &nbsp;
       <a class="fas fa-circle-plus fa-lg" routerLink="/stocks/params">
         <span class="small">ajout</span>
       </a>

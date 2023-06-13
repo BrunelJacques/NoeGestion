@@ -6,9 +6,10 @@
     }
   }
 
-.fondecran {
-    background-color: whitesmoke !important;
-}
+.fondecran { background-color: whitesmoke ;}
+.fondboxes { background-color: #d2e6fa;}
+.fondsombre { background-color: #3f729b;;}
+.fondsaumon { background-color: #ffdab9;}
 
 body {
     display: flex;
@@ -25,8 +26,10 @@ body {
     -moz-osx-font-smoothing: grayscale;    
 }
 
+app-root { height: 100%;}
+
 main {
-    margin: 42px 0;
+    margin: 42px 0 0 0;
     padding: 4px;
     max-width: 800px;
     width: 100%;
@@ -37,20 +40,12 @@ main {
     overflow: hidden;
 }
 
-.container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.addcontainer {
     text-align: center;
     max-width: 800px;
-    margin: 0 auto; /* Center horizontally */
-    background-color:  ;
-    top: 10;
-    left: 0;
-    right: 0;
+    background-color: #fafafa;
     position: relative;
     width:700px;
-
 }
 
 .card-container {
@@ -160,52 +155,42 @@ main {
 
 a { cursor: pointer }
 
-input, select {
-    max-width: 300px
+input, select { max-width: 300px }
+
+label { margin: 7px 0 2px 8px; }
+
+.spacer { flex: 1; }
+
+.justified {
+    display: flex;
+    justify-content: space-between;
 }
+.left-span { order: 1; }
 
-label {
-    margin: 7px 0 2px 8px;
-}
+.middle-span { order: 2; }
 
-.spacer {
-    flex: 1;
-  }
-
-
-.left-span {
-order: 1;
-}
-
-.middle-span {
-order: 2;
-}
-
-.right-span {
-order: 3;
-}
+.right-span { order: 3; }
 
 .small {
-font-family: "Times new roman";
-font-size: 10px;
+    font-family: "Times new roman";
+    font-size: 10px;
 }
 
-.right {
-text-align: right;
+.right { text-align: right;}
+
+.left { text-align: left; }
+
+.center { text-align: center; }
+
+.no-newline { display: inline-block; }
+
+.no-secable { white-space: nowrap; }
+
+.expand {  /* pour un div dans un container à position relative*/
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 
-.left {
-text-align: left;
-}
-
-.center {
-text-align: center;
-}
-
-.no-newline {
-    display: inline-block,
-}
-
-.no-secable {
-    white-space: nowrap;
-  }
