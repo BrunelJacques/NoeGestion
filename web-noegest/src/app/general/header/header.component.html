@@ -1,112 +1,119 @@
-<div class="navbar-container">
-<header class="navbar-dark " href="top">
-  <nav class="navbar" aria-label="Main navigation">
-
-    <button class="col-auto navbar-toggler ombre" 
-      type="button" data-bs-toggle="collapse" 
-      data-bs-target="#navbarNav" aria-controls="navbarNav" 
-      aria-expanded="false" aria-label="Toggle navigation">
-      <a href="#top" class="to-top">
-        <span class="navbar-toggler-icon"></span>
-      </a>
-    </button>
-
-    <div class="col-auto" style="width: 190;">
-      <a routerLink="/" class="navbar-brand" alt="Accueil">
-        <img src="assets/params/images/noegest@1x.png"
-        srcset="assets/params/images/noegest@2x.png,
-        assets/params/images/noegest@1x.png" 
-        width="170" height="40" alt="Logo">
-      </a>
-      <span class="text-white">{{choixAppli}}</span>
+<header class="fixed-top fond-sombre">
+  <div class="row gy-1 align-items-center">
+    <div class="col-2 col-md-2">
+      <button type="button" (click)="logout()"
+          class="btn mt-0 ms-1 ombre btn-outline-light" 
+          data-bs-toggle="tooltip"
+          data-bs-placement="right" 
+          title="Ne pas inclure dans l'intégration">
+        <i class="fas fa-left-long fa-1x"></i>
+      </button>
     </div>
+    <div class="col-10 col-md-10">
+      <nav class="navbar navbar-expand-md" aria-label="Main navigation">
+        <div class="container" id="navcontainer">
+          <div class="" style="width: 190;">
+            <a routerLink="/" 
+              class="navbar-brand fw-bold" 
+              alt="Accueil">
+              <img src="assets/params/images/noegest@1x.png"
+              srcset="assets/params/images/noegest@2x.png,
+              assets/params/images/noegest@1x.png" 
+              width="170" height="40" alt="Logo">
+            </a>
+            <span class="text-white">{{choixAppli}}</span>
+          </div>
+          <button type="button" 
+              class="btn navbar-toggler  ombre btn-outline-light" 
+              data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+              aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>      
+        </div>
 
-    <button type="button" 
-      class="logout ombre  btn-outline-light"
-      (click)="logout()">
-        <i class="fas fa-sign-out-alt fa-2x"></i>
-    </button>
-  </nav>
-
-</header>
-<header>
-  <!-- Menu déroulant -->  
-  <div class="col-3 col-md-10 col-xl-8 collapse navbar-collapse " 
-      id="navbarNav" toggle="collapse" data-target=".navbar-collapse"  >
-    <ul class="col-auto navbar-nav" id="home">
-      <li class="nav-item">
-        <a class="nav-link" 
-        aria-current="page" 
-        routerLink="/" href="#">
-          <i class="fas fa-home me-1"></i>
-          Home
-        </a>
-      </li>
-    </ul>
-    <span class="navbar-nav" *ngIf="choixAppli == 'stocks' || choixAppli == '-'">
-      <ul class="col-auto navbar-nav" id="menustock">
-        <li class="nav-item">
-          <a class="nav-link"
-          routerLink="/stocks/sorties">
-            <i class="fas fa-arrow-left"></i>
-            Sorties
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link"
-          routerLink="/stocks/entrees">
-            <i class="fas fa-arrow-right"></i>
-            Entrées
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link"
-          routerLink="/stocks/effectifs">
-            <i class="fas fa-people-group"></i>
-            Effectifs
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link"
-          routerLink="/stocks/prixjournees">
-            <i class="fas fa-euro-sign"></i>
-            PrixJour
-          </a>
-        </li>
-          <li class="nav-item">
-          <a class="nav-link"
-          routerLink="/stocks/inventaire">
-            <i class="fas fa-list-ol"></i>
-            Inventaire
-          </a>
-        </li>          
-      </ul>
-    </span>      
-    <span class="navbar-nav" *ngIf="choixAppli == 'kms' || choixAppli == '-'">
-      <ul class="col-auto navbar-nav"id="menukms">
-        <li class="nav-item">
-          <a class="nav-link"
-          routerLink="/kms/depart">
-            <i class="fas fa-car-side"></i>
-            KMdépart
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link"
-          aria-current="page"
-          routerLink="/kms/arrivee">
-            <i class="fas fa-car"></i>
-            KMarrivee
-          </a>
-        </li>
-      </ul>
-    </span>
-    <button type="button" 
-    class="col-auto btn btn-sm btn-outline-light me-2"
-    (click)="logout()">
-      <i class="fas fa-sign-out-alt me-2"></i>
-      Logout / Login
-    </button>
+        <!-- Menu déroulant -->  
+        <div class="col col-md-7 collapse navbar-collapse  justify-content-end" 
+            id="navbarNav" toggle="collapse" data-target=".navbar-collapse"  >
+          <ul class="col-auto navbar-nav" id="home">
+            <li class="nav-item">
+              <a class="nav-link" 
+              aria-current="page" 
+              routerLink="/" href="#">
+                <i class="fas fa-home me-1"></i>
+                Home
+              </a>
+            </li>
+          </ul>
+          <span class="navbar-nav" *ngIf="choixAppli == 'stocks' || choixAppli == '-'">
+            <ul class="col-auto navbar-nav" id="menustock">
+              <li class="nav-item">
+                <a class="nav-link"
+                routerLink="/stocks/sorties">
+                  <i class="fas fa-arrow-left"></i>
+                  Sorties
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link"
+                routerLink="/stocks/entrees">
+                  <i class="fas fa-arrow-right"></i>
+                  Entrées
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link"
+                routerLink="/stocks/effectifs">
+                  <i class="fas fa-people-group"></i>
+                  Effectifs
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link"
+                routerLink="/stocks/prixjournees">
+                  <i class="fas fa-euro-sign"></i>
+                  PrixJour
+                </a>
+              </li>
+                <li class="nav-item">
+                <a class="nav-link"
+                routerLink="/stocks/inventaire">
+                  <i class="fas fa-list-ol"></i>
+                  Inventaire
+                </a>
+              </li>          
+            </ul>
+          </span>      
+          <span class="navbar-nav" *ngIf="choixAppli == 'kms' || choixAppli == '-'">
+            <ul class="col-auto navbar-nav"id="menukms">
+              <li class="nav-item">
+                <a class="nav-link"
+                routerLink="/kms/depart">
+                  <i class="fas fa-car-side"></i>
+                  KMdépart
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link"
+                aria-current="page"
+                routerLink="/kms/arrivee">
+                  <i class="fas fa-car"></i>
+                  KMarrivee
+                </a>
+              </li>
+            </ul>
+          </span>
+          <ul class="col-auto navbar-nav" id="logout">
+            <li class="nav-item">
+              <a class="nav-link" 
+              aria-current="page" 
+              routerLink="/admin/logout" >
+                <i class="fas fas fa-sign-out-alt"></i>
+                Logout
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
   </div>
 </header>
-</div>

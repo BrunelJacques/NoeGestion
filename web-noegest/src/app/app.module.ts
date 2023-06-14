@@ -17,6 +17,7 @@ import { HeaderComponent } from './general/header';
 import { NameappliService } from './general/_services/namemodule.service';
 import * as fr from '@angular/common/locales/fr';
 import { HeadComponent } from './general/head/head.component';
+import { HeadtestComponent } from './general/headtest/headtest.component';
 
 
 @NgModule({
@@ -27,6 +28,7 @@ import { HeadComponent } from './general/head/head.component';
     NotFoundComponent,
     HeaderComponent,
     HeadComponent,
+    HeadtestComponent,
   ],
   imports: [
     BrowserModule,
