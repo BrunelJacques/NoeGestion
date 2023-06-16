@@ -16,9 +16,9 @@
             <a routerLink="/" 
               class="navbar-brand fw-bold" 
               alt="Accueil">
-              <img src="assets/params/images/noegest@1x.png"
-              srcset="assets/params/images/noegest@2x.png,
-              assets/params/images/noegest@1x.png" 
+              <img src="assets/images/noegest@1x.png"
+              srcset="assets/images/noegest@2x.png,
+              assets/images/noegest@1x.png" 
               width="170" height="40" alt="Logo">
             </a>
             <span class="text-white">{{choixAppli}}</span>
@@ -44,7 +44,7 @@
               </a>
             </li>
           </ul>
-          <span class="navbar-nav" *ngIf="choixAppli == 'stocks' || choixAppli == '-'">
+          <span class="navbar-nav" *ngIf="choixAppli === 'stocks' || choixAppli === '-'">
             <ul class="col-auto navbar-nav" id="menustock">
               <li class="nav-item">
                 <a class="nav-link"
@@ -83,7 +83,7 @@
               </li>          
             </ul>
           </span>      
-          <span class="navbar-nav" *ngIf="choixAppli == 'kms' || choixAppli == '-'">
+          <span class="navbar-nav" *ngIf="choixAppli === 'kms' || choixAppli === '-'">
             <ul class="col-auto navbar-nav"id="menukms">
               <li class="nav-item">
                 <a class="nav-link"

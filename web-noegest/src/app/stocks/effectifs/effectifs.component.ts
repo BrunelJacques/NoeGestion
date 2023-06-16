@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { NameappliService, NamemoduleService } from '@app/general/_services';
+import { NameappliService, NamemoduleService } from 'src/app/general/_services';
 
 @Component({
   selector: 'app-effectifs',

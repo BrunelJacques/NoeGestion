@@ -8,7 +8,7 @@ import { AuthenticationService } from '../_services';
 import { NameappliService, NamemoduleService } from '../_services/namemodule.service';
 
 
-import { User } from '@app/general/_models';
+import { User } from 'src/app/general/_models';
 
 
 

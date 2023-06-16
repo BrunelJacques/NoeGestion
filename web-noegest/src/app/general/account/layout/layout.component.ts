@@ -1,7 +1,7 @@
 ﻿import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { AuthenticationService } from '@app/general/_services';
+import { AuthenticationService } from 'src/app/general/_services';
 
 @Component({ templateUrl: 'layout.component.html' })
 export class LayoutComponent {

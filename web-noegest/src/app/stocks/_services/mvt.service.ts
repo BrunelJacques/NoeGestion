@@ -7,8 +7,8 @@ import { Mouvement } from '../_models/mouvement';
 import { ParamsService } from './params.service';
 import { Params } from '../_models/params';
 
-import { Constantes } from '@app/constantes';
-import { AlertService } from '@app/general/_services';
+import { Constantes } from 'src/app/constantes';
+import { AlertService } from 'src/app/general/_services';
 
 @Injectable({ providedIn: 'root'})
 

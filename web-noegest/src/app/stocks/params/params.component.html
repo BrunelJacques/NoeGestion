@@ -28,9 +28,9 @@
           type= "date" id="jour" formControlName="jour"
           class="form-control"
           min="2020-01-01" max="2099-12-31"
-          [ngClass]="{ 'is-invalid': f.jour.errors}">
-      <div *ngIf="f.jour.errors" class="invalid-feedback">
-        <div *ngIf="f.jour.errors.required">
+          [ngClass]="{ 'is-invalid': f['jour'].errors}">
+      <div *ngIf="f['jour'].errors" class="invalid-feedback">
+        <div *ngIf="f['jour'].errors">
           Choisissez une date ou abandonnez!
         </div>
       </div>
@@ -42,8 +42,8 @@
         class="form-control" required aria-label="origine">
         <option [ngValue]="" disabled>Filtrer les {{parent}} pour :</option>
         <option *ngFor="let origine of lstorigine"
-          [ngValue]="origine.code">
-          {{origine.libelle}}
+          [ngValue]="origine['code']">
+          {{origine['libelle']}}
         </option>
       </select>
 
@@ -51,15 +51,15 @@
         <label for="camp">Camp:</label>
         <select type="text"  formControlName="camp" 
           class="form-control" required
-          [ngClass]="{ 'is-invalid': submitted && f.camp.errors}">
+          [ngClass]="{ 'is-invalid': submitted && f['camp'].errors}">
           <option [ngValue]="" disabled>Choisir un camp</option>
           <option *ngFor="let camp of camps"
             [ngValue]="camp.id">
-            {{camp.libelle}}
+            {{camp['libelle']}}
           </option>
         </select> 
-        <div *ngIf="submitted && f.camp.errors" class="invalid-feedback">
-          <div *ngIf="f.camp.errors.required">Choisissez un camp extérieur ou choisissez une autre destination</div>
+        <div *ngIf="submitted && f['camp'].errors" class="invalid-feedback" id="camp">
+          <div *ngIf="f['camp'].errors['required']">Choisissez un camp extérieur ou choisissez une autre destination</div>
         </div>
       </div>
 
@@ -73,8 +73,8 @@
             {{service.libelle}}
           </option>
         </select>
-        <div *ngIf="submitted && f.service.errors" class="invalid-feedback">
-          <div *ngIf="f.service.errors.required">Choisissez un service de repas ou 'pour tout'</div>
+        <div *ngIf="submitted && f['service'].errors" class="invalid-feedback" id="service">
+          <div *ngIf="f['service'].errors['required']">Choisissez un service de repas ou 'pour tout'</div>
         </div>
       </div>
 
@@ -90,8 +90,8 @@
           formControlName="fournisseur"
           class="form-control" required aria-label="fournisseur">
           <option *ngFor="let fournisseur of fournisseurs"
-            [ngValue]="fournisseur.id">
-            {{fournisseur.nom}}
+            [ngValue]="fournisseur['id']">
+            {{fournisseur['nom']}}
           </option>
         </select>
       </div>

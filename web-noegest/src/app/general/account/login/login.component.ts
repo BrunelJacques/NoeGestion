@@ -3,13 +3,13 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
-import { AuthenticationService, AlertService } from '@app/general/_services';
+import { AuthenticationService, AlertService } from 'src/app/general/_services';
 
 @Component({ 
     templateUrl: 'login.component.html' })
 
 export class LoginComponent implements OnInit {
-    form: UntypedFormGroup;
+    form!: UntypedFormGroup;
     loading = false;
     submitted = false;
 
@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit {
             return;
         }
         this.loading = true;
-        this.authenticationService.login(this.f.email.value, this.f.password.value)
+        this.authenticationService.login(this.f['email'].value, this.f['password'].value)
             .pipe(first())
             .subscribe({
                 next: () => {

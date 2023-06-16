@@ -3,8 +3,8 @@ import { Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { Subscription } from 'rxjs';
 
-import { User } from '@app/general/_models';
-import { AuthenticationService } from '@app/general/_services';
+import { User } from 'src/app/general/_models';
+import { AuthenticationService } from 'src/app/general/_services';
 import { NameappliService } from '../_services/namemodule.service';
 
 @Component({

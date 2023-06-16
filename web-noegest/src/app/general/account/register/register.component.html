@@ -22,29 +22,30 @@
         (ngSubmit)="onSubmit()">
       <div class="form-group">
           <label for="firstName">Prénom</label>
-          <input type="text" formControlName="firstName" 
+          <input type="text" formControlName="firstName" id="firstName"
               class="form-control" 
-              [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }" />
-          <div *ngIf="submitted && f.firstName.errors" class="invalid-feedback">
-              <div *ngIf="f.firstName.errors.required">
+              [ngClass]="{ 'is-invalid': submitted && f['firstName'].errors }" />
+          <div *ngIf="submitted && f['firstName'].errors" class="invalid-feedback">
+              <div *ngIf="f['firstName'].errors['required']">
                 Le prénom est obligatoire
               </div>
           </div>
       </div>
       <div class="form-group">
           <label for="lastName">Nom</label>
-          <input type="text" formControlName="lastName" 
+          <input type="text" formControlName="lastName" id="lastName"
               class="form-control" 
-              [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }" />
-          <div *ngIf="submitted && f.lastName.errors" class="invalid-feedback">
-              <div *ngIf="f.lastName.errors.required">Le nom est obligatoire</div>
+              [ngClass]="{ 'is-invalid': submitted && f['lastName'].errors }" />
+          <div *ngIf="submitted && f['lastName'].errors" class="invalid-feedback">
+              <div *ngIf="f['lastName'].errors['required']">Le nom est obligatoire</div>
           </div>
       </div>
       <div class="form-group">
           <label for="email">Adresse mail</label>
-          <input type="text" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
-          <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
-              <div *ngIf="f.email.errors.required">L'adresse mail est obligatoire</div>
+          <input type="text" formControlName="email" id="email" 
+            class="form-control" [ngClass]="{ 'is-invalid': submitted && f['email'].errors }" />
+          <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+              <div *ngIf="f['email'].errors['required']">L'adresse mail est obligatoire</div>
           </div>
       </div>
       <div class="text-center text-muted small short mb-o">
@@ -52,11 +53,11 @@
       </div>
       <div class="form-group">
           <label for="password">Mot de passe  (sera donné par noegest à terme)</label>
-          <input type="password" formControlName="password" class="form-control" 
+          <input type="password" formControlName="password" class="form-control" id="password"
               [ngClass]="{ 'is-invalid': f['password'].errors }" />
           <div *ngIf="f['password'].errors?.['required'] && form.controls['password'].touched" class="invalid-feedback">
               <div *ngIf="f['password'].errors?.['required']">Le mot de passe est obligatoire</div>
-              <div *ngIf="f.password.errors.minlength">le mot de passe doit avoir 6 caractères minimum</div>
+              <div *ngIf="f['password'].errors['minlength']">le mot de passe doit avoir 6 caractères minimum</div>
           </div>
       </div>
     </form>

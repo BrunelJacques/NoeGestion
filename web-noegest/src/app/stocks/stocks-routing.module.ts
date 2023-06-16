@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { AuthGuard } from '@app/general/_helpers';
+import { AuthGuard } from 'src/app/general/_helpers';
 
 import { SortiesComponent } from './sorties/sorties.component';
 import { OneSortieComponent } from './one-sortie/one-sortie.component';
@@ -10,13 +10,11 @@ import { EffectifsComponent } from './effectifs/effectifs.component';
 import { InventaireComponent } from './inventaire/inventaire.component';
 import { PrixJourneeComponent } from './prix-journee/prix-journee.component';
 import { ParamsComponent } from './params/params.component';
-import { HeadComponent } from '@app/general/head/head.component';
 
 const routes: Routes = [
     {
         path: '',
         children: [
-            { path: 'test', component: HeadComponent},
             { path: 'sorties', component: SortiesComponent },
             { path: 'onesortie/:id', component: OneSortieComponent, canActivate: [AuthGuard] },
             { path: 'entrees', component: EntreesComponent, canActivate: [AuthGuard] },

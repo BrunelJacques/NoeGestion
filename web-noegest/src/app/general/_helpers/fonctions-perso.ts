@@ -1,7 +1,4 @@
 
-export function dateAnsi(date:Date):string {
-  return 
-}
 
 export  function hoursDelta(date1: Date, date2: Date): number {
       return Math.floor(((date2.getTime()) - (date1.getTime())) / 1000 / 60 / 60)

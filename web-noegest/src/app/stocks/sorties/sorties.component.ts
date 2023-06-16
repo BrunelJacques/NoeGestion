@@ -3,10 +3,10 @@ import { Mouvement } from '../_models/mouvement';
 import { MvtService } from '../_services/mvt.service';
 import { ParamsService } from '../_services/params.service'
 import { Params } from '../_models/params';
-import { AlertService, NamemoduleService } from '@app/general/_services';
+import { AlertService, NamemoduleService } from 'src/app/general/_services';
 //import { OneSortieComponent } from '../one-sortie/one-sortie.component';
 import { DatePipe } from '@angular/common';
-import { Constantes } from '@app/constantes';
+import { Constantes } from 'src/app/constantes';
 
 
 @Component({
@@ -16,16 +16,16 @@ import { Constantes } from '@app/constantes';
 })
 
 export class SortiesComponent implements OnInit {
-  selectedMvt: Mouvement;
+  selectedMvt!: Mouvement;
   sorties: Mouvement[] = [];
   jour = ""
   origine = ""
   urlparams= "";
-  params: Params;
+  params!: Params;
   nblignesmax: number=60;
 
   constantes = Constantes;
-  lstorigine_codes = this.constantes.LSTORIGINE_SORTIES.map((x)=>x.code) ;
+  lstorigine_codes = this.constantes.LSTORIGINE_SORTIES.map((x: { code: any; })=>x.code) ;
   lstservice = this.constantes.LSTSERVICE
 
   mvtsFilter = (mvt: Mouvement) => {

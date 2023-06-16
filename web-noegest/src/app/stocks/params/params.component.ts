@@ -6,9 +6,10 @@ import { DatePipe } from '@angular/common';
 import { ParamsService } from '../_services/params.service';
 import { Camp } from '../_models/params';
 import { Params } from '../_models/params';
-import { AlertService } from '@app/general/_services/alert.service';
-import { Constantes } from '@app/constantes';
-import { NamemoduleService } from '@app/general/_services';
+
+import { AlertService } from 'src/app/general/_services';
+import { Constantes } from 'src/app/constantes';
+import { NamemoduleService } from 'src/app/general/_services';
 
 @Component({
   selector: 'app-params',
@@ -17,19 +18,19 @@ import { NamemoduleService } from '@app/general/_services';
 })
 
 export class ParamsComponent implements OnInit {
-  params: Params;
+  params!: Params;
   camps: Camp[] = [];
-  paramsForm: UntypedFormGroup;
+  paramsForm!: UntypedFormGroup;
   parent: string = "";
 
 
   constantes = Constantes;
   lstservice = this.constantes.LSTSERVICE;
-  lstorigine = [];
+  lstorigine = [{}];
   lstorigine_sorties = this.constantes.LSTORIGINE_SORTIES;
   lstorigine_entrees = this.constantes.LSTORIGINE_ENTREES;
 
-  fournisseurs = [];
+  fournisseurs = [{}];
 
   lstservice_code = this.lstservice.map((x) => x.code)
   loading = true;
@@ -98,16 +99,16 @@ export class ParamsComponent implements OnInit {
     this.majOrigine(neworigine.target.value)
   }
 
-  majOrigine(origine){
+  majOrigine(origine: string){
     if (origine.endsWith("camp"))
-    { this.paramsForm.get("camp").enable()} 
-    else {this.paramsForm.get("camp").disable()}
+    { (this.paramsForm).get("camp")!.enable()} 
+    else {this.paramsForm.get("camp")?.disable()}
 
     if (origine.endsWith("repas"))
-    { this.paramsForm.get("service").enable()} 
+    { this.paramsForm.get("service")!.enable()} 
     else {
       this.paramsForm.patchValue({"service":""})
-      this.paramsForm.get("service").disable()
+      this.paramsForm.get("service")!.disable()
     }
   }
 
@@ -146,7 +147,7 @@ export class ParamsComponent implements OnInit {
     this.camps = this.paramsService.getCamps()
       }
   
-  setParams(params): void {
+  setParams(params: Params): void {
     this.paramsService.setParams(params)
   }
 }

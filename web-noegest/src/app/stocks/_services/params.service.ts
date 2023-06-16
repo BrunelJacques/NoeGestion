@@ -4,7 +4,7 @@ import { Observable, BehaviorSubject, catchError, of } from 'rxjs';
 import { hoursDelta, deepCopy } from '../../general/_helpers/fonctions-perso';
 
 import { Params,  PARAMS, Camp, Fournisseur, Rayon, Magasin } from '../_models/params';
-import { Constantes } from '@app/constantes';
+import { Constantes } from 'src/app/constantes';
 
 @Injectable({ providedIn: 'root'})
 

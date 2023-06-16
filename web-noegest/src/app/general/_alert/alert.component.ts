@@ -2,8 +2,8 @@
 import { Router, NavigationStart } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { Alert, AlertType } from '@app/general/_models';
-import { AlertService } from '@app/general/_services';
+import { Alert, AlertType } from 'src/app/general/_models';
+import { AlertService } from 'src/app/general/_services';
 
 @Component({ 
     selector: 'alert', 
@@ -31,7 +31,7 @@ export class AlertComponent implements OnInit, OnDestroy {
                     this.alerts = this.alerts.filter(x => x.keepAfterRouteChange);
 
                     // remove 'keepAfterRouteChange' flag on the rest
-                    this.alerts.forEach(x => delete x.keepAfterRouteChange);
+                    this.alerts.forEach( x => delete (x as any).keepAfterRouteChange);
                     return;
                 }
 
@@ -71,8 +71,9 @@ export class AlertComponent implements OnInit, OnDestroy {
             this.alerts = this.alerts.filter(x => x !== alert);
         }, timeout);
     }
+    
     cssClass(alert: Alert) {
-        if (!alert) return;
+        if (!alert) return "";
 
         const classes = ['alert', 'alert-dismissible'];
 

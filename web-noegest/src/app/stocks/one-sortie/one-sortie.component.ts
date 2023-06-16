@@ -6,9 +6,9 @@ import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms
 import { MvtService } from '../_services/mvt.service';
 import { ParamsService } from '../_services/params.service';
 import { Params } from '../_models/params';
-import { AlertService } from '@app/general/_services';
+import { AlertService } from 'src/app/general/_services';
 import { DatePipe } from '@angular/common';
-import { Constantes } from '@app/constantes';
+import { Constantes } from 'src/app/constantes';
 
 
 @Component({
@@ -27,7 +27,7 @@ export class OneSortieComponent implements OnInit {
   lstservice = this.constantes.LSTSERVICE;
   lstorigine = this.constantes.LSTORIGINE_SORTIES;
   lstservice_code = this.lstservice.map((x) => x.code)
-  params: Params;
+  params!: Params;
   lstparams: Params[] = [];
   loading = true;
   submitted = false;
@@ -76,7 +76,7 @@ export class OneSortieComponent implements OnInit {
     this.paramsService.paramssubj$
       .subscribe({
         next: (data) => {
-          this.params = data[0];
+          this.params = data;
           this.params.jour = new Date(this.params.jour) //reprise du type date pour toISOString
           if (!this.params.service || this.params.service < 0){ 
             this.params.service = 0 }
