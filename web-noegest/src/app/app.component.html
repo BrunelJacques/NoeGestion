@@ -7,5 +7,36 @@ integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLAS
       <alert></alert>
       <router-outlet></router-outlet>
   </div>
+
+
+  <header class="fond-sombre ">
+    <div class="row gy-1 align-items-center">
+      <div class="col-2 col-md-2">
+          test header
+          <button type="button" (click)="logout()"
+          class="btn mt-0 ms-1 ombre btn-outline-light"
+          data-bs-toggle="tooltip"
+          data-bs-placement="right"
+          title="Ne pas inclure dans l'intégration">
+        <i class="fas fa-left-long fa-1x"></i>
+          </button>
+      </div>
+      <div class="col-10 col-md-10">
+
+        <nav class="navbar navbar-expand-md navbar-dark" aria-label="Main navigation">
+          <a class="navbar-brand">
+          </a>
+
+          <button id='toggler' type="button"
+            class="btn navbar-toggler  ombre btn-outline-light"
+            data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </nav>
+      </div>
+    </div>
+  </header>
+
 </main>
 
