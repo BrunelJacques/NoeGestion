@@ -1,11 +1,13 @@
-﻿/* eslint-disable @typescript-eslint/no-non-null-assertion */
+﻿/* ligne ci dessous pour reconaître les types NodeJS.Timeout */
+/// <reference types="node" />
+
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DatePipe } from '@angular/common';
-
 import { User } from '../_models';
 import { Constantes } from 'src/app/constantes';
 
@@ -31,8 +33,8 @@ export class AuthenticationService {
 
     login(username: string, password: string) {
         return this.http.post<User>(
-            this.cst.TOKEN_URL, 
-            { username, password }, 
+            this.cst.TOKEN_URL,
+            { username, password },
             { withCredentials: false}
             ).pipe(map(user => {
                 user.jwtToken = user.access;
@@ -40,6 +42,18 @@ export class AuthenticationService {
                 this.startRefreshTokenTimer();
                 return user;
             }));
+    }
+
+    logout() {
+        this.http.post<unknown>(this.cst.API_URL+'/logout/', {}, { withCredentials: true }).subscribe();
+        this.stopRefreshTokenTimer();
+        this.userSubject.next(null);
+        this.router.navigate(['/login']);
+    }
+
+    register(user: User) {
+        console.log(this.cst.API_URL+'/register',user);
+        return this.http.post(this.cst.API_URL+'/register', user);
     }
 
     refreshToken() {
@@ -58,25 +72,9 @@ export class AuthenticationService {
             }));
     }
 
-    
-    logout() {
-        this.http.post<any>(this.cst.API_URL+'/logout/', {}, { withCredentials: true }).subscribe();
-        this.stopRefreshTokenTimer();
-        this.userSubject.next(null);
-        this.router.navigate(['/login']);
-    }
-
-
-    register(user: User) {
-        console.log(this.cst.API_URL+'/register',user);
-        return this.http.post(this.cst.API_URL+'/register', user);
-    }
-
     // helper methods
-
-    private refreshTokenTimeout?: NodeJS.Timeout;
-
-
+    private refreshTokenTimeout?;
+    
     private startRefreshTokenTimer() {
         // parse json object from base64 encoded jwt token
 
@@ -95,5 +93,4 @@ export class AuthenticationService {
     private stopRefreshTokenTimer() {
         clearTimeout(this.refreshTokenTimeout);
     }
-
 }

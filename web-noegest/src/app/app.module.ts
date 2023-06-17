@@ -8,8 +8,8 @@ import { LOCALE_ID } from '@angular/core';
 import { CommonModule, registerLocaleData } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-//import { fakeBackendProvider } from './general/_helpers';
 
+//import { fakeBackendProvider } from './general/_helpers';
 import { JwtInterceptor, ErrorInterceptor } from './general/_helpers';
 
 import { AlertComponent } from './general/_alert';
@@ -18,7 +18,6 @@ import { NotFoundComponent } from './general/not-found';
 import { HeaderComponent } from './general/header';
 import { NameappliService } from './general/_services/namemodule.service';
 import * as fr from '@angular/common/locales/fr';
-import { HeadtestComponent } from './general/headtest/headtest.component';
 
 
 @NgModule({
@@ -28,7 +27,6 @@ import { HeadtestComponent } from './general/headtest/headtest.component';
     AlertComponent,
     NotFoundComponent,
     HeaderComponent,
-    HeadtestComponent,
   ],
   imports: [
     BrowserModule,

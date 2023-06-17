@@ -18,7 +18,6 @@ const routes: Routes = [
     { path: 'utils', loadChildren: utilsModule },
 
     // otherwise redirect to home
-    //{ path: '**', redirectTo: '' }
     { path: '**', component: NotFoundComponent }
 ];
 

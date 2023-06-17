@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 
 import { Inject, PLATFORM_ID } from '@angular/core';
@@ -19,7 +19,7 @@ import { User } from 'src/app/general/_models';
 })
 
 
-export class HomeComponent implements OnInit {
+export class HomeComponent  {
 
   user = new User();
   appName = environment.appName
@@ -34,11 +34,8 @@ export class HomeComponent implements OnInit {
      {
       this.authenticationService.user.subscribe(x => this.user = x);
      }
-     ;
-    
-  ngOnInit(): void {
-    this.loadScript('assets/params/js/index.js');
-  }
+     
+  
 
   loadScript(name: string): void {
     if (isPlatformBrowser(this.platformId)) {
@@ -49,17 +46,14 @@ export class HomeComponent implements OnInit {
       document.getElementsByTagName('head')[0].appendChild(s);
     }
   }
- 
 
   emitLocation(name: string){
     this.choixAppliService.choixSubject$.next(name)
     this.namemoduleService.setParentName(name)
-
-  };
+  }
 
   stocks() {
     this.emitLocation('stocks')
-
   }
 
   kms() {
