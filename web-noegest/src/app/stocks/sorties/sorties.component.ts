@@ -22,10 +22,10 @@ export class SortiesComponent implements OnInit {
   origine = ""
   urlparams= "";
   params!: Params;
-  nblignesmax: number=60;
+  nblignesmax = 60;
 
   constantes = Constantes;
-  lstorigine_codes = this.constantes.LSTORIGINE_SORTIES.map((x: { code: any; })=>x.code) ;
+  lstorigine_codes = this.constantes.LSTORIGINE_SORTIES.map((x: { code })=>x.code) ;
   lstservice = this.constantes.LSTSERVICE
 
   mvtsFilter = (mvt: Mouvement) => {

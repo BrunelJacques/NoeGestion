@@ -1,15 +1,15 @@
-<div class= "container no-newline">
+<div class= "col-12 m-0 p-0">
   <h6 class="no-secable">Sorties de stock :
     &nbsp;
-    <span *ngIf="params.origine == 'repas'">pour {{params.origine}} en cuisine</span>
-    <span *ngIf="params.origine == 'camp'">pour camp '{{params.camp}}'</span>
+    <span *ngIf="params.origine === 'repas'">pour {{params.origine}} en cuisine</span>
+    <span *ngIf="params.origine === 'camp'">pour camp '{{params.camp}}'</span>
     <span *ngIf="!['repas','camp'].includes(params.origine)">{{params.origine}}</span>
   </h6>
   <h6 class="justified" >
     <span class="left-span">
       Le: {{jour}}
       &nbsp;
-      <span *ngIf="params.origine == 'repas'">Repas '{{lstservice[params.service].code}}'&nbsp;</span>
+      <span *ngIf="params.origine === 'repas'">Repas '{{lstservice[params.service].code}}'&nbsp;</span>
     </span>
     <span class="right-span">
       <a class="fas fa-gear fa-lg" routerLink="/stocks/params">
@@ -36,7 +36,7 @@
     <tbody>
       <tr *ngFor="let mvt of sorties;">
         <td class="small" routerLink="/stocks/onesortie/{{mvt.id}}">
-          <a class="fas fa-pencil me-1 ctnbtn"></a>
+          <i class="fas fa-pencil me-1 ctnbtn"></i>
         </td>
         <td class= "small"> {{mvt.article.nom_court}} </td>
         <td routerLink="/sortie/{{mvt.id}}"> {{mvt.qtemouvement * -1 | number : '1.0-2'}} </td>

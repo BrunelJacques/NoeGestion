@@ -3,10 +3,6 @@ i {
   background-color: #3f729b;
 }
 
-.ombre-claire {
-  box-shadow:0 0.1rem 0.3rem 0.1rem white;
-}
-
 .navbar-toggler{
   padding: 0 3px;
   border-width: 1px;
@@ -20,20 +16,11 @@ i {
   box-shadow: 0px 0px 15px white;
 }
 
-.zznavbar-toggler-icon {
-  height: 30px;
-  width: 25px;
-}
+
 .navbar-nav .nav-item .nav-link {
   color: white;
   font-weight: 500;
   border-top: 1px solid whitesmoke;
   border-bottom: 1px solid whitesmoke;
-}
-
-.zznavbar-nav .nav-item .nav-link:hover {
-  color: yellow;
-  border-top: 1px solid yellow;
-  border-bottom: 1px solid yellow;
 }
 

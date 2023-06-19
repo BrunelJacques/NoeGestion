@@ -6,7 +6,7 @@ import { Alert, AlertType } from 'src/app/general/_models';
 import { AlertService } from 'src/app/general/_services';
 
 @Component({ 
-    selector: 'alert', 
+    selector: 'app-alert', 
     templateUrl: 'alert.component.html',
     styleUrls: ['alert.component.less']
  })
@@ -16,6 +16,7 @@ export class AlertComponent implements OnInit, OnDestroy {
     @Input() fade = true;
 
     alerts: Alert[] = [];
+    isalert= false;
     alertSubscription!: Subscription;
     routeSubscription!: Subscription;
 
@@ -25,13 +26,15 @@ export class AlertComponent implements OnInit, OnDestroy {
         // subscribe to new alert notifications
         this.alertSubscription = this.alertService.onAlert(this.id)
             .subscribe(alert => {
+                this.isalert = true
                 // clear alerts when an empty alert is received
                 if (!alert.message) {
+                    this.isalert=false
                     // filter out alerts without 'keepAfterRouteChange' flag
                     this.alerts = this.alerts.filter(x => x.keepAfterRouteChange);
 
                     // remove 'keepAfterRouteChange' flag on the rest
-                    this.alerts.forEach( x => delete (x as any).keepAfterRouteChange);
+                    this.alerts.forEach( x => delete (x).keepAfterRouteChange);
                     return;
                 }
 

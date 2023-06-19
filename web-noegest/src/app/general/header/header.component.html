@@ -1,18 +1,20 @@
+<!--icones bootstrap   i class="bi-alarm" style="font-size: 2rem; color: cornflowerblue;"></i-->
+<!--icones fontawesome i class="fas fa-left-long fa-1x"></i-->
+
 <header class="fixed-top fond-sombre">
-  <div class="row gy-1 align-items-center ombre">
-    <div class="col-2 col-md-2">
-      <button type="button" (click)="logout()"
-          class="btn mt-0 ms-1 btn-outline-light" 
+  <div class="row p-0 g-0 align-items-top ombre">
+    <div class="col-2 col-sm-1 ">
+      <button type="button" id="btnhome" (click)="logout()"
+          class="btn ms-1 mt-2 btn-outline-light" 
           data-bs-toggle="tooltip"
-          data-bs-placement="right" 
-          title="Ne pas inclure dans l'intégration">
+          data-bs-placement="right">
         <i class="fas fa-left-long fa-1x"></i>
       </button>
     </div>
-    <div class="col-10 col-md-10">
-      <nav class="navbar navbar-expand-md navbar-dark" aria-label="Main navigation">
-        <div class="container" id="navcontainer">
-          <div class="" style="width: 190;">
+    <div class="col-10 col-sm-11 pl-0 ">
+      <nav class="navbar navbar-expand-md navbar-dark  flex-wrap" aria-label="Main navigation">
+        <div class="container ms-0" id="navcontainer">
+          <div container id="titre">
             <a routerLink="/" 
               class="navbar-brand fw-bold" 
               alt="Accueil">
@@ -24,7 +26,7 @@
             <span class="text-white">{{choixAppli}}</span>
           </div>
           <button id='toggler' type="button" 
-              class="btn navbar-toggler  ombre btn-outline-light" 
+              class="btn navbar-toggler  ombre btn-outline-light mt-0 me-1" 
               data-bs-toggle="collapse" data-bs-target="#navbarNav" 
               aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -32,7 +34,7 @@
         </div>
 
         <!-- Menu déroulant -->  
-        <div class="col col-md-7 collapse navbar-collapse  justify-content-end" 
+        <div class="col col-lg-9 collapse navbar-collapse" 
             id="navbarNav" toggle="collapse" data-target=".navbar-collapse"  >
           <ul class="col-auto navbar-nav" id="home">
             <li class="nav-item">
@@ -44,7 +46,7 @@
               </a>
             </li>
           </ul>
-          <span class="navbar-nav" *ngIf="choixAppli === 'stocks' || choixAppli === '-'">
+          <span class="col-auto navbar-nav" *ngIf="choixAppli === 'stocks' || choixAppli === '-'">
             <ul class="col-auto navbar-nav" id="menustock">
               <li class="nav-item">
                 <a class="nav-link"
@@ -83,7 +85,7 @@
               </li>          
             </ul>
           </span>      
-          <span class="navbar-nav" *ngIf="choixAppli === 'kms' || choixAppli === '-'">
+          <span class="col-auto navbar-nav" *ngIf="choixAppli === 'kms'">
             <ul class="col-auto navbar-nav"id="menukms">
               <li class="nav-item">
                 <a class="nav-link"
@@ -102,16 +104,18 @@
               </li>
             </ul>
           </span>
-          <ul class="col-auto navbar-nav" id="logout">
-            <li class="nav-item">
-              <a class="nav-link" 
-              aria-current="page" 
-              routerLink="/admin/logout" >
-                <i class="fas fas fa-sign-out-alt"></i>
-                Logout
-              </a>
-            </li>
-          </ul>
+          <span class="col-auto navbar-nav">
+            <ul class="col-auto navbar-nav" id="logout">
+              <li class="nav-item">
+                <a class="nav-link" 
+                aria-current="page" 
+                routerLink="/admin/logout" >
+                  <i class="fas fas fa-sign-out-alt"></i>
+                  Logout
+                </a>
+              </li>
+            </ul>
+          </span>
         </div>
       </nav>
     </div>

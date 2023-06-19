@@ -1,7 +1,7 @@
 ﻿<div class="card">
     <h4 class="card-header">Connexion</h4>
-    <div class="card-body">
-        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="card-body container-fluid">
+        <form  [formGroup]="form" (ngSubmit)="onSubmit()">
             <div class="form-group">
                 <label for="email">Identifiant</label>
                 <input type="text" formControlName="email" class="form-control" id="email"

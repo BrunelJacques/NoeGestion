@@ -1,6 +1,6 @@
-﻿<div class="card-body">
+﻿<diV *ngIf="isalert" class="card-body">
     <div *ngFor="let alert of alerts" class="{{cssClass(alert)}}">
         <div [innerHTML]="alert.message"></div>
-        <button type="button" class="btn-close" (click)="removeAlert(alert)"></button>
+        <button type="button" class="btn-close" (click)="removeAlert(alert)">_</button>
     </div>
-</div>
+</diV>
