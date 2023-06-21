@@ -19,7 +19,7 @@
 
 body {
     font-weight: 400;
-    color: #09238D;
+    color: #09238D!important;
 }
 
 main {
@@ -28,6 +28,10 @@ main {
     max-width: 800px;
     width: 100%;
 }
+
+input, select { max-width: 300px }
+
+label { margin: 7px 0 2px 8px; }
 
 .app-container {
     min-height: 350px;
@@ -119,7 +123,7 @@ main {
     max-width: 110px;
  }
  
- .btn:hover {
+ .zzbtn:hover {
     opacity: 0.5;
  }
  
@@ -145,19 +149,14 @@ main {
  }
  
 
-.table>:not(caption)>*>* {
-    max-width: 350;
-    padding: 0.2rem;
+table>:not(caption)>*>* {
     color: #09238D;
     text-align: right;
 }
 
-a { cursor: pointer }
-
-input, select { max-width: 300px }
-
-label { margin: 7px 0 2px 8px; }
-
+td {
+    padding: 0.2rem!important;
+}
 .spacer { flex: 1; }
 
 .justified {

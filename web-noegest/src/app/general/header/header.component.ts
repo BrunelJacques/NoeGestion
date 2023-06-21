@@ -2,10 +2,11 @@ import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { Subscription } from 'rxjs';
- 
+
 import { User } from 'src/app/general/_models';
 import { AuthenticationService } from 'src/app/general/_services';
 import { NameappliService } from '../_services/namemodule.service';
+import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-header',
@@ -14,6 +15,14 @@ import { NameappliService } from '../_services/namemodule.service';
 })
 
 export class HeaderComponent implements OnInit, OnDestroy {
+  @ViewChild('navbarCollapse') navbarCollapse: NgbCollapse;
+  isNavbarCollapsed = false;
+
+  toggleNavbar() { this.isNavbarCollapsed = !this.isNavbarCollapsed;}
+
+  collapseNavbar() { 
+    this.isNavbarCollapsed = false}
+
   title = 'matthania';
   user = new User();
   choixSub = new Subscription();
@@ -43,6 +52,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.choixSub.unsubscribe();
+  }
+
+  home(){
+    console.log( this.isNavbarCollapsed)
+    if (!this.isNavbarCollapsed) 
+    { this.logout() }
+    { this.collapseNavbar() }
   }
 
   logout() {

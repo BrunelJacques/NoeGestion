@@ -8,7 +8,6 @@ import { AlertService, NamemoduleService } from 'src/app/general/_services';
 import { DatePipe } from '@angular/common';
 import { Constantes } from 'src/app/constantes';
 
-
 @Component({
   selector: 'app-sorties',
   templateUrl: './sorties.component.html',
@@ -60,7 +59,10 @@ export class SortiesComponent implements OnInit {
     private paramsService: ParamsService,
     private alertService: AlertService,
     private datePipe: DatePipe,
-    ) { this.namemoduleService.setParentName("sorties") }
+
+    ) { 
+      this.namemoduleService.setParentName("sorties")
+    }
 
 
   ngOnInit(): void {

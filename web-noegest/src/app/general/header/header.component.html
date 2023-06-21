@@ -4,7 +4,7 @@
 <header class="fixed-top fond-sombre">
   <div class="row p-0 g-0 align-items-top ombre">
     <div class="col-2 col-sm-1 ">
-      <button type="button" id="btnhome" (click)="logout()"
+      <button type="button" id="btnhome" (click)="home()"
           class="btn ms-1 mt-2 btn-outline-light" 
           data-bs-toggle="tooltip"
           data-bs-placement="right">
@@ -25,21 +25,33 @@
             </a>
             <span class="text-white">{{choixAppli}}</span>
           </div>
-          <button id='toggler' type="button" 
-              class="btn navbar-toggler  ombre btn-outline-light mt-0 me-1" 
-              data-bs-toggle="collapse" data-bs-target="#navbarNav" 
-              aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+
+          <!-- aria-expanded="false" -->
+          <button #navbarCollapse id='toggler' type="button" 
+              class="btn navbar-toggler  ombre btn-outline-light mt-0 me-1"
+
+              (click)="toggleNavbar()"
+              [attr.aria-expanded]="!isNavbarCollapsed" 
+
+              data-bs-toggle="collapse" 
+              data-bs-target="navbarCollapse"
+              aria-controls="navbar"
+              aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>      
         </div>
 
         <!-- Menu déroulant -->  
-        <div class="col col-lg-9 collapse navbar-collapse" 
-            id="navbarNav" toggle="collapse" data-target=".navbar-collapse"  >
+        <div *ngIf="isNavbarCollapsed" 
+            class="navbar-collapse col col-lg-9" 
+            id="navbar" 
+            toggle="collapse" 
+            data-target=".navbar-collapse"  >
           <ul class="col-auto navbar-nav" id="home">
             <li class="nav-item">
               <a class="nav-link" 
-              aria-current="page" 
+              aria-current="page"
+              (click)="collapseNavbar()" 
               routerLink="/" href="#">
                 <i class="fas fa-home me-1"></i>
                 Home
@@ -50,13 +62,15 @@
             <ul class="col-auto navbar-nav" id="menustock">
               <li class="nav-item">
                 <a class="nav-link"
-                routerLink="/stocks/sorties">
+                    (click)="collapseNavbar()"
+                    routerLink="/stocks/sorties">
                   <i class="fas fa-arrow-left"></i>
                   Sorties
                 </a>
               </li>
               <li class="nav-item">
                 <a class="nav-link"
+                (click)="collapseNavbar()"
                 routerLink="/stocks/entrees">
                   <i class="fas fa-arrow-right"></i>
                   Entrées
@@ -64,6 +78,7 @@
               </li>
               <li class="nav-item">
                 <a class="nav-link"
+                (click)="collapseNavbar()"
                 routerLink="/stocks/effectifs">
                   <i class="fas fa-people-group"></i>
                   Effectifs
@@ -71,6 +86,7 @@
               </li>
               <li class="nav-item">
                 <a class="nav-link"
+                (click)="collapseNavbar()"
                 routerLink="/stocks/prixjournees">
                   <i class="fas fa-euro-sign"></i>
                   PrixJour
@@ -78,6 +94,7 @@
               </li>
                 <li class="nav-item">
                 <a class="nav-link"
+                (click)="collapseNavbar()"
                 routerLink="/stocks/inventaire">
                   <i class="fas fa-list-ol"></i>
                   Inventaire
@@ -89,6 +106,7 @@
             <ul class="col-auto navbar-nav"id="menukms">
               <li class="nav-item">
                 <a class="nav-link"
+                (click)="collapseNavbar()"
                 routerLink="/kms/depart">
                   <i class="fas fa-car-side"></i>
                   KMdépart
@@ -96,6 +114,7 @@
               </li>
               <li class="nav-item">
                 <a class="nav-link"
+                (click)="collapseNavbar()"
                 aria-current="page"
                 routerLink="/kms/arrivee">
                   <i class="fas fa-car"></i>
@@ -109,6 +128,7 @@
               <li class="nav-item">
                 <a class="nav-link" 
                 aria-current="page" 
+                (click)="collapseNavbar()"
                 routerLink="/admin/logout" >
                   <i class="fas fas fa-sign-out-alt"></i>
                   Logout
