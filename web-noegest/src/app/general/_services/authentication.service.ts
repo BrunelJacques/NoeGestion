@@ -5,18 +5,17 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { DatePipe } from '@angular/common';
 import { User } from '../_models';
 import { Constantes } from 'src/app/constantes';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
-    private cst = new Constantes
-    private userSubject: BehaviorSubject<User>;
+    public loginSubject = new Subject<boolean>();
+    private cst = new Constantes;
+    public userSubject: BehaviorSubject<User>;
     public user: Observable<User>;
-    datePipe = new DatePipe('en-US');
 
     constructor(
         private router: Router,
@@ -39,14 +38,16 @@ export class AuthenticationService {
             ).pipe(map(user => {
                 user.jwtToken = user.access;
                 this.userSubject.next(user);
+                this.loginSubject.next(true)
                 this.startRefreshTokenTimer();
                 return user;
             }));
     }
 
     logout() {
-        this.http.post<unknown>(this.cst.API_URL+'/logout/', {}, { withCredentials: true }).subscribe();
+        //pas de revoke token avec Django RestFramework
         this.stopRefreshTokenTimer();
+        this.loginSubject.next(false)
         this.userSubject.next(null);
         this.router.navigate(['/login']);
     }
@@ -57,7 +58,6 @@ export class AuthenticationService {
     }
 
     refreshToken() {
-        //console.log('go refresh: ',this.datePipe.transform(Date.now(),'yyyy-MM-dd hh-mm-ss'))
         // le post sera intercepté et complété par JwtInterceptor
         return this.http.post<User>(
                 this.cst.TOKENREFRESH_URL,

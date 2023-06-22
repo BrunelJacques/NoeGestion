@@ -21,7 +21,7 @@ export class ParamsComponent implements OnInit {
   params!: Params;
   camps: Camp[] = [];
   paramsForm!: UntypedFormGroup;
-  parent: string = "";
+  parent = "";
 
 
   constantes = Constantes;
@@ -95,20 +95,20 @@ export class ParamsComponent implements OnInit {
     console.log(this.fournisseurs)
   }
 
-  onOrigineChange(neworigine: any) {
+  onOrigineChange(neworigine) {
     this.majOrigine(neworigine.target.value)
   }
 
   majOrigine(origine: string){
     if (origine.endsWith("camp"))
-    { (this.paramsForm).get("camp")!.enable()} 
+    { (this.paramsForm).get("camp")?.enable()} 
     else {this.paramsForm.get("camp")?.disable()}
 
     if (origine.endsWith("repas"))
-    { this.paramsForm.get("service")!.enable()} 
+    { this.paramsForm.get("service")?.enable()} 
     else {
       this.paramsForm.patchValue({"service":""})
-      this.paramsForm.get("service")!.disable()
+      this.paramsForm.get("service")?.disable()
     }
   }
 

@@ -20,13 +20,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   toggleNavbar() { this.isNavbarCollapsed = !this.isNavbarCollapsed;}
 
-  collapseNavbar() { 
+  collapseNavbar() {
     this.isNavbarCollapsed = false}
 
   title = 'matthania';
   user = new User();
   choixSub = new Subscription();
   choixAppli = 'header';
+  loginSub = new Subscription();
+  isLoggedIn = false;
+
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: object,
@@ -35,6 +38,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
     ) {}
 
   ngOnInit(): void {
+    this.loginSub = this.authenticationService.loginSubject.subscribe(
+      (value) => (this.isLoggedIn = value)
+    );
     this.choixSub = this.choixAppliService.choixSubject$.subscribe(
       (value) => (this.choixAppli = value)
     );
@@ -52,16 +58,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.choixSub.unsubscribe();
+    this.loginSub.unsubscribe();
   }
 
   home(){
-    console.log( this.isNavbarCollapsed)
-    if (!this.isNavbarCollapsed) 
+    if (!this.isNavbarCollapsed)
     { this.logout() }
     { this.collapseNavbar() }
   }
 
   logout() {
+    this.collapseNavbar()
     this.authenticationService.logout();
     this.choixAppliService.choixSubject$.next('logout')
   }

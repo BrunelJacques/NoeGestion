@@ -128,10 +128,10 @@
               <li class="nav-item">
                 <a class="nav-link" 
                 aria-current="page" 
-                (click)="collapseNavbar()"
+                (click)="logout()"
                 routerLink="/admin/logout" >
                   <i class="fas fas fa-sign-out-alt"></i>
-                  Logout
+                  {{ isLoggedIn ? 'Logout' : 'Login' }}
                 </a>
               </li>
             </ul>

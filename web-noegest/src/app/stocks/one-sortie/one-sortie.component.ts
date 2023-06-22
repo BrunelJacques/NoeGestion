@@ -7,7 +7,6 @@ import { MvtService } from '../_services/mvt.service';
 import { ParamsService } from '../_services/params.service';
 import { Params } from '../_models/params';
 import { AlertService } from 'src/app/general/_services';
-import { DatePipe } from '@angular/common';
 import { Constantes } from 'src/app/constantes';
 
 
@@ -21,7 +20,6 @@ export class OneSortieComponent implements OnInit {
   mvt: Mouvement | undefined;
   id = 0;
   form!: UntypedFormGroup;
-  pipe = new DatePipe('en-US');
   today = new Date();
   constantes = Constantes;
   lstservice = this.constantes.LSTSERVICE;
@@ -45,7 +43,7 @@ export class OneSortieComponent implements OnInit {
 
   ngOnInit(): void {
     this.getParams();
-    this.id = parseInt(this.route.snapshot.paramMap.get('id')!, 10);
+    this.id = parseInt(this.route.snapshot.paramMap.get('id'), 10);
     this.form = this.formBuilder.group({
       jour: [this.today.toISOString().split("T")[0],Validators.required],
       origine: ["", Validators.required],
@@ -112,7 +110,7 @@ export class OneSortieComponent implements OnInit {
 
   
   getMvt(): void {
-    const id = parseInt(this.route.snapshot.paramMap.get('id')!, 10);
+    const id = parseInt(this.route.snapshot.paramMap.get('id'), 10);
     this.mvtService.getMvt(id)
       .subscribe(mvt => this.mvt = mvt);
   }
