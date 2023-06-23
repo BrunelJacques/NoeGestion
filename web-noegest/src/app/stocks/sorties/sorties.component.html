@@ -39,10 +39,10 @@
           <i class="fas fa-pencil me-1 ctnbtn"></i>
         </td>
         <td class= "py-0"> {{mvt.article.nom_court}} </td>
-        <td routerLink="/sortie/{{mvt.id}}"> {{mvt.qtemouvement * -1 | number : '1.0-2'}} </td>
-        <td routerLink="/sortie/{{mvt.id}}"> {{mvt.qtemouvement * -1 * mvt.prixunit | number : '1.2-2'}} </td>
-        <td routerLink="/sortie/{{mvt.id}}"> {{mvt.service}} </td>
-        <td class= "col" routerLink="/sortie/{{mvt.id}}"> {{mvt.nbrations * 0.5| number : '1.0-2'}} </td>
+        <td routerLink="/stocks/onesortie/{{mvt.id}}"> {{mvt.qtemouvement * -1 | number : '1.0-2'}} </td>
+        <td routerLink="/stocks/onesortie/{{mvt.id}}"> {{mvt.qtemouvement * -1 * mvt.prixunit | number : '1.2-2'}} </td>
+        <td routerLink="/stocks/onesortie/{{mvt.id}}"> {{mvt.service}} </td>
+        <td class= "col" routerLink="/stocks/onesortie/{{mvt.id}}"> {{mvt.nbrations * 0.5| number : '1.0-2'}} </td>
       </tr>
     </tbody>
   </table>

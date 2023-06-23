@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Mouvement } from '../_models/mouvement';
 import { ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
+import { Location, DatePipe } from '@angular/common';
 import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MvtService } from '../_services/mvt.service';
 import { ParamsService } from '../_services/params.service';
@@ -32,6 +32,7 @@ export class OneSortieComponent implements OnInit {
 
 
   constructor(
+    private datePipe: DatePipe,
     private route: ActivatedRoute,
     private mvtService: MvtService,
     private paramsService: ParamsService,
@@ -42,17 +43,13 @@ export class OneSortieComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getParams();
     this.id = parseInt(this.route.snapshot.paramMap.get('id'), 10);
     this.form = this.formBuilder.group({
-      jour: [this.today.toISOString().split("T")[0],Validators.required],
-      origine: ["", Validators.required],
-      camp: ["", Validators.required],
-      tva: "",
-      service: ["", Validators.required],
+      jour: [new Date(),Validators.required],
+      origine: ["repas", Validators.required],
       fournisseur:"",
-      //parent:['', Validators.required],
     });
+    this.getParams();
   }
 
   onSubmit(){
@@ -69,20 +66,26 @@ export class OneSortieComponent implements OnInit {
     this.okBack()
   }
 
+  getMvt(): void {
+    this.mvtService.getMvt(this.id)
+      .subscribe(mvt => this.mvt = mvt);
+  }
+
   getParams(): void {
     this.loading = true;
     this.paramsService.paramssubj$
       .subscribe({
-        next: (data) => {
+        next: (data:Params) => {
           this.params = data;
-          this.params.jour = new Date(this.params.jour) //reprise du type date pour toISOString
           if (!this.params.service || this.params.service < 0){ 
             this.params.service = 0 }
           this.form.patchValue({
-            'jour': this.params.jour.toISOString().split("T")[0],
+            'jour': this.datePipe.transform(this.params.jour, 'yyyy-MM-dd'),
             'origine': this.params.origine,
             'camp': this.params.camp,
+            'tva': this.params.tva,
             'service': this.lstservice[this.params.service].code,
+            'fournisseur': this.params.fournisseur,
           })
           this.loading = false
         },        
@@ -94,7 +97,6 @@ export class OneSortieComponent implements OnInit {
       });
   }
 
-
   okBack(): void {
     //this.params.jour = new Date(this.form.value.jour),
     //this.params.origine = this.form.value.origine,
@@ -103,19 +105,10 @@ export class OneSortieComponent implements OnInit {
     this.goBack()
   }
 
-
   goBack(): void {
     this.location.back();
   }
-
   
-  getMvt(): void {
-    const id = parseInt(this.route.snapshot.paramMap.get('id'), 10);
-    this.mvtService.getMvt(id)
-      .subscribe(mvt => this.mvt = mvt);
-  }
-
-
   save(): void {
     if (this.id) {
       this.mvtService.updateMvt(this.id)
@@ -123,4 +116,3 @@ export class OneSortieComponent implements OnInit {
     }
   }
 }
-

@@ -16,7 +16,7 @@ const routes: Routes = [
         path: '',
         children: [
             { path: 'sorties', component: SortiesComponent },
-            { path: 'onesortie/:id', component: OneSortieComponent, canActivate: [AuthGuard] },
+            { path: 'onesortie/:id', component: OneSortieComponent },
             { path: 'entrees', component: EntreesComponent, canActivate: [AuthGuard] },
             { path: 'oneentree/:id', component: OneEntreeComponent, canActivate: [AuthGuard] },
             { path: 'effectifs', component: EffectifsComponent, canActivate: [AuthGuard] },

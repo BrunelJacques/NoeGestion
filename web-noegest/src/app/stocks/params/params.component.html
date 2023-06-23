@@ -1,8 +1,15 @@
-<div class="card-container">
-  <div class="card">
-    <div class="col">
-      <h5 class="card-header">Paramètres de liste</h5>
-      <div class="card-body">
+<div class="container-fluid">
+  <div class="card ">
+    <div class="row container-fluid">
+      <h5 class="col-6">Paramètres de liste</h5>
+      <span class="col-6">
+        <button type="button" class="close btn btn-secondary"
+          aria-label="Close"
+          (click)="goBack()">
+          abandon
+          <i class="fas fa-turn-up"></i>
+        </button>
+        &nbsp;
         <button type="submit" 
           [disabled]="loading"
           class="btn btn-primary"
@@ -11,14 +18,8 @@
           <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
           retour ok
         </button>
-        &nbsp;
-        <button type="button" class="close btn btn-secondary"
-          aria-label="Close"
-          (click)="goBack()">
-          abandon
-          <i class="fas fa-turn-up"></i>
-        </button>
-      </div>
+      </span>
+      
     </div>
     <form [formGroup]="paramsForm" 
         class="form-group short was-validated"
@@ -98,5 +99,5 @@
 
     </form>
   </div>
-  <label>Parent: {{parent}}</label>
+  <label for="Parent: {{parent}}"></label>
 </div>

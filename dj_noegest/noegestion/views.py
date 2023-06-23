@@ -41,9 +41,13 @@ class StMouvementViewset(ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self,  *args, **kwargs):
-        origine = self.request.GET.get('origine', 'repas')
-        jour = self.request.GET.get('jour',str(datetime.date.today()))
-        return StMouvement.objects.filter(origine=origine,jour=jour)
+        id = self.request.GET.get('id',None)
+        if id:
+            return StMouvement.objects.filter(id=id)
+        else:
+            origine = self.request.GET.get('origine', 'repas')
+            jour = self.request.GET.get('jour',str(datetime.date.today()))
+            return StMouvement.objects.filter(origine=origine,jour=jour)
 
 
 class StArticleViewset(ModelViewSet):
