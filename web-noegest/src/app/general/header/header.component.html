@@ -5,7 +5,7 @@
   <div class="row p-0 g-0 align-items-top ombre">
     <div class="col-2 col-sm-1 ">
       <button type="button" id="btnhome" (click)="home()"
-          class="btn ms-1 mt-2 btn-outline-light" 
+          class="btn ms-1 mt-2 btn-outline-light"
           data-bs-toggle="tooltip"
           data-bs-placement="right">
         <i class="fas fa-left-long fa-1x"></i>
@@ -13,44 +13,44 @@
     </div>
     <div class="col-10 col-sm-11 pl-0 ">
       <nav class="navbar navbar-expand-md navbar-dark  flex-wrap" aria-label="Main navigation">
-        <div class="container ms-0" id="navcontainer">
-          <div container id="titre">
-            <a routerLink="/" 
-              class="navbar-brand fw-bold" 
-              alt="Accueil">
-              <img src="assets/images/noegest@1x.png"
-              srcset="assets/images/noegest@2x.png,
-              assets/images/noegest@1x.png" 
-              width="170" height="40" alt="Logo">
-            </a>
-            <span class="text-white">{{choixAppli}}</span>
-          </div>
-
-          <!-- aria-expanded="false" -->
-          <button #navbarCollapse id='toggler' type="button" 
-              class="btn navbar-toggler  ombre btn-outline-light mt-0 me-1"
-
-              (click)="toggleNavbar()"
-              [attr.aria-expanded]="!isNavbarCollapsed" 
-              data-bs-toggle="collapse" 
-              data-bs-target="navbarCollapse"
-              aria-controls="navbar"
-              aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>      
+        <div id="titre">
+          <a routerLink="/"
+            class="navbar-brand fw-bold"
+            alt="Accueil">
+            <img src="assets/images/noegest@1x.png"
+            srcset="assets/images/noegest@2x.png,
+            assets/images/noegest@1x.png"
+            width="170" height="40" alt="Logo">
+          </a>
+          <span class="text-white">{{choixAppli}}</span>
         </div>
 
-        <!-- Menu déroulant -->  
-        <div *ngIf="isNavbarCollapsed" 
-            class="navbar-collapse col col-lg-9" 
-            id="navbar" 
-            toggle="collapse" 
+        <!-- aria-expanded="false" -->
+        <button #navbarCollapse id='toggler' type="button"
+            class="btn navbar-toggler  ombre btn-outline-light mt-0 me-1"
+
+            (click)="toggleNavbar()"
+            [attr.aria-expanded]="!isNavbarCollapsed"
+
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarContent"
+            aria-controls="navbar"
+            aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+
+        <!-- Menu déroulant -->
+        <div
+            class=" collapse navbar-collapse col col-lg-9"
+            id="navbarContent"
+            toggle="collapse"
             data-target=".navbar-collapse"  >
           <ul class="col-auto navbar-nav" id="home">
             <li class="nav-item">
-              <a class="nav-link" 
+              <a class="nav-link"
               aria-current="page"
-              (click)="collapseNavbar()" 
+              (click)="collapseNavbar()"
               routerLink="/" href="#">
                 <i class="fas fa-home me-1"></i>
                 Home
@@ -98,9 +98,9 @@
                   <i class="fas fa-list-ol"></i>
                   Inventaire
                 </a>
-              </li>          
+              </li>
             </ul>
-          </span>      
+          </span>
           <span class="col-auto navbar-nav" *ngIf="choixAppli === 'kms'">
             <ul class="col-auto navbar-nav"id="menukms">
               <li class="nav-item">
@@ -125,8 +125,8 @@
           <span class="col-auto navbar-nav">
             <ul class="col-auto navbar-nav" id="logout">
               <li class="nav-item">
-                <a class="nav-link" 
-                aria-current="page" 
+                <a class="nav-link"
+                aria-current="page"
                 (click)="logout()"
                 routerLink="/admin/logout" >
                   <i class="fas fas fa-sign-out-alt"></i>
