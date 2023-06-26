@@ -32,7 +32,7 @@ export class MvtService {
     return id
   }
 
-  getSorties(urlparams): Observable<Mouvement[]> {
+  getSorties(urlparams: string): Observable<Mouvement[]> {
     this.url = this.cst.STMOUVEMENT_URL+urlparams;
     return (this.http.get<Mouvement[]>(this.url))
       .pipe(
@@ -44,7 +44,7 @@ export class MvtService {
 
   // gestion erreur façon Tour of Heroes
   private handleError<T>(operation = 'operation', result?: T) {
-    return (error): Observable<T> => {
+    return (error: { message: any; }): Observable<T> => {
       console.error(error); // log to console instead
       this.log(`${operation} failed: ${error.message}`);
       // Let the app keep running by returning an empty result.

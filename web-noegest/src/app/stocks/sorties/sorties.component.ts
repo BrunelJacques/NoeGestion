@@ -17,7 +17,7 @@ import { Constantes } from 'src/app/constantes';
 export class SortiesComponent implements OnInit {
   selectedMvt!: Mouvement;
   sorties: Mouvement[] = [];
-  jour = ""
+  jour: string | null = ""
   origine = ""
   urlparams= "";
   params!: Params;

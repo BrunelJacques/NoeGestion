@@ -14,8 +14,8 @@ import { JwtInterceptor, ErrorInterceptor } from './general/_helpers';
 
 import { AlertComponent } from './general/_alert';
 import { HomeComponent } from './general/home';
+import { HeaderModule } from './general/header/header.module';
 import { NotFoundComponent } from './general/not-found';
-import { HeaderComponent } from './general/header';
 import { NameappliService } from './general/_services/namemodule.service';
 import * as fr from '@angular/common/locales/fr';
 
@@ -26,7 +26,6 @@ import * as fr from '@angular/common/locales/fr';
     HomeComponent,
     AlertComponent,
     NotFoundComponent,
-    HeaderComponent,
   ],
   imports: [
     BrowserModule,
@@ -34,6 +33,7 @@ import * as fr from '@angular/common/locales/fr';
     ReactiveFormsModule,
     HttpClientModule,
     AppRoutingModule,
+    HeaderModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
