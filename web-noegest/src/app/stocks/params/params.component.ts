@@ -4,7 +4,7 @@ import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms
 import { DatePipe } from '@angular/common';
 
 import { ParamsService } from '../_services/params.service';
-import { Camp } from '../_models/params';
+import { Camp, Fournisseur } from '../_models/params';
 import { Params } from '../_models/params';
 
 import { AlertService } from 'src/app/general/_services';
@@ -19,18 +19,18 @@ import { NamemoduleService } from 'src/app/general/_services';
 
 export class ParamsComponent implements OnInit {
   params!: Params;
-  camps: Camp[] = [];
+  camps!: Camp[];
   paramsForm!: UntypedFormGroup;
   parent = "";
 
 
   constantes = Constantes;
   lstservice = this.constantes.LSTSERVICE;
-  lstorigine = [{}];
   lstorigine_sorties = this.constantes.LSTORIGINE_SORTIES;
   lstorigine_entrees = this.constantes.LSTORIGINE_ENTREES;
+  lstorigine = this.lstorigine_entrees;
 
-  fournisseurs = [{}];
+  fournisseurs!: Fournisseur[];
 
   lstservice_code = this.lstservice.map((x) => x.code)
   loading = true;
@@ -95,8 +95,10 @@ export class ParamsComponent implements OnInit {
     console.log(this.fournisseurs)
   }
 
-  onOrigineChange(neworigine) {
-    this.majOrigine(neworigine.target.value)
+  onOrigineChange(myelement: unknown) {
+    if (myelement instanceof HTMLInputElement) {
+      const value =  myelement.value   
+      this.majOrigine(value)}
   }
 
   majOrigine(origine: string){

@@ -18,7 +18,7 @@ import { Constantes } from 'src/app/constantes';
 
 export class OneSortieComponent implements OnInit {
   mvt: Mouvement | undefined;
-  id = 0;
+  id: string|null = "";
   form!: UntypedFormGroup;
   today = new Date();
   constantes = Constantes;
@@ -40,10 +40,10 @@ export class OneSortieComponent implements OnInit {
     private location: Location,
 
     private alertService: AlertService,
-  ) { }
+  ) {}
 
   ngOnInit(): void {
-    this.id = parseInt(this.route.snapshot.paramMap.get('id'), 10);
+    this.id = this.route.snapshot.paramMap.get('id'),
     this.form = this.formBuilder.group({
       jour: [new Date(),Validators.required],
       origine: ["repas", Validators.required],
@@ -67,8 +67,13 @@ export class OneSortieComponent implements OnInit {
   }
 
   getMvt(): void {
-    this.mvtService.getMvt(this.id)
+    if (this.id === null){
+      console.log('this.id : ', this.id)
+    }{
+      const id = this.id || ''
+      this.mvtService.getMvt(id)
       .subscribe(mvt => this.mvt = mvt);
+    }
   }
 
   getParams(): void {
@@ -111,7 +116,7 @@ export class OneSortieComponent implements OnInit {
   
   save(): void {
     if (this.id) {
-      this.mvtService.updateMvt(this.id)
+      this.mvtService.updateMvt(this.id.toString())
         .subscribe(() => this.goBack());
     }
   }

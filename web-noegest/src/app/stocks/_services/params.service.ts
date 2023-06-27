@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject, catchError, of } from 'rxjs';
@@ -11,10 +12,10 @@ import { Constantes } from 'src/app/constantes';
 export class ParamsService {
   public paramssubj$= new BehaviorSubject<Params>(PARAMS);
 
-  private key: string = "stParams";
+  private key = "stParams";
   public camps: Camp[] = [];
   public fournisseurs: Fournisseur[] = [];
-  public rayons: Rayon[] = [];
+  public rayons: Rayon[] = [] ;
   public magasins: Magasin[] = [];
 
 
@@ -38,7 +39,11 @@ export class ParamsService {
   }
 
   getStoredParams() {
-    return JSON.parse(localStorage.getItem(this.key));
+    const key = localStorage.getItem(this.key)
+    if (key === null ) 
+    {return}
+    else
+    { return JSON.parse(key); }
   }
 
   ajusteParams(params:Params){

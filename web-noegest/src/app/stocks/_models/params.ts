@@ -28,7 +28,7 @@ export interface Camp {
   id: 0;
   nom: string;
   abrege: string;
-  params: any;
+  params: unknown;
 }
 
 export interface Fournisseur {

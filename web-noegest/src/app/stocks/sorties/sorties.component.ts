@@ -14,6 +14,7 @@ import { Constantes } from 'src/app/constantes';
   styleUrls: ['./sorties.component.less']
 })
 
+
 export class SortiesComponent implements OnInit {
   selectedMvt!: Mouvement;
   sorties: Mouvement[] = [];
@@ -22,9 +23,9 @@ export class SortiesComponent implements OnInit {
   urlparams= "";
   params!: Params;
   nblignesmax = 60;
-
+  
   constantes = Constantes;
-  lstorigine_codes = this.constantes.LSTORIGINE_SORTIES.map((x: { code })=>x.code) ;
+  lstorigine_codes = this.constantes.LSTORIGINE_SORTIES.map((x: { code: unknown })=>x.code) ;
   lstservice = this.constantes.LSTSERVICE
 
   mvtsFilter = (mvt: Mouvement) => {
@@ -70,12 +71,13 @@ export class SortiesComponent implements OnInit {
     this.getSorties();
   }
 
+
   getSorties(): void {
     const jour = this.datePipe.transform(this.params.jour, 'yyyy-MM-dd')
     this.urlparams = `/?origine=${this.origine}&jour=${jour}`
     this.mvtService.getSorties(this.urlparams)
       .subscribe({
-        next: (data) => {
+        next: (data) => {          
           // limitation du nombre de lignes affichées
           this.sorties = data['results']
             .filter((mvt:Mouvement, index: number) => {
@@ -85,8 +87,8 @@ export class SortiesComponent implements OnInit {
             });
           // filtrage selon les paramètres choisis
           this.sorties = this.sorties.filter(this.mvtsFilter);
-          if (data['count'] > this.nblignesmax) {
-            this.alertService.warn(`Seulement ${this.nblignesmax} sur ${data['count']} on été affichées`)
+          if (data.length > this.nblignesmax) {
+            this.alertService.warn(`Seulement ${this.nblignesmax} sur ${data.length} on été affichées`)
           }
 
           if (this.sorties.length == 0) { this.alertService.info('Les paramètres choisis ont exclu toutes les lignes')}

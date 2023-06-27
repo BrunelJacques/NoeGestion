@@ -10,7 +10,7 @@ import { Constantes } from 'src/app/constantes';
 
 export class MvtService {
   mvts: Mouvement[] = []
-  url: string
+  url: string | undefined
 
 
   constructor(
@@ -19,7 +19,7 @@ export class MvtService {
   ) {}
 
    /** GET mvt by id. Will 404 if id not found */
-  getMvt(id): Observable<Mouvement> {
+  getMvt(id: string): Observable<Mouvement> {
     this.url = this.cst.STMOUVEMENT_URL+"/?id="+id;
     return this.http.get<Mouvement>(this.url)
       .pipe(
@@ -28,11 +28,11 @@ export class MvtService {
       );
   }
 
-  updateMvt(id): Observable<Mouvement[]> {
-    return id
+  updateMvt(id:string) {
+    return this.getMvt(id)
   }
 
-  getSorties(urlparams: string): Observable<Mouvement[]> {
+  getSorties(urlparams): Observable<Mouvement[]> {
     this.url = this.cst.STMOUVEMENT_URL+urlparams;
     return (this.http.get<Mouvement[]>(this.url))
       .pipe(
@@ -44,7 +44,7 @@ export class MvtService {
 
   // gestion erreur façon Tour of Heroes
   private handleError<T>(operation = 'operation', result?: T) {
-    return (error: { message: any; }): Observable<T> => {
+    return (error: { message: unknown; }): Observable<T> => {
       console.error(error); // log to console instead
       this.log(`${operation} failed: ${error.message}`);
       // Let the app keep running by returning an empty result.

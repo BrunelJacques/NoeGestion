@@ -57,7 +57,7 @@
               [ngClass]="{ 'is-invalid': f['password'].errors }" />
           <div *ngIf="f['password'].errors?.['required'] && form.controls['password'].touched" class="invalid-feedback">
               <div *ngIf="f['password'].errors?.['required']">Le mot de passe est obligatoire</div>
-              <div *ngIf="f['password'].errors['minlength']">le mot de passe doit avoir 6 caractères minimum</div>
+              <div *ngIf="f['password'].errors?.['minlength']">le mot de passe doit avoir 6 caractères minimum</div>
           </div>
       </div>
     </form>

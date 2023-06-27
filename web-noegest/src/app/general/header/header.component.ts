@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { Subscription } from 'rxjs';
@@ -6,7 +6,6 @@ import { Subscription } from 'rxjs';
 import { User } from 'src/app/general/_models';
 import { AuthenticationService } from 'src/app/general/_services';
 import { NameappliService } from '../_services/namemodule.service';
-import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-header',
@@ -15,7 +14,6 @@ import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 })
 
 export class HeaderComponent implements OnInit, OnDestroy {
-  @ViewChild('navbarCollapse') navbarCollapse: NgbCollapse;
   isNavbarCollapsed = false;
 
   toggleNavbar() { this.isNavbarCollapsed = !this.isNavbarCollapsed;}
@@ -72,7 +70,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.authenticationService.logout();
     this.choixAppliService.choixSubject$.next('logout')
   }
-
 
 }
 

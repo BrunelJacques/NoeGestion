@@ -3,24 +3,27 @@ import { AuthenticationService } from './general/_services';
 import { User } from './general/_models';
 import { Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.less']
+  styleUrls: ['./app.component.scss']
 })
-
 export class AppComponent implements OnInit{
+  title = 'noegestion';
   user!: User;
-  title = 'Matthania-Noegestion';
-  footerUrl = 'https://www.matthania.com/';
 
   constructor(
+    private modalService: NgbModal,
     @Inject(PLATFORM_ID) private platformId: object,
-    private authenticationService: AuthenticationService
-    ){
+    private authenticationService: AuthenticationService) {
       this.authenticationService.user.subscribe(x => this.user = x);
+    }
+
+  public open(modal: unknown): void {
+    this.modalService.open(modal);
   }
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {

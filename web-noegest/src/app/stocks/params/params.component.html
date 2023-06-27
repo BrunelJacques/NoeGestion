@@ -41,7 +41,7 @@
         (change)="onOrigineChange($event)"
         formControlName="origine"
         class="form-control" required aria-label="origine">
-        <option [ngValue]="" disabled>Filtrer les {{parent}} pour :</option>
+        <option [ngValue]="'-'" disabled>Filtrer les {{parent}} pour :</option>
         <option *ngFor="let origine of lstorigine"
           [ngValue]="origine['code']">
           {{origine['libelle']}}
@@ -56,7 +56,7 @@
           <option [ngValue]="" disabled>Choisir un camp</option>
           <option *ngFor="let camp of camps"
             [ngValue]="camp.id">
-            {{camp['libelle']}}
+            {{camp['nom']}}
           </option>
         </select> 
         <div *ngIf="submitted && f['camp'].errors" class="invalid-feedback" id="camp">

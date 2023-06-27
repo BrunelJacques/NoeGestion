@@ -21,7 +21,7 @@ export class AuthenticationService {
         private router: Router,
         private http: HttpClient,
     ) {
-        this.userSubject = new BehaviorSubject<User>(null);
+        this.userSubject = new BehaviorSubject<User>(new User);
         this.user = this.userSubject.asObservable();
     }
 
@@ -48,7 +48,7 @@ export class AuthenticationService {
         //pas de revoke token avec Django RestFramework
         this.stopRefreshTokenTimer();
         this.loginSubject.next(false)
-        this.userSubject.next(null);
+        this.userSubject.next(new User);
         this.router.navigate(['/login']);
     }
 
@@ -73,7 +73,7 @@ export class AuthenticationService {
     }
 
     // helper methods
-    private refreshTokenTimeout?;
+    private refreshTokenTimeout?: string | number | NodeJS.Timeout | undefined;
     
     private startRefreshTokenTimer() {
         // parse json object from base64 encoded jwt token

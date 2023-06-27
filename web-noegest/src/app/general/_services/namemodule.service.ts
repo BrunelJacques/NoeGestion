@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 @Injectable({ providedIn: 'root' })
 
 export class NamemoduleService {
-  private parentName:string;
+  private parentName:string | undefined;
 
   setParentName(name:string){
     this.parentName = name
