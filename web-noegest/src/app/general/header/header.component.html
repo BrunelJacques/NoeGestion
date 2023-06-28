@@ -1,21 +1,20 @@
-<!--icones bootstrap   i class="bi-alarm" style="font-size: 2rem; color: cornflowerblue;"></i-->
-<!--icones fontawesome i class="fas fa-left-long fa-1x"></i-->
+<!--icones bootstrap   i class="bi bi-alarm" style="font-size: 2rem; clogoolor: cornflowerblue;"></i-->
 
-<header class="sticky-top navbar-dark nga-navbar fond-sombre">
+<header class="sticky-top navbar-dark fond-sombre">
   <div class="row p-0 g-0 align-items-top ombre">
     <div class="col-2 col-sm-1 ">
       <button type="button" 
       id="btnhome" 
       (click)="home()"
-      class="btn ms-1 mt-2 btn-outline-light"
+      class="btn ms-1 mt-1 btn-outline-light p-0"
       data-bs-toggle="tooltip"
       data-bs-placement="right"
       >
-        <i class="fas fa-left-long fa-1x"></i>
+        <i class="bi bi-arrow-left"></i>
       </button>
     </div>
     <div class="col-10 col-sm-11 pl-0 ">
-      <nav class="navbar navbar-expand-md navbar-dark  flex-wrap " aria-label="Main navigation">
+      <nav class="navbar navbar-expand-md flex-wrap " aria-label="Main navigation">
         <div id="titre">
           <a routerLink="/"
             class="navbar-brand fw-bold"
@@ -38,7 +37,7 @@
         aria-controls="navbar"
         aria-label="Toggle navigation"
         >
-          <span class="navbar-toggler-icon"></span>
+          <i class="bi bi-list"></i>
         </button>
 
 
@@ -50,10 +49,10 @@
             data-target=".navbar-collapse"  >
           <ul class="col-auto navbar-nav" id="home">
             <li class="nav-item">
-              <a class="nav-link"
+              <a class="nav-link bi"
               routerLink="/" href="#"
               >
-                <i class="fas fa-home me-1"></i>
+                <i class="bi bi-house-up-fill me-1"></i>
                 Home
               </a>
             </li>
@@ -61,41 +60,37 @@
           <span class="col-auto navbar-nav" *ngIf="choixAppli === 'stocks' || choixAppli === '-'">
             <ul class="col-auto navbar-nav" id="menustock">
               <li class="nav-item">
-                <a class="nav-link"
-                    
-                  routerLink="/stocks/sorties">
-                  <i class="fas fa-arrow-left"></i>
+                <a class="nav-link bi"
+                routerLink="/stocks/sorties">
+                  <i class="bi bi-box-arrow-right"></i>
                   Sorties
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link"
-                
-                  routerLink="/stocks/entrees">
-                  <i class="fas fa-arrow-right"></i>
+                <a class="nav-link bi"
+                routerLink="/stocks/entrees">
+                  <i class="bi bi-box-arrow-in-right bi-3x"></i>
                   Entrées
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link"
-                
-                  routerLink="/stocks/effectifs">
-                  <i class="fas fa-people-group"></i>
+                <a class="nav-link bi"
+                routerLink="/stocks/effectifs">
+                  <i class="bi bi-people-fill"></i>
                   Effectifs
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link"
-                  routerLink="/stocks/prixjournees">
-                  <i class="fas fa-euro-sign"></i>
+                <a class="nav-link bi"
+                routerLink="/stocks/prixjournees">
+                  <i class="bi bi-currency-euro"></i>
                   PrixJour
                 </a>
               </li>
                 <li class="nav-item">
-                <a class="nav-link"
-                
-                  routerLink="/stocks/inventaire">
-                  <i class="fas fa-list-ol"></i>
+                <a class="nav-link bi"
+                routerLink="/stocks/inventaire">
+                  <i class="bi bi-list-ol"></i>
                   Inventaire
                 </a>
               </li>
@@ -104,18 +99,17 @@
           <span class="col-auto navbar-nav" *ngIf="choixAppli === 'kms'">
             <ul class="col-auto navbar-nav"id="menukms">
               <li class="nav-item">
-                <a class="nav-link"
-                
-                  routerLink="/kms/depart">
-                  <i class="fas fa-car-side"></i>
+                <a class="nav-link bi"
+                routerLink="/kms/depart">
+                  <i class="bi bi-car-side"></i>
                   KMdépart
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link"                
+                <a class="nav-link bi"                
                 routerLink="/kms/arrivee"
                 >
-                  <i class="fas fa-car"></i>
+                  <i class="bi bi-car"></i>
                   KMarrivee
                 </a>
               </li>
@@ -124,11 +118,11 @@
           <span class="col-auto navbar-nav">
             <ul class="col-auto navbar-nav" id="logout">
               <li class="nav-item">
-                <a class="nav-link"
+                <a class="nav-link bi"
                 (click)="logout()" 
                 routerLink="/admin/logout"
                 >
-                  <i class="fas fas fa-sign-out-alt"></i>
+                  <i class="bi bi-person-badge"></i>
                   {{ isLoggedIn ? 'Logout' : 'Login' }}
                 </a>
               </li>

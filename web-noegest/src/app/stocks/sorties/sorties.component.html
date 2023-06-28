@@ -1,5 +1,5 @@
-<div class= "col-12 m-0 p-0">
-  <h6 class="no-secable">Sorties de stock :
+<div>
+  <h6 class="card no-secable">Sorties de stock :
     &nbsp;
     <span *ngIf="params.origine === 'repas'">pour {{params.origine}} en cuisine</span>
     <span *ngIf="params.origine === 'camp'">pour camp '{{params.camp}}'</span>
@@ -11,12 +11,12 @@
       &nbsp;
       <span *ngIf="params.origine === 'repas'">Repas '{{lstservice[params.service].code}}'&nbsp;</span>
     </span>
-    <span class="right-span">
-      <a class="fas fa-gear fa-lg" routerLink="/stocks/params">
+    <span class="right-span no-secable">
+      <a class="bi bi-gear" routerLink="/stocks/params">
         <span class="small">params</span>
       </a>
       &nbsp;
-      <a class="fas fa-circle-plus fa-lg" routerLink="/stocks/params">
+      <a class="bi bi-plus-circle" routerLink="/stocks/params">
         <span class="small">ajout</span>
       </a>
     </span>
@@ -26,23 +26,24 @@
     <thead >
       <tr class="center coltitle">
         <th class="col coltitle">-</th>
-        <th class="col-7  pb-0">Article</th>
+        <th class="col-8  pb-0">Article</th>
         <th class="col ">Qte</th>
         <th class="col pb-0">Coût</th>
         <th class="col small px-0 pt-0">Repas</th>
-        <th class="col small px-0 pb-0">Rations</th>
+        <th class="col small px-0 pb-0 d-none d-sm-table-cell">Rations théoriques</th>
       </tr>
     </thead>
     <tbody pb-0>
-      <tr *ngFor="let mvt of sorties;">
+      <tr *ngFor="let mvt of sorties;"
+      class="">
         <td class="small" routerLink="/stocks/onesortie/{{mvt.id}}">
-          <i class="fas fa-pencil me-1 ctnbtn"></i>
+          <i class="bi bi-pencil-square me-1 ctnbtn"></i>
         </td>
         <td class= "py-0"> {{mvt.article.nom_court}} </td>
         <td routerLink="/stocks/onesortie/{{mvt.id}}"> {{mvt.qtemouvement * -1 | number : '1.0-2'}} </td>
         <td routerLink="/stocks/onesortie/{{mvt.id}}"> {{mvt.qtemouvement * -1 * mvt.prixunit | number : '1.2-2'}} </td>
         <td routerLink="/stocks/onesortie/{{mvt.id}}"> {{mvt.service}} </td>
-        <td class= "col" routerLink="/stocks/onesortie/{{mvt.id}}"> {{mvt.nbrations * 0.5| number : '1.0-2'}} </td>
+        <td class= "d-none d-sm-table-cell" routerLink="/stocks/onesortie/{{mvt.id}}"> {{mvt.nbrations * 0.5| number : '1.0-2'}} </td>
       </tr>
     </tbody>
   </table>

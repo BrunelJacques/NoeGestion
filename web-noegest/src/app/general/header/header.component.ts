@@ -39,6 +39,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
     );
 
     /* Permet la fermeture du menu après un choix*/ 
+    this.collapseNavbar()
+  }
+
+  ngOnDestroy(): void {
+    this.choixSub.unsubscribe();
+    this.loginSub.unsubscribe();
+  }
+
+  toggleNavbar() { this.isNavbarCollapsed = !this.isNavbarCollapsed;}
+
+  collapseNavbar() {
+    this.isNavbarCollapsed = false
     if (isPlatformBrowser(this.platformId)) {
       const navMain = document.getElementById('navbarCollapse');
       if (navMain) {
@@ -51,25 +63,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {
-    this.choixSub.unsubscribe();
-    this.loginSub.unsubscribe();
-  }
-
-  toggleNavbar() { this.isNavbarCollapsed = !this.isNavbarCollapsed;}
-
-  collapseNavbar() {
-    this.isNavbarCollapsed = false
-  }
-
   home(){
     if (!this.isNavbarCollapsed)
     { this.logout() }
     else
-    { this.collapseNavbar() }
+    {
+      const navMain = document.getElementById('navbarCollapse');
+      navMain.classList.remove("show");
+      this.isNavbarCollapsed = false
+    }
   }
 
   logout() {
+    this.isNavbarCollapsed = false
     this.authenticationService.logout();
     this.choixAppliService.choixSubject$.next('logout')
   }

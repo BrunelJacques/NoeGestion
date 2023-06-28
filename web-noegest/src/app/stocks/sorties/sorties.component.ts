@@ -11,7 +11,7 @@ import { Constantes } from 'src/app/constantes';
 @Component({
   selector: 'app-sorties',
   templateUrl: './sorties.component.html',
-  styleUrls: ['./sorties.component.less']
+  styleUrls: ['./sorties.component.css']
 })
 
 

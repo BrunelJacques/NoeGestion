@@ -11,7 +11,6 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 //import { fakeBackendProvider } from './general/_helpers';
 import { JwtInterceptor, ErrorInterceptor } from './general/_helpers';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { AlertComponent } from './general/_alert';
 import { HomeComponent } from './general/home';
@@ -35,7 +34,6 @@ import * as fr from '@angular/common/locales/fr';
     HttpClientModule,
     AppRoutingModule,
     HeaderModule,
-    FontAwesomeModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
