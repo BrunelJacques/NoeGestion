@@ -16,11 +16,6 @@ import { NameappliService } from '../_services/namemodule.service';
 export class HeaderComponent implements OnInit, OnDestroy {
   isNavbarCollapsed = false;
 
-  toggleNavbar() { this.isNavbarCollapsed = !this.isNavbarCollapsed;}
-
-  collapseNavbar() {
-    this.isNavbarCollapsed = false}
-
   title = 'matthania';
   user = new User();
   choixSub = new Subscription();
@@ -33,7 +28,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     @Inject(PLATFORM_ID) private platformId: object,
     private choixAppliService: NameappliService,
     private authenticationService: AuthenticationService,
-    ) {}
+  ) {}
 
   ngOnInit(): void {
     this.loginSub = this.authenticationService.loginSubject.subscribe(
@@ -42,8 +37,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.choixSub = this.choixAppliService.choixSubject$.subscribe(
       (value) => (this.choixAppli = value)
     );
+
+    /* Permet la fermeture du menu après un choix*/ 
     if (isPlatformBrowser(this.platformId)) {
-      const navMain = document.getElementById('navbarNav');
+      const navMain = document.getElementById('navbarCollapse');
       if (navMain) {
         navMain.onclick = function onClick() {
           if (navMain) {
@@ -59,14 +56,20 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.loginSub.unsubscribe();
   }
 
+  toggleNavbar() { this.isNavbarCollapsed = !this.isNavbarCollapsed;}
+
+  collapseNavbar() {
+    this.isNavbarCollapsed = false
+  }
+
   home(){
     if (!this.isNavbarCollapsed)
     { this.logout() }
+    else
     { this.collapseNavbar() }
   }
 
   logout() {
-    this.collapseNavbar()
     this.authenticationService.logout();
     this.choixAppliService.choixSubject$.next('logout')
   }

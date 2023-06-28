@@ -4,10 +4,13 @@
 <header class="sticky-top navbar-dark nga-navbar fond-sombre">
   <div class="row p-0 g-0 align-items-top ombre">
     <div class="col-2 col-sm-1 ">
-      <button type="button" id="btnhome" (click)="home()"
-          class="btn ms-1 mt-2 btn-outline-light"
-          data-bs-toggle="tooltip"
-          data-bs-placement="right">
+      <button type="button" 
+      id="btnhome" 
+      (click)="home()"
+      class="btn ms-1 mt-2 btn-outline-light"
+      data-bs-toggle="tooltip"
+      data-bs-placement="right"
+      >
         <i class="fas fa-left-long fa-1x"></i>
       </button>
     </div>
@@ -27,15 +30,14 @@
 
         <!-- aria-expanded="false" -->
         <button #navbarCollapse id='toggler' type="button"
-            class="btn navbar-toggler  ombre btn-outline-light mt-0 me-1"
-
-            (click)="toggleNavbar()"
-            [attr.aria-expanded]="!isNavbarCollapsed"
-
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarCollapse"
-            aria-controls="navbar"
-            aria-label="Toggle navigation">
+        class="btn navbar-toggler  ombre btn-outline-light mt-0 me-1"
+        (click)="toggleNavbar()"
+        [attr.aria-expanded]="!isNavbarCollapsed"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarCollapse"
+        aria-controls="navbar"
+        aria-label="Toggle navigation"
+        >
           <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -49,9 +51,8 @@
           <ul class="col-auto navbar-nav" id="home">
             <li class="nav-item">
               <a class="nav-link"
-              aria-current="page"
-              
-              routerLink="/" href="#">
+              routerLink="/" href="#"
+              >
                 <i class="fas fa-home me-1"></i>
                 Home
               </a>
@@ -62,7 +63,7 @@
               <li class="nav-item">
                 <a class="nav-link"
                     
-                    routerLink="/stocks/sorties">
+                  routerLink="/stocks/sorties">
                   <i class="fas fa-arrow-left"></i>
                   Sorties
                 </a>
@@ -70,7 +71,7 @@
               <li class="nav-item">
                 <a class="nav-link"
                 
-                routerLink="/stocks/entrees">
+                  routerLink="/stocks/entrees">
                   <i class="fas fa-arrow-right"></i>
                   Entrées
                 </a>
@@ -78,15 +79,14 @@
               <li class="nav-item">
                 <a class="nav-link"
                 
-                routerLink="/stocks/effectifs">
+                  routerLink="/stocks/effectifs">
                   <i class="fas fa-people-group"></i>
                   Effectifs
                 </a>
               </li>
               <li class="nav-item">
                 <a class="nav-link"
-                
-                routerLink="/stocks/prixjournees">
+                  routerLink="/stocks/prixjournees">
                   <i class="fas fa-euro-sign"></i>
                   PrixJour
                 </a>
@@ -94,7 +94,7 @@
                 <li class="nav-item">
                 <a class="nav-link"
                 
-                routerLink="/stocks/inventaire">
+                  routerLink="/stocks/inventaire">
                   <i class="fas fa-list-ol"></i>
                   Inventaire
                 </a>
@@ -106,16 +106,15 @@
               <li class="nav-item">
                 <a class="nav-link"
                 
-                routerLink="/kms/depart">
+                  routerLink="/kms/depart">
                   <i class="fas fa-car-side"></i>
                   KMdépart
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link"
-                
-                aria-current="page"
-                routerLink="/kms/arrivee">
+                <a class="nav-link"                
+                routerLink="/kms/arrivee"
+                >
                   <i class="fas fa-car"></i>
                   KMarrivee
                 </a>
@@ -126,9 +125,9 @@
             <ul class="col-auto navbar-nav" id="logout">
               <li class="nav-item">
                 <a class="nav-link"
-                aria-current="page"
-                (click)="logout()"
-                routerLink="/admin/logout" >
+                (click)="logout()" 
+                routerLink="/admin/logout"
+                >
                   <i class="fas fas fa-sign-out-alt"></i>
                   {{ isLoggedIn ? 'Logout' : 'Login' }}
                 </a>
