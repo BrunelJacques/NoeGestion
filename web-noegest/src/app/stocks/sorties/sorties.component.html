@@ -43,7 +43,8 @@
         <td routerLink="/stocks/onesortie/{{mvt.id}}"> {{mvt.qtemouvement * -1 | number : '1.0-2'}} </td>
         <td routerLink="/stocks/onesortie/{{mvt.id}}"> {{mvt.qtemouvement * -1 * mvt.prixunit | number : '1.2-2'}} </td>
         <td routerLink="/stocks/onesortie/{{mvt.id}}"> {{mvt.service}} </td>
-        <td class= "d-none d-sm-table-cell" routerLink="/stocks/onesortie/{{mvt.id}}"> {{mvt.nbrations * 0.5| number : '1.0-2'}} </td>
+        <td class= "d-none d-sm-table-cell" 
+        routerLink="/stocks/onesortie/{{mvt.id}}"> {{mvt.nbrations * 0.5| number : '1.0-2'}} </td>
       </tr>
     </tbody>
   </table>

@@ -146,8 +146,8 @@ export class ParamsComponent implements OnInit {
   }
 
   getCamps(): void {
-    this.camps = this.paramsService.getCamps()
-      }
+    this.camps = this.paramsService.camps
+    }
   
   setParams(params: Params): void {
     this.paramsService.setParams(params)

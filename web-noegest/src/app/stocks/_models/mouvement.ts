@@ -8,11 +8,11 @@ export interface Mouvement {
     fournisseur: string;
     article_id: number;
     article: Article
-    nbcolis: any;
+    nbcolis: number;
     qtemouvement: number;
     prixunit: number;
     service: number;
-    nbrations: any;
+    nbrations: number;
     article_nom: string;
     article_rayon: string;
     article_magasin: string;

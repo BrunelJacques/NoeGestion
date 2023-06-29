@@ -23,7 +23,7 @@ export class SortiesComponent implements OnInit {
   urlparams= "";
   params!: Params;
   nblignesmax = 60;
-  
+
   constantes = Constantes;
   lstorigine_codes = this.constantes.LSTORIGINE_SORTIES.map((x: { code: unknown })=>x.code) ;
   lstservice = this.constantes.LSTSERVICE
@@ -56,12 +56,12 @@ export class SortiesComponent implements OnInit {
 
   constructor(
     private namemoduleService: NamemoduleService,
-    private mvtService: MvtService,
     private paramsService: ParamsService,
+    private mvtService: MvtService,
     private alertService: AlertService,
     private datePipe: DatePipe,
 
-    ) { 
+    ) {
       this.namemoduleService.setParentName("sorties")
     }
 
@@ -71,13 +71,13 @@ export class SortiesComponent implements OnInit {
     this.getSorties();
   }
 
-
+  /*old
   getSorties(): void {
     const jour = this.datePipe.transform(this.params.jour, 'yyyy-MM-dd')
     this.urlparams = `/?origine=${this.origine}&jour=${jour}`
     this.mvtService.getSorties(this.urlparams)
       .subscribe({
-        next: (data) => {          
+        next: (data) => {
           // limitation du nombre de lignes affichées
           this.sorties = data['results']
             .filter((mvt:Mouvement, index: number) => {
@@ -100,6 +100,13 @@ export class SortiesComponent implements OnInit {
         }
       })
   }
+*/
+  getSorties(): void {
+    const jour = this.datePipe.transform(this.params.jour, 'yyyy-MM-dd')
+    this.urlparams = `/?origine=${this.origine}&jour=${jour}`
+    this.sorties = this.mvtService.getSorties(this.urlparams)
+    console.log('retour sorties...',this.sorties,this.urlparams)
+  }
 
   getParams(): void {
     this.paramsService.paramssubj$
@@ -115,6 +122,8 @@ export class SortiesComponent implements OnInit {
           }
         }
       });
+    console.log('retour params...',this.params)
+
   }
 
 }

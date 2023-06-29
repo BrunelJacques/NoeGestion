@@ -58,7 +58,7 @@ export class OneSortieComponent implements OnInit {
     // reset alerts on submit
     this.alertService.clear();
 
-    // stop here if form is invalid    
+    // stop here if form is invalid
     if (this.form.invalid) {
         return;
     }
@@ -82,7 +82,7 @@ export class OneSortieComponent implements OnInit {
       .subscribe({
         next: (data:Params) => {
           this.params = data;
-          if (!this.params.service || this.params.service < 0){ 
+          if (!this.params.service || this.params.service < 0){
             this.params.service = 0 }
           this.form.patchValue({
             'jour': this.datePipe.transform(this.params.jour, 'yyyy-MM-dd'),
@@ -93,7 +93,7 @@ export class OneSortieComponent implements OnInit {
             'fournisseur': this.params.fournisseur,
           })
           this.loading = false
-        },        
+        },
         error: (e) => {
           if (e != 'Not Found') {
             console.error(e)
@@ -113,7 +113,7 @@ export class OneSortieComponent implements OnInit {
   goBack(): void {
     this.location.back();
   }
-  
+
   save(): void {
     if (this.id) {
       this.mvtService.updateMvt(this.id.toString())

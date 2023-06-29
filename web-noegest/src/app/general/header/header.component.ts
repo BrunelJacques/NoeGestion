@@ -69,8 +69,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     else
     {
       const navMain = document.getElementById('navbarCollapse');
-      navMain.classList.remove("show");
-      this.isNavbarCollapsed = false
+      if (navMain) {
+        navMain.classList.remove("show");
+        this.isNavbarCollapsed = false
+      }
     }
   }
 

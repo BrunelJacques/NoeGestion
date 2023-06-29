@@ -1,11 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject, catchError, of } from 'rxjs';
+import { Observable, BehaviorSubject, catchError, of, tap } from 'rxjs';
 import { hoursDelta, deepCopy } from '../../general/_helpers/fonctions-perso';
 
 import { Params,  PARAMS, Camp, Fournisseur, Rayon, Magasin } from '../_models/params';
 import { Constantes } from 'src/app/constantes';
+import { Mouvement } from '../_models/mouvement';
+import { HandleError } from 'src/app/general/_helpers';
 
 @Injectable({ providedIn: 'root'})
 
@@ -18,12 +20,16 @@ export class ParamsService {
   public rayons: Rayon[] = [] ;
   public magasins: Magasin[] = [];
 
+  public mvts: Mouvement[] = [];
 
-  constructor(
+  constructor(    
     private constantes: Constantes,
-    private http: HttpClient){
+    private http: HttpClient,
+    private he: HandleError
+    ){
       this.initParams()
     }
+
 
   initParams() {
     this.getCamps()
@@ -51,46 +57,59 @@ export class ParamsService {
     params.parent = "sorties"
     if (!(params instanceof Object)){
       params = deepCopy(PARAMS)
-    };
+    }
     if (hoursDelta(new Date(params.modif),new Date()) > 6) {
       params = deepCopy(PARAMS)
       params.parent = "raz-sorties"
-    };
+    }
     this.setParams(params)
     return params
   }
 
 
+  /* GET heroes adapté pour exemple */
+  searchCamps(term: string): Observable<Camp[]> {
+    if (!term.trim()) {
+      // if not search term, return empty hero array.
+      return of([]);
+    }
+    const url = this.constantes.GEANALYTIQUE_URL+"?axe=ACTIVITES&obsolete=False"
+    return this.http.get<Camp[]>(url)
+      .pipe(
+        tap(x => x.length ?
+          this.he.log(`found lignes matching "${term}"`) :
+          this.he.log(`no lignes matching "${term}"`)),
+        catchError(this.he.handleError<Camp[]>('searchCampes', []))
+      );
+  }
+    
+  getHttp(url:string) {
+    this.http.get<Camp[]>(url)
+      .pipe(
+        catchError(this.he.handleError<any>('getHttp',{'results':[]})),
+      )
+      .subscribe(
+        data => {
+          const container = data['results']
+          this.he.log(`lus: ${container.length} ${url}`)
+          return container
+        }
+      )
+    return []
+  }
+
+  
   getCamps() {
     if (this.camps.length == 0) {
       const url = this.constantes.GEANALYTIQUE_URL+"?axe=ACTIVITES&obsolete=False"
-      this.http.get<Camp[]>(url)
-        .pipe(
-          catchError(this.handleError<any>('getCamps',{'results':[]})),
-        )
-        .subscribe(
-          camps => {
-            this.camps = camps['results']
-            this.log(`lus: ${this.camps.length} camps`)
-          }
-        )
+      this.camps = this.getHttp(url)
     }
-    return this.camps
   }
 
   getFournisseurs() {
     if (this.fournisseurs.length == 0) {
       const url = this.constantes.STFOURNISSEUR_URL
-      this.http.get<Fournisseur[]>(url)
-        .pipe(
-          catchError(this.handleError<any>('getFournisseurs',{'results':[]})),
-        )
-        .subscribe(
-          fournisseurs => {
-            this.fournisseurs = fournisseurs['results']
-            this.log(`lus: ${this.fournisseurs.length} fournisseurs`)
-          }
-        )
+      this.fournisseurs = this.getHttp(url)
     }
     return this.fournisseurs
   }
@@ -98,47 +117,32 @@ export class ParamsService {
   getRayons() {
     if (this.rayons.length == 0) {
       const url = this.constantes.STRAYON_URL
-      this.http.get<Rayon[]>(url)
-        .pipe(
-          catchError(this.handleError<any>('getRayons',{'results':[]})),
-        )
-        .subscribe(
-          rayons => {
-            this.rayons = rayons['results']
-            this.log(`lus: ${this.rayons.length} rayons`)
-          }
-        )
+      this.rayons = this.getHttp(url)
     }
-    return this.rayons
+    //return this.rayons
   }
 
   getMagasins() {
     if (this.magasins.length == 0) {
       const url = this.constantes.STMAGASIN_URL
-      this.http.get<Magasin[]>(url)
-        .pipe(
-          catchError(this.handleError<any>('getMagasins',{'results':[]})),
-        )
-        .subscribe(
-          magasins => {
-            this.magasins = magasins['results']
-            this.log(`lus: ${this.magasins.length} magasins`)
-          }
-        )
+      this.magasins = this.getHttp(url)
     }
-    return this.magasins
+    //return this.magasins
   }
 
-  // gestion erreur façon Tour of Heroes
+  /* transféré en _helpers/error.interceptors
+  // Façon Tour of Heroes: gestion erreur et extrait result du retour-requete
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       console.error(error); // log to console instead
-      this.log(`${operation} failed: ${error.message}`);
+      this.he.log(`${operation} failed: ${error.message}`);
       // Let the app keep running by returning an empty result.
       return of(result as T);
     };
   }
 
-  private log(message: string) {console.log('mvtService.log: ',message)}
+  private log(message: string) {
+    console.log('paramsService.log: ',message)}
+  */
 }
 

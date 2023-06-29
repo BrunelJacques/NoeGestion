@@ -10,7 +10,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 //import { fakeBackendProvider } from './general/_helpers';
-import { JwtInterceptor, ErrorInterceptor } from './general/_helpers';
+import { JwtInterceptor, ErrorInterceptor, HandleError } from './general/_helpers';
 
 import { AlertComponent } from './general/_alert';
 import { HomeComponent } from './general/home';
@@ -38,6 +38,7 @@ import * as fr from '@angular/common/locales/fr';
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    { provide: HandleError },
     { provide: LOCALE_ID, useValue: 'fr-FR'},
     // provider used to create fake backend
     //fakeBackendProvider,

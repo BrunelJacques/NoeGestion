@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap, catchError, of } from 'rxjs';
+import { Observable, tap, catchError } from 'rxjs';
 
 import { Mouvement } from '../_models/mouvement';
+import { HandleError } from 'src/app/general/_helpers/error.interceptor';
 
 import { Constantes } from 'src/app/constantes';
 
@@ -12,10 +13,10 @@ export class MvtService {
   mvts: Mouvement[] = []
   url: string | undefined
 
-
   constructor(
     private cst: Constantes,
     private http: HttpClient,
+    private he: HandleError,
   ) {}
 
    /** GET mvt by id. Will 404 if id not found */
@@ -23,8 +24,8 @@ export class MvtService {
     this.url = this.cst.STMOUVEMENT_URL+"/?id="+id;
     return this.http.get<Mouvement>(this.url)
       .pipe(
-        tap(() => this.log(`fetched mvt id=${id}`)),
-        catchError(this.handleError<Mouvement>(`getMvt id=${id}`))
+        tap(() => this.he.log(`fetched mvt id=${id}`)),
+        catchError(this.he.handleError<Mouvement>(`getMvt id=${id}`))
       );
   }
 
@@ -32,25 +33,35 @@ export class MvtService {
     return this.getMvt(id)
   }
 
-  getSorties(urlparams): Observable<Mouvement[]> {
-    this.url = this.cst.STMOUVEMENT_URL+urlparams;
-    return (this.http.get<Mouvement[]>(this.url))
+  getSorties(urlparams:string) {
+    const url = this.cst.STMOUVEMENT_URL+urlparams;
+    this.http.get<Mouvement[]>(url)
       .pipe(
-        tap(() => this.log('fetched mvts')),
-        catchError(this.handleError<Mouvement[]>('getSorties', [])
+        catchError(
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          this.he.handleError<any>('getSorties',{'results':[]})
         )
-      );
+      )
+      .subscribe(
+        mvts => {
+          this.mvts = mvts['results']
+          this.he.log(`mouvements lus: ${this.mvts.length}`)
+        }
+      )
+    return this.mvts
   }
 
-  // gestion erreur façon Tour of Heroes
-  private handleError<T>(operation = 'operation', result?: T) {
-    return (error: { message: unknown; }): Observable<T> => {
-      console.error(error); // log to console instead
-      this.log(`${operation} failed: ${error.message}`);
-      // Let the app keep running by returning an empty result.
-      return of(result as T);
-    };
-  }
+/*
+  // old 
+getSorties(urlparams): Observable<Mouvement[]> {
+  this.url = this.cst.STMOUVEMENT_URL+urlparams;
+  return (this.http.get<Mouvement[]>(this.url))
+    .pipe(
+      tap(() => this.log('fetched mvts')),
+      catchError(this.handleError<Mouvement[]>('getSorties', [])
+      )
+    );
+}
+*/
 
-  private log(message: string) {console.log('mvtService.log: ',message)}
 }
