@@ -18,6 +18,7 @@ import { HeaderModule } from './general/header/header.module';
 import { NotFoundComponent } from './general/not-found';
 import { NameappliService } from './general/_services/namemodule.service';
 import * as fr from '@angular/common/locales/fr';
+import { SubheaderComponent } from './general/subheader/subheader.component';
 
 
 @NgModule({
@@ -26,6 +27,7 @@ import * as fr from '@angular/common/locales/fr';
     HomeComponent,
     AlertComponent,
     NotFoundComponent,
+    SubheaderComponent,
   ],
   imports: [
     BrowserModule,

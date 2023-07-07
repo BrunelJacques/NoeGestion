@@ -1,14 +1,9 @@
-.fond-sombre {
-  color: white;
-  background-color:  #3f729b;
-}
-
 i {
   color: whitesmoke;
   background-color: #3f729b;
 }
 
-.ombre {
+.zombre {
   border: 1;
   border-color: whitesmoke!important;
   box-shadow: 0px 0px 15px white;
@@ -22,7 +17,6 @@ i {
 
 .navbar  {
   z-index: 1;
-  padding: 0;
   -webkit-box-shadow: 0 9px 6px -6px #999;
   box-shadow: 0 9px 6px -6px #999;
 }
@@ -34,7 +28,7 @@ i {
 }
 
 .navbar-toggler{
-  padding: 0 2px;
+  padding: 0;
   border-width: 2px;
   border-color: white !important;
   min-height: 30px;

@@ -5,12 +5,13 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { StocksRoutingModule } from './stocks-routing.module';
 import { InventaireComponent } from './inventaire/inventaire.component';
 import { EffectifsComponent } from './effectifs/effectifs.component';
-import { EntreesComponent } from './entrees/entrees.component';
+import { EntreesComponent } from './mouvements/entrees/entrees.component';
 import { OneEntreeComponent } from './one-entree/one-entree.component';
 import { OneSortieComponent } from './one-sortie/one-sortie.component';
-import { SortiesComponent } from './sorties/sorties.component';
+import { SortiesComponent } from './mouvements/sorties/sorties.component';
 import { PrixJourneeComponent } from './prix-journee/prix-journee.component';
 import { ParamsComponent } from './params/params.component';
+import { SubheaderMvtsComponent } from './mouvements/subheader-mvts/subheader-mvts.component';
 
 
 @NgModule({
@@ -28,6 +29,7 @@ import { ParamsComponent } from './params/params.component';
         SortiesComponent,
         PrixJourneeComponent,
         ParamsComponent,
+        SubheaderMvtsComponent,
     ],
     providers: [DatePipe]
 })
