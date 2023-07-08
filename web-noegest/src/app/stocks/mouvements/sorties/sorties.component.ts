@@ -3,10 +3,12 @@ import { Mouvement } from '../../_models/mouvement';
 import { MvtService } from '../../_services/mvt.service';
 import { ParamsService } from '../../_services/params.service'
 import { Params } from '../../_models/params';
-import { AlertService, NamemoduleService } from 'src/app/general/_services';
+import { NamemoduleService } from 'src/app/general/_services';
 //import { OneSortieComponent } from '../one-sortie/one-sortie.component';
 import { DatePipe } from '@angular/common';
 import { Constantes } from 'src/app/constantes';
+import { catchError } from 'rxjs';
+import { HandleError } from 'src/app/general/_helpers';
 
 @Component({
   selector: 'app-sorties',
@@ -17,7 +19,7 @@ import { Constantes } from 'src/app/constantes';
 
 export class SortiesComponent implements OnInit {
   selectedMvt!: Mouvement;
-  sorties: Mouvement[] = [];
+  sorties!: Mouvement[];
   jour: string | null = ""
   origine = ""
   urlparams= "";
@@ -27,6 +29,24 @@ export class SortiesComponent implements OnInit {
   constantes = Constantes;
   lstorigine_codes = this.constantes.LSTORIGINE_SORTIES.map((x: { code: unknown })=>x.code) ;
   lstservice = this.constantes.LSTSERVICE
+
+  constructor(
+    private namemoduleService: NamemoduleService,
+    private paramsService: ParamsService,
+    private mvtService: MvtService,
+    private datePipe: DatePipe,
+    private handleError: HandleError,
+
+    ) {
+      this.namemoduleService.setParentName("sorties")
+    }
+
+
+  ngOnInit(): void {
+    this.getParams();
+    this.getSorties();
+    console.log("fin de sorties.ngOninit : ",this.params)
+  }
 
   mvtsFilter = (mvt: Mouvement) => {
     let ret = true
@@ -54,58 +74,19 @@ export class SortiesComponent implements OnInit {
     return ret
   }
 
-  constructor(
-    private namemoduleService: NamemoduleService,
-    private paramsService: ParamsService,
-    private mvtService: MvtService,
-    private alertService: AlertService,
-    private datePipe: DatePipe,
-
-    ) {
-      this.namemoduleService.setParentName("sorties")
-    }
-
-
-  ngOnInit(): void {
-    this.getParams();
-    this.getSorties();
-  }
-
-  /*old
   getSorties(): void {
     const jour = this.datePipe.transform(this.params.jour, 'yyyy-MM-dd')
     this.urlparams = `/?origine=${this.origine}&jour=${jour}`
+
     this.mvtService.getSorties(this.urlparams)
-      .subscribe({
-        next: (data) => {
-          // limitation du nombre de lignes affichées
-          this.sorties = data['results']
-            .filter((mvt:Mouvement, index: number) => {
-              if (index > this.nblignesmax)
-              { return false }
-              {return true}
-            });
-          // filtrage selon les paramètres choisis
-          this.sorties = this.sorties.filter(this.mvtsFilter);
-          if (data.length > this.nblignesmax) {
-            this.alertService.warn(`Seulement ${this.nblignesmax} sur ${data.length} on été affichées`)
-          }
-
-          if (this.sorties.length == 0) { this.alertService.info('Les paramètres choisis ont exclu toutes les lignes')}
-        },
-        error: (e) => {
-          if (e != 'Not Found') {
-            console.error(e)
-          }
-        }
-      })
-  }
-*/
-  getSorties(): void {
-    const jour = this.datePipe.transform(this.params.jour, 'yyyy-MM-dd')
-    this.urlparams = `/?origine=${this.origine}&jour=${jour}`
-    this.sorties = this.mvtService.getSorties(this.urlparams)
-    console.log('retour sorties...',this.sorties,this.urlparams)
+      .pipe(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        catchError(this.handleError.handleError<any>('getHttp',{'results':[]})),
+      )
+      .subscribe( 
+        data => this.sorties = data['results']
+      )
+      console.log('retour sorties.GetSorties ',this.sorties,this.urlparams)
   }
 
   getParams(): void {
@@ -124,6 +105,10 @@ export class SortiesComponent implements OnInit {
       });
     console.log('retour params...',this.params)
 
+  }
+
+  onRefresh(): void{
+    this.getSorties()
   }
 
 }

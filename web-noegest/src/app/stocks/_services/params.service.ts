@@ -25,7 +25,7 @@ export class ParamsService {
   constructor(    
     private constantes: Constantes,
     private http: HttpClient,
-    private he: HandleError
+    private handleError: HandleError
     ){
       this.initParams()
     }
@@ -66,7 +66,6 @@ export class ParamsService {
     return params
   }
 
-
   /* GET heroes adapté pour exemple */
   searchCamps(term: string): Observable<Camp[]> {
     if (!term.trim()) {
@@ -77,27 +76,26 @@ export class ParamsService {
     return this.http.get<Camp[]>(url)
       .pipe(
         tap(x => x.length ?
-          this.he.log(`found lignes matching "${term}"`) :
-          this.he.log(`no lignes matching "${term}"`)),
-        catchError(this.he.handleError<Camp[]>('searchCampes', []))
+          this.handleError.log(`found lignes matching "${term}"`) :
+          this.handleError.log(`no lignes matching "${term}"`)),
+        catchError(this.handleError.handleError<Camp[]>('searchCampes', []))
       );
   }
     
-  getHttp(url:string) {
-    this.http.get<Camp[]>(url)
+  getHttp(url:string)  {
+    this.http.get<[]>(url)
       .pipe(
-        catchError(this.he.handleError<any>('getHttp',{'results':[]})),
+        catchError(this.handleError.handleError<any>('getHttp',{'results':[]})),
       )
       .subscribe(
         data => {
           const container = data['results']
-          this.he.log(`lus: ${container.length} ${url}`)
+          this.handleError.log(`lus: ${container.length} ${url}`)
           return container
         }
       )
     return []
   }
-
   
   getCamps() {
     if (this.camps.length == 0) {
@@ -130,19 +128,5 @@ export class ParamsService {
     //return this.magasins
   }
 
-  /* transféré en _helpers/error.interceptors
-  // Façon Tour of Heroes: gestion erreur et extrait result du retour-requete
-  private handleError<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-      console.error(error); // log to console instead
-      this.he.log(`${operation} failed: ${error.message}`);
-      // Let the app keep running by returning an empty result.
-      return of(result as T);
-    };
-  }
-
-  private log(message: string) {
-    console.log('paramsService.log: ',message)}
-  */
 }
 

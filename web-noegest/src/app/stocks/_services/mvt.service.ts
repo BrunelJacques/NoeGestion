@@ -8,7 +8,6 @@ import { HandleError } from 'src/app/general/_helpers/error.interceptor';
 import { Constantes } from 'src/app/constantes';
 
 @Injectable({ providedIn: 'root'})
-
 export class MvtService {
   mvts: Mouvement[] = []
   url: string | undefined
@@ -16,7 +15,7 @@ export class MvtService {
   constructor(
     private cst: Constantes,
     private http: HttpClient,
-    private he: HandleError,
+    private handleError: HandleError,
   ) {}
 
    /** GET mvt by id. Will 404 if id not found */
@@ -24,8 +23,8 @@ export class MvtService {
     this.url = this.cst.STMOUVEMENT_URL+"/?id="+id;
     return this.http.get<Mouvement>(this.url)
       .pipe(
-        tap(() => this.he.log(`fetched mvt id=${id}`)),
-        catchError(this.he.handleError<Mouvement>(`getMvt id=${id}`))
+        tap(() => this.handleError.log(`fetched mvt id=${id}`)),
+        catchError(this.handleError.handleError<Mouvement>(`getMvt id=${id}`))
       );
   }
 
@@ -33,35 +32,19 @@ export class MvtService {
     return this.getMvt(id)
   }
 
-  getSorties(urlparams:string) {
+  getSorties(urlparams:string): Observable<Mouvement[]>{
     const url = this.cst.STMOUVEMENT_URL+urlparams;
-    this.http.get<Mouvement[]>(url)
+    return this.http.get<[]>(url)
       .pipe(
+        tap(x => x.length ?
+          this.handleError.log(`found mvts`) :
+          this.handleError.log(`no mvts`)),
         catchError(
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          this.he.handleError<any>('getSorties',{'results':[]})
+          this.handleError.handleError<any>('getSorties',{'results':[]})
         )
       )
-      .subscribe(
-        mvts => {
-          this.mvts = mvts['results']
-          this.he.log(`mouvements lus: ${this.mvts.length}`)
-        }
-      )
-    return this.mvts
   }
 
-/*
-  // old 
-getSorties(urlparams): Observable<Mouvement[]> {
-  this.url = this.cst.STMOUVEMENT_URL+urlparams;
-  return (this.http.get<Mouvement[]>(this.url))
-    .pipe(
-      tap(() => this.log('fetched mvts')),
-      catchError(this.handleError<Mouvement[]>('getSorties', [])
-      )
-    );
-}
-*/
 
 }
