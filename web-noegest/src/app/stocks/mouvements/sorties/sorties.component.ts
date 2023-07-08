@@ -79,14 +79,9 @@ export class SortiesComponent implements OnInit {
     this.urlparams = `/?origine=${this.origine}&jour=${jour}`
 
     this.mvtService.getSorties(this.urlparams)
-      .pipe(
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        catchError(this.handleError.handleError<any>('getHttp',{'results':[]})),
-      )
       .subscribe( 
         data => this.sorties = data['results']
       )
-      console.log('retour sorties.GetSorties ',this.sorties,this.urlparams)
   }
 
   getParams(): void {

@@ -32,13 +32,13 @@ export class MvtService {
     return this.getMvt(id)
   }
 
-  getSorties(urlparams:string): Observable<Mouvement[]>{
+  getSorties(urlparams:string): Observable<{'results':[]}>{
     const url = this.cst.STMOUVEMENT_URL+urlparams;
     return this.http.get<[]>(url)
       .pipe(
         tap(x => x.length ?
           this.handleError.log(`found mvts`) :
-          this.handleError.log(`no mvts`)),
+          this.handleError.log(`no mvts`)),    
         catchError(
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           this.handleError.handleError<any>('getSorties',{'results':[]})
