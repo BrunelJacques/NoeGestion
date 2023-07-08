@@ -83,7 +83,6 @@ label { margin: 7px 0 2px 8px; }
 }
 
 .card-container .card:not(.highlight-card):hover {
-  transform: translateY(-3px);
   box-shadow: 0 9px 6px -6px #999;
   /*box-shadow: 0 4px 17px rgba(0, 0, 0, 0.35);*/
 
@@ -106,8 +105,8 @@ label { margin: 7px 0 2px 8px; }
 }
 
 .card.card-small {
-  max-width: 300px;
-  flex: 5 200px;
+  max-width: 280px;
+  /*flex: 5 200px;*/
   margin: 5px;
 }
 
