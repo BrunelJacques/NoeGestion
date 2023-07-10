@@ -7,8 +7,7 @@ import { NamemoduleService } from 'src/app/general/_services';
 //import { OneSortieComponent } from '../one-sortie/one-sortie.component';
 import { DatePipe } from '@angular/common';
 import { Constantes } from 'src/app/constantes';
-import { catchError } from 'rxjs';
-import { HandleError } from 'src/app/general/_helpers';
+import { DateAnsiToFr } from 'src/app/general/_helpers/fonctions-perso'
 
 @Component({
   selector: 'app-sorties',
@@ -29,14 +28,13 @@ export class SortiesComponent implements OnInit {
   constantes = Constantes;
   lstorigine_codes = this.constantes.LSTORIGINE_SORTIES.map((x: { code: unknown })=>x.code) ;
   lstservice = this.constantes.LSTSERVICE
+  ansiToFr = DateAnsiToFr
 
   constructor(
     private namemoduleService: NamemoduleService,
     private paramsService: ParamsService,
     private mvtService: MvtService,
     private datePipe: DatePipe,
-    private handleError: HandleError,
-
     ) {
       this.namemoduleService.setParentName("sorties")
     }
@@ -45,7 +43,6 @@ export class SortiesComponent implements OnInit {
   ngOnInit(): void {
     this.getParams();
     this.getSorties();
-    console.log("fin de sorties.ngOninit : ",this.params)
   }
 
   mvtsFilter = (mvt: Mouvement) => {
@@ -98,8 +95,6 @@ export class SortiesComponent implements OnInit {
           }
         }
       });
-    console.log('retour params...',this.params)
-
   }
 
   onRefresh(): void{

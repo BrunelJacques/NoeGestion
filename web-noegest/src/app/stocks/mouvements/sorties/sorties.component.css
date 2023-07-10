@@ -2,6 +2,9 @@
   margin: 0px 0px 0px;
  }
 
+.date {
+  min-width: 60px;
+}
 
 .btn {
   font-size: 10px;

@@ -18,7 +18,6 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         data['groups'] = self.user.groups.values_list('name', flat=True)
         return data
 
-
 class GeAnalytiqueSerializer(ModelSerializer):
 
     class Meta:
@@ -26,18 +25,13 @@ class GeAnalytiqueSerializer(ModelSerializer):
         fields = [
             "id", "nom", "abrege","params", ]
 
-
 class StArticleSerializer(ModelSerializer):
 
     class Meta:
         model = StArticle
-        exclude = ['id']
-
-class StArticleNom(ModelSerializer):
-
-    class Meta:
-        model = StArticle
-        fields = ['id','nom','nom_court']
+        fields = ['id','nom','nom_court','qte_stock','prix_moyen','unite_stock',
+                   'colis_par','unite_colis','rations',
+                   'fournisseur','tx_tva','dernier_achat']
 
 class StFournisseurSerializer(ModelSerializer):
 
@@ -45,13 +39,11 @@ class StFournisseurSerializer(ModelSerializer):
         model = StFournisseur
         exclude = []
 
-
 class StMagasinSerializer(ModelSerializer):
 
     class Meta:
         model = StMagasin
         exclude = ['id',]
-
 
 class StRayonSerializer(ModelSerializer):
 
@@ -59,14 +51,14 @@ class StRayonSerializer(ModelSerializer):
         model = StRayon
         exclude = ['id',]
 
-
 class StMouvementSerializer(ModelSerializer):
-    article = StArticleNom()
+    article = StArticleSerializer()
     fournisseur = StFournisseurSerializer()
 
     class Meta:
         model = StMouvement
         fields = [
-            "id", "jour", "sens", "origine", "article", "article", "nbcolis",
-            "qtemouvement", "prixunit", "service", "nbrations", "transfert",
-            "analytique", "fournisseur"]
+            "id","jour","sens","origine","article","nbcolis",
+            "qtemouvement","prixunit","service","nbrations",
+            "analytique","fournisseur","ordi","saisie","transfert"
+        ]

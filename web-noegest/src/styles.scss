@@ -198,16 +198,21 @@ td {
 
 .right-span { order: 3; }
 
-.small {
+.small12 {
+  font-family: "Times new roman";
+  font-size: 12px;
+}
+
+.small10 {
   font-family: "Times new roman";
   font-size: 10px;
 }
 
-.right { text-align: right;}
+.right { text-align: right!important;}
 
-.left { text-align: left; }
+.left { text-align: left!important; }
 
-.center { text-align: center; }
+.center { text-align: center!important; }
 
 .no-newline { display: inline-block; }
 

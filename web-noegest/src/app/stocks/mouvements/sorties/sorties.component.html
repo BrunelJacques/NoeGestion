@@ -13,11 +13,11 @@
     </span>
     <span class="right-span no-secable">
       <a class="bi bi-gear" routerLink="/stocks/params">
-        <span class="small">params</span>
+        <span class="small12">params</span>
       </a>
       &nbsp;
       <a class="bi bi-plus-circle" routerLink="/stocks/params">
-        <span class="small">ajout</span>
+        <span class="small12">ajout</span>
       </a>
       <button type="submit" 
       class="btn btn-primary"
@@ -35,22 +35,43 @@
         <th class="col-8  pb-0">Article</th>
         <th class="col ">Qte</th>
         <th class="col pb-0">Coût</th>
-        <th class="col small px-0 pt-0">Repas</th>
-        <th class="col small px-0 pb-0 d-none d-sm-table-cell">Rations théoriques</th>
+        <th class="col small12 px-0 pt-0">Repas</th>
+        <th class="col small12 px-0 pb-0 d-none d-sm-table-cell">Rations</th>
+        <th class="col small12 px-0 pb-0 d-none d-sm-table-cell">Px Moy</th>
+        <th class="col small12 px-0 pb-0 d-none d-sm-table-cell">Saisie/</th>
+        <th class="col small12 px-0 pb-0 d-none d-sm-table-cell left">Ordi</th>
+        <th class="col small12 px-0 pb-0">Reste Stock</th>
+        <th class="col small12 d-sm-table-cell">last buy</th>
       </tr>
     </thead>
     <tbody pb-0>
       <tr *ngFor="let mvt of sorties;"
       class="">
-        <td class="small" routerLink="/stocks/onesortie/{{mvt.id}}">
+        <td class="" routerLink="/stocks/onesortie/{{mvt.id}}">
           <i class="bi bi-pencil-square me-1 ctnbtn"></i>
         </td>
-        <td class= "py-0"> {{mvt.article.nom_court}} </td>
-        <td routerLink="/stocks/onesortie/{{mvt.id}}"> {{mvt.qtemouvement * -1 | number : '1.0-2'}} </td>
+        <td class= "py-0"> {{mvt.article.nom}} </td>
+        <td class= "py-0" routerLink="/stocks/onesortie/{{mvt.id}}"> 
+          {{mvt.qtemouvement * -1 | number : '1.0-2'}} <span class="small12">{{mvt.article.unite_stock}}</span> 
+        </td>
         <td routerLink="/stocks/onesortie/{{mvt.id}}"> {{mvt.qtemouvement * -1 * mvt.prixunit | number : '1.2-2'}} </td>
         <td routerLink="/stocks/onesortie/{{mvt.id}}"> {{mvt.service}} </td>
-        <td class= "d-none d-sm-table-cell" 
-        routerLink="/stocks/onesortie/{{mvt.id}}"> {{mvt.nbrations * 0.5| number : '1.0-2'}} </td>
+        <td class= "d-none d-sm-table-cell small12"  routerLink="/stocks/onesortie/{{mvt.id}}"> 
+          {{mvt.nbrations * mvt.article.rations| number : '1.0-2'}} 
+        </td>
+        <td class= "d-none d-sm-table-cell small12"  routerLink="/stocks/onesortie/{{mvt.id}}"> 
+          {{mvt.article.prix_moyen| number : '1.0-2'}} 
+        </td>
+        <td class= "d-none d-sm-table-cell small12"  routerLink="/stocks/onesortie/{{mvt.id}}"> 
+          {{ansiToFr(mvt.saisie)}} 
+        </td>
+        <td class= "d-none d-sm-table-cell small10"  routerLink="/stocks/onesortie/{{mvt.id}}"> 
+          {{mvt.ordi}} 
+        </td>
+        <td routerLink="/stocks/onesortie/{{mvt.id}}"> {{mvt.article.qte_stock| number : '1.0-2'}} </td>
+        <td class= "small12 date"  routerLink="/stocks/onesortie/{{mvt.id}}"> 
+          {{ansiToFr(mvt.article.dernier_achat)}} 
+        </td>
       </tr>
     </tbody>
   </table>
