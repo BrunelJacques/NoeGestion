@@ -2,11 +2,10 @@
 <div>{{id}}</div>
 
 <button type="submit" 
-[disabled]="loading" 
 class="btn btn-primary"
 aria-label="Confirm"
 (click)="onSubmit()">
-<span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+<span  class="spinner-border spinner-border-sm mr-1"></span>
 retour ok
 </button>
 &nbsp;

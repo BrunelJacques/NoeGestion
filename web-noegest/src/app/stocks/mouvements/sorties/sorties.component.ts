@@ -20,7 +20,6 @@ export class SortiesComponent implements OnInit {
   selectedMvt!: Mouvement;
   sorties!: Mouvement[];
   jour: string | null = ""
-  origine = ""
   urlparams= "";
   params!: Params;
   nblignesmax = 60;
@@ -38,7 +37,6 @@ export class SortiesComponent implements OnInit {
     ) {
       this.namemoduleService.setParentName("sorties")
     }
-
 
   ngOnInit(): void {
     this.getParams();
@@ -73,11 +71,11 @@ export class SortiesComponent implements OnInit {
 
   getSorties(): void {
     const jour = this.datePipe.transform(this.params.jour, 'yyyy-MM-dd')
-    this.urlparams = `/?origine=${this.origine}&jour=${jour}`
+    this.urlparams = `/?origine=${this.params.origine}&jour=${jour}`
 
     this.mvtService.getSorties(this.urlparams)
       .subscribe( 
-        data => this.sorties = data['results']
+        data => this.sorties = data['results'].filter(this.mvtsFilter)
       )
   }
 
@@ -87,7 +85,6 @@ export class SortiesComponent implements OnInit {
         next: (data: Params) => {
           this.params = data;
           this.jour = this.datePipe.transform(this.params.jour, 'dd/MM/yyyy');
-          this.origine = this.params.origine;
         },
         error: (e: string) => {
           if (e != 'Not Found') {

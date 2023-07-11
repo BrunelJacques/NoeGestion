@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Mouvement } from '../_models/mouvement';
-import { ActivatedRoute } from '@angular/router';
 import { Location, DatePipe } from '@angular/common';
 import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MvtService } from '../_services/mvt.service';
 import { ParamsService } from '../_services/params.service';
-import { Params } from '../_models/params';
+import { Camp, Params } from '../_models/params';
 import { AlertService } from 'src/app/general/_services';
 import { Constantes } from 'src/app/constantes';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -17,30 +17,31 @@ import { Constantes } from 'src/app/constantes';
 })
 
 export class OneSortieComponent implements OnInit {
-  mvt: Mouvement | undefined;
-  id: string|null = "";
-  form!: UntypedFormGroup;
-  today = new Date();
+  id!: string|null;
+  mvt?: Mouvement;
+  params!: Params;
+  camps!: Camp[];
+  paramsForm!: UntypedFormGroup;
+
+
   constantes = Constantes;
   lstservice = this.constantes.LSTSERVICE;
-  lstorigine = this.constantes.LSTORIGINE_SORTIES;
-  lstservice_code = this.lstservice.map((x) => x.code)
-  params!: Params;
-  lstparams: Params[] = [];
-  loading = true;
-  submitted = false;
+  lstorigine_sorties = this.constantes.LSTORIGINE_SORTIES;
 
+
+  lstservice_code = this.lstservice.map((x) => x.code)
+  submitted = false;
+  form!: UntypedFormGroup;
 
   constructor(
-    private datePipe: DatePipe,
-    private route: ActivatedRoute,
-    private mvtService: MvtService,
     private paramsService: ParamsService,
     private formBuilder: UntypedFormBuilder,
     private location: Location,
-
     private alertService: AlertService,
-  ) {}
+    private datePipe: DatePipe,
+    private route: ActivatedRoute,
+    private mvtService: MvtService
+  ){}
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id'),
@@ -62,7 +63,6 @@ export class OneSortieComponent implements OnInit {
     if (this.form.invalid) {
         return;
     }
-    this.loading = true;
     this.okBack()
   }
 
@@ -77,7 +77,6 @@ export class OneSortieComponent implements OnInit {
   }
 
   getParams(): void {
-    this.loading = true;
     this.paramsService.paramssubj$
       .subscribe({
         next: (data:Params) => {
@@ -92,7 +91,6 @@ export class OneSortieComponent implements OnInit {
             'service': this.lstservice[this.params.service].code,
             'fournisseur': this.params.fournisseur,
           })
-          this.loading = false
         },
         error: (e) => {
           if (e != 'Not Found') {

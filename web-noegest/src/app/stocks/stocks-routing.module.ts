@@ -22,7 +22,7 @@ const routes: Routes = [
             { path: 'effectifs', component: EffectifsComponent, canActivate: [AuthGuard] },
             { path: 'inventaire', component: InventaireComponent, canActivate: [AuthGuard] },
             { path: 'prixjournees', component: PrixJourneeComponent, canActivate: [AuthGuard] },
-            { path: 'params', component: ParamsComponent, canActivate: [AuthGuard] },
+            { path: 'params', component: ParamsComponent },
         ]
     }
 ];

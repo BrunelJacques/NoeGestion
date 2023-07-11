@@ -27,7 +27,12 @@ SECRET_KEY = 'django-insecure-cn)hy(l7i!x$osr9#0-_8ju1kno6d4&rjr7!p&i)l!g+lab2bp
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    '192.168.1.54',
+    '192.168.1.98',
+]
 
 
 # Application definition
@@ -153,10 +158,16 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-CORS_ALLOWED_ORIGINS = [
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = False
+# http://0.0.0.0 accepte de toute provenance (pour test on LAN only)
+"""CORS_ALLOWED_ORIGINS = [
     "http://localhost:4200",
-    "http://127.*.*.*",
-]
+    "http://192.168.1.27:4200",
+    "http://192.168.1.98:8000",
+    "http://192.168.1.98:4200",
+    "http://127.0.0.1:4200",
+]"""
 
 LOGIN_REDIRECT_URL = 'home'
 LOGIN_URL = '/login'
