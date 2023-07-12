@@ -11,7 +11,7 @@
   --texte-clair:  cornflowerblue;
   --fond-sombre: #3f729b;
   --fond-soutenu: #447cd0;
-  --fond-leger: #d2e6fa;
+  --fond-leger: whitesmoke;
   --fond-blanc: #ffffff;
 }
 
@@ -27,7 +27,7 @@
 .ombre { box-shadow: 0 9px 6px -6px  #999;}
 
 body {
-  background-color:whitesmoke;
+  background-color: var(--fond-leger);
   font-weight: 400;
   color: var(--texte-sombre)!important;
   height: 100%;

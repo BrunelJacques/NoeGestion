@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 
 import { User } from 'src/app/general/_models';
 import { AuthenticationService } from 'src/app/general/_services';
-import { NameappliService } from '../_services/namemodule.service';
+import { NameModuleService } from '../_services/namemodule.service';
 
 @Component({
   selector: 'app-header',
@@ -18,15 +18,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   title = 'matthania';
   user = new User();
-  choixSub = new Subscription();
-  choixAppli = 'header';
+  module = new Subscription();
+  namemodule = ""
   loginSub = new Subscription();
   isLoggedIn = false;
 
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: object,
-    private choixAppliService: NameappliService,
+    private moduleService: NameModuleService,
     private authenticationService: AuthenticationService,
   ) {}
 
@@ -34,8 +34,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.loginSub = this.authenticationService.loginSubject.subscribe(
       (value) => (this.isLoggedIn = value)
     );
-    this.choixSub = this.choixAppliService.choixSubject$.subscribe(
-      (value) => (this.choixAppli = value)
+    this.moduleService.nameModuleSubject$.subscribe(
+      (value) => (this.namemodule = value)
     );
 
     /* Permet la fermeture du menu après un choix*/ 
@@ -43,7 +43,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.choixSub.unsubscribe();
+    this.module.unsubscribe();
     this.loginSub.unsubscribe();
   }
 
@@ -79,7 +79,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   logout() {
     this.isNavbarCollapsed = false
     this.authenticationService.logout();
-    this.choixAppliService.choixSubject$.next('logout')
+    this.moduleService.nameModuleSubject$.next('logout')
   }
 
 }

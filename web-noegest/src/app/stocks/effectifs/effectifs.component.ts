@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { NameappliService, NamemoduleService } from 'src/app/general/_services';
+import { NameModuleService} from 'src/app/general/_services';
 
 @Component({
   selector: 'app-effectifs',
@@ -10,18 +10,17 @@ import { NameappliService, NamemoduleService } from 'src/app/general/_services';
 
 export class EffectifsComponent implements OnInit {
 
-  choixSub = new Subscription();
-  choixAppli: string = 'effectifs';
+  module = new Subscription();
+  namemodule = 'effectifs';
 
   constructor(
-    private namemoduleService: NamemoduleService,
-    private choixAppliService: NameappliService,
+    private moduleService: NameModuleService,
   ) {}
 
   ngOnInit(): void {
-    this.choixSub = this.choixAppliService.choixSubject$.subscribe(
-      (value) => (this.choixAppli = value)
+    this.module = this.moduleService.nameModuleSubject$.subscribe(
+      (value) => (this.namemodule = value)
     );
-    this.choixAppli += '/' + this.namemoduleService.getParentName()
+    this.namemodule += '/' + this.moduleService.getParentName()
   }
 }

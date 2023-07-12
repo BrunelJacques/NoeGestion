@@ -9,7 +9,7 @@ import { Params } from '../_models/params';
 
 import { AlertService } from 'src/app/general/_services';
 import { Constantes } from 'src/app/constantes';
-import { NamemoduleService } from 'src/app/general/_services';
+import { NameModuleService } from 'src/app/general/_services';
 
 @Component({
   selector: 'app-params',
@@ -43,7 +43,7 @@ export class ParamsComponent implements OnInit {
     private location: Location,
     private alertService: AlertService,
     private datePipe: DatePipe,
-    private namemoduleService: NamemoduleService,
+    private namemoduleService: NameModuleService,
   ){}
   
   ngOnInit(): void {

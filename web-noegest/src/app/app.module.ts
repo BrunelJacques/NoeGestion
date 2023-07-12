@@ -16,7 +16,7 @@ import { AlertComponent } from './general/_alert';
 import { HomeComponent } from './general/home';
 import { HeaderModule } from './general/header/header.module';
 import { NotFoundComponent } from './general/not-found';
-import { NameappliService } from './general/_services/namemodule.service';
+import { NameModuleService } from './general/_services/namemodule.service';
 import * as fr from '@angular/common/locales/fr';
 import { SubheaderComponent } from './general/subheader/subheader.component';
 
@@ -44,7 +44,7 @@ import { SubheaderComponent } from './general/subheader/subheader.component';
     { provide: LOCALE_ID, useValue: 'fr-FR'},
     // provider used to create fake backend
     //fakeBackendProvider,
-    NameappliService,
+    NameModuleService,
   ],
   bootstrap: [AppComponent]
 })
