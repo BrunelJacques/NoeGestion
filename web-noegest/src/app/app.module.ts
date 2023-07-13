@@ -16,7 +16,7 @@ import { AlertComponent } from './general/_alert';
 import { HomeComponent } from './general/home';
 import { HeaderModule } from './general/header/header.module';
 import { NotFoundComponent } from './general/not-found';
-import { NameModuleService } from './general/_services/namemodule.service';
+import { UrlService } from './general/_services/url.service';
 import * as fr from '@angular/common/locales/fr';
 import { SubheaderComponent } from './general/subheader/subheader.component';
 import { SubheaderMvtsComponent } from './stocks/mouvements/subheader-mvts/subheader-mvts.component';
@@ -45,7 +45,7 @@ import { SubheaderMvtsComponent } from './stocks/mouvements/subheader-mvts/subhe
     { provide: LOCALE_ID, useValue: 'fr-FR'},
     // provider used to create fake backend
     //fakeBackendProvider,
-    NameModuleService,
+    UrlService,
 
 
   ],

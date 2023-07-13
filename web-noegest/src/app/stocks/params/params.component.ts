@@ -9,7 +9,7 @@ import { Params } from '../_models/params';
 
 import { AlertService } from 'src/app/general/_services';
 import { Constantes } from 'src/app/constantes';
-import { NameModuleService } from 'src/app/general/_services';
+import { UrlService } from 'src/app/general/_services';
 
 @Component({
   selector: 'app-params',
@@ -43,7 +43,7 @@ export class ParamsComponent implements OnInit {
     private location: Location,
     private alertService: AlertService,
     private datePipe: DatePipe,
-    private namemoduleService: NameModuleService,
+    private urlService: UrlService,
   ){}
   
   ngOnInit(): void {
@@ -57,7 +57,7 @@ export class ParamsComponent implements OnInit {
       fournisseur:"",
     });
     this.getParams()
-    this.parent = this.namemoduleService.getParentName()
+    this.parent = this.urlService.getParentName()
   }
 
   // convenience getter for easy access to form fields

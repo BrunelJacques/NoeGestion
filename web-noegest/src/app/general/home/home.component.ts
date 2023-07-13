@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 
 import { environment } from 'src/environments/environment';
 import { AuthenticationService } from '../_services';
-import { NameModuleService} from '../_services/namemodule.service';
+import { UrlService} from '../_services/url.service';
 
 
 import { User } from 'src/app/general/_models';
@@ -24,7 +24,7 @@ export class HomeComponent  {
 
   constructor(
     private authenticationService: AuthenticationService,
-    private moduleService: NameModuleService,
+    private urlService: UrlService,
     )
      {
       this.authenticationService.user.subscribe(x => this.user = x);
@@ -32,11 +32,8 @@ export class HomeComponent  {
 
 
 
-
-
   emitLocation(name: string){
-    this.moduleService.rootUrl$.next(name)
-    this.moduleService.setParentName(name)
+    this.urlService.rootUrl$.next(name)
   }
 
   stocks() {

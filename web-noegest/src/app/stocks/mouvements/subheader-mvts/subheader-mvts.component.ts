@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NameModuleService } from 'src/app/general/_services';
+import { UrlService } from 'src/app/general/_services';
 
 @Component({
   selector: 'app-subheader-mvts',
@@ -8,7 +8,18 @@ import { NameModuleService } from 'src/app/general/_services';
 })
 
 export class SubheaderMvtsComponent {
+
+  templateUrl = ""
+  parent = ""
+
   constructor(
-    private nameModule: NameModuleService,
-  ){}
+    private urlService: UrlService,
+  ){
+    this.urlService.templateUrl$.subscribe(
+      (templateUrl) => { 
+        this.templateUrl = templateUrl
+      })
+    this.urlService.parentNameSubj$.subscribe(
+        (value) => {this.parent = value})
+  }
 }

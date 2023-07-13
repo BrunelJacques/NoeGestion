@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { NameModuleService} from 'src/app/general/_services';
+import { UrlService} from 'src/app/general/_services';
 
 @Component({
   selector: 'app-effectifs',
@@ -14,13 +14,13 @@ export class EffectifsComponent implements OnInit {
   namemodule = 'effectifs';
 
   constructor(
-    private moduleService: NameModuleService,
+    private urlService: UrlService,
   ) {}
 
   ngOnInit(): void {
-    this.module = this.moduleService.rootUrl$.subscribe(
+    this.module = this.urlService.rootUrl$.subscribe(
       (value) => (this.namemodule = value)
     );
-    this.namemodule += '/' + this.moduleService.getParentName()
+    this.namemodule += '/' + this.urlService.getParentName()
   }
 }

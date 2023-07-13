@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NameModuleService } from '../_services';
+import { UrlService } from '../_services';
 
 @Component({
   selector: 'app-subheader',
@@ -13,11 +13,11 @@ export class SubheaderComponent implements OnInit {
   isSpecial = false
 
   constructor(
-    private nameModuleService: NameModuleService,
+    private urlService: UrlService,
     ){}
 
   ngOnInit(): void {
-    this.nameModuleService.rootUrl$.subscribe(
+    this.urlService.rootUrl$.subscribe(
       (rootUrl) => { 
         this.updateCurrentURL(rootUrl)
       })

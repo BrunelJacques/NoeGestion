@@ -3,7 +3,7 @@ import { Mouvement } from '../../_models/mouvement';
 import { MvtService } from '../../_services/mvt.service';
 import { ParamsService } from '../../_services/params.service'
 import { Params } from '../../_models/params';
-import { NameModuleService } from 'src/app/general/_services';
+import { UrlService } from 'src/app/general/_services';
 //import { OneSortieComponent } from '../one-sortie/one-sortie.component';
 import { DatePipe } from '@angular/common';
 import { Constantes } from 'src/app/constantes';
@@ -30,17 +30,17 @@ export class SortiesComponent implements OnInit {
   ansiToFr = DateAnsiToFr
 
   constructor(
-    private namemoduleService: NameModuleService,
+    private urlService: UrlService,
     private paramsService: ParamsService,
     private mvtService: MvtService,
     private datePipe: DatePipe,
     ) {
-      this.namemoduleService.setParentName("sorties")
+      this.urlService.setParentName("sorties")
     }
-
   ngOnInit(): void {
     this.getParams();
     this.getSorties();
+
   }
 
   mvtsFilter = (mvt: Mouvement) => {
