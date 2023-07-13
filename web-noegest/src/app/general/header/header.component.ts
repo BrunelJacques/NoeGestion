@@ -26,7 +26,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: object,
-    private moduleService: NameModuleService,
+    private nameModuleService: NameModuleService,
     private authenticationService: AuthenticationService,
   ) {}
 
@@ -34,10 +34,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.loginSub = this.authenticationService.loginSubject.subscribe(
       (value) => (this.isLoggedIn = value)
     );
-    this.moduleService.nameModuleSubject$.subscribe(
+    this.nameModuleService.rootUrl$.subscribe(
       (value) => (this.namemodule = value)
     );
-
     /* Permet la fermeture du menu après un choix*/ 
     this.collapseNavbar()
   }
@@ -79,7 +78,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   logout() {
     this.isNavbarCollapsed = false
     this.authenticationService.logout();
-    this.moduleService.nameModuleSubject$.next('logout')
+    this.nameModuleService.rootUrl$.next('logout')
   }
 
 }

@@ -18,7 +18,7 @@ export class EffectifsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.module = this.moduleService.nameModuleSubject$.subscribe(
+    this.module = this.moduleService.rootUrl$.subscribe(
       (value) => (this.namemodule = value)
     );
     this.namemodule += '/' + this.moduleService.getParentName()

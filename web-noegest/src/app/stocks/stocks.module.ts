@@ -11,7 +11,6 @@ import { OneSortieComponent } from './one-sortie/one-sortie.component';
 import { SortiesComponent } from './mouvements/sorties/sorties.component';
 import { PrixJourneeComponent } from './prix-journee/prix-journee.component';
 import { ParamsComponent } from './params/params.component';
-import { SubheaderMvtsComponent } from './mouvements/subheader-mvts/subheader-mvts.component';
 
 
 @NgModule({
@@ -29,7 +28,6 @@ import { SubheaderMvtsComponent } from './mouvements/subheader-mvts/subheader-mv
         SortiesComponent,
         PrixJourneeComponent,
         ParamsComponent,
-        SubheaderMvtsComponent,
     ],
     providers: [DatePipe]
 })

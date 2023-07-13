@@ -19,7 +19,7 @@ import { NotFoundComponent } from './general/not-found';
 import { NameModuleService } from './general/_services/namemodule.service';
 import * as fr from '@angular/common/locales/fr';
 import { SubheaderComponent } from './general/subheader/subheader.component';
-
+import { SubheaderMvtsComponent } from './stocks/mouvements/subheader-mvts/subheader-mvts.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +28,7 @@ import { SubheaderComponent } from './general/subheader/subheader.component';
     AlertComponent,
     NotFoundComponent,
     SubheaderComponent,
+    SubheaderMvtsComponent,
   ],
   imports: [
     BrowserModule,
@@ -45,6 +46,8 @@ import { SubheaderComponent } from './general/subheader/subheader.component';
     // provider used to create fake backend
     //fakeBackendProvider,
     NameModuleService,
+
+
   ],
   bootstrap: [AppComponent]
 })

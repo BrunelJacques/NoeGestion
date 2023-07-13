@@ -35,7 +35,7 @@ export class HomeComponent  {
 
 
   emitLocation(name: string){
-    this.moduleService.nameModuleSubject$.next(name)
+    this.moduleService.rootUrl$.next(name)
     this.moduleService.setParentName(name)
   }
 
