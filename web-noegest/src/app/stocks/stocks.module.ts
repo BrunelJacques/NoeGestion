@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 
 import { StocksRoutingModule } from './stocks-routing.module';
 import { InventaireComponent } from './inventaire/inventaire.component';
@@ -29,6 +29,5 @@ import { ParamsComponent } from './params/params.component';
         PrixJourneeComponent,
         ParamsComponent,
     ],
-    providers: [DatePipe]
 })
 export class StocksModule { }

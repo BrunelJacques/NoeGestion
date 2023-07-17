@@ -38,7 +38,7 @@
       
       <label for="origine">Vers :</label>
       <select id="origine" name="origine"
-        (change)="onOrigineChange($event)"
+        (change)="onOrigineChange()"
         formControlName="origine"
         class="form-control" required aria-label="origine">
         <option [ngValue]="'-'" disabled>Filtrer les {{parent}} pour :</option>
@@ -48,7 +48,7 @@
         </option>
       </select>
 
-      <div class="form-group" *ngIf="params.origine.endsWith('camp')">
+      <div class="form-group" *ngIf="true">
         <label for="camp">Camp:</label>
         <select type="text"  formControlName="camp" 
           class="form-control" required
@@ -64,7 +64,7 @@
         </div>
       </div>
 
-      <div *ngIf="(params.origine.endsWith('repas'))">
+      <div *ngIf="(params['origine'].endsWith('repas'))">
         <label for="service">Repas:</label>
         <select formControlName="service"
           class="form-control" required>

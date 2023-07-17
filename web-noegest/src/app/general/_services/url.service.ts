@@ -37,7 +37,6 @@ export class UrlService {
 
   setParentName(name:string){
     this.parentNameSubj$.next(name)
-    console.log('set param: ',this.parentName)
   }
 
   getParentName(): string {

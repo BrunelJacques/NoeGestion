@@ -20,6 +20,7 @@ import { UrlService } from './general/_services/url.service';
 import * as fr from '@angular/common/locales/fr';
 import { SubheaderComponent } from './general/subheader/subheader.component';
 import { SubheaderMvtsComponent } from './stocks/mouvements/subheader-mvts/subheader-mvts.component';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { SubheaderMvtsComponent } from './stocks/mouvements/subheader-mvts/subhe
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: HandleError },
     { provide: LOCALE_ID, useValue: 'fr-FR'},
+    { provide: DatePipe },
     // provider used to create fake backend
     //fakeBackendProvider,
     UrlService,

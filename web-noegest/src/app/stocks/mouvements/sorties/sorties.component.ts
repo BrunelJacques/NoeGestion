@@ -17,16 +17,16 @@ import { DateAnsiToFr } from 'src/app/general/_helpers/fonctions-perso'
 
 
 export class SortiesComponent implements OnInit {
-  selectedMvt!: Mouvement;
+  name = "Sorties"
   sorties!: Mouvement[];
+  selectedMvt!: Mouvement;
   jour: string | null = ""
   urlparams= "";
   params!: Params;
   nblignesmax = 60;
 
-  constantes = Constantes;
-  lstorigine_codes = this.constantes.LSTORIGINE_SORTIES.map((x: { code: unknown })=>x.code) ;
-  lstservice = this.constantes.LSTSERVICE
+  lstorigine_codes = Constantes.LSTORIGINE_SORTIES.map((x: { code: unknown })=>x.code) ;
+  lstservice = Constantes.LSTSERVICE
   ansiToFr = DateAnsiToFr
 
   constructor(
@@ -35,12 +35,12 @@ export class SortiesComponent implements OnInit {
     private mvtService: MvtService,
     private datePipe: DatePipe,
     ) {
-      this.urlService.setParentName("sorties")
+      this.urlService.setParentName(this.name)
     }
   ngOnInit(): void {
     this.getParams();
     this.getSorties();
-
+    this.params.parent = this.name
   }
 
   mvtsFilter = (mvt: Mouvement) => {

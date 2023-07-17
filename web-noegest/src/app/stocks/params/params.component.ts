@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
-import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 
 import { ParamsService } from '../_services/params.service';
@@ -20,7 +20,7 @@ import { UrlService } from 'src/app/general/_services';
 export class ParamsComponent implements OnInit {
   params!: Params;
   camps!: Camp[];
-  paramsForm!: UntypedFormGroup;
+  paramsForm!:FormGroup;
   parent = "";
 
 
@@ -39,7 +39,7 @@ export class ParamsComponent implements OnInit {
   
   constructor(
     private paramsService: ParamsService,
-    private formBuilder: UntypedFormBuilder,
+    private formBuilder: FormBuilder,
     private location: Location,
     private alertService: AlertService,
     private datePipe: DatePipe,
@@ -50,7 +50,7 @@ export class ParamsComponent implements OnInit {
     //this.paramsService.paramssubj$.subscribe( params => this.params = params );
     this.paramsForm = this.formBuilder.group({
       jour: [new Date(),Validators.required],
-      origine: ["repas", Validators.required],
+      origine:"repas",
       camp: ["00", Validators.required],
       tva: "en TTC",
       service: ["-", Validators.required],
@@ -95,11 +95,9 @@ export class ParamsComponent implements OnInit {
     console.log(this.fournisseurs)
   }
 
-  onOrigineChange(myelement: unknown) {
-    if (myelement instanceof HTMLInputElement) {
-      const value =  myelement.value   
-      this.majOrigine(value)}
-  }
+  onOrigineChange() {
+      this.majOrigine(this.f['origine'].value)
+    }
 
   majOrigine(origine: string){
     if (origine.endsWith("camp"))

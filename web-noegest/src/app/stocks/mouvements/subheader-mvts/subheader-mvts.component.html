@@ -1,1 +1,36 @@
-<p>subheader-mvts: {{templateUrl}} -- {{parent}}</p>
+<h6 class="card m-0 p-1">Sorties de stock :
+  &nbsp;
+  <span *ngIf="params['origine'] === 'repas'">pour {{params['origine']}} en cuisine</span>
+  <span *ngIf="params['origine'] === 'camp'">pour camp '{{params['camp']}}'</span>
+  <span *ngIf="!['repas','camp'].includes(params['origine'])">{{params['origine']}}</span>
+</h6>
+<h6 class="row justified m-0 p-0" >
+  <div class= "col-8 col-sm-12 card-container m-0 p-1" >
+    <span class="left-span">
+      Le: {{jour}}
+      &nbsp;
+      <span *ngIf="params['origine'] === 'repas'">Repas '{{lstservice[params['service']].code}}'&nbsp;</span>
+    </span>
+  </div>
+  <div class="d-sm-none col card-container m-0 p-1">
+    <span class="right-span ">
+      <a class="bi bi-gear" routerLink="/stocks/params">
+        <span class="small12">params</span>
+      </a>
+      &nbsp;
+      <a class="bi bi-plus-circle" routerLink="/stocks/onesortie/0">
+        <span class="small12">ajout</span>
+      </a>
+    </span>
+  </div>
+  <div class="row d-none d-sm-block card-container m-2 p-0 ">
+    <a class="bi bi-gear" routerLink="/stocks/params">
+      <span class="p-1">params affich.</span>
+    </a>
+  </div>
+  <div class="row d-none d-sm-block card-container m-2 p-0 ">
+    <a class="bi bi-plus-circle" routerLink="/stocks/onesortie/0">
+      <span class="p-1">ajout ligne</span>
+    </a>
+  </div>
+</h6>
