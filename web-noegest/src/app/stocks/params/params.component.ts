@@ -19,7 +19,7 @@ import { UrlService } from 'src/app/general/_services';
 
 export class ParamsComponent implements OnInit {
   params!: Params;
-  camps!: Camp[];
+  lstcamps!: Camp[];
   paramsForm!:FormGroup;
   parent = "";
 
@@ -57,6 +57,7 @@ export class ParamsComponent implements OnInit {
       fournisseur:"",
     });
     this.getParams()
+    this.getCamps()
     this.parent = this.urlService.getParentName()
   }
 
@@ -101,7 +102,9 @@ export class ParamsComponent implements OnInit {
 
   majOrigine(origine: string){
     if (origine.endsWith("camp"))
-    { (this.paramsForm).get("camp")?.enable()} 
+    { (this.paramsForm).get("camp")?.enable()
+      this.getCamps()
+    } 
     else {this.paramsForm.get("camp")?.disable()}
 
     if (origine.endsWith("repas"))
@@ -144,7 +147,9 @@ export class ParamsComponent implements OnInit {
   }
 
   getCamps(): void {
-    this.camps = this.paramsService.camps
+    this.paramsService.getCamps()
+    this.lstcamps = this.paramsService.camps
+    console.log('camps: ',this.lstcamps)
     }
   
   setParams(params: Params): void {

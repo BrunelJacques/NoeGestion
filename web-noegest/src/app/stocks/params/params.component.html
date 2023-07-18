@@ -50,11 +50,12 @@
 
       <div class="form-group" *ngIf="true">
         <label for="camp">Camp:</label>
-        <select type="text"  formControlName="camp" 
-          class="form-control" required
+        <select id="camp" name="camp" 
+          formControlName="camp" 
+          class="form-control" required aria-label="camp"
           [ngClass]="{ 'is-invalid': submitted && f['camp'].errors}">
           <option [ngValue]="" disabled>Choisir un camp</option>
-          <option *ngFor="let camp of camps"
+          <option *ngFor="let camp of lstcamps"
             [ngValue]="camp.id">
             {{camp['nom']}}
           </option>

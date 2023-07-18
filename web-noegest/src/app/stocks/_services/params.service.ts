@@ -12,8 +12,8 @@ import { HandleError } from 'src/app/general/_helpers';
 @Injectable({ providedIn: 'root'})
 
 export class ParamsService {
-  public paramssubj$= new BehaviorSubject<Params>(PARAMS);
 
+  public paramssubj$= new BehaviorSubject<Params>(PARAMS);
   private key = "stParams";
   public camps: Camp[] = [];
   public fournisseurs: Fournisseur[] = [];
@@ -26,9 +26,7 @@ export class ParamsService {
     private constantes: Constantes,
     private http: HttpClient,
     private handleError: HandleError
-    ){
-      this.initParams()
-    }
+    ){}
 
 
   initParams() {
@@ -96,12 +94,31 @@ export class ParamsService {
       )
     return []
   }
-  
-  getCamps() {
-    if (this.camps.length == 0) {
-      const url = this.constantes.GEANALYTIQUE_URL+"?axe=ACTIVITES&obsolete=False"
-      this.camps = this.getHttp(url)
+
+  getCamps():Camp[] {
+    const url = this.constantes.GEANALYTIQUE_URL+"?axe=ACTIVITES&obsolete=False"
+    this.http.get<[]>(url)
+      .pipe(
+        catchError(this.handleError.handleError<any>('getHttp',{'results':[]})),
+      )
+      .subscribe(
+        (data: { [x: string]: any; }) => {
+          this.camps = data['results']
+          console.log('subscribe',this.camps )
+        }
+      )
+    console.log('return ',this.camps)
+    return this.camps
     }
+  
+
+  zzgetCamps():Camp[] {
+    if (this.camps.length == 0){
+      const url = this.constantes.GEANALYTIQUE_URL+"?axe=ACTIVITES&obsolete=False"
+      this.camps = this.getHttp(url)  
+    }
+    console.log('getCamps: ',this.camps )
+    return this.camps
   }
 
   getFournisseurs() {
