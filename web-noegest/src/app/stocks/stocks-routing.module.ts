@@ -3,9 +3,9 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from 'src/app/general/_helpers';
 
 import { SortiesComponent } from './mouvements/sorties/sorties.component';
-import { OneSortieComponent } from './one-sortie/one-sortie.component';
+import { OneSortieComponent } from './mouvements/one-sortie/one-sortie.component';
 import { EntreesComponent } from './mouvements/entrees/entrees.component';
-import { OneEntreeComponent } from './one-entree/one-entree.component';
+import { OneEntreeComponent } from './mouvements/one-entree/one-entree.component';
 import { EffectifsComponent } from './effectifs/effectifs.component';
 import { InventaireComponent } from './inventaire/inventaire.component';
 import { PrixJourneeComponent } from './prix-journee/prix-journee.component';

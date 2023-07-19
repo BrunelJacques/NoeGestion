@@ -28,9 +28,28 @@
       <span class="p-1">params affich.</span>
     </a>
   </div>
-  <div class="row d-none d-sm-block card-container m-2 p-0 ">
+  <div 
+  class="row d-none d-sm-block card-container m-2 p-0 "
+  *ngIf = isAjout>
     <a class="bi bi-plus-circle" routerLink="/stocks/onesortie/0">
       <span class="p-1">ajout ligne</span>
     </a>
+  </div>
+  <div 
+  *ngIf = isGoBack>  
+    <button type="submit" 
+    class="btn btn-primary"
+    aria-label="Confirm"
+    (click)="emitEvent()">
+    <span  class="spinner-border spinner-border-sm mr-1"></span>
+    retour ok
+    </button>
+    &nbsp;
+    <button type="button" class="close btn btn-secondary"
+    aria-label="Close"
+    (click)="getParentComponent().goBack()">
+    abandon
+    <i class="bi bi-sign-turn-left"></i>
+    </button>
   </div>
 </h6>

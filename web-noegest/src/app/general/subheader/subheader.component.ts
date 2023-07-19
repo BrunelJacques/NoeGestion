@@ -10,18 +10,23 @@ import { UrlService } from '../_services';
 export class SubheaderComponent implements OnInit {
   bgcolor = "fond-sombre";
   lstUrls = ['stocks','kms']
+  lstMvt = ['params','sorties','onesortie']
   isSpecial = false
+  mvt = false
 
   constructor(
     private urlService: UrlService,
     ){}
 
   ngOnInit(): void {
+    this.urlService.templateUrl$.subscribe(
+      (template) => { 
+        this.mvt = (this.lstMvt.indexOf(template)!= -1 )
+      })
     this.urlService.rootUrl$.subscribe(
       (rootUrl) => { 
         this.updateCurrentURL(rootUrl)
       })
-
   }
 
   private updateCurrentURL(rootUrl:string) {
@@ -31,6 +36,7 @@ export class SubheaderComponent implements OnInit {
       this.bgcolor = 'fond-ecran'
     } 
     else { 
+      this.mvt = false
       this.isSpecial = false
       this.bgcolor = 'fond-sombre'
     }

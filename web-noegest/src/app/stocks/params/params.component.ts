@@ -17,6 +17,8 @@ import { UrlService } from 'src/app/general/_services';
 })
 
 export class ParamsComponent implements OnInit {
+
+
   params!: Params;
   camps!: Camp[];
   paramsForm!:FormGroup;
@@ -41,7 +43,9 @@ export class ParamsComponent implements OnInit {
     private location: Location,
     private alertService: AlertService,
     private urlService: UrlService,
-  ){}
+  ){
+
+  }
   
   ngOnInit(): void {
     //this.paramsService.paramssubj$.subscribe( params => this.params = params );
@@ -99,9 +103,7 @@ export class ParamsComponent implements OnInit {
     this.alertService.clear();
 
     // stop here if form is invalid    
-    if (this.paramsForm.invalid) {
-        return;
-    }
+    //if (this.paramsForm.invalid) { return; }
     this.loading = true;
     this.okBack()
   }

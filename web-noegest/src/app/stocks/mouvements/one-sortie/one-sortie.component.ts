@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Mouvement } from '../_models/mouvement';
+import { Mouvement } from '../../_models/mouvement';
 import { Location, DatePipe } from '@angular/common';
 import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
-import { MvtService } from '../_services/mvt.service';
-import { ParamsService } from '../_services/params.service';
-import { Camp, Params } from '../_models/params';
+import { MvtService } from '../../_services/mvt.service';
+import { ParamsService } from '../../_services/params.service';
+import { Camp, Params } from '../../_models/params';
 import { AlertService } from 'src/app/general/_services';
 import { Constantes } from 'src/app/constantes';
 import { ActivatedRoute } from '@angular/router';
@@ -55,15 +55,12 @@ export class OneSortieComponent implements OnInit {
 
   onSubmit(){
     this.submitted = true;
-
     // reset alerts on submit
     this.alertService.clear();
-
     // stop here if form is invalid
-    if (this.form.invalid) {
-        return;
+    if (!this.form.invalid) {
+      this.okBack()
     }
-    this.okBack()
   }
 
   getMvt(): void {

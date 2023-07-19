@@ -21,6 +21,8 @@ import * as fr from '@angular/common/locales/fr';
 import { SubheaderComponent } from './general/subheader/subheader.component';
 import { SubheaderMvtsComponent } from './stocks/mouvements/subheader-mvts/subheader-mvts.component';
 import { DatePipe } from '@angular/common';
+import { OneSortieComponent } from './stocks/mouvements/one-sortie/one-sortie.component';
+import { ParamsComponent } from './stocks/params/params.component';
 
 @NgModule({
   declarations: [
@@ -48,8 +50,8 @@ import { DatePipe } from '@angular/common';
     // provider used to create fake backend
     //fakeBackendProvider,
     UrlService,
-
-
+    OneSortieComponent,
+    ParamsComponent
   ],
   bootstrap: [AppComponent]
 })
