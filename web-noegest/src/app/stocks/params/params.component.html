@@ -1,7 +1,7 @@
 <div class="container-fluid">
-  <div class="card ">
+  <div class="card">
     <div class="row container-fluid">
-      <h5 class="col-6">Paramètres de liste</h5>
+      <h5 class="col-6">Paramètres d'affichage</h5>
       <span class="col-6">
         <button type="button" class="close btn btn-secondary"
           aria-label="Close"
@@ -48,14 +48,14 @@
         </option>
       </select>
 
-      <div class="form-group" *ngIf="true">
+      <div class="form-group" *ngIf="(f['origine'].value === 'camp')">
         <label for="camp">Camp:</label>
         <select id="camp" name="camp" 
           formControlName="camp" 
           class="form-control" required aria-label="camp"
           [ngClass]="{ 'is-invalid': submitted && f['camp'].errors}">
           <option [ngValue]="" disabled>Choisir un camp</option>
-          <option *ngFor="let camp of lstcamps"
+          <option *ngFor="let camp of camps"
             [ngValue]="camp.id">
             {{camp['nom']}}
           </option>
@@ -64,8 +64,7 @@
           <div *ngIf="f['camp'].errors['required']">Choisissez un camp extérieur ou choisissez une autre destination</div>
         </div>
       </div>
-
-      <div *ngIf="(params['origine'].endsWith('repas'))">
+      <div *ngIf="(f['origine'].value === 'repas')">
         <label for="service">Repas:</label>
         <select formControlName="service"
           class="form-control" required>

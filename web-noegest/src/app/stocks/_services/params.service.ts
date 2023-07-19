@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject, catchError, of, tap } from 'rxjs';
 import { hoursDelta, deepCopy } from '../../general/_helpers/fonctions-perso';
+import { DatePipe } from '@angular/common';
 
 import { Params,  PARAMS, Camp, Fournisseur, Rayon, Magasin } from '../_models/params';
 import { Constantes } from 'src/app/constantes';
@@ -12,7 +13,8 @@ import { HandleError } from 'src/app/general/_helpers';
 @Injectable({ providedIn: 'root'})
 
 export class ParamsService {
-
+  lstservice = Constantes.LSTSERVICE;
+  lstservice_code = this.lstservice.map((x) => x.code)
   public paramssubj$= new BehaviorSubject<Params>(PARAMS);
   private key = "stParams";
   public camps: Camp[] = [];
@@ -25,7 +27,8 @@ export class ParamsService {
   constructor(    
     private constantes: Constantes,
     private http: HttpClient,
-    private handleError: HandleError
+    private handleError: HandleError,
+    private datePipe: DatePipe
     ){}
 
 
@@ -63,6 +66,31 @@ export class ParamsService {
     this.setParams(params)
     return params
   }
+
+  paramsToForm(params:Params,form:any){
+    if (!params.service || params.service < 0){ 
+      params.service = 0 }
+    form.patchValue({
+      'jour': this.datePipe.transform(params.jour, 'yyyy-MM-dd'),
+      'origine': params.origine,
+      'camp': params.camp,
+      'tva': params.tva,
+      'service': this.lstservice[params.service].code,
+      'fournisseur': params.fournisseur,
+    })
+  }
+
+  formToParams(form:{value:any}, params:Params):void {
+    if (form.value.origine != 'camp') {
+      form.value.camp = '00'}
+    params.jour = new Date(form.value.jour),
+    params.origine = form.value.origine,
+    params.camp = form.value.camp,
+    params.service = this.lstservice_code.indexOf(form.value.service),
+    params.fournisseur = form.value.fournisseur,
+    params.tva = form.value.tva
+  }
+
 
   /* GET heroes adapté pour exemple */
   searchCamps(term: string): Observable<Camp[]> {
@@ -111,7 +139,6 @@ export class ParamsService {
     return this.camps
     }
   
-
   zzgetCamps():Camp[] {
     if (this.camps.length == 0){
       const url = this.constantes.GEANALYTIQUE_URL+"?axe=ACTIVITES&obsolete=False"
