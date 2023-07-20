@@ -1,25 +1,7 @@
 <div class="container-fluid">
   <div class="card">
     <div class="row container-fluid">
-      <h5 class="col-6">Paramètres d'affichage</h5>
-      <span class="col-6">
-        <button type="button" class="close btn btn-secondary"
-          aria-label="Close"
-          (click)="goBack()">
-          abandon
-          <i class="bi bi-sign-turn-left"></i>
-        </button>
-        &nbsp;
-        <button type="submit" 
-          [disabled]="loading"
-          class="btn btn-primary"
-          aria-label="Confirm"
-          (click)="onSubmit()">
-          <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-          retour ok
-        </button>
-      </span>
-      
+      <h5>Paramètres d'affichage</h5>      
     </div>
     <form [formGroup]="paramsForm" 
         class="form-group short was-validated"

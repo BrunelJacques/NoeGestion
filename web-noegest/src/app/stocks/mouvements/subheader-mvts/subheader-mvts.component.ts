@@ -1,11 +1,10 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-import { UrlService } from 'src/app/general/_services';
+import { Component } from '@angular/core';
+import { SharedService } from 'src/app/general/_services';
 import { ParamsService } from '../../_services/params.service';
-import { Params } from '@angular/router';
+import { Router } from '@angular/router';
 import { Constantes } from 'src/app/constantes'
 import { DatePipe } from '@angular/common'
-import { OneSortieComponent } from '../one-sortie/one-sortie.component';
-import { ParamsComponent } from '../../params/params.component';
+import { Params } from '../../_models/params';
 
 @Component({
   selector: 'app-subheader-mvts',
@@ -14,41 +13,34 @@ import { ParamsComponent } from '../../params/params.component';
 })
 
 export class SubheaderMvtsComponent {
-  @Output() eventEmitter = new EventEmitter<void>;
 
-  emitEvent(): void {
-    this.eventEmitter.emit();
-  }
   isAjout = false
   isGoBack = false
   ajouts = ['sorties','entrees']
   goBacks = ['onesortie','params','oneentree']
   template = "."
-  parent = ""
   params!:Params
   jour: string | null = ""
   lstservice = Constantes.LSTSERVICE
 
 
   constructor(
-    private urlService: UrlService,
+    private sharedService: SharedService,
+    private router: Router,
     private paramsService: ParamsService,
     private datePipe: DatePipe,
-    private oneSortieComponent: OneSortieComponent,
-    private paramsComponent: ParamsComponent,
   ){
-    this.urlService.templateUrl$.subscribe(
+    this.sharedService.templateActive$.subscribe(
       (template) => { 
         this.isAjout = (this.ajouts.indexOf(template) != -1)
         this.template = template
         this.isGoBack = (this.goBacks.indexOf(template) != -1 )
       }
     )
-    this.urlService.parentNameSubj$.subscribe(
-        (value) => {this.parent = value}
-    )
     this.getParams()
   }
+
+  
 
   getParams(): void {
     this.paramsService.paramssubj$
@@ -60,25 +52,22 @@ export class SubheaderMvtsComponent {
       })
   }
 
-  getParentComponent(){
-    switch (this.template){
-      case 'onesortie':
-        return this.oneSortieComponent
-      case 'params':
-        return this.paramsComponent
-    }
-    return this
+  onSeeYou(): void {
+    console.log('seeyou subheader')
+    this.sharedService.setUrlParent()
   }
 
-  onSubmit() {
-    if (this.componentA && this.componentA.onSubmit) {
-      // Call the 'onSubmit' function of ComponentA with the 'this' context of ComponentA
-      this.componentA.onSubmit();
-    }
-  } 
+  onParams(): void {
+    this.onSeeYou()
+    this.router.navigate(['/stocks/params'])
+  }
 
-  goBack() {
-    console.log('parent.goBack non géré')
+  onSubmit(): void {
+    this.sharedService.onSubmitEvent.emit(' Click submit from subheaderMvts');
+  }
+
+  onGoBack() {
+    this.sharedService.onGoBackEvent.emit(' Click goBack from subheaderMvts');
   }
 
 }

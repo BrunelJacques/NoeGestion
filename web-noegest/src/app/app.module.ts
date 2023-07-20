@@ -16,7 +16,7 @@ import { AlertComponent } from './general/_alert';
 import { HomeComponent } from './general/home';
 import { HeaderModule } from './general/header/header.module';
 import { NotFoundComponent } from './general/not-found';
-import { UrlService } from './general/_services/url.service';
+import { SharedService } from './general/_services/shared.service';
 import * as fr from '@angular/common/locales/fr';
 import { SubheaderComponent } from './general/subheader/subheader.component';
 import { SubheaderMvtsComponent } from './stocks/mouvements/subheader-mvts/subheader-mvts.component';
@@ -32,6 +32,9 @@ import { ParamsComponent } from './stocks/params/params.component';
     NotFoundComponent,
     SubheaderComponent,
     SubheaderMvtsComponent,
+    // below, those who share with SubheaderMvtsComponent
+    OneSortieComponent,
+    ParamsComponent,
   ],
   imports: [
     BrowserModule,
@@ -49,9 +52,8 @@ import { ParamsComponent } from './stocks/params/params.component';
     { provide: DatePipe },
     // provider used to create fake backend
     //fakeBackendProvider,
-    UrlService,
-    OneSortieComponent,
-    ParamsComponent
+    SharedService,
+
   ],
   bootstrap: [AppComponent]
 })

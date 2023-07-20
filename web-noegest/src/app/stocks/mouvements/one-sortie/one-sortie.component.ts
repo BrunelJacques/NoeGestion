@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { Mouvement } from '../../_models/mouvement';
-import { Location, DatePipe } from '@angular/common';
-import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { DatePipe } from '@angular/common';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MvtService } from '../../_services/mvt.service';
 import { ParamsService } from '../../_services/params.service';
 import { Camp, Params } from '../../_models/params';
-import { AlertService } from 'src/app/general/_services';
+import { AlertService, SharedService } from 'src/app/general/_services';
 import { Constantes } from 'src/app/constantes';
 import { ActivatedRoute } from '@angular/router';
 
@@ -16,13 +17,17 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./one-sortie.component.less']
 })
 
-export class OneSortieComponent implements OnInit {
+export class OneSortieComponent implements OnInit, OnDestroy {
   id!: string|null;
   mvt?: Mouvement;
   params!: Params;
   camps!: Camp[];
-  paramsForm!: UntypedFormGroup;
 
+  onSubmitSubscrib!:Subscription;
+  onGoBackSubscrib!:Subscription;
+  paramsSubscrib!:Subscription;
+  mvtSubscrib!:Subscription;
+  receivedData: unknown;
 
   constantes = Constantes;
   lstservice = this.constantes.LSTSERVICE;
@@ -31,12 +36,12 @@ export class OneSortieComponent implements OnInit {
 
   lstservice_code = this.lstservice.map((x) => x.code)
   submitted = false;
-  form!: UntypedFormGroup;
+  form!: FormGroup;
 
   constructor(
     private paramsService: ParamsService,
-    private formBuilder: UntypedFormBuilder,
-    private location: Location,
+    private sharedService: SharedService,
+    private formBuilder:FormBuilder,
     private alertService: AlertService,
     private datePipe: DatePipe,
     private route: ActivatedRoute,
@@ -51,6 +56,31 @@ export class OneSortieComponent implements OnInit {
       fournisseur:"",
     });
     this.getParams();
+    this.onSubmitSubscrib = this.sharedService.onSubmitEvent
+    .subscribe((data) => {
+      this.receivedData = data
+      console.log('onSubmitEvent received in on-sortie:click :', data);
+      this.onSubmit();
+    })
+    this.onGoBackSubscrib = this.sharedService.onGoBackEvent
+    .subscribe((data) => {
+      this.receivedData = data
+      console.log('onGoBackEvent received in on-sortie:click :', data);
+      this.onSubmit();
+    })
+  }
+
+  ngOnDestroy(): void {
+    this.onSubmitSubscrib.unsubscribe()
+    this.onGoBackSubscrib.unsubscribe()
+    if (this.mvtSubscrib)
+      {this.mvtSubscrib.unsubscribe()}
+    if (this.paramsSubscrib)
+      {this.paramsSubscrib.unsubscribe()}
+  }
+
+  goBack(): void {
+    this.sharedService.goBackUrlParent()
   }
 
   onSubmit(){
@@ -58,9 +88,11 @@ export class OneSortieComponent implements OnInit {
     // reset alerts on submit
     this.alertService.clear();
     // stop here if form is invalid
-    if (!this.form.invalid) {
-      this.okBack()
+    if (this.form.invalid) {
+      return;
     }
+    this.save()
+    this.goBack()
   }
 
   getMvt(): void {
@@ -68,51 +100,40 @@ export class OneSortieComponent implements OnInit {
       console.log('this.id : ', this.id)
     }{
       const id = this.id || ''
-      this.mvtService.getMvt(id)
+      this.mvtSubscrib = this.mvtService.getMvt(id)
       .subscribe(mvt => this.mvt = mvt);
     }
   }
 
   getParams(): void {
-    this.paramsService.paramssubj$
-      .subscribe({
-        next: (data:Params) => {
-          this.params = data;
-          if (!this.params.service || this.params.service < 0){
-            this.params.service = 0 }
-          this.form.patchValue({
-            'jour': this.datePipe.transform(this.params.jour, 'yyyy-MM-dd'),
-            'origine': this.params.origine,
-            'camp': this.params.camp,
-            'tva': this.params.tva,
-            'service': this.lstservice[this.params.service].code,
-            'fournisseur': this.params.fournisseur,
-          })
-        },
-        error: (e) => {
-          if (e != 'Not Found') {
-            console.error(e)
-          }
+    this.paramsSubscrib = this.paramsService.paramssubj$
+    .subscribe({
+      next: (data:Params) => {
+        this.params = data;
+        if (!this.params.service || this.params.service < 0){
+          this.params.service = 0 }
+        this.form.patchValue({
+          'jour': this.datePipe.transform(this.params.jour, 'yyyy-MM-dd'),
+          'origine': this.params.origine,
+          'camp': this.params.camp,
+          'tva': this.params.tva,
+          'service': this.lstservice[this.params.service].code,
+          'fournisseur': this.params.fournisseur,
+        })
+      },
+      error: (e) => {
+        if (e != 'Not Found') {
+          console.error(e)
         }
-      });
+      }
+    });
   }
 
-  okBack(): void {
-    //this.params.jour = new Date(this.form.value.jour),
-    //this.params.origine = this.form.value.origine,
-    //this.params.modif = new Date(),
-    //this.setParams(),
-    this.goBack()
-  }
-
-  goBack(): void {
-    this.location.back();
-  }
 
   save(): void {
-    if (this.id) {
-      this.mvtService.updateMvt(this.id.toString())
-        .subscribe(() => this.goBack());
+    if (this.id ) {
+      console.log('à faire save')
+      //this.mvtService.updateMvt(this.id.toString())
     }
   }
 }

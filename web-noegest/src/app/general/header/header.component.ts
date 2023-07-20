@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 
 import { User } from 'src/app/general/_models';
 import { AuthenticationService } from 'src/app/general/_services';
-import { UrlService } from '../_services/url.service';
+import { SharedService } from '../_services/shared.service';
 
 @Component({
   selector: 'app-header',
@@ -26,7 +26,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: object,
-    private urlService: UrlService,
+    private sharedService: SharedService,
     private authenticationService: AuthenticationService,
   ) {}
 
@@ -34,7 +34,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.loginSub = this.authenticationService.loginSubject.subscribe(
       (value) => (this.isLoggedIn = value)
     );
-    this.urlService.rootUrl$.subscribe(
+    this.sharedService.rootActive$.subscribe(
       (value) => (this.namemodule = value)
     );
     /* Permet la fermeture du menu après un choix*/ 
@@ -78,7 +78,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   logout() {
     this.isNavbarCollapsed = false
     this.authenticationService.logout();
-    this.urlService.rootUrl$.next('logout')
+    this.sharedService.rootActive$.next('logout')
   }
 
 }

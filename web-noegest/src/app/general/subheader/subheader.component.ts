@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UrlService } from '../_services';
+import { SharedService } from '../_services';
 
 @Component({
   selector: 'app-subheader',
@@ -15,15 +15,15 @@ export class SubheaderComponent implements OnInit {
   mvt = false
 
   constructor(
-    private urlService: UrlService,
+    private sharedService: SharedService,
     ){}
 
   ngOnInit(): void {
-    this.urlService.templateUrl$.subscribe(
+    this.sharedService.templateActive$.subscribe(
       (template) => { 
         this.mvt = (this.lstMvt.indexOf(template)!= -1 )
       })
-    this.urlService.rootUrl$.subscribe(
+    this.sharedService.rootActive$.subscribe(
       (rootUrl) => { 
         this.updateCurrentURL(rootUrl)
       })

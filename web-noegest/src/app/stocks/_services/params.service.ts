@@ -29,7 +29,11 @@ export class ParamsService {
     private http: HttpClient,
     private handleError: HandleError,
     private datePipe: DatePipe
-    ){}
+    ){
+      const param = this.getStoredParams()
+      if (param) 
+      { this.paramssubj$.next(param) }
+    }
 
 
   initParams() {
@@ -50,12 +54,11 @@ export class ParamsService {
     if (key === null ) 
     {return}
     else
-    { return JSON.parse(key); }
+    { return this.ajusteParams(JSON.parse(key)) }
   }
 
   ajusteParams(params:Params){
     // >6 heures après le dernier paramétrage, on réinitialise Params
-    params.parent = "sorties"
     if (!(params instanceof Object)){
       params = deepCopy(PARAMS)
     }
@@ -90,7 +93,6 @@ export class ParamsService {
     params.fournisseur = form.value.fournisseur,
     params.tva = form.value.tva
   }
-
 
   /* GET heroes adapté pour exemple */
   searchCamps(term: string): Observable<Camp[]> {
@@ -139,15 +141,6 @@ export class ParamsService {
     return this.camps
     }
   
-  zzgetCamps():Camp[] {
-    if (this.camps.length == 0){
-      const url = this.constantes.GEANALYTIQUE_URL+"?axe=ACTIVITES&obsolete=False"
-      this.camps = this.getHttp(url)  
-    }
-    console.log('getCamps: ',this.camps )
-    return this.camps
-  }
-
   getFournisseurs() {
     if (this.fournisseurs.length == 0) {
       const url = this.constantes.STFOURNISSEUR_URL

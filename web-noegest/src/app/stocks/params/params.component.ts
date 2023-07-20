@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Location } from '@angular/common';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { ParamsService } from '../_services/params.service';
@@ -8,7 +8,7 @@ import { Params } from '../_models/params';
 
 import { AlertService } from 'src/app/general/_services';
 import { Constantes } from 'src/app/constantes';
-import { UrlService } from 'src/app/general/_services';
+import { SharedService } from 'src/app/general/_services';
 
 @Component({
   selector: 'app-params',
@@ -16,14 +16,17 @@ import { UrlService } from 'src/app/general/_services';
   styleUrls: ['./params.component.less'],
 })
 
-export class ParamsComponent implements OnInit {
-
+export class ParamsComponent implements OnInit, OnDestroy {
 
   params!: Params;
   camps!: Camp[];
   paramsForm!:FormGroup;
   parent = "";
 
+  onSubmitSubscrib!:Subscription;
+  onGoBackSubscrib!:Subscription;
+  paramsSubscrib!:Subscription;
+  receivedData: unknown;
 
   lstservice = Constantes.LSTSERVICE;
   lstorigine_sorties = Constantes.LSTORIGINE_SORTIES;
@@ -40,15 +43,11 @@ export class ParamsComponent implements OnInit {
   constructor(
     private paramsService: ParamsService,
     private formBuilder: FormBuilder,
-    private location: Location,
     private alertService: AlertService,
-    private urlService: UrlService,
-  ){
-
-  }
+    private sharedService: SharedService,
+    ){}
   
   ngOnInit(): void {
-    //this.paramsService.paramssubj$.subscribe( params => this.params = params );
     this.paramsForm = this.formBuilder.group({
       jour: [new Date(),Validators.required],
       origine:"repas",
@@ -59,8 +58,28 @@ export class ParamsComponent implements OnInit {
     });
     this.getParams()
     this.getCamps()
-    this.parent = this.urlService.getParentName()
+    this.onSubmitSubscrib = this.sharedService.onSubmitEvent
+      .subscribe((data) => {
+        this.receivedData = data
+        console.log('onSubmitEvent received in params:click :', data);
+        this.onSubmit();    
+      })
+    this.onGoBackSubscrib = this.sharedService.onGoBackEvent
+      .subscribe((data) => {
+      this.receivedData = data
+      console.log('onGoBackEvent received in params:click :', data);
+      this.onSubmit();    
+    })
   }
+
+  ngOnDestroy(): void {
+    this.onSubmitSubscrib.unsubscribe() 
+    this.onGoBackSubscrib.unsubscribe()   
+    if (this.paramsSubscrib){
+      this.paramsSubscrib.unsubscribe()
+    }  
+  }
+
 
   // convenience getter for easy access to form fields
   get f() { return this.paramsForm.controls; }
@@ -84,43 +103,34 @@ export class ParamsComponent implements OnInit {
     }
   }
   
-
-  okBack(): void {
-    this.paramsService.formToParams(this.paramsForm,this.params)
-    this.params.modif = new Date(),
-    this.setParams(this.params),
-    this.goBack()
-  }
-
   goBack(): void {
-    this.location.back();
+    this.sharedService.goBackUrlParent()
   }
 
   onSubmit(){
     this.submitted = true;
-
     // reset alerts on submit
     this.alertService.clear();
-
     // stop here if form is invalid    
-    //if (this.paramsForm.invalid) { return; }
-    this.loading = true;
-    this.okBack()
+    if (this.paramsForm.invalid) { 
+      return; 
+    }
+    this.loading = true,
+    this.paramsService.formToParams(this.paramsForm,this.params),
+    this.params.modif = new Date(),
+    this.paramsService.setParams(this.params)
+    this.goBack()
   }
-
+  
   getCamps(): void {
     this.paramsService.getCamps()
     this.camps = this.paramsService.camps
     console.log('camps: ',this.camps)
     }
   
-  setParams(params: Params): void {
-    this.paramsService.setParams(params)
-  }
-
   getParams(): void {
     this.loading = true;
-    this.paramsService.paramssubj$
+    this.paramsSubscrib = this.paramsService.paramssubj$
       .subscribe({
         next: (data:Params) => {
           this.params = data;

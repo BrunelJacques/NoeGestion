@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { Mouvement } from '../../_models/mouvement';
 import { MvtService } from '../../_services/mvt.service';
 import { ParamsService } from '../../_services/params.service'
 import { Params } from '../../_models/params';
-import { UrlService } from 'src/app/general/_services';
 //import { OneSortieComponent } from '../one-sortie/one-sortie.component';
 import { DatePipe } from '@angular/common';
 import { Constantes } from 'src/app/constantes';
@@ -16,8 +16,10 @@ import { DateAnsiToFr } from 'src/app/general/_helpers/fonctions-perso'
 })
 
 
-export class SortiesComponent implements OnInit {
-  name = "Sorties"
+export class SortiesComponent implements OnInit, OnDestroy {
+  name = "Sorties";
+  paramsSubscrib!:Subscription;
+  sortiesSubscrib!:Subscription;
   sorties!: Mouvement[];
   selectedMvt!: Mouvement;
   jour: string | null = ""
@@ -30,19 +32,22 @@ export class SortiesComponent implements OnInit {
   ansiToFr = DateAnsiToFr
 
   constructor(
-    private urlService: UrlService,
     private paramsService: ParamsService,
     private mvtService: MvtService,
     private datePipe: DatePipe,
-    ) {
-      this.urlService.setParentName(this.name)
-    }
+    ) {}
+
   ngOnInit(): void {
     this.getParams();
     this.getSorties();
     this.params.parent = this.name
+
   }
 
+  ngOnDestroy(): void {
+    this.paramsSubscrib.unsubscribe,
+    this.sortiesSubscrib.unsubscribe
+  }
   mvtsFilter = (mvt: Mouvement) => {
     let ret = true
     // filtre sur le date
@@ -73,14 +78,14 @@ export class SortiesComponent implements OnInit {
     const jour = this.datePipe.transform(this.params.jour, 'yyyy-MM-dd')
     this.urlparams = `/?origine=${this.params.origine}&jour=${jour}`
 
-    this.mvtService.getSorties(this.urlparams)
+    this.sortiesSubscrib = this.mvtService.getSorties(this.urlparams)
       .subscribe( 
         data => this.sorties = data['results'].filter(this.mvtsFilter)
       )
   }
 
   getParams(): void {
-    this.paramsService.paramssubj$
+    this.paramsSubscrib = this.paramsService.paramssubj$
       .subscribe({
         next: (data: Params) => {
           this.params = data;

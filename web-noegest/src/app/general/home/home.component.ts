@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 
 import { environment } from 'src/environments/environment';
 import { AuthenticationService } from '../_services';
-import { UrlService} from '../_services/url.service';
+import { SharedService} from '../_services/shared.service';
 
 
 import { User } from 'src/app/general/_models';
@@ -24,7 +24,7 @@ export class HomeComponent  {
 
   constructor(
     private authenticationService: AuthenticationService,
-    private urlService: UrlService,
+    private sharedService: SharedService,
     )
      {
       this.authenticationService.user.subscribe(x => this.user = x);
@@ -33,7 +33,7 @@ export class HomeComponent  {
 
 
   emitLocation(name: string){
-    this.urlService.rootUrl$.next(name)
+    this.sharedService.rootActive$.next(name)
   }
 
   stocks() {

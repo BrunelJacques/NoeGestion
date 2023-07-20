@@ -1,3 +1,4 @@
+ <!-- affichage d'informations  -->
 <h6 class="card m-0 p-1">Sorties de stock :
   &nbsp;
   <span *ngIf="params['origine'] === 'repas'">pour {{params['origine']}} en cuisine</span>
@@ -12,42 +13,53 @@
       <span *ngIf="params['origine'] === 'repas'">Repas '{{lstservice[params['service']].code}}'&nbsp;</span>
     </span>
   </div>
-  <div class="d-sm-none col card-container m-0 p-1">
-    <span class="right-span ">
-      <a class="bi bi-gear" routerLink="/stocks/params">
-        <span class="small12">params</span>
+  <!-- navigation pour écran étroit  -->
+  <div *ngIf = isAjout 
+  class="d-sm-none col card-container  m-0 p-1">
+    <a class="bi bi-gear"
+    (click)="onSeeYou()"
+    routerLink="/stocks/params">
+      <span class="small12">params</span>
+    </a>
+    &nbsp;
+    <a
+    class="bi bi-plus-circle"
+    (click)="onSeeYou()"
+    routerLink="/stocks/onesortie/0">
+      <span class="small12">ajout</span>
+    </a>
+  </div>
+  <!-- navigation pour écran plus large -->
+  <div *ngIf = isAjout class="p-0">
+    <div class="row d-none d-sm-block card-container my-2 p-0 ">
+      <a class="bi bi-gear"
+      (click)="onSeeYou()"
+      routerLink="/stocks/params">
+        <span class="p-1">params affich.</span>
       </a>
-      &nbsp;
+    </div>
+    <div
+    class="row d-none d-sm-block card-container my-2 p-0 "
+    *ngIf = isAjout>
       <a class="bi bi-plus-circle" routerLink="/stocks/onesortie/0">
-        <span class="small12">ajout</span>
+        <span class="p-1">ajout ligne</span>
       </a>
-    </span>
+    </div>
   </div>
-  <div class="row d-none d-sm-block card-container m-2 p-0 ">
-    <a class="bi bi-gear" routerLink="/stocks/params">
-      <span class="p-1">params affich.</span>
-    </a>
-  </div>
-  <div 
-  class="row d-none d-sm-block card-container m-2 p-0 "
-  *ngIf = isAjout>
-    <a class="bi bi-plus-circle" routerLink="/stocks/onesortie/0">
-      <span class="p-1">ajout ligne</span>
-    </a>
-  </div>
-  <div 
-  *ngIf = isGoBack>  
-    <button type="submit" 
+  <!-- retours -->
+  <div
+  *ngIf = isGoBack>
+    <button type="submit"
     class="btn btn-primary"
     aria-label="Confirm"
-    (click)="emitEvent()">
-    <span  class="spinner-border spinner-border-sm mr-1"></span>
+    (click)="onSubmit()">
     retour ok
     </button>
     &nbsp;
-    <button type="button" class="close btn btn-secondary"
+    <button type="button"
+    class="close btn btn-secondary"
     aria-label="Close"
-    (click)="getParentComponent().goBack()">
+    (click)="onGoBack()">
     abandon
     <i class="bi bi-sign-turn-left"></i>
     </button>
