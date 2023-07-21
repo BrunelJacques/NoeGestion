@@ -14,7 +14,6 @@ import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-one-sortie',
   templateUrl: './one-sortie.component.html',
-  styleUrls: ['./one-sortie.component.less']
 })
 
 export class OneSortieComponent implements OnInit, OnDestroy {

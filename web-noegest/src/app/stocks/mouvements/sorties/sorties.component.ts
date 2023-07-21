@@ -99,9 +99,6 @@ export class SortiesComponent implements OnInit, OnDestroy {
       });
   }
 
-  onRefresh(): void{
-    this.getSorties()
-  }
 
 }
 

@@ -38,6 +38,7 @@ export class SharedService {
   }
 
   setUrlParent(){
+    // stocke l'url actuelle pour un prochain retour par onGoBack
     const url = this.router.url
     if (this.urlsHisto[0] != url)
     {this.urlsHisto.unshift(url)}
@@ -46,7 +47,8 @@ export class SharedService {
 
   goBackUrlParent() {
     //route vers le dernier parent inséré et le supprime
-    const url = this.urlsHisto.shift()
-    this.router.navigate([url])
+    if (this.urlsHisto.length > 0) 
+    { this.router.navigate([this.urlsHisto.shift()])} 
+    else { this.router.navigate(['/'])}      
   }
 }

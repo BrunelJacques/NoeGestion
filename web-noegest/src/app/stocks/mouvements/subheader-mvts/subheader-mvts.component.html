@@ -14,15 +14,15 @@
     </span>
   </div>
   <!-- navigation pour écran étroit  -->
-  <div *ngIf = isAjout 
-  class="d-sm-none col card-container  m-0 p-1">
-    <a class="bi bi-gear"
+  <div class="d-sm-none col card-container  m-0 p-1">
+    <a *ngIf = isToParams 
+    class="bi bi-gear"
     (click)="onSeeYou()"
     routerLink="/stocks/params">
       <span class="small12">params</span>
     </a>
     &nbsp;
-    <a
+    <a  *ngIf = isToAjout 
     class="bi bi-plus-circle"
     (click)="onSeeYou()"
     routerLink="/stocks/onesortie/0">
@@ -30,34 +30,37 @@
     </a>
   </div>
   <!-- navigation pour écran plus large -->
-  <div *ngIf = isAjout class="p-0">
-    <div class="row d-none d-sm-block card-container my-2 p-0 ">
+  <div class="p-0">
+    <div *ngIf = isToParams
+     class="row d-none d-sm-block card-container my-2 p-0 ">
       <a class="bi bi-gear"
       (click)="onSeeYou()"
       routerLink="/stocks/params">
         <span class="p-1">params affich.</span>
       </a>
     </div>
-    <div
-    class="row d-none d-sm-block card-container my-2 p-0 "
-    *ngIf = isAjout>
-      <a class="bi bi-plus-circle" routerLink="/stocks/onesortie/0">
+    <div *ngIf = isToAjout
+    class="row d-none d-sm-block card-container my-2 p-0 ">
+      <a class="bi bi-plus-circle" 
+      (click)="onSeeYou()"
+      routerLink="/stocks/onesortie/0">
         <span class="p-1">ajout ligne</span>
       </a>
     </div>
   </div>
-  <!-- retours -->
+  <!-- boutons de retours -->
   <div
-  *ngIf = isGoBack>
+  *ngIf = isToGoBack>
     <button type="submit"
-    class="btn btn-primary"
+    class="btn btn-primary px-2 py-1 py-sm-2"
     aria-label="Confirm"
     (click)="onSubmit()">
     retour ok
+    <i class="bi bi-sign-turn-right-fill"></i>
     </button>
     &nbsp;
     <button type="button"
-    class="close btn btn-secondary"
+    class="close btn btn-secondary px-2 py-1 py-sm-2"
     aria-label="Close"
     (click)="onGoBack()">
     abandon

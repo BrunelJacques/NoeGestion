@@ -14,10 +14,12 @@ import { Params } from '../../_models/params';
 
 export class SubheaderMvtsComponent {
 
-  isAjout = false
-  isGoBack = false
-  ajouts = ['sorties','entrees']
-  goBacks = ['onesortie','params','oneentree']
+  isToAjout = false
+  isToParams = false
+  isToGoBack = false
+  toAjouts = ['sorties','entrees']
+  toParams = ['sorties','entrees','onesortie','oneentree']
+  toGoBacks = ['onesortie','oneentree','params']
   template = "."
   params!:Params
   jour: string | null = ""
@@ -32,9 +34,10 @@ export class SubheaderMvtsComponent {
   ){
     this.sharedService.templateActive$.subscribe(
       (template) => { 
-        this.isAjout = (this.ajouts.indexOf(template) != -1)
         this.template = template
-        this.isGoBack = (this.goBacks.indexOf(template) != -1 )
+        this.isToAjout = (this.toAjouts.indexOf(template) != -1)
+        this.isToParams = (this.toParams.indexOf(template) != -1)
+        this.isToGoBack = (this.toGoBacks.indexOf(template) != -1 )
       }
     )
     this.getParams()
@@ -52,8 +55,9 @@ export class SubheaderMvtsComponent {
       })
   }
 
+  // stocke l'url actuelle pour un prochain retour par onGoBack
   onSeeYou(): void {
-    console.log('seeyou subheader')
+    console.log('SeeYou: ',this.template)
     this.sharedService.setUrlParent()
   }
 
@@ -67,7 +71,7 @@ export class SubheaderMvtsComponent {
   }
 
   onGoBack() {
-    this.sharedService.onGoBackEvent.emit(' Click goBack from subheaderMvts');
+    this.sharedService.onGoBackEvent.emit(' Click toGoBack from subheaderMvts');
   }
 
 }
