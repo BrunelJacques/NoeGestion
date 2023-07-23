@@ -21,6 +21,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
   mvt?: Mouvement;
   params!: Params;
   camps!: Camp[];
+  formGroup!:FormGroup;
 
   onSubmitSubscrib!:Subscription;
   onGoBackSubscrib!:Subscription;
@@ -35,7 +36,6 @@ export class OneSortieComponent implements OnInit, OnDestroy {
 
   lstservice_code = this.lstservice.map((x) => x.code)
   submitted = false;
-  form!: FormGroup;
 
   constructor(
     private paramsService: ParamsService,
@@ -49,10 +49,14 @@ export class OneSortieComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id'),
-    this.form = this.formBuilder.group({
+    this.formGroup = this.formBuilder.group({
       jour: [new Date(),Validators.required],
       origine: ["repas", Validators.required],
-      fournisseur:"",
+      analytique: "00",
+      service: 0,
+      article:"",
+      prixUnit:0.0,
+      qte: 0.0, 
     });
     this.getParams();
     this.onSubmitSubscrib = this.sharedService.onSubmitEvent
@@ -78,6 +82,10 @@ export class OneSortieComponent implements OnInit, OnDestroy {
       {this.paramsSubscrib.unsubscribe()}
   }
 
+  
+  // convenience getter for easy access to form fields
+  get f() { return this.formGroup.controls; }
+
   goBack(): void {
     this.sharedService.goBackUrlParent()
   }
@@ -87,7 +95,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
     // reset alerts on submit
     this.alertService.clear();
     // stop here if form is invalid
-    if (this.form.invalid) {
+    if (this.formGroup.invalid) {
       return;
     }
     this.save()
@@ -97,7 +105,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
   getMvt(): void {
     if (this.id === null){
       console.log('this.id : ', this.id)
-    }{
+    } else {
       const id = this.id || ''
       this.mvtSubscrib = this.mvtService.getMvt(id)
       .subscribe(mvt => this.mvt = mvt);
@@ -111,13 +119,11 @@ export class OneSortieComponent implements OnInit, OnDestroy {
         this.params = data;
         if (!this.params.service || this.params.service < 0){
           this.params.service = 0 }
-        this.form.patchValue({
+        this.formGroup.patchValue({
           'jour': this.datePipe.transform(this.params.jour, 'yyyy-MM-dd'),
           'origine': this.params.origine,
-          'camp': this.params.camp,
-          'tva': this.params.tva,
+          'analytique': this.params.camp,
           'service': this.lstservice[this.params.service].code,
-          'fournisseur': this.params.fournisseur,
         })
       },
       error: (e) => {

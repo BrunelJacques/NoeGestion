@@ -13,7 +13,6 @@ import { SharedService } from 'src/app/general/_services';
 @Component({
   selector: 'app-params',
   templateUrl: './params.component.html',
-  styleUrls: ['./params.component.less'],
 })
 
 export class ParamsComponent implements OnInit, OnDestroy {

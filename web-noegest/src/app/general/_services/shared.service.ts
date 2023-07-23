@@ -26,9 +26,9 @@ export class SharedService {
     this.urlActive$.next(this.router.url)
     const tblUrl = this.router.url.split('/')
     if (
-      (tblUrl.length > 1) && (tblUrl[1].length >1)
-      )
-    { this.rootActive$.next(tblUrl[1]) 
+      (tblUrl.length > 1) && (tblUrl[1].length >1) 
+    ){ 
+      this.rootActive$.next(tblUrl[1]) 
       this.templateActive$.next(tblUrl[2])
     } 
     else { 

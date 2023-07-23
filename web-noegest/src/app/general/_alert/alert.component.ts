@@ -63,7 +63,7 @@ export class AlertComponent implements OnInit, OnDestroy {
 
     removeAlert(alert: Alert) {
         // check if already removed to prevent error on auto close
-        if (!this.alerts.includes(alert)) return;
+        if (!this.alerts.includes(alert)) {return;}
 
         // fade out alert if this.fade === true
         const timeout = this.fade ? 250 : 0;
