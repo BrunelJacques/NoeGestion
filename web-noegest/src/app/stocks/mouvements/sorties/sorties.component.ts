@@ -8,6 +8,8 @@ import { Params } from '../../_models/params';
 import { DatePipe } from '@angular/common';
 import { Constantes } from 'src/app/constantes';
 import { DateAnsiToFr } from 'src/app/general/_helpers/fonctions-perso'
+import { SharedService } from 'src/app/general/_services';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sorties',
@@ -35,6 +37,8 @@ export class SortiesComponent implements OnInit, OnDestroy {
     private paramsService: ParamsService,
     private mvtService: MvtService,
     private datePipe: DatePipe,
+    private sharedService:SharedService,
+    private router: Router,
     ) {}
 
   ngOnInit(): void {
@@ -99,6 +103,11 @@ export class SortiesComponent implements OnInit, OnDestroy {
       });
   }
 
-
+  onSeeYou(): void {
+    console.log('SeeYouLater sorties')
+    this.sharedService.setUrlParent()
+    //const routeUrl = '/stocks/onesortie/${mvtId}'
+    //this.router.navigate([routeUrl]);
+  }
 }
 

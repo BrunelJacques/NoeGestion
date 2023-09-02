@@ -17,10 +17,14 @@
       </tr>
     </thead>
     <tbody pb-0>
-      <tr *ngFor="let mvt of sorties;"
-      class="">
-        <td class="" routerLink="/stocks/onesortie/{{mvt.id}}">
-          <i class="bi bi-pencil-square me-1 ctnbtn"></i>
+      <tr *ngFor="let mvt of sorties;">
+        <td>
+          <a 
+          (click)="onSeeYou()"   
+          routerLink="/stocks/onesortie/{{mvt.id}}"
+          class="bi bi-pencil" 
+          >
+          </a>
         </td>
         <td class= "py-0"> {{mvt.article.nom}} </td>
         <td class= "py-0" routerLink="/stocks/onesortie/{{mvt.id}}"> 
