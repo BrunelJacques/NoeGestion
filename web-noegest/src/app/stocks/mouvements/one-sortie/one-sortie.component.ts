@@ -82,7 +82,6 @@ export class OneSortieComponent implements OnInit, OnDestroy {
       {this.paramsSubscrib.unsubscribe()}
   }
 
-  
   // convenience getter for easy access to form fields
   get f() { return this.formGroup.controls; }
 
@@ -133,7 +132,6 @@ export class OneSortieComponent implements OnInit, OnDestroy {
       }
     });
   }
-
 
   save(): void {
     if (this.id ) {

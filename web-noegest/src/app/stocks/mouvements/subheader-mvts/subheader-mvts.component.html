@@ -1,16 +1,16 @@
  <!-- affichage d'informations  -->
 <h6 class="card m-0 p-1">Sorties de stock :
   &nbsp;
-  <span *ngIf="params['origine'] === 'repas'">pour {{params['origine']}} en cuisine</span>
+  <span *ngIf="isToParams">pour {{params['origine']}} en cuisine</span>
   <span *ngIf="params['origine'] === 'camp'">pour camp '{{params['camp']}}'</span>
-  <span *ngIf="!['repas','camp'].includes(params['origine'])">{{params['origine']}}</span>
+  <span *ngIf="isListe">{{params['origine']}}</span>
 </h6>
 <h6 class="row justified m-0 p-0" >
   <div class= "col-8 col-sm-12 card-container m-0 p-1" >
     <span class="left-span">
       Le: {{jour}}
       &nbsp;
-      <span *ngIf="params['origine'] === 'repas'">Repas '{{lstservice[params['service']].code}}'&nbsp;</span>
+      <span *ngIf="isListe">Repas '{{lstservice[params['service']].code}}'&nbsp;</span>
     </span>
   </div>
   <!-- navigation pour écran étroit  -->
@@ -22,7 +22,7 @@
       <span class="small12">params</span>
     </a>
     &nbsp;
-    <a  *ngIf = isToAjout 
+    <a  *ngIf = isListe
     class="bi bi-plus-circle"
     (click)="onSeeYou()"
     routerLink="/stocks/onesortie/0">
@@ -39,7 +39,7 @@
         <span class="p-1">params affich.</span>
       </a>
     </div>
-    <div *ngIf = isToAjout
+    <div *ngIf = isListe
     class="row d-none d-sm-block card-container my-2 p-0 ">
       <a class="bi bi-plus-circle" 
       (click)="onSeeYou()"

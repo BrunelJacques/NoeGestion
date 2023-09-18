@@ -13,10 +13,10 @@ import { Params } from '../../_models/params';
 
 export class SubheaderMvtsComponent {
 
-  isToAjout = false
+  isListe = false
   isToParams = false
   isToGoBack = false
-  toAjouts = ['sorties','entrees']
+  listes = ['sorties','entrees']
   toParams = ['sorties','entrees','onesortie','oneentree']
   toGoBacks = ['onesortie','oneentree','params']
   template = "."
@@ -34,9 +34,10 @@ export class SubheaderMvtsComponent {
     this.sharedService.templateActive$.subscribe(
       (template) => { 
         this.template = template
-        this.isToAjout = (this.toAjouts.indexOf(template) != -1)
+        this.isListe = (this.listes.indexOf(template) != -1)
         this.isToParams = (this.toParams.indexOf(template) != -1)
         this.isToGoBack = (this.toGoBacks.indexOf(template) != -1 )
+        console.log("test: ",this.isListe)
       }
     )
     this.getParams()
