@@ -9,7 +9,6 @@ import { DatePipe } from '@angular/common';
 import { Constantes } from 'src/app/constantes';
 import { DateAnsiToFr } from 'src/app/general/_helpers/fonctions-perso'
 import { SharedService } from 'src/app/general/_services';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sorties',
@@ -38,18 +37,19 @@ export class SortiesComponent implements OnInit, OnDestroy {
     private mvtService: MvtService,
     private datePipe: DatePipe,
     private sharedService:SharedService,
-    private router: Router,
     ) {}
 
   ngOnInit(): void {
     this.getParams();
     this.getSorties();
     this.params.parent = this.name
-
+    this.onSeeYou()
+    console.log('seeYou init liste')
+    this.sharedService.setModeLancement('liste')
   }
 
   ngOnDestroy(): void {
-    this.paramsSubscrib.unsubscribe,
+    this.paramsSubscrib.unsubscribe
     this.sortiesSubscrib.unsubscribe
   }
   mvtsFilter = (mvt: Mouvement) => {
@@ -104,10 +104,9 @@ export class SortiesComponent implements OnInit, OnDestroy {
   }
 
   onSeeYou(): void {
-    console.log('SeeYouLater sorties')
+    console.log('seeYou sorties modif')
     this.sharedService.setUrlParent()
-    //const routeUrl = '/stocks/onesortie/${mvtId}'
-    //this.router.navigate([routeUrl]);
+    this.sharedService.setModeLancement('modif')
   }
 }
 

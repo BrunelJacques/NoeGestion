@@ -11,6 +11,7 @@ export class SharedService {
   public urlActive$ = new BehaviorSubject<string>("")
   public rootActive$ = new BehaviorSubject<string>("")
   public templateActive$ = new BehaviorSubject<string>("")
+  public modeLancement = ""
 
   urlsHisto: string[] = []
 
@@ -42,7 +43,6 @@ export class SharedService {
     const url = this.router.url
     if (this.urlsHisto[0] != url)
     {this.urlsHisto.unshift(url)}
-    console.log('hello setUrlParent',url)
   }
 
   goBackUrlParent() {
@@ -50,5 +50,9 @@ export class SharedService {
     if (this.urlsHisto.length > 0) 
     { this.router.navigate([this.urlsHisto.shift()])} 
     else { this.router.navigate(['/'])}      
+  }
+
+  setModeLancement(mode:string) {
+    this.modeLancement = mode
   }
 }

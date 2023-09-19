@@ -1,6 +1,6 @@
 <div>
   <div class="table-responsive">
-    <table class=" table-striped table" >
+    <table class=" table-striped table">
     <thead >
       <tr class="center coltitle">
         <th class="col coltitle">-</th>
@@ -20,10 +20,9 @@
       <tr *ngFor="let mvt of sorties;">
         <td>
           <a 
-          (click)="onSeeYou()"   
+          (click)="onSeeYou()"
           routerLink="/stocks/onesortie/{{mvt.id}}"
-          class="bi bi-pencil" 
-          >
+          class="bi bi-pencil">
           </a>
         </td>
         <td class= "py-0"> {{mvt.article.nom}} </td>

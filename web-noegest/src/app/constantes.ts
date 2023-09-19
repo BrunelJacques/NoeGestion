@@ -33,10 +33,13 @@ export class Constantes {
     { code:  'od_out', libelle: 'Régularisation' },
     { code:  'tout', libelle: 'Toute ligne (ss filtre)' },
   ]
+
   static LSTORIGINE_ENTREES = [
     { code:  'achat', libelle: 'Achats fournisseur' },
     { code:  'retour', libelle: 'Retour de camp' },
     { code:  'od_in', libelle: 'Régularisation' },
     { code:  'tout', libelle: 'Toute ligne (ss filtre)' },
   ]
+
+
 }

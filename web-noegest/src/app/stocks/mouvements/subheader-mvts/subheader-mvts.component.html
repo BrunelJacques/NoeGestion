@@ -1,12 +1,14 @@
  <!-- affichage d'informations  -->
-<h6 class="card m-0 p-1">Sorties de stock :
+<h6 class="card m-0 p-1">{{lstModules[template]}}: {{modeLancement}}
   &nbsp;
-  <span *ngIf="isToParams">pour {{params['origine']}} en cuisine</span>
-  <span *ngIf="params['origine'] === 'camp'">pour camp '{{params['camp']}}'</span>
-  <span *ngIf="isListe">{{params['origine']}}</span>
+  <div *ngIf="isListe">
+    <span *ngIf="isToParams">pour {{params['origine']}} en cuisine</span>
+    <span *ngIf="params['origine'] === 'camp'">pour camp '{{params['camp']}}'</span>
+    <span>{{params['origine']}}</span>
+  </div>
 </h6>
 <h6 class="row justified m-0 p-0" >
-  <div class= "col-8 col-sm-12 card-container m-0 p-1" >
+  <div *ngIf="isListe" class= "col-8 col-sm-12 card-container m-0 p-1" >
     <span class="left-span">
       Le: {{jour}}
       &nbsp;
@@ -17,14 +19,14 @@
   <div class="d-sm-none col card-container  m-0 p-1">
     <a *ngIf = isToParams 
     class="bi bi-gear"
-    (click)="onSeeYou()"
+    (click)="onSeeYou('modif')"
     routerLink="/stocks/params">
       <span class="small12">params</span>
     </a>
     &nbsp;
     <a  *ngIf = isListe
     class="bi bi-plus-circle"
-    (click)="onSeeYou()"
+    (click)="onSeeYou('création')"
     routerLink="/stocks/onesortie/0">
       <span class="small12">ajout</span>
     </a>
@@ -34,7 +36,7 @@
     <div *ngIf = isToParams
      class="row d-none d-sm-block card-container my-2 p-0 ">
       <a class="bi bi-gear"
-      (click)="onSeeYou()"
+      (click)="onSeeYou('modif')"
       routerLink="/stocks/params">
         <span class="p-1">params affich.</span>
       </a>
@@ -42,7 +44,7 @@
     <div *ngIf = isListe
     class="row d-none d-sm-block card-container my-2 p-0 ">
       <a class="bi bi-plus-circle" 
-      (click)="onSeeYou()"
+      (click)="onSeeYou('création')"
       routerLink="/stocks/onesortie/0">
         <span class="p-1">ajout ligne</span>
       </a>

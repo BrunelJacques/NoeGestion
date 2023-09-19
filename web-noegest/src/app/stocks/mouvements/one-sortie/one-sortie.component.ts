@@ -68,7 +68,6 @@ export class OneSortieComponent implements OnInit, OnDestroy {
     this.onGoBackSubscrib = this.sharedService.onGoBackEvent
     .subscribe((data) => {
       this.receivedData = data
-      console.log('onGoBackEvent received in on-sortie:click :', data);
       this.onSubmit();
     })
   }

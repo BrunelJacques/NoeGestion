@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { SharedService } from 'src/app/general/_services';
 import { ParamsService } from '../../_services/params.service';
-import { Router } from '@angular/router';
 import { Constantes } from 'src/app/constantes'
 import { DatePipe } from '@angular/common'
 import { Params } from '../../_models/params';
@@ -23,11 +22,18 @@ export class SubheaderMvtsComponent {
   params!:Params
   jour: string | null = ""
   lstservice = Constantes.LSTSERVICE
-
+  nomModule = "-"
+  modeLancement = ""
+  lstModules: { [key: string]: string } = {
+    'sorties': 'Sorties',
+    'entrees': 'Entrées',
+    'params': 'Paramètres',
+    'onesortie': 'Une Sortie',
+    'oneentree': 'Une Entrée',
+  };
 
   constructor(
     private sharedService: SharedService,
-    private router: Router,
     private paramsService: ParamsService,
     private datePipe: DatePipe,
   ){
@@ -37,14 +43,14 @@ export class SubheaderMvtsComponent {
         this.isListe = (this.listes.indexOf(template) != -1)
         this.isToParams = (this.toParams.indexOf(template) != -1)
         this.isToGoBack = (this.toGoBacks.indexOf(template) != -1 )
-        console.log("test: ",this.isListe)
+        this.modeLancement = this.sharedService.modeLancement
       }
     )
+  
     this.getParams()
   }
 
   
-
   getParams(): void {
     this.paramsService.paramssubj$
       .subscribe({
@@ -56,14 +62,9 @@ export class SubheaderMvtsComponent {
   }
 
   // stocke l'url actuelle pour un prochain retour par onGoBack
-  onSeeYou(): void {
-    console.log('SeeYou: ',this.template)
+  onSeeYou(modeLancement:string): void {
     this.sharedService.setUrlParent()
-  }
-
-  onParams(): void {
-    this.onSeeYou()
-    this.router.navigate(['/stocks/params'])
+    this.sharedService.setModeLancement(modeLancement)
   }
 
   onSubmit(): void {
