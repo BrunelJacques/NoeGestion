@@ -99,13 +99,18 @@ label { margin: 7px 0 2px 8px; }
   background-color: var(--fond-blanc);
   align-items: flex-start;
   justify-content: space-between;
-  color: var(--texte-sombre)
+  color: var(--texte-sombre);
+  margin-top: 10px;
+  
 }
 
 .card-header {
   flex-direction: column;
 }
 
+.card-body {
+  padding: 4px;
+}
 .card.card-small {
   max-width: 280px;
   /*flex: 5 200px;*/
@@ -164,15 +169,14 @@ text-align: start;
 }
 
 .form-group {
-   margin: 0.5rem 2rem;
+   margin: 0.5rem 0.3rem;
 }
 
 .form-control {
    font-size: 1.2rem;
    padding: 1px 6px ;
-   line-height: 1.3;
+   line-height: 1;
 }
-
 
 .table>:not(caption)>*>* {
   color: var(--texte-sombre);

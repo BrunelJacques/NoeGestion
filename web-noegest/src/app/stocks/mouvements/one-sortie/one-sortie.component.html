@@ -1,3 +1,74 @@
-<p>one-sortie works!</p>
-<div>{{id}}</div>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-6 mb-1"> <!-- Added mb-4 class for margin-bottom -->
+      <div class="card">
+        <div class="card-body">
+          <!-- Card content for the first card -->
+          <h5 class="card-title">Card 1</h5>
+          <p class="card-text">Content for Card Content for Card Content for Card </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6 m-0"> <!-- Added mb-4 class for margin-bottom -->
+      <div class="card">
+        <div class="card-body">
+          <!-- Card content for the second card -->
+          <h5 class="card-title">Card 2</h5>
+          <p class="card-text">Content for Card Content for Card Content for Card  </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid">
+<div class="row">
+  <div class="col-sm-5 mb-1 p-1">
+  <div class="card-body">
+
+    <form [formGroup]="fg" 
+        class="form-group short was-validated"
+        (ngSubmit)="onSubmit()">
+      <label for="jour">Date:</label>
+      <input 
+      type= "date" id="jour" 
+      formControlName="jour"
+      class="form-control"
+      min="2020-01-01" max="2099-12-31"
+      [ngClass]="{ 'is-invalid': f['jour'].errors}">
+      <label for="analytique">Camp:</label>
+      <select id="analytique" name="analytique" 
+      formControlName="analytique" 
+      class="form-control">
+        <option [ngValue]="" disabled>Choisir un camp</option>
+        <option *ngFor="let camp of camps"
+          [ngValue]="camp.id">
+          {{camp['nom']}}
+        </option>
+      </select> 
+    </form>
+  </div>
+  </div>
+  <div class="col-sm-7 mb-1 p-1">
+  <div class="card m-0">
+    <!-- src/app/form/form.component.html -->
+    <form [formGroup]="fg2"
+    class="form-group short was-validated">
+      <div *ngFor="let field of fields">
+        <label for="{{field.label}}">{{ field.label }}</label>
+        <div [ngSwitch]="field.type">
+          <input *ngSwitchCase="'text'" type="text" [formControlName]="field.label" />
+          <input *ngSwitchCase="'number'" type="number" [formControlName]="field.label" />
+          <input *ngSwitchCase="'date'" type="date" [formControlName]="field.label" />
+          <select *ngSwitchCase="'select'" [formControlName]="field.label">
+            <option *ngFor="let option of field.options" [value]="option">{{ option }}</option>
+          </select>
+        </div>
+      </div>
+    </form>
+  </div>
+  </div>
+</div>
+</div>
+id: {{id}}
 

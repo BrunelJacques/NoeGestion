@@ -5,7 +5,7 @@ import { DatePipe } from '@angular/common';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MvtService } from '../../_services/mvt.service';
 import { ParamsService } from '../../_services/params.service';
-import { Camp, Params } from '../../_models/params';
+import { Camp, Params, FormField } from '../../_models/params';
 import { AlertService, SharedService } from 'src/app/general/_services';
 import { Constantes } from 'src/app/constantes';
 import { ActivatedRoute } from '@angular/router';
@@ -21,7 +21,19 @@ export class OneSortieComponent implements OnInit, OnDestroy {
   mvt?: Mouvement;
   params!: Params;
   camps!: Camp[];
-  formGroup!:FormGroup;
+  fg!:FormGroup;
+  fg2!: FormGroup;
+  fields: FormField[] = [
+    { label: 'Name', type: 'text', value: '' },
+    { label: 'BirthDate', type: 'date', value: null },
+    { label: 'Age', type: 'number', value: 0 },
+    { label: 'Gender', type: 'select', options: ['Male', 'Female', 'Other'], value: 'Male' },
+    { label: 'Name2', type: 'text', value: '' },
+    { label: 'BirthDate2', type: 'date', value: null },
+    { label: 'Age2', type: 'number', value: 0 },
+    { label: 'Gender2', type: 'select', options: ['Male', 'Female', 'Other'], value: 'Male' },
+    // Add more fields as needed
+  ];
 
   onSubmitSubscrib!:Subscription;
   onGoBackSubscrib!:Subscription;
@@ -40,7 +52,8 @@ export class OneSortieComponent implements OnInit, OnDestroy {
   constructor(
     private paramsService: ParamsService,
     private sharedService: SharedService,
-    private formBuilder:FormBuilder,
+    private fb:FormBuilder,
+    private fb2:FormBuilder,
     private alertService: AlertService,
     private datePipe: DatePipe,
     private route: ActivatedRoute,
@@ -48,8 +61,13 @@ export class OneSortieComponent implements OnInit, OnDestroy {
   ){}
 
   ngOnInit(): void {
+    this.fg2 = this.fb2.group({});
+    this.fields.forEach(field => {
+      this.fg2.addControl(field.label, this.fb2.control(field.value));
+    });
+    
     this.id = this.route.snapshot.paramMap.get('id'),
-    this.formGroup = this.formBuilder.group({
+    this.fg = this.fb.group({
       jour: [new Date(),Validators.required],
       origine: ["repas", Validators.required],
       analytique: "00",
@@ -57,6 +75,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
       article:"",
       prixUnit:0.0,
       qte: 0.0, 
+      nbrRations: 0.0,
     });
     this.getParams();
     this.onSubmitSubscrib = this.sharedService.onSubmitEvent
@@ -82,7 +101,8 @@ export class OneSortieComponent implements OnInit, OnDestroy {
   }
 
   // convenience getter for easy access to form fields
-  get f() { return this.formGroup.controls; }
+  get f() { return this.fg.controls; }
+  get f2() { return this.fg2.controls; }
 
   goBack(): void {
     this.sharedService.goBackUrlParent()
@@ -93,7 +113,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
     // reset alerts on submit
     this.alertService.clear();
     // stop here if form is invalid
-    if (this.formGroup.invalid) {
+    if (this.fg.invalid) {
       return;
     }
     this.save()
@@ -117,7 +137,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
         this.params = data;
         if (!this.params.service || this.params.service < 0){
           this.params.service = 0 }
-        this.formGroup.patchValue({
+        this.fg.patchValue({
           'jour': this.datePipe.transform(this.params.jour, 'yyyy-MM-dd'),
           'origine': this.params.origine,
           'analytique': this.params.camp,

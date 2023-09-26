@@ -47,3 +47,10 @@ export interface Magasin {
   nom: string;
   position: number;
 }
+
+export interface FormField {
+  label: string;
+  type: string; // 'text', 'number', 'date', 'select', etc.
+  options?: string[]; // For select fields
+  value: unknown;
+}
