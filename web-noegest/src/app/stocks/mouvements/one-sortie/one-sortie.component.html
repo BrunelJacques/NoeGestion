@@ -1,31 +1,7 @@
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-sm-6 mb-1"> <!-- Added mb-4 class for margin-bottom -->
-      <div class="card">
-        <div class="card-body">
-          <!-- Card content for the first card -->
-          <h5 class="card-title">Card 1</h5>
-          <p class="card-text">Content for Card Content for Card Content for Card </p>
-        </div>
-      </div>
-    </div>
-    <div class="col-sm-6 m-0"> <!-- Added mb-4 class for margin-bottom -->
-      <div class="card">
-        <div class="card-body">
-          <!-- Card content for the second card -->
-          <h5 class="card-title">Card 2</h5>
-          <p class="card-text">Content for Card Content for Card Content for Card  </p>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="container-fluid">
-<div class="row">
-  <div class="col-sm-5 mb-1 p-1">
-  <div class="card-body">
-
+<div class="container-fluid m-0 p-0">
+<div class="row mx-0 p-0">
+  <div class="col-sm-4 mb-2 p-0">
+  <div class="card m-0">
     <form [formGroup]="fg" 
         class="form-group short was-validated"
         (ngSubmit)="onSubmit()">
@@ -49,9 +25,8 @@
     </form>
   </div>
   </div>
-  <div class="col-sm-7 mb-1 p-1">
-  <div class="card m-0">
-    <!-- src/app/form/form.component.html -->
+  <div class="col-sm-8 mb-1 p-1">
+  <div class="card-body">
     <form [formGroup]="fg2"
     class="form-group short was-validated">
       <div *ngFor="let field of fields">

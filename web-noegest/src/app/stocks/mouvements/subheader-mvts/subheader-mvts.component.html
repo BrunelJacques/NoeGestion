@@ -1,15 +1,16 @@
  <!-- affichage d'informations  -->
-<h6 class="card m-0 p-1">{{lstModules[template]}}: {{modeLancement}}
+<h6 class="card m-0 px-1">
+  <span>
+    {{lstModules[template]}}: {{modeLancement}}
+  </span>
   &nbsp;
-  <div *ngIf="isListe">
+  <span *ngIf="isListe">
     <span *ngIf="isToParams">pour {{params['origine']}} en cuisine</span>
     <span *ngIf="params['origine'] === 'camp'">pour camp '{{params['camp']}}'</span>
-    <span>{{params['origine']}}</span>
-  </div>
-</h6>
-<h6 class="row justified m-0 p-0" >
-  <div *ngIf="isListe" class= "col-8 col-sm-12 card-container m-0 p-1" >
-    <span class="left-span">
+  </span>
+
+  <div *ngIf="isListe" class= "col-8 col-sm-12 m-0 p-0" >
+    <span class="">
       Le: {{jour}}
       &nbsp;
       <span *ngIf="isListe">Repas '{{lstservice[params['service']].code}}'&nbsp;</span>
@@ -23,12 +24,11 @@
     routerLink="/stocks/params">
       <span class="small12">params</span>
     </a>
-    &nbsp;
     <a  *ngIf = isListe
-    class="bi bi-plus-circle"
+    class="bi bi-plus-circle ps-1"
     (click)="onSeeYou('création')"
     routerLink="/stocks/onesortie/0">
-      <span class="small12">ajout</span>
+    <span class="small12">ajout</span>
     </a>
   </div>
   <!-- navigation pour écran plus large -->
@@ -54,7 +54,7 @@
   <div
   *ngIf = isToGoBack>
     <button type="submit"
-    class="btn btn-primary px-2 py-1 py-sm-2"
+    class="btn btn-primary p-1 py-sm-2 mb-1 mb-sm-0"
     aria-label="Confirm"
     (click)="onSubmit()">
     retour ok
@@ -62,7 +62,7 @@
     </button>
     &nbsp;
     <button type="button"
-    class="close btn btn-secondary px-2 py-1 py-sm-2"
+    class="close btn btn-secondary p-1 py-sm-2 mb-1"
     aria-label="Close"
     (click)="onGoBack()">
     abandon
