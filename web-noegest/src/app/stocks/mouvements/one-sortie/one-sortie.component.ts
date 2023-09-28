@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Mouvement } from '../../_models/mouvement';
 import { DatePipe } from '@angular/common';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder } from '@angular/forms';//, Validators
 import { MvtService } from '../../_services/mvt.service';
 import { ParamsService } from '../../_services/params.service';
 import { Camp, Params, FormField } from '../../_models/params';
@@ -23,16 +23,22 @@ export class OneSortieComponent implements OnInit, OnDestroy {
   camps!: Camp[];
   fg!:FormGroup;
   fg2!: FormGroup;
+  //jour: [new Date(),Validators.required],
+  //origine: ["repas", Validators.required],
+  fieldsParams: FormField[] = [
+    { label: 'jour', type: 'date'},
+    { label: 'origine', type: 'text', value: '' },
+    { label: 'analytique', type: 'text', value: '' },
+    { label: 'camp', type: 'text', value: '' },
+  ];
   fields: FormField[] = [
-    { label: 'Name', type: 'text', value: '' },
-    { label: 'BirthDate', type: 'date', value: null },
-    { label: 'Age', type: 'number', value: 0 },
-    { label: 'Gender', type: 'select', options: ['Male', 'Female', 'Other'], value: 'Male' },
-    { label: 'Name2', type: 'text', value: '' },
-    { label: 'BirthDate2', type: 'date', value: null },
-    { label: 'Age2', type: 'number', value: 0 },
-    { label: 'Gender2', type: 'select', options: ['Male', 'Female', 'Other'], value: 'Male' },
-    // Add more fields as needed
+    { label: 'service', type: 'select', value: null, options: ['Male', 'Female', 'Other'] },
+    { label: 'article', type: 'number', value: 0 },
+    { label: 'prixUnit', type: 'select'},
+    { label: 'qte', type: 'text', value: '' },
+    { label: 'nbRations', type: 'date', value: null },
+    { label: 'coutRation', type: 'number', value: 0 },
+    { label: 'qteStock', type: 'number', value: '' },
   ];
 
   onSubmitSubscrib!:Subscription;
@@ -67,16 +73,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
     });
     
     this.id = this.route.snapshot.paramMap.get('id'),
-    this.fg = this.fb.group({
-      jour: [new Date(),Validators.required],
-      origine: ["repas", Validators.required],
-      analytique: "00",
-      service: 0,
-      article:"",
-      prixUnit:0.0,
-      qte: 0.0, 
-      nbrRations: 0.0,
-    });
+    this.fg = this.fb.group({});
     this.getParams();
     this.onSubmitSubscrib = this.sharedService.onSubmitEvent
     .subscribe((data) => {

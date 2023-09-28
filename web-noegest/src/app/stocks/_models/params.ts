@@ -51,6 +51,7 @@ export interface Magasin {
 export interface FormField {
   label: string;
   type: string; // 'text', 'number', 'date', 'select', etc.
+  value?: unknown;
+  visible?: boolean;
   options?: string[]; // For select fields
-  value: unknown;
 }

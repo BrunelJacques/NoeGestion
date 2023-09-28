@@ -1,42 +1,43 @@
 <div class="container-fluid m-0 p-0">
 <div class="row mx-0 p-0">
   <!-- 1ere colonne reprenant les paramètres d'affichage-->
-  <div class="col-sm-4 mb-2 p-0">
-  <div class="card m-0">
+  <div class="col-sm-4  mb-2 p-0 fond-saumon">
     <div class="small12">
-      id: {{id}} Params affichés
+    id sortie: {{id}} - Params actifs
     </div>
-    <form [formGroup]="fg" 
-        class="form-group short was-validated"
-        (ngSubmit)="onSubmit()">
-      <label for="jour">Date:</label>
-      <input 
-      type= "date" id="jour" 
-      formControlName="jour"
-      class="form-control"
-      min="2020-01-01" max="2099-12-31"
-      [ngClass]="{ 'is-invalid': f['jour'].errors}">
-      <label for="analytique">Camp:</label>
-      <select id="analytique" name="analytique" 
-      formControlName="analytique" 
-      class="form-control">
-        <option [ngValue]="" disabled>Choisir un camp</option>
-        <option *ngFor="let camp of camps"
-          [ngValue]="camp.id">
-          {{camp['nom']}}
-        </option>
-      </select> 
-    </form>
-  </div>
+    <!--form [formGroup]="fg" 
+      class="form-group short was-validated"
+      (ngSubmit)="onSubmit()"-->
+    <div class="row">
+      <div class="col">
+          Date:
+      </div>
+      <div class="col">
+        <input 
+        type= "text" id="jour" 
+        readonly
+        >
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <label for="analytique">Camp:</label>
+      </div>
+      <div class="col">
+        <input id="analytique" name="analytique" 
+        formControlName="analytique" 
+        class="">
+      </div>
+    </div>
+            <!--/form-->
   </div>
   <!-- 2ème colonne données à saisir-->
-  <div class="col-sm-8 mb-1 p-1">
-  <div class="card-body">
+  <div class="col-sm-8 card mb-1 p-1">
     <form [formGroup]="fg2"
     class="form-group short was-validated">
       <div class="row" *ngFor="let field of fields">
         <div class="col-4">
-          <label for="{{field.label}}">{{ field.label }}</label>
+          <label for="{{field.label}}">{{ field.label  | titlecase }}</label>
         </div>
         <div class="col-8" [ngSwitch]="field.type">
             <input class="form-control my-1" *ngSwitchCase="'text'" type="text" [formControlName]="field.label" />
@@ -48,7 +49,6 @@
         </div>
       </div>
     </form>
-  </div>
   </div>
 </div>
 </div>
