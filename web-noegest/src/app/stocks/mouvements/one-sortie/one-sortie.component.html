@@ -1,7 +1,11 @@
 <div class="container-fluid m-0 p-0">
 <div class="row mx-0 p-0">
+  <!-- 1ere colonne reprenant les paramètres d'affichage-->
   <div class="col-sm-4 mb-2 p-0">
   <div class="card m-0">
+    <div class="small12">
+      id: {{id}} Params affichés
+    </div>
     <form [formGroup]="fg" 
         class="form-group short was-validated"
         (ngSubmit)="onSubmit()">
@@ -25,19 +29,22 @@
     </form>
   </div>
   </div>
+  <!-- 2ème colonne données à saisir-->
   <div class="col-sm-8 mb-1 p-1">
   <div class="card-body">
     <form [formGroup]="fg2"
     class="form-group short was-validated">
-      <div *ngFor="let field of fields">
-        <label for="{{field.label}}">{{ field.label }}</label>
-        <div [ngSwitch]="field.type">
-          <input *ngSwitchCase="'text'" type="text" [formControlName]="field.label" />
-          <input *ngSwitchCase="'number'" type="number" [formControlName]="field.label" />
-          <input *ngSwitchCase="'date'" type="date" [formControlName]="field.label" />
-          <select *ngSwitchCase="'select'" [formControlName]="field.label">
-            <option *ngFor="let option of field.options" [value]="option">{{ option }}</option>
-          </select>
+      <div class="row" *ngFor="let field of fields">
+        <div class="col-4">
+          <label for="{{field.label}}">{{ field.label }}</label>
+        </div>
+        <div class="col-8" [ngSwitch]="field.type">
+            <input class="form-control my-1" *ngSwitchCase="'text'" type="text" [formControlName]="field.label" />
+            <input class="form-control my-1" *ngSwitchCase="'number'" type="number" [formControlName]="field.label" />
+            <input class="form-control my-1" *ngSwitchCase="'date'" type="date" [formControlName]="field.label" />
+            <select class="form-control my-1" *ngSwitchCase="'select'" [formControlName]="field.label">
+              <option *ngFor="let option of field.options" [value]="option">{{ option }}</option>
+            </select>
         </div>
       </div>
     </form>
@@ -45,5 +52,5 @@
   </div>
 </div>
 </div>
-id: {{id}}
+
 

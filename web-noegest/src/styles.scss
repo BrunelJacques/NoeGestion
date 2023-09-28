@@ -47,7 +47,11 @@ main {
   width: 100%;
 }
 
-input, select { max-width: 300px }
+input, select { 
+  max-width: 300px;
+  min-height: 1.55rem;
+  font-size: 1.05rem
+}
 
 label { margin: 7px 0 2px 8px; }
 
