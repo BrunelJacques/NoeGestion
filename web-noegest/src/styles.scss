@@ -96,11 +96,11 @@ label { margin: 7px 0 2px 8px; }
 
 .card {
   flex-flow: row wrap;
+  align-content: start;
+  justify-content: center;
   background-color: var(--fond-blanc);
-  align-items: flex-start;
   color: var(--texte-sombre);
   margin-top: 10px;
-  
 }
 
 .card-header {
@@ -208,11 +208,19 @@ td {
   font-size: 10px;
 }
 
+
+.center { 
+  text-align: center!important;
+  justify-content: center;
+  justify-items: center;
+  align-content: center;
+  align-items: center;
+}
+
 .right { text-align: right!important;}
-
 .left { text-align: left!important; }
-
-.center { text-align: center!important; }
+.start { justify-content: start !important;}
+.end   { justify-content: end   !important;}
 
 .no-newline { display: inline-block; }
 

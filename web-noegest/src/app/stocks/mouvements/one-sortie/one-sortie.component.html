@@ -1,32 +1,32 @@
 <div class="container-fluid m-0 p-0">
 <div class="row mx-0 p-0">
   <!-- 1ere colonne reprenant les paramètres d'affichage-->
-  <div class="col-sm-4  mb-2 p-0 fond-saumon">
+  <div class="col-sm-4 my-0 p-0 fond-saumon">
     <div class="small12">
-    id sortie: {{id}} - Params actifs
+      <span>sortie: {{id}} - Params actifs </span> 
     </div>
     <!--form [formGroup]="fg" 
       class="form-group short was-validated"
       (ngSubmit)="onSubmit()"-->
     <div class="row">
       <div class="col">
-          Date:
+        <label for="jour">Date:</label>
       </div>
       <div class="col">
-        <input 
+        <input
         type= "text" id="jour" 
         readonly
         >
-      </div>
+    </div>
     </div>
     <div class="row">
       <div class="col">
         <label for="analytique">Camp:</label>
       </div>
       <div class="col">
-        <input id="analytique" name="analytique" 
-        formControlName="analytique" 
-        class="">
+        <input class="form-control my-1" 
+        id="analytique" name="analytique" 
+        >
       </div>
     </div>
             <!--/form-->
