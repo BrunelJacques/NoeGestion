@@ -26,10 +26,8 @@ export class OneSortieComponent implements OnInit, OnDestroy {
   //jour: [new Date(),Validators.required],
   //origine: ["repas", Validators.required],
   fieldsParams: FormField[] = [
-    { label: 'jour', type: 'date'},
-    { label: 'origine', type: 'text', value: '' },
-    { label: 'analytique', type: 'text', value: '' },
-    { label: 'camp', type: 'text', value: '' },
+    { label: 'jour', type: 'date', value: '__ /__ /____' },
+    { label: 'vers', type: 'text', value: '-' },
   ];
   fields: FormField[] = [
     { label: 'service', type: 'select', value: null, options: ['Male', 'Female', 'Other'] },
@@ -67,13 +65,18 @@ export class OneSortieComponent implements OnInit, OnDestroy {
   ){}
 
   ngOnInit(): void {
+    this.id = this.route.snapshot.paramMap.get('id'),
+
+    this.fg = this.fb.group({});
+    this.fieldsParams.forEach(field => {
+      this.fg.addControl(field.label, this.fb.control(field.value));
+    });
+
     this.fg2 = this.fb2.group({});
     this.fields.forEach(field => {
       this.fg2.addControl(field.label, this.fb2.control(field.value));
     });
-    
-    this.id = this.route.snapshot.paramMap.get('id'),
-    this.fg = this.fb.group({});
+            
     this.getParams();
     this.onSubmitSubscrib = this.sharedService.onSubmitEvent
     .subscribe((data) => {
@@ -136,9 +139,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
           this.params.service = 0 }
         this.fg.patchValue({
           'jour': this.datePipe.transform(this.params.jour, 'yyyy-MM-dd'),
-          'origine': this.params.origine,
-          'analytique': this.params.camp,
-          'service': this.lstservice[this.params.service].code,
+          'vers': this.params.origine,
         })
       },
       error: (e) => {
@@ -147,6 +148,13 @@ export class OneSortieComponent implements OnInit, OnDestroy {
         }
       }
     });
+  }
+
+
+  // stocke l'url actuelle pour un prochain retour par onGoBack
+  onSeeYou(): void {
+    this.sharedService.setUrlParent()
+    this.sharedService.setModeLancement("")
   }
 
   save(): void {

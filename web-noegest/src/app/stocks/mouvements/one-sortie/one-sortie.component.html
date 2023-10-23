@@ -1,51 +1,46 @@
 <div class="container-fluid m-0 p-0">
 <div class="row mx-0 p-0">
   <!-- 1ere colonne reprenant les paramètres d'affichage-->
-  <div class="col-sm-4 my-0 p-0 fond-saumon">
+  <div class="col-sm-3 my-0 p-0 fond-saumon">
     <div class="small12">
-      <span>sortie: {{id}} - Params actifs </span> 
+      <span>sortie: {{id}} - Params actifs </span>
     </div>
-    <!--form [formGroup]="fg" 
-      class="form-group short was-validated"
-      (ngSubmit)="onSubmit()"-->
-    <div class="row">
-      <div class="col">
-        <label for="jour">Date:</label>
+    <form
+    [formGroup]="fg"
+    class="form-group short"
+    >
+      <div class="row" *ngFor="let field of fieldsParams">
+        <div class="col-3 col-sm-12">
+          <label for="{{ field.label}}">
+            {{ field.label  | titlecase }}
+          </label>
+        </div>
+        <div class="col-9 col-sm-12">
+          <input
+          class="form-control"
+          formControlName="{{ field.label}}"
+          type= "{{field.type}}"
+          id="{{ field.label}}" name="{{ field.label}}"
+          (click)="onSeeYou()"
+          >
+        </div>
       </div>
-      <div class="col">
-        <input
-        type= "text" id="jour" 
-        readonly
-        >
-    </div>
-    </div>
-    <div class="row">
-      <div class="col">
-        <label for="analytique">Camp:</label>
-      </div>
-      <div class="col">
-        <input class="form-control my-1" 
-        id="analytique" name="analytique" 
-        >
-      </div>
-    </div>
-            <!--/form-->
+    </form>
   </div>
+
   <!-- 2ème colonne données à saisir-->
-  <div class="col-sm-8 card mb-1 p-1">
+  <div class="col-sm-9 card mb-1 p-1">
     <form [formGroup]="fg2"
-    class="form-group short was-validated">
+    class="form-group was-validated">
       <div class="row" *ngFor="let field of fields">
         <div class="col-4">
-          <label for="{{field.label}}">{{ field.label  | titlecase }}</label>
+          <label for="{{ field.label}}">{{ field.label  | titlecase }}</label>
         </div>
         <div class="col-8" [ngSwitch]="field.type">
-            <input class="form-control my-1" *ngSwitchCase="'text'" type="text" [formControlName]="field.label" />
-            <input class="form-control my-1" *ngSwitchCase="'number'" type="number" [formControlName]="field.label" />
-            <input class="form-control my-1" *ngSwitchCase="'date'" type="date" [formControlName]="field.label" />
-            <select class="form-control my-1" *ngSwitchCase="'select'" [formControlName]="field.label">
-              <option *ngFor="let option of field.options" [value]="option">{{ option }}</option>
-            </select>
+          <select class="form-control my-1" *ngSwitchCase="'select'" [formControlName]="field.label">
+            <option *ngFor="let option of field.options" [value]="option">{{ option }}</option>
+          </select>
+          <input class="form-control my-1" *ngSwitchDefault type="field.type" [formControlName]="field.label" />
         </div>
       </div>
     </form>

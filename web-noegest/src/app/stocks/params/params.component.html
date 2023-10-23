@@ -8,7 +8,8 @@
         (ngSubmit)="onSubmit()">
       <label for="jour">Date:</label>
       <input
-          type= "date" id="jour" formControlName="jour"
+          type= "date" id="jour" name="jour"
+          formControlName="jour"
           class="form-control"
           min="2020-01-01" max="2099-12-31"
           [ngClass]="{ 'is-invalid': f['jour'].errors}">
@@ -49,6 +50,7 @@
       <div *ngIf="(f['origine'].value === 'repas')">
         <label for="service">Repas:</label>
         <select formControlName="service"
+          id="service" name="service"
           class="form-control" required>
           <option [ngValue]="" disabled>Lignes pour les services :</option>
           <option *ngFor="let service of lstservice"
@@ -81,5 +83,4 @@
 
     </form>
   </div>
-  <label for="Parent: {{parent}}"></label>
 </div>
