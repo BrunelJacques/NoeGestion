@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Mouvement } from '../../_models/mouvement';
 import { DatePipe } from '@angular/common';
-import { FormGroup, FormBuilder } from '@angular/forms';//, Validators
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MvtService } from '../../_services/mvt.service';
 import { ParamsService } from '../../_services/params.service';
 import { Camp, Params, FormField } from '../../_models/params';
@@ -23,21 +23,6 @@ export class OneSortieComponent implements OnInit, OnDestroy {
   camps!: Camp[];
   fg!:FormGroup;
   fg2!: FormGroup;
-  //jour: [new Date(),Validators.required],
-  //origine: ["repas", Validators.required],
-  fieldsParams: FormField[] = [
-    { label: 'jour', type: 'date', value: '__ /__ /____' },
-    { label: 'vers', type: 'text', value: '-' },
-  ];
-  fields: FormField[] = [
-    { label: 'service', type: 'select', value: null, options: ['Male', 'Female', 'Other'] },
-    { label: 'article', type: 'number', value: 0 },
-    { label: 'prixUnit', type: 'select'},
-    { label: 'qte', type: 'text', value: '' },
-    { label: 'nbRations', type: 'date', value: null },
-    { label: 'coutRation', type: 'number', value: 0 },
-    { label: 'qteStock', type: 'number', value: '' },
-  ];
 
   onSubmitSubscrib!:Subscription;
   onGoBackSubscrib!:Subscription;
@@ -45,13 +30,24 @@ export class OneSortieComponent implements OnInit, OnDestroy {
   mvtSubscrib!:Subscription;
   receivedData: unknown;
 
-  constantes = Constantes;
-  lstservice = this.constantes.LSTSERVICE;
-  lstorigine_sorties = this.constantes.LSTORIGINE_SORTIES;
-
-
-  lstservice_code = this.lstservice.map((x) => x.code)
+  lstService = Constantes.LSTSERVICE;
+  lstService_libelle = this.lstService.map((x) => x.libelle)
   submitted = false;
+
+  fieldsParams: FormField[] = [
+    { label: 'jour', type: 'date', value: '__ /__ /____' },
+    { label: 'vers', type: 'text', value: '-' },
+  ];
+  fields: FormField[] = [
+    { label: 'service', type: 'select', value: null, options: this.lstService_libelle },
+    { label: 'article', type: 'text'},
+    { label: 'prixUnit', type: 'select'},
+    { label: 'qte', type: 'text', value: null },
+    { label: 'nbRations', type: 'date', value: null },
+    { label: 'coutRation', type: 'number', value: 0 },
+    { label: 'qteStock', type: 'number', value: '' },
+  ];
+
 
   constructor(
     private paramsService: ParamsService,
@@ -74,7 +70,8 @@ export class OneSortieComponent implements OnInit, OnDestroy {
 
     this.fg2 = this.fb2.group({});
     this.fields.forEach(field => {
-      this.fg2.addControl(field.label, this.fb2.control(field.value));
+      this.fg2.addControl(field.label,this.fb2.control(field.value));
+      this.fg2.get(field.label)?.setValidators([Validators.required,])
     });
             
     this.getParams();

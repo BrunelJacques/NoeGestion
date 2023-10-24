@@ -3,7 +3,7 @@
   <!-- 1ere colonne reprenant les paramètres d'affichage-->
   <div class="col-sm-3 my-0 p-0 fond-saumon">
     <div class="small12">
-      <span>sortie: {{id}} - Params actifs </span>
+      <span>sortie: {{id}} - Params en cours </span>
     </div>
     <form
     [formGroup]="fg"
@@ -21,6 +21,7 @@
           formControlName="{{ field.label}}"
           type= "{{field.type}}"
           id="{{ field.label}}" name="{{ field.label}}"
+          readonly
           (click)="onSeeYou()"
           >
         </div>
@@ -37,9 +38,15 @@
           <label for="{{ field.label}}">{{ field.label  | titlecase }}</label>
         </div>
         <div class="col-8" [ngSwitch]="field.type">
-          <select class="form-control my-1" *ngSwitchCase="'select'" [formControlName]="field.label">
+          <select class="form-control my-1" 
+          required
+          *ngSwitchCase="'select'" 
+          [formControlName]="field.label">
             <option *ngFor="let option of field.options" [value]="option">{{ option }}</option>
           </select>
+          <div *ngIf="submitted && f['{{ field.label }}'].errors" class="invalid-feedback" id="{{ field.label}}">
+            <div *ngIf="f['{{ field.label }}'].errors['required']">Choisissez une valeur'</div>
+          </div>
           <input class="form-control my-1" *ngSwitchDefault type="field.type" [formControlName]="field.label" />
         </div>
       </div>
