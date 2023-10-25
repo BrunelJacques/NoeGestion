@@ -27,7 +27,7 @@ export class SubheaderMvtsComponent {
   lstModules: { [key: string]: string } = {
     'sorties': 'Sorties',
     'entrees': 'Entrées',
-    'params': 'Paramètres',
+    'params': 'Filtres',
     'onesortie': 'Une Sortie',
     'oneentree': 'Une Entrée',
   };

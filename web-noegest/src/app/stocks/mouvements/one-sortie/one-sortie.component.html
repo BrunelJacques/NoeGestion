@@ -2,8 +2,11 @@
 <div class="row mx-0 p-0">
   <!-- 1ere colonne reprenant les paramètres d'affichage-->
   <div class="col-sm-3 my-0 p-0 fond-saumon">
-    <div class="small12">
-      <span>sortie: {{id}} - Params en cours </span>
+    <div>
+      
+      <h6>
+        <span class="small12">sortie: {{id}}</span>
+        - Filtres actifs </h6>
     </div>
     <form
     [formGroup]="fg"
@@ -22,7 +25,6 @@
           type= "{{field.type}}"
           id="{{ field.label}}" name="{{ field.label}}"
           readonly
-          (click)="onSeeYou()"
           >
         </div>
       </div>
@@ -40,14 +42,26 @@
         <div class="col-8" [ngSwitch]="field.type">
           <select class="form-control my-1" 
           required
-          *ngSwitchCase="'select'" 
+          *ngSwitchCase="'select'"
+          type="field.type" 
           [formControlName]="field.label">
             <option *ngFor="let option of field.options" [value]="option">{{ option }}</option>
           </select>
+          <input class="form-control my-1"
+          *ngSwitchCase="'label'"
+          id="{{ field.label}}"
+          type="text"
+          readonly
+          >
           <div *ngIf="submitted && f['{{ field.label }}'].errors" class="invalid-feedback" id="{{ field.label}}">
-            <div *ngIf="f['{{ field.label }}'].errors['required']">Choisissez une valeur'</div>
+            <div *ngIf="f['{{ field.label }}'].errors['required']">Choisissez une valeur'
+            </div>
           </div>
-          <input class="form-control my-1" *ngSwitchDefault type="field.type" [formControlName]="field.label" />
+          <input class="form-control my-1"
+          required 
+          *ngSwitchDefault 
+          type="field.type" 
+          [formControlName]="field.label" />
         </div>
       </div>
     </form>

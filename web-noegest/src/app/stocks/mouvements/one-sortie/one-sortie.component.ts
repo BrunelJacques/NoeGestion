@@ -39,13 +39,14 @@ export class OneSortieComponent implements OnInit, OnDestroy {
     { label: 'vers', type: 'text', value: '-' },
   ];
   fields: FormField[] = [
-    { label: 'service', type: 'select', value: null, options: this.lstService_libelle },
+    { label: 'service', type: 'select', 
+      options: this.lstService_libelle },
     { label: 'article', type: 'text'},
-    { label: 'prixUnit', type: 'select'},
-    { label: 'qte', type: 'text', value: null },
-    { label: 'nbRations', type: 'date', value: null },
-    { label: 'coutRation', type: 'number', value: 0 },
-    { label: 'qteStock', type: 'number', value: '' },
+    { label: 'prixUnit', type: 'number'},
+    { label: 'qte', type: 'number' },
+    { label: 'nbRations', type: 'number' },
+    { label: 'cout Ration', type: 'label' },
+    { label: 'qteStock', type: 'label' },
   ];
 
 
