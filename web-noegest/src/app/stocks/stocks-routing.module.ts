@@ -10,6 +10,7 @@ import { EffectifsComponent } from './effectifs/effectifs.component';
 import { InventaireComponent } from './inventaire/inventaire.component';
 import { PrixJourneeComponent } from './prix-journee/prix-journee.component';
 import { ParamsComponent } from './params/params.component';
+import { ArticleSearchComponent } from './mouvements/article-search/article-search.component';
 
 const routes: Routes = [
     {
@@ -23,6 +24,7 @@ const routes: Routes = [
             { path: 'inventaire', component: InventaireComponent, canActivate: [AuthGuard] },
             { path: 'prixjournees', component: PrixJourneeComponent, canActivate: [AuthGuard] },
             { path: 'params', component: ParamsComponent },
+            { path: 'articlesearch', component: ArticleSearchComponent}
         ]
     }
 ];

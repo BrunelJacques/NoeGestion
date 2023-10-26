@@ -17,37 +17,22 @@ import { SharedService } from './general/_services/shared.service';
 import { DatePipe } from '@angular/common';
 
 // ici ceux qui sont appelés par <app-xxx></app-xxx>
-import { AlertComponent } from './general/_alert';
-import { ArticleSearchComponent } from './stocks/mouvements/article-search/article-search.component';
-import { HeaderModule } from './general/header/header.module';
-import { HomeComponent } from './general/home';
-import { NotFoundComponent } from './general/not-found';
-import { OneSortieComponent } from './stocks/mouvements/one-sortie/one-sortie.component';
-import { ParamsComponent } from './stocks/params/params.component';
-import { AppComponent } from './app.component'; //app-root
-import { SubheaderComponent } from './general/subheader/subheader.component';
-import { SubheaderMvtsComponent } from './stocks/mouvements/subheader-mvts/subheader-mvts.component';
-
+import { GeneralModule } from './general/general.module';
+import { StocksModule } from './stocks/stocks.module';
+import { AppComponent } from './app.component';
 
 @NgModule({
   declarations: [
-    AlertComponent,
-    ArticleSearchComponent,
-    AppComponent,
-    HomeComponent,
-    NotFoundComponent,
-    SubheaderComponent,
-    SubheaderMvtsComponent,
-    OneSortieComponent,
-    ParamsComponent,
+    AppComponent,//app-root
   ],
   imports: [
-    BrowserModule,
     CommonModule,
+    BrowserModule,
     ReactiveFormsModule,
     HttpClientModule,
     AppRoutingModule,
-    HeaderModule,
+    GeneralModule, // declarations 'general' 
+    StocksModule, // declarations 'stocks'
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
