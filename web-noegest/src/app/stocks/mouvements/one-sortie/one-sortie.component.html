@@ -2,8 +2,7 @@
 <div class="row mx-0 p-0">
   <!-- 1ere colonne reprenant les paramètres d'affichage-->
   <div class="col-sm-3 my-0 p-0 fond-saumon">
-    <div>
-      
+    <div>    
       <h6>
         <span class="small12">sortie: {{id}}</span>
         - Filtres actifs </h6>
@@ -35,33 +34,50 @@
   <div class="col-sm-9 card mb-1 p-1">
     <form [formGroup]="fg2"
     class="form-group was-validated">
-      <div class="row" *ngFor="let field of fields">
-        <div class="col-4">
-          <label for="{{ field.label}}">{{ field.label  | titlecase }}</label>
+    <!-- choix d'un article -->
+    <div class="row">
+        <div class="col-2">
+          <label for = "article.nom">Article</label>
         </div>
-        <div class="col-8" [ngSwitch]="field.type">
-          <select class="form-control my-1" 
-          required
-          *ngSwitchCase="'select'"
-          type="field.type" 
-          [formControlName]="field.label">
-            <option *ngFor="let option of field.options" [value]="option">{{ option }}</option>
-          </select>
-          <input class="form-control my-1"
-          *ngSwitchCase="'label'"
-          id="{{ field.label}}"
-          type="text"
-          readonly
-          >
-          <div *ngIf="submitted && f['{{ field.label }}'].errors" class="invalid-feedback" id="{{ field.label}}">
-            <div *ngIf="f['{{ field.label }}'].errors['required']">Choisissez une valeur'
-            </div>
-          </div>
-          <input class="form-control my-1"
+        <div class="col-10">
+          <app-article-search></app-article-search>
+          <!--input class="form-control my-1"
           required 
-          *ngSwitchDefault 
-          type="field.type" 
-          [formControlName]="field.label" />
+          type="text" 
+          id="article.nom"
+          value="{{article.nom}}"/ -->
+        </div>
+      </div>
+      <div *ngIf="!isNull(article.nom)" >
+        <div class="row"
+        *ngFor="let field of fields">
+          <div class="col-4">
+            <label for="{{ field.label}}">{{ field.label  | titlecase }}</label>
+          </div>
+          <div class="col-8" [ngSwitch]="field.type">
+            <select class="form-control my-1" 
+            required
+            *ngSwitchCase="'select'"
+            type="field.type" 
+            [formControlName]="field.label">
+              <option *ngFor="let option of field.options" [value]="option">{{ option }}</option>
+            </select>
+            <input class="form-control my-1"
+            *ngSwitchCase="'label'"
+            id="{{ field.label}}"
+            type="text"
+            readonly
+            >
+            <div *ngIf="submitted && f['{{ field.label }}'].errors" class="invalid-feedback" id="{{ field.label}}">
+              <div *ngIf="f['{{ field.label }}'].errors['required']">Choisissez une valeur'
+              </div>
+            </div>
+            <input class="form-control my-1"
+            required 
+            *ngSwitchDefault 
+            type="field.type" 
+            [formControlName]="field.label" />
+          </div>
         </div>
       </div>
     </form>

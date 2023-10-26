@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Mouvement } from '../../_models/mouvement';
+import { Article } from '../../_models/article';
 import { DatePipe } from '@angular/common';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MvtService } from '../../_services/mvt.service';
@@ -9,7 +10,7 @@ import { Camp, Params, FormField } from '../../_models/params';
 import { AlertService, SharedService } from 'src/app/general/_services';
 import { Constantes } from 'src/app/constantes';
 import { ActivatedRoute } from '@angular/router';
-
+import { IsNull } from 'src/app/general/_helpers/fonctions-perso';
 
 @Component({
   selector: 'app-one-sortie',
@@ -18,6 +19,7 @@ import { ActivatedRoute } from '@angular/router';
 
 export class OneSortieComponent implements OnInit, OnDestroy {
   id!: string|null;
+  article: Article={id:null,nom:null,rations:0};
   mvt?: Mouvement;
   params!: Params;
   camps!: Camp[];
@@ -41,14 +43,12 @@ export class OneSortieComponent implements OnInit, OnDestroy {
   fields: FormField[] = [
     { label: 'service', type: 'select', 
       options: this.lstService_libelle },
-    { label: 'article', type: 'text'},
     { label: 'prixUnit', type: 'number'},
     { label: 'qte', type: 'number' },
     { label: 'nbRations', type: 'number' },
     { label: 'cout Ration', type: 'label' },
     { label: 'qteStock', type: 'label' },
   ];
-
 
   constructor(
     private paramsService: ParamsService,
@@ -58,8 +58,12 @@ export class OneSortieComponent implements OnInit, OnDestroy {
     private alertService: AlertService,
     private datePipe: DatePipe,
     private route: ActivatedRoute,
-    private mvtService: MvtService
-  ){}
+    private mvtService: MvtService,
+    ) {
+      
+    }
+
+  isNull = IsNull
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id'),

@@ -19,9 +19,31 @@ export function deepCopy<T>(source: T): T {
   : source as T;
 }
 
-export function DateAnsiToFr(dateString: string):string|null {
-  const date = new Date(Date.parse(dateString))
-  const datePipe = new DatePipe('fr-FR')
-  return datePipe.transform(date,'dd/MM/yyyy')
+export function DateAnsiToFr(dateString: string| undefined ):string|null {
+  if (typeof dateString === 'string') {
+    const date = new Date(Date.parse(dateString))
+    const datePipe = new DatePipe('fr-FR')
+    return datePipe.transform(date,'dd/MM/yyyy')
+  } else {
+    return null
+  }
 }
 
+
+export function IsNull(object?: unknown): boolean{
+  if (typeof object == 'number'){
+    return (object == 0)
+  } else {
+    return (object === null || object === undefined)
+  }
+}
+
+export function Produit(dividende?:unknown,diviseur?:unknown): number{
+  if (typeof diviseur == 'number' 
+  && typeof dividende == 'number'
+  && !IsNull(diviseur)){
+    return diviseur / dividende
+  } else {
+    return 0
+  }
+}

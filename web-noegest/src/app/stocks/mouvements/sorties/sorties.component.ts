@@ -4,11 +4,11 @@ import { Mouvement } from '../../_models/mouvement';
 import { MvtService } from '../../_services/mvt.service';
 import { ParamsService } from '../../_services/params.service'
 import { Params } from '../../_models/params';
-//import { OneSortieComponent } from '../one-sortie/one-sortie.component';
 import { DatePipe } from '@angular/common';
 import { Constantes } from 'src/app/constantes';
 import { DateAnsiToFr } from 'src/app/general/_helpers/fonctions-perso'
 import { SharedService } from 'src/app/general/_services';
+import { Produit } from 'src/app/general/_helpers/fonctions-perso';
 
 @Component({
   selector: 'app-sorties',
@@ -38,6 +38,8 @@ export class SortiesComponent implements OnInit, OnDestroy {
     private datePipe: DatePipe,
     private sharedService:SharedService,
     ) {}
+
+  produit = Produit
 
   ngOnInit(): void {
     this.getParams();
