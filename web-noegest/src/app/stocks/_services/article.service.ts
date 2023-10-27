@@ -11,8 +11,7 @@ import { Constantes } from 'src/app/constantes';
 @Injectable({providedIn: 'root'})
 export class ArticleService {
 
-  private articlesUrl = 'api/articles'; // URL to web api
-
+  articlesUrl = this.cst.STARTICLE_URL
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };
@@ -21,7 +20,7 @@ export class ArticleService {
     private cst: Constantes,
     private http: HttpClient,
     private handleError: HandleError,
-  ){}
+  ){ }
 
   /** GET articles from the server */
   getArticles(): Observable<Article[]> {
@@ -55,17 +54,20 @@ export class ArticleService {
     );
   }
 
-  /* GET articles whose name contains search term */
-  searchArticles(term: string): Observable<Article[]> {
+  /* GET articles whose nom contains search term */
+  searchArticles(term: string) {
+    const url = this.articlesUrl + '?nom=' + term 
+    console.log(url)
     if (!term.trim()) {
       // if not search term, return empty article array.
       return of([]);
     }
-    return this.http.get<Article[]>(`${this.articlesUrl}/?name=${term}`).pipe(
-      tap(x => x.length ?
+    return this.http.get<Article[]>(url)
+    .pipe(
+      tap(x => x ?
          this.handleError.log(`found articles matching "${term}"`) :
          this.handleError.log(`no articles matching "${term}"`)),
-      catchError(this.handleError.handleError<Article[]>('searchArticles', []))
+      catchError(this.handleError.handleError<Article[]>('searchArticles',[]))
     );
   }
 
@@ -101,7 +103,7 @@ export class ArticleService {
    * Handle Http operation that failed.
    * Let the app continue.
    *
-   * @param operation - name of the operation that failed
+   * @param operation - nom of the operation that failed
    * @param result - optional value to return as the observable result
    */
 

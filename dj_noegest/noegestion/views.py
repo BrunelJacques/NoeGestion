@@ -51,12 +51,21 @@ class StMouvementViewset(ModelViewSet):
 
 
 class StArticleViewset(ModelViewSet):
-
     serializer_class = StArticleSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self, *args, **kwargs):
-        return StArticle.objects.all()
+        id = self.request.GET.get('id',None)
+        nom = self.request.GET.get('nom', '').strip()
+        if id:
+            ret = StArticle.objects.filter(id=id)
+        elif len(nom) > 0:
+            obsolete = self.request.GET.get('obsolete',False)
+            ret = StArticle.objects.filter(nom__istartswith=nom,obsolete=obsolete) \
+                   | StArticle.objects.filter(nom_court__istartswith=nom,obsolete=obsolete)
+        else:
+            ret = StArticle.objects.all()
+        return ret.order_by('nom')[:15]
     
 
 class StMagasinViewset(ModelViewSet):

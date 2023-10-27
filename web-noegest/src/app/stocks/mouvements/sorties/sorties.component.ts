@@ -86,7 +86,7 @@ export class SortiesComponent implements OnInit, OnDestroy {
 
     this.sortiesSubscrib = this.mvtService.getSorties(this.urlparams)
       .subscribe( 
-        data => this.sorties = data['results'].filter(this.mvtsFilter)
+        data => this.sorties = data.filter(this.mvtsFilter)
       )
   }
 

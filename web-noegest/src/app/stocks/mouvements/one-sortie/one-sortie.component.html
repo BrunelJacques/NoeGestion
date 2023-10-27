@@ -34,20 +34,9 @@
   <div class="col-sm-9 card mb-1 p-1">
     <form [formGroup]="fg2"
     class="form-group was-validated">
-    <!-- choix d'un article -->
-    <div class="row">
-        <div class="col-2">
-          <label for = "article.nom">Article</label>
-        </div>
-        <div class="col-10">
-          <app-article-search></app-article-search>
-          <!--input class="form-control my-1"
-          required 
-          type="text" 
-          id="article.nom"
-          value="{{article.nom}}"/ -->
-        </div>
-      </div>
+      <!-- choix d'un article -->
+      <app-article-search></app-article-search>
+      
       <div *ngIf="!isNull(article.nom)" >
         <div class="row"
         *ngFor="let field of fields">

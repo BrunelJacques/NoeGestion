@@ -10,12 +10,13 @@ export class Constantes {
   public TOKEN_URL = this.API_URL + '/api-auth/token/'
   public TOKENREFRESH_URL = this.API_URL + '/api-auth/token/refresh/'
   public TOKENLOGOUT_URL = this.API_URL + '/api-auth/token/refresh/'
-  public STEFFECTIF_URL = this.API_URL + '/api/steffectifs'
   public STMOUVEMENT_URL = this.API_URL + '/api/stmouvement'
+  public STARTICLE_URL = this.API_URL + '/api/starticle/'
   public GEANALYTIQUE_URL = this.API_URL + '/api/geanalytique/'
   public STFOURNISSEUR_URL = this.API_URL + '/api/stfournisseur/'
   public STRAYON_URL = this.API_URL + '/api/strayon/'
   public STMAGASIN_URL = this.API_URL + '/api/stmagasin/'
+  public STEFFECTIF_URL = this.API_URL + '/api/steffectifs'
 
   // pour Stocks
   static LSTSERVICE = [
