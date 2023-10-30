@@ -4,18 +4,21 @@
     <label for = "search-box">Article</label>
   </div>
   <div class="col-10">
-    <div id="search-component">
-      <input class="form-control my-1"
-      required
-      #searchBox id="search-box" 
-      (input)="search(searchBox.value)"
-      />
-
-      <ul class="search-result">
-        <li *ngFor="let article of article$ | async" >
-            {{article.nom}}
-        </li>
+    <!--div id="search-component">
+      <input class="form-control my-0"
+        required
+        #searchBox id="search-box" 
+        (input)="search(searchBox.value)"/>
+      <div>
+        <ul class="search-result" hideOptionsOnClick>
+          <li *ngFor="let article of article$  | async ">
+              {{ article.nom }}
+          </li>
       </ul>
-    </div>
+      </div>
+    </div-->
+    <select ng-model="searchTerm" 
+    ng-options="article.id as article.nom for article in article$  ">
+    </select>
   </div>
 </div>

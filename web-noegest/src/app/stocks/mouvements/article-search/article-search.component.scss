@@ -1,0 +1,26 @@
+ul.search-result {
+  margin-top: 0;
+  padding-left: 0;
+}
+
+li {
+  list-style-type: none;
+}
+.search-result li a {
+  
+  border-bottom: 1px solid;
+  border-left: 1px solid ;
+  border-right: 1px solid;
+  display: inline-block;
+  width: 100%;
+  max-width: 600px;
+  padding: .5rem;
+  box-sizing: border-box;
+  text-decoration: none;
+}
+
+.search-result li a:hover {
+  background-color: #435A60;
+  color: white;
+}
+

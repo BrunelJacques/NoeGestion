@@ -20,10 +20,12 @@ import { DatePipe } from '@angular/common';
 import { GeneralModule } from './general/general.module';
 import { StocksModule } from './stocks/stocks.module';
 import { AppComponent } from './app.component';
+import { ZzdynamicFormComponent } from './zzdynamic-form/zzdynamic-form.component';
 
 @NgModule({
   declarations: [
-    AppComponent,//app-root
+    AppComponent,
+    ZzdynamicFormComponent,//app-root
   ],
   imports: [
     CommonModule,
