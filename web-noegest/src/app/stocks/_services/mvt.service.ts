@@ -37,7 +37,7 @@ export class MvtService {
     return this.http.get<Mouvement[]>(url)
       .pipe(
         tap(x => x.length ?
-          this.handleError.log(`found ${x} mvts`) :
+          this.handleError.log(`found ${x.length} mvts`) :
           this.handleError.log(`no mvts`)),
           
         catchError(

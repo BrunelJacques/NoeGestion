@@ -1,24 +1,26 @@
+<!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
 <!-- choix d'un article -->
 <div class="row">
   <div class="col-2">
     <label for = "search-box">Article</label>
   </div>
   <div class="col-10">
-    <!--div id="search-component">
-      <input class="form-control my-0"
-        required
-        #searchBox id="search-box" 
-        (input)="search(searchBox.value)"/>
+    <div id="search-component">
+      <input 
+      type="text"
+      class="form-control my-0"
+      required
+      #searchBox id="search-box" 
+      (input)="search(searchBox.value)">
       <div>
-        <ul class="search-result" hideOptionsOnClick>
-          <li *ngFor="let article of article$  | async ">
+        <ul class="search-result" hideOptions>
+          <li  *ngFor="let article of article$  | async ">
+            <span (click)="hideList(article)" (keypress)="hideList(article)">
               {{ article.nom }}
+            </span>
           </li>
       </ul>
       </div>
-    </div-->
-    <select ng-model="searchTerm" 
-    ng-options="article.id as article.nom for article in article$  ">
-    </select>
+    </div>
   </div>
 </div>

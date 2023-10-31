@@ -12,14 +12,13 @@ import { ArticleService } from '../../_services/article.service';
   styleUrls: ['./article-search.component.scss']
 })
 
-
 export class ArticleSearchComponent implements OnInit {
   article$!: Observable<Article[]>;
   private searchTerms = new Subject<string>();
   searchBox!: ElementRef
   hideResult = false;
   searchTerm = "";
-  options!: Article[];
+  options!: Article[]
 
   constructor( private articleService: ArticleService) {}
 
@@ -44,9 +43,9 @@ export class ArticleSearchComponent implements OnInit {
   }
 
 
-  //hideList(article: Article) {
-  //  this.searchBox.nativeElement
-  //  this.hideResult = true;
-  //}
+  hideList(article: Article) {
+    console.log(article.nom)
+    this.hideResult = true;
+  }
 
 }

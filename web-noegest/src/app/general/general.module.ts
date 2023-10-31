@@ -8,7 +8,7 @@ import { HeaderRoutingModule } from './header/header-routing.module';
 import { HeaderComponent } from './header/header.component';
 import { SubheaderComponent } from './subheader/subheader.component';
 import { SubheaderMvtsComponent } from '../stocks/mouvements/subheader-mvts/subheader-mvts.component';
-import { HideOptionsOnClickDirective } from './_helpers/hideOptions.directive';
+import { HideOptionsOnClickDirective } from './_directives/hideOptions.directive';
 
 @NgModule({
   declarations: [
@@ -18,7 +18,7 @@ import { HideOptionsOnClickDirective } from './_helpers/hideOptions.directive';
     HeaderComponent,
     SubheaderComponent,
     SubheaderMvtsComponent,
-    HideOptionsOnClickDirective
+    HideOptionsOnClickDirective,
   ],
   imports: [
     CommonModule,
@@ -31,7 +31,7 @@ import { HideOptionsOnClickDirective } from './_helpers/hideOptions.directive';
     HeaderComponent,
     SubheaderComponent,
     SubheaderMvtsComponent,
-    HideOptionsOnClickDirective
+    HideOptionsOnClickDirective,
   ],
 })
 export class GeneralModule { }
