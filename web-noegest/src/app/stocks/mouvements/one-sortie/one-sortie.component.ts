@@ -7,7 +7,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MvtService } from '../../_services/mvt.service';
 import { ParamsService } from '../../_services/params.service';
 import { Camp, Params, FormField } from '../../_models/params';
-import { AlertService, SharedService } from 'src/app/general/_services';
+import { AlertService, SeeyouService } from 'src/app/general/_services';
 import { Constantes } from 'src/app/constantes';
 import { ActivatedRoute } from '@angular/router';
 import { IsNull } from 'src/app/general/_helpers/fonctions-perso';
@@ -52,7 +52,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
 
   constructor(
     private paramsService: ParamsService,
-    private sharedService: SharedService,
+    private seeyouService: SeeyouService,
     private fb:FormBuilder,
     private fb2:FormBuilder,
     private alertService: AlertService,
@@ -80,13 +80,13 @@ export class OneSortieComponent implements OnInit, OnDestroy {
     });
             
     this.getParams();
-    this.onSubmitSubscrib = this.sharedService.onSubmitEvent
+    this.onSubmitSubscrib = this.seeyouService.onSubmitEvent
     .subscribe((data) => {
       this.receivedData = data
       console.log('onSubmitEvent received in on-sortie:click :', data);
       this.onSubmit();
     })
-    this.onGoBackSubscrib = this.sharedService.onGoBackEvent
+    this.onGoBackSubscrib = this.seeyouService.onGoBackEvent
     .subscribe((data) => {
       this.receivedData = data
       this.onSubmit();
@@ -107,7 +107,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
   get f2() { return this.fg2.controls; }
 
   goBack(): void {
-    this.sharedService.goBackUrlParent()
+    this.seeyouService.goBackUrlParent()
   }
 
   onSubmit(){
@@ -155,8 +155,8 @@ export class OneSortieComponent implements OnInit, OnDestroy {
 
   // stocke l'url actuelle pour un prochain retour par onGoBack
   onSeeYou(): void {
-    this.sharedService.setUrlParent()
-    this.sharedService.setModeLancement("")
+    this.seeyouService.setUrlParent()
+    this.seeyouService.setModeLancement("")
   }
 
   save(): void {

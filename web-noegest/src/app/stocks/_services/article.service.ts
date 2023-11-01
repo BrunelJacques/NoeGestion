@@ -5,7 +5,7 @@ import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
 import { Article } from '../_models/article';
-import { HandleError } from 'src/app/general/_helpers';
+import { HandleError } from 'src/app/general/_helpers/error.interceptor';
 import { Constantes } from 'src/app/constantes';
 
 @Injectable({providedIn: 'root'})
@@ -20,7 +20,7 @@ export class ArticleService {
     private cst: Constantes,
     private http: HttpClient,
     private handleError: HandleError,
-  ){ }
+  ){}
 
   /** GET articles from the server */
   getArticles(): Observable<Article[]> {

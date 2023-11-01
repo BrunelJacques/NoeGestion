@@ -7,7 +7,7 @@ import { DatePipe } from '@angular/common';
 import { Params,  PARAMS, Camp, Fournisseur, Rayon, Magasin } from '../_models/params';
 import { Constantes } from 'src/app/constantes';
 import { Mouvement } from '../_models/mouvement';
-import { HandleError } from 'src/app/general/_helpers';
+import { HandleError } from 'src/app/general/_helpers/error.interceptor';
 
 @Injectable({ providedIn: 'root'})
 
@@ -133,11 +133,9 @@ export class ParamsService {
       .subscribe(
         (data: { [x: string]: any; }) => {
           this.camps = data['results']
-          console.log('subscribe',this.camps )
         }
       )
-    console.log('return ',this.camps)
-    return this.camps
+      return this.camps
     }
   
   getFournisseurs() {

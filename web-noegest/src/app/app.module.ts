@@ -10,22 +10,22 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import * as fr from '@angular/common/locales/fr';
 
 //import { fakeBackendProvider } from './general/_helpers';
-import { JwtInterceptor, ErrorInterceptor, HandleError } from './general/_helpers';
+import { JwtInterceptor } from './general/_helpers/jwt.interceptor';
+import { ErrorInterceptor } from './general/_helpers/error.interceptor';
+import { HandleError } from './general/_helpers/error.interceptor';
 
 
-import { SharedService } from './general/_services/shared.service';
+import { SeeyouService } from './general/_services/seeyou.service';
 import { DatePipe } from '@angular/common';
 
 // ici ceux qui sont appelés par <app-xxx></app-xxx>
 import { GeneralModule } from './general/general.module';
 import { StocksModule } from './stocks/stocks.module';
 import { AppComponent } from './app.component';
-import { HighlightDirective } from './general/_directives/highlight.directive';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HighlightDirective
   ],
   imports: [
     CommonModule,
@@ -44,7 +44,7 @@ import { HighlightDirective } from './general/_directives/highlight.directive';
     { provide: DatePipe },
     // provider used to create fake backend
     //fakeBackendProvider,
-    SharedService,
+    SeeyouService,
 
   ],
   bootstrap: [AppComponent]

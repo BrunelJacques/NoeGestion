@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
-import { AuthenticationService, AlertService } from 'src/app/general/_services';
+import { AuthenticationService, AlertService, SeeyouService } from 'src/app/general/_services';
 
 @Component({ 
     templateUrl: 'login.component.html' })
@@ -18,7 +18,8 @@ export class LoginComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private authenticationService: AuthenticationService,
-        private alertService: AlertService
+        private alertService: AlertService,
+        private seeyouService: SeeyouService
     ) { }
 
     ngOnInit() {
@@ -42,15 +43,18 @@ export class LoginComponent implements OnInit {
             return;
         }
         this.loading = true;
+        console.log("login ...")
         this.authenticationService.login(this.f['email'].value, this.f['password'].value)
             .pipe(first())
             .subscribe({
                 next: () => {
                     // get return url from query parameters or default to home page
+                    console.log("login next")
                     const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
                     this.router.navigateByUrl(returnUrl);
                 },
                 error: error => {
+                    console.log("login error")
                     this.alertService.error(error);
                     this.loading = false;
                 }

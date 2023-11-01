@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { SharedService } from 'src/app/general/_services';
+import { SeeyouService } from 'src/app/general/_services';
 import { ParamsService } from '../../_services/params.service';
 import { Constantes } from 'src/app/constantes'
 import { DatePipe } from '@angular/common'
@@ -33,17 +33,17 @@ export class SubheaderMvtsComponent {
   };
 
   constructor(
-    private sharedService: SharedService,
+    private seeyouService: SeeyouService,
     private paramsService: ParamsService,
     private datePipe: DatePipe,
   ){
-    this.sharedService.templateActive$.subscribe(
+    this.seeyouService.templateActive$.subscribe(
       (template) => { 
         this.template = template
         this.isListe = (this.listes.indexOf(template) != -1)
         this.isToParams = (this.toParams.indexOf(template) != -1)
         this.isToGoBack = (this.toGoBacks.indexOf(template) != -1 )
-        this.modeLancement = this.sharedService.modeLancement
+        this.modeLancement = this.seeyouService.modeLancement
       }
     )
   
@@ -63,16 +63,16 @@ export class SubheaderMvtsComponent {
 
   // stocke l'url actuelle pour un prochain retour par onGoBack
   onSeeYou(modeLancement:string): void {
-    this.sharedService.setUrlParent()
-    this.sharedService.setModeLancement(modeLancement)
+    this.seeyouService.setUrlParent()
+    this.seeyouService.setModeLancement(modeLancement)
   }
 
   onSubmit(): void {
-    this.sharedService.onSubmitEvent.emit(' Click submit from subheaderMvts');
+    this.seeyouService.onSubmitEvent.emit(' Click submit from subheaderMvts');
   }
 
   onGoBack() {
-    this.sharedService.onGoBackEvent.emit(' Click toGoBack from subheaderMvts');
+    this.seeyouService.onGoBackEvent.emit(' Click toGoBack from subheaderMvts');
   }
 
 }

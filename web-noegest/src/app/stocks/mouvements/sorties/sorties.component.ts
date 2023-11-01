@@ -7,7 +7,7 @@ import { Params } from '../../_models/params';
 import { DatePipe } from '@angular/common';
 import { Constantes } from 'src/app/constantes';
 import { DateAnsiToFr } from 'src/app/general/_helpers/fonctions-perso'
-import { SharedService } from 'src/app/general/_services';
+import { SeeyouService } from 'src/app/general/_services';
 import { Produit } from 'src/app/general/_helpers/fonctions-perso';
 
 @Component({
@@ -36,7 +36,7 @@ export class SortiesComponent implements OnInit, OnDestroy {
     private paramsService: ParamsService,
     private mvtService: MvtService,
     private datePipe: DatePipe,
-    private sharedService:SharedService,
+    private seeyouService:SeeyouService,
     ) {}
 
   produit = Produit
@@ -46,8 +46,8 @@ export class SortiesComponent implements OnInit, OnDestroy {
     this.getSorties();
     this.params.parent = this.name
     this.onSeeYou()
-    console.log('seeYou init liste')
-    this.sharedService.setModeLancement('liste')
+    //console.log('seeYou init liste')
+    this.seeyouService.setModeLancement('liste')
   }
 
   ngOnDestroy(): void {
@@ -106,9 +106,8 @@ export class SortiesComponent implements OnInit, OnDestroy {
   }
 
   onSeeYou(): void {
-    console.log('seeYou sorties modif')
-    this.sharedService.setUrlParent()
-    this.sharedService.setModeLancement('modif')
+    this.seeyouService.setUrlParent()
+    this.seeyouService.setModeLancement('modif')
   }
 }
 

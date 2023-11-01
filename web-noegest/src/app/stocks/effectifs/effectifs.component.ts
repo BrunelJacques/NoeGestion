@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { SharedService} from 'src/app/general/_services';
+import { SeeyouService} from 'src/app/general/_services';
 
 @Component({
   selector: 'app-effectifs',
@@ -14,11 +14,11 @@ export class EffectifsComponent implements OnInit {
   namemodule = 'effectifs';
 
   constructor(
-    private sharedService: SharedService,
+    private seeyouService: SeeyouService,
   ) {}
 
   ngOnInit(): void {
-    this.module = this.sharedService.rootActive$.subscribe(
+    this.module = this.seeyouService.rootActive$.subscribe(
       (value) => (this.namemodule = value)
     );
   }

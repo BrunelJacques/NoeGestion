@@ -6,9 +6,8 @@ import { ParamsService } from '../_services/params.service';
 import { Camp, Fournisseur } from '../_models/params';
 import { Params } from '../_models/params';
 
-import { AlertService } from 'src/app/general/_services';
+import { AlertService, SeeyouService } from 'src/app/general/_services';
 import { Constantes } from 'src/app/constantes';
-import { SharedService } from 'src/app/general/_services';
 
 @Component({
   selector: 'app-params',
@@ -43,7 +42,7 @@ export class ParamsComponent implements OnInit, OnDestroy {
     private paramsService: ParamsService,
     private formBuilder: FormBuilder,
     private alertService: AlertService,
-    private sharedService: SharedService,
+    private seeyouService: SeeyouService,
     ){}
   
   ngOnInit(): void {
@@ -57,16 +56,14 @@ export class ParamsComponent implements OnInit, OnDestroy {
     });
     this.getParams()
     this.getCamps()
-    this.onSubmitSubscrib = this.sharedService.onSubmitEvent
+    this.onSubmitSubscrib = this.seeyouService.onSubmitEvent
       .subscribe((data) => {
         this.receivedData = data
-        console.log('onSubmitEvent received in params:click :', data);
         this.onSubmit();    
       })
-    this.onGoBackSubscrib = this.sharedService.onGoBackEvent
+    this.onGoBackSubscrib = this.seeyouService.onGoBackEvent
       .subscribe((data) => {
       this.receivedData = data
-      console.log('onGoBackEvent received in params:click :', data);
       this.onSubmit();    
     })
   }
@@ -103,7 +100,7 @@ export class ParamsComponent implements OnInit, OnDestroy {
   }
   
   goBack(): void {
-    this.sharedService.goBackUrlParent()
+    this.seeyouService.goBackUrlParent()
   }
 
   onSubmit(){
@@ -124,7 +121,6 @@ export class ParamsComponent implements OnInit, OnDestroy {
   getCamps(): void {
     this.paramsService.getCamps()
     this.camps = this.paramsService.camps
-    console.log('camps: ',this.camps)
     }
   
   getParams(): void {

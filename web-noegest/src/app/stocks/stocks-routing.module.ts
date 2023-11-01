@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { AuthGuard } from 'src/app/general/_helpers';
+import { AuthGuard } from '../general/_helpers/auth.guard';
 
 import { SortiesComponent } from './mouvements/sorties/sorties.component';
 import { OneSortieComponent } from './mouvements/one-sortie/one-sortie.component';

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { AlertComponent } from './_alert/alert.component';
 
-import { AlertComponent } from './_alert';
 import { HomeComponent } from './home';
 import { NotFoundComponent } from './not-found';
 import { HeaderRoutingModule } from './header/header-routing.module';
@@ -9,6 +9,7 @@ import { HeaderComponent } from './header/header.component';
 import { SubheaderComponent } from './subheader/subheader.component';
 import { SubheaderMvtsComponent } from '../stocks/mouvements/subheader-mvts/subheader-mvts.component';
 import { HideOptionsOnClickDirective } from './_directives/hideOptions.directive';
+import { HighlightDirective } from './_directives/highlight.directive';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { HideOptionsOnClickDirective } from './_directives/hideOptions.directive
     SubheaderComponent,
     SubheaderMvtsComponent,
     HideOptionsOnClickDirective,
+    HighlightDirective
   ],
   imports: [
     CommonModule,
@@ -32,6 +34,7 @@ import { HideOptionsOnClickDirective } from './_directives/hideOptions.directive
     SubheaderComponent,
     SubheaderMvtsComponent,
     HideOptionsOnClickDirective,
+    HighlightDirective
   ],
 })
 export class GeneralModule { }

@@ -1,8 +1,8 @@
 <!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
 <!-- choix d'un article -->
-<div class="row">
+<div  class="row">
   <div class="col-2">
-    <label for = "search-box">Article</label>
+    <label highlight for = "search-box">Article</label>
   </div>
   <div class="col-10">
     <div id="search-component">
@@ -13,9 +13,9 @@
       #searchBox id="search-box" 
       (input)="search(searchBox.value)">
       <div>
-        <ul class="search-result" hideOptions>
+        <ul class="search-result">
           <li  *ngFor="let article of article$  | async ">
-            <span (click)="hideList(article)" (keypress)="hideList(article)">
+            <span highlight (click)="hideList(article)" (keypress)="hideList(article)">
               {{ article.nom }}
             </span>
           </li>
