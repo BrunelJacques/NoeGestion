@@ -11,7 +11,7 @@ export class JwtInterceptor implements HttpInterceptor {
         private authenticationService: AuthenticationService,
     ) { }
     
-    intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
         // add auth header with jwt if user is logged in and request is to the api url
         const user = this.authenticationService.userValue;
         const isLoggedIn = user?.jwtToken;

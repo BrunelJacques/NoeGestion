@@ -8,12 +8,13 @@ import { Params,  PARAMS, Camp, Fournisseur, Rayon, Magasin } from '../_models/p
 import { Constantes } from 'src/app/constantes';
 import { Mouvement } from '../_models/mouvement';
 import { HandleError } from 'src/app/general/_helpers/error.interceptor';
+import { FormGroup } from '@angular/forms';
 
 @Injectable({ providedIn: 'root'})
 
 export class ParamsService {
   lstservice = Constantes.LSTSERVICE;
-  lstservice_code = this.lstservice.map((x) => x.code)
+  lstservice_code = this.lstservice.map((x) => x.id)
   public paramssubj$= new BehaviorSubject<Params>(PARAMS);
   private key = "stParams";
   public camps: Camp[] = [];
@@ -69,7 +70,7 @@ export class ParamsService {
     return params
   }
 
-  paramsToForm(params:Params,form:any){
+  paramsToForm(params:Params,form:FormGroup){
     if (!params.service || params.service < 0){ 
       params.service = 0 }
     form.patchValue({
@@ -82,7 +83,7 @@ export class ParamsService {
     })
   }
 
-  formToParams(form:{value:any}, params:Params):void {
+  formToParams(form:{value:Params}, params:Params):void {
     if (form.value.origine != 'camp') {
       form.value.camp = '00'}
     params.jour = new Date(form.value.jour),
@@ -112,11 +113,11 @@ export class ParamsService {
   getHttp(url:string)  {
     this.http.get<[]>(url)
       .pipe(
-        catchError(this.handleError.handleError<any>('getHttp',{'results':[]})),
+        catchError(this.handleError.handleError<unknown[]>('getHttp',[])),
       )
       .subscribe(
         data => {
-          const container = data['results']
+          const container = data
           this.handleError.log(`lus: ${container.length} ${url}`)
           return container
         }
@@ -128,11 +129,11 @@ export class ParamsService {
     const url = this.constantes.GEANALYTIQUE_URL+"?axe=ACTIVITES&obsolete=False"
     this.http.get<[]>(url)
       .pipe(
-        catchError(this.handleError.handleError<any>('getHttp',{'results':[]})),
+        catchError(this.handleError.handleError<Camp[]>('getHttp',[])),
       )
       .subscribe(
-        (data: { [x: string]: any; }) => {
-          this.camps = data['results']
+        (data) => {
+          this.camps = data
         }
       )
       return this.camps

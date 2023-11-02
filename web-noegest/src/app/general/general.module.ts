@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AlertComponent } from './_alert/alert.component';
+import { AlertComponent } from './alert/alert.component';
 
 import { HomeComponent } from './home';
 import { NotFoundComponent } from './not-found';

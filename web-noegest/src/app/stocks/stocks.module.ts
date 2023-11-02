@@ -32,10 +32,7 @@ import { GeneralModule } from '../general/general.module';
     StocksRoutingModule,
     GeneralModule
   ],
-  exports: [
-    OneSortieComponent,
-    ArticleSearchComponent,
-    ParamsComponent,
-  ]
+
 })
+
 export class StocksModule { }

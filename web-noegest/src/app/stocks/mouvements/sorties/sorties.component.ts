@@ -7,7 +7,7 @@ import { Params } from '../../_models/params';
 import { DatePipe } from '@angular/common';
 import { Constantes } from 'src/app/constantes';
 import { DateAnsiToFr } from 'src/app/general/_helpers/fonctions-perso'
-import { SeeyouService } from 'src/app/general/_services';
+import { AlertService, SeeyouService } from 'src/app/general/_services';
 import { Produit } from 'src/app/general/_helpers/fonctions-perso';
 
 @Component({
@@ -37,6 +37,7 @@ export class SortiesComponent implements OnInit, OnDestroy {
     private mvtService: MvtService,
     private datePipe: DatePipe,
     private seeyouService:SeeyouService,
+    private alertService: AlertService
     ) {}
 
   produit = Produit
@@ -86,7 +87,17 @@ export class SortiesComponent implements OnInit, OnDestroy {
 
     this.sortiesSubscrib = this.mvtService.getSorties(this.urlparams)
       .subscribe( 
-        data => this.sorties = data.filter(this.mvtsFilter)
+        data => {
+          const i = data.length
+          this.sorties = data.filter(this.mvtsFilter)
+          const j = this.sorties.length
+          if ((j == 0) && (i > 0)) {
+            this.alertService.error(`Modifiez les filtres: Ils n'ont retenu aucune des ${i} lignes présentes`)
+          } else if (j == 0) {
+            this.alertService.error(`Modifiez les filtres: aucune ligne n'a été chargée`)
+          }
+        }
+
       )
   }
 

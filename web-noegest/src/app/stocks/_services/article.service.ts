@@ -26,13 +26,13 @@ export class ArticleService {
   getArticles(): Observable<Article[]> {
     return this.http.get<Article[]>(this.articlesUrl)
       .pipe(
-        tap(_ => this.handleError.log('fetched articles')),
+        tap(() => this.handleError.log('fetched articles')),
         catchError(this.handleError.handleError<Article[]>('getArticles', []))
       );
   }
 
   /** GET article by id. Return `undefined` when id not found */
-  getArticleNo404<Data>(id: number): Observable<Article> {
+  getArticleNo404(id: number): Observable<Article> {
     const url = `${this.articlesUrl}/?id=${id}`;
     return this.http.get<Article[]>(url)
       .pipe(
@@ -49,7 +49,7 @@ export class ArticleService {
   getArticle(id: number): Observable<Article> {
     const url = `${this.articlesUrl}/${id}`;
     return this.http.get<Article>(url).pipe(
-      tap(_ => this.handleError.log(`fetched article id=${id}`)),
+      tap(() => this.handleError.log(`fetched article id=${id}`)),
       catchError(this.handleError.handleError<Article>(`getArticle id=${id}`))
     );
   }
@@ -86,16 +86,16 @@ export class ArticleService {
     const url = `${this.articlesUrl}/${id}`;
 
     return this.http.delete<Article>(url, this.httpOptions).pipe(
-      tap(_ => this.handleError.log(`deleted article id=${id}`)),
+      tap(() => this.handleError.log(`deleted article id=${id}`)),
       catchError(this.handleError.handleError<Article>('deleteArticle'))
     );
   }
 
   /** PUT: update the article on the server */
-  updateArticle(article: Article): Observable<any> {
+  updateArticle(article: Article): Observable<unknown> {
     return this.http.put(this.articlesUrl, article, this.httpOptions).pipe(
-      tap(_ => this.handleError.log(`updated article id=${article.id}`)),
-      catchError(this.handleError.handleError<any>('updateArticle'))
+      tap(() => this.handleError.log(`updated article id=${article.id}`)),
+      catchError(this.handleError.handleError<unknown>('updateArticle'))
     );
   }
 

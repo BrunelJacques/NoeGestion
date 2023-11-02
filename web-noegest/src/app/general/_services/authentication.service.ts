@@ -49,7 +49,7 @@ export class AuthenticationService {
         this.stopRefreshTokenTimer();
         this.loginSubject.next(false)
         this.userSubject.next(new User);
-        this.router.navigate(['/login']);
+        this.router.navigate(['/account/login']);
     }
 
     register(user: User) {

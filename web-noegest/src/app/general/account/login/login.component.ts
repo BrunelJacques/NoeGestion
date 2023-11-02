@@ -19,7 +19,6 @@ export class LoginComponent implements OnInit {
         private router: Router,
         private authenticationService: AuthenticationService,
         private alertService: AlertService,
-        private seeyouService: SeeyouService
     ) { }
 
     ngOnInit() {
@@ -54,7 +53,6 @@ export class LoginComponent implements OnInit {
                     this.router.navigateByUrl(returnUrl);
                 },
                 error: error => {
-                    console.log("login error")
                     this.alertService.error(error);
                     this.loading = false;
                 }
