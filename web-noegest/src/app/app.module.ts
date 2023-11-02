@@ -9,13 +9,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import * as fr from '@angular/common/locales/fr';
 
-//import { fakeBackendProvider } from './general/_helpers';
+// Providers
 import { JwtInterceptor } from './general/_helpers/jwt.interceptor';
 import { ErrorInterceptor } from './general/_helpers/error.interceptor';
 import { HandleError } from './general/_helpers/error.interceptor';
-
-
-import { SeeyouService } from './general/_services/seeyou.service';
 import { DatePipe } from '@angular/common';
 
 // ici ceux qui sont appelés par <app-xxx></app-xxx>
@@ -42,9 +39,6 @@ import { AppComponent } from './app.component';
     { provide: HandleError },
     { provide: LOCALE_ID, useValue: 'fr-FR'},
     { provide: DatePipe },
-    // provider used to create fake backend
-    //fakeBackendProvider,
-    SeeyouService,
 
   ],
   bootstrap: [AppComponent]

@@ -11,6 +11,7 @@ import { SubheaderMvtsComponent } from '../stocks/mouvements/subheader-mvts/subh
 import { HideOptionsOnClickDirective } from './_directives/hideOptions.directive';
 import { HighlightDirective } from './_directives/highlight.directive';
 
+
 @NgModule({
   declarations: [
     AlertComponent,

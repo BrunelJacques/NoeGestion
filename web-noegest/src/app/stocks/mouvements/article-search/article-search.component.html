@@ -2,7 +2,7 @@
 <!-- choix d'un article -->
 <div  class="row">
   <div class="col-2">
-    <label highlight for = "search-box">Article</label>
+    <label for = "search-box">Article</label>
   </div>
   <div class="col-10">
     <div id="search-component">
@@ -14,8 +14,8 @@
       (input)="search(searchBox.value)">
       <div>
         <ul class="search-result">
-          <li  *ngFor="let article of article$  | async ">
-            <span highlight (click)="hideList(article)" (keypress)="hideList(article)">
+          <li highlight *ngFor="let article of article$  | async ">
+            <span (click)="hideList(article)" (keypress)="hideList(article)">
               {{ article.nom }}
             </span>
           </li>

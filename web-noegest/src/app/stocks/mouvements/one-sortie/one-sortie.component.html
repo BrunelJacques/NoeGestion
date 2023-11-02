@@ -35,8 +35,7 @@
     <form [formGroup]="fg2"
     class="form-group was-validated">
       <!-- choix d'un article -->
-      <app-article-search></app-article-search>
-      
+      <app-article-search></app-article-search>      
       <div *ngIf="!isNull(article.nom)" >
         <div class="row"
         *ngFor="let field of fields">

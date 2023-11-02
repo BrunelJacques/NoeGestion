@@ -53,6 +53,9 @@ export class SeeyouService {
     else { this.router.navigate(['/'])}      
   }
 
+  getUrlParent(){
+    return this.urlsHisto.shift()
+  }
   setModeLancement(mode:string) {
     this.modeLancement = mode
   }

@@ -1,9 +1,10 @@
 import { Component, ElementRef, OnInit } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, switchMap
+import { debounceTime, distinctUntilChanged, map, switchMap
 } from 'rxjs/operators';
 import { Article } from '../../_models/article';
 import { ArticleService } from '../../_services/article.service';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -18,9 +19,13 @@ export class ArticleSearchComponent implements OnInit {
   searchBox!: ElementRef
   hideResult = false;
   searchTerm = "";
-  options!: Article[]
+  options!: Article[];
 
-  constructor( private articleService: ArticleService) {}
+  constructor( 
+    private articleService: ArticleService,
+    private route: ActivatedRoute
+
+  ) {}
 
   search(term:string): void {
     this.hideResult = false
@@ -28,6 +33,14 @@ export class ArticleSearchComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.article$ = this.route.data.pipe(
+      map(data => data['onesortie'])
+    )
+    //this.connectData()
+  }
+
+  // pour une recherche des articles partielle selon la saisie
+  connectData(): void {
     this.article$ =  this.searchTerms.pipe(
       // wait 300ms after each keystroke before considering the term
       debounceTime(300),
@@ -41,7 +54,6 @@ export class ArticleSearchComponent implements OnInit {
           ),
     );
   }
-
 
   hideList(article: Article) {
     console.log(article.nom)

@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Mouvement } from '../../_models/mouvement';
 import { Article } from '../../_models/article';
 import { DatePipe } from '@angular/common';
@@ -18,6 +18,7 @@ import { IsNull } from 'src/app/general/_helpers/fonctions-perso';
 })
 
 export class OneSortieComponent implements OnInit, OnDestroy {
+  article$!: Observable<Article[]>;
   id!: string|null;
   article: Article={id:null,nom:null,rations:0};
   mvt?: Mouvement;
@@ -66,6 +67,8 @@ export class OneSortieComponent implements OnInit, OnDestroy {
   isNull = IsNull
 
   ngOnInit(): void {
+    console.log('bonjour onesortie')
+    this.onSeeYou()
     this.id = this.route.snapshot.paramMap.get('id'),
 
     this.fg = this.fb.group({});

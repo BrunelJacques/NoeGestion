@@ -10,21 +10,20 @@ import { EffectifsComponent } from './effectifs/effectifs.component';
 import { InventaireComponent } from './inventaire/inventaire.component';
 import { PrixJourneeComponent } from './prix-journee/prix-journee.component';
 import { ParamsComponent } from './params/params.component';
-import { ArticleSearchComponent } from './mouvements/article-search/article-search.component';
+import { ArticlesResolver } from './_resolvers/articles.resolvers';
 
 const routes: Routes = [
     {
         path: '',
         children: [
             { path: 'sorties', component: SortiesComponent },
-            { path: 'onesortie/:id', component: OneSortieComponent },
             { path: 'entrees', component: EntreesComponent, canActivate: [AuthGuard] },
-            { path: 'oneentree/:id', component: OneEntreeComponent, canActivate: [AuthGuard] },
             { path: 'effectifs', component: EffectifsComponent, canActivate: [AuthGuard] },
             { path: 'inventaire', component: InventaireComponent, canActivate: [AuthGuard] },
             { path: 'prixjournees', component: PrixJourneeComponent, canActivate: [AuthGuard] },
             { path: 'params', component: ParamsComponent },
-            { path: 'articlesearch', component: ArticleSearchComponent}
+            { path: 'oneentree/:id', component: OneEntreeComponent, canActivate: [AuthGuard] },
+            { path: 'onesortie/:id', component: OneSortieComponent, resolve: { onesortie: ArticlesResolver}, },
         ]
     }
 ];

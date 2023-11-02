@@ -22,15 +22,6 @@ export class ArticleService {
     private handleError: HandleError,
   ){}
 
-  /** GET articles from the server */
-  getArticles(): Observable<Article[]> {
-    return this.http.get<Article[]>(this.articlesUrl)
-      .pipe(
-        tap(() => this.handleError.log('fetched articles')),
-        catchError(this.handleError.handleError<Article[]>('getArticles', []))
-      );
-  }
-
   /** GET article by id. Return `undefined` when id not found */
   getArticleNo404(id: number): Observable<Article> {
     const url = `${this.articlesUrl}/?id=${id}`;
@@ -65,11 +56,23 @@ export class ArticleService {
     return this.http.get<Article[]>(url)
     .pipe(
       tap(x => x ?
-         this.handleError.log(`found articles matching "${term}"`) :
-         this.handleError.log(`no articles matching "${term}"`)),
-      catchError(this.handleError.handleError<Article[]>('searchArticles',[]))
+         this.handleError.log(`Trouvés ${x.length} articles matching "${term}"`) :
+         this.handleError.log(`Pas d'articles matching "${term}"`)),
+      catchError(this.handleError.handleError<Article[]>('article',[]))
     );
   }
+
+  /** GET all articles from the server */
+  getArticles(): Observable<Article[]> {
+    return this.http.get<Article[]>(this.articlesUrl)
+    .pipe(
+      tap(x => x ?
+          this.handleError.log(`fetched ${x.length} items`):
+          this.handleError.log(`no items fetched`)),
+      catchError(this.handleError.handleError<Article[]>('getArticles', []))
+      );
+  }
+
 
   //////// Save methods //////////
 
