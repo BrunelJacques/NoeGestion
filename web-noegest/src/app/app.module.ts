@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 
 import { LOCALE_ID } from '@angular/core';
-import { CommonModule, registerLocaleData } from '@angular/common';
+import { registerLocaleData } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import * as fr from '@angular/common/locales/fr';
@@ -19,19 +19,19 @@ import { DatePipe } from '@angular/common';
 import { GeneralModule } from './general/general.module';
 import { StocksModule } from './stocks/stocks.module';
 import { AppComponent } from './app.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
     AppComponent,
   ],
   imports: [
-    CommonModule,
     BrowserModule,
     ReactiveFormsModule,
     HttpClientModule,
     AppRoutingModule,
     GeneralModule, // declarations 'general' 
-    StocksModule, // declarations 'stocks'
+    StocksModule, BrowserAnimationsModule, // declarations 'stocks'
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
