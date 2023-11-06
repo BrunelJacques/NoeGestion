@@ -19,7 +19,7 @@ const routes: Routes = [
             { path: 'sorties', component: SortiesComponent },
             { path: 'entrees', component: EntreesComponent, canActivate: [AuthGuard] },
             { path: 'effectifs', component: EffectifsComponent, canActivate: [AuthGuard] },
-            { path: 'inventaire', component: InventaireComponent, canActivate: [AuthGuard] },
+            { path: 'inventaire', component: InventaireComponent },
             { path: 'prixjournees', component: PrixJourneeComponent, canActivate: [AuthGuard] },
             { path: 'params', component: ParamsComponent },
             { path: 'oneentree/:id', component: OneEntreeComponent, canActivate: [AuthGuard] },
