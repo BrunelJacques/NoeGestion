@@ -8,7 +8,6 @@ import { HeaderRoutingModule } from './header/header-routing.module';
 import { HeaderComponent } from './header/header.component';
 import { SubheaderComponent } from './subheader/subheader.component';
 import { SubheaderMvtsComponent } from '../stocks/mouvements/subheader-mvts/subheader-mvts.component';
-import { HideOptionsOnClickDirective } from './_directives/hideOptions.directive';
 import { HighlightDirective } from './_directives/highlight.directive';
 
 import { ReactiveFormsModule } from '@angular/forms';
@@ -28,7 +27,6 @@ import { HandleError } from './_helpers/error.interceptor';
     HeaderComponent,
     SubheaderComponent,
     SubheaderMvtsComponent,
-    HideOptionsOnClickDirective,
     HighlightDirective
   ],
   imports: [
@@ -42,7 +40,6 @@ import { HandleError } from './_helpers/error.interceptor';
     HeaderComponent,
     SubheaderComponent,
     SubheaderMvtsComponent,
-    HideOptionsOnClickDirective,
     HighlightDirective,
     ReactiveFormsModule,
     HttpClientModule,

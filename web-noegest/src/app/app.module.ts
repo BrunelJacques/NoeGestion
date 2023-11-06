@@ -7,10 +7,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { GeneralModule } from './general/general.module';
 import { SharedModule } from './shared/shared.modules';
 import { StocksModule } from './stocks/stocks.module';
+import { ZzTestComponent } from './zz-test/zz-test.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    ZzTestComponent,
   ],
   imports: [
     AppRoutingModule,
