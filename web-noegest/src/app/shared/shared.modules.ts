@@ -1,7 +1,15 @@
 import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
-import { ReactiveFormsModule } from "@angular/forms";
-import { MatToolbarModule } from '@angular/material/toolbar';
+import { ReactiveFormsModule} from "@angular/forms";
+
+// constructor  SharedModule
+import { registerLocaleData } from '@angular/common';
+import * as fr from '@angular/common/locales/fr';
+
+// Providers
+import { LOCALE_ID } from '@angular/core';
+import { DatePipe } from '@angular/common';
+
+// Material
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
@@ -11,19 +19,15 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSelectAutoComplete }
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
-  declarations: [
-  ],
 
   imports: [
-    CommonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   exports: [
     ReactiveFormsModule,
-    MatToolbarModule,
     MatCardModule,
     MatListModule,
     MatButtonModule,
@@ -33,6 +37,16 @@ import { MatSelectAutoComplete }
     MatCheckboxModule,
     MatRadioModule,
     MatProgressSpinnerModule,
+    MatAutocompleteModule,
+  ],
+  providers: [
+    { provide: LOCALE_ID, useValue: 'fr-FR'},
+    { provide: DatePipe },
   ]
 })
-export class SharedModule {}
+
+export class SharedModule {
+  constructor() {
+    registerLocaleData(fr.default);
+  }
+}

@@ -12,7 +12,10 @@ import { OneSortieComponent } from './mouvements/one-sortie/one-sortie.component
 import { ArticleSearchComponent } from './mouvements/article-search/article-search.component';
 import { ParamsComponent } from './params/params.component';
 import { GeneralModule } from '../general/general.module';
+import { SharedModule } from '../shared/shared.modules';
 import { StocksRoutingModule } from './stocks-routing.module';
+
+
 
 @NgModule({
   declarations: [
@@ -30,7 +33,8 @@ import { StocksRoutingModule } from './stocks-routing.module';
     CommonModule,
     ReactiveFormsModule,
     StocksRoutingModule,
-    GeneralModule
+    GeneralModule,
+    SharedModule,
   ],
 
 })
