@@ -1,8 +1,8 @@
 import { NgModule } from "@angular/core";
-import { ReactiveFormsModule} from "@angular/forms";
+import { ReactiveFormsModule } from "@angular/forms";
 
 // constructor  SharedModule
-import { registerLocaleData } from '@angular/common';
+import { CommonModule, registerLocaleData } from '@angular/common';
 import * as fr from '@angular/common/locales/fr';
 
 // Providers
@@ -21,13 +21,30 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
-@NgModule({
+// Fait maison
+import { AutocompleteComponent } from "./autocomplete/autocomplete.component";
 
+@NgModule({
+  declarations: [
+    AutocompleteComponent,
+  ],
   imports: [
+    CommonModule,
     ReactiveFormsModule,
+    MatCardModule,
+    MatListModule,
+    MatButtonModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatCheckboxModule,
+    MatRadioModule,
+    MatProgressSpinnerModule,
+    MatAutocompleteModule,
   ],
   exports: [
     ReactiveFormsModule,
+    AutocompleteComponent,
     MatCardModule,
     MatListModule,
     MatButtonModule,

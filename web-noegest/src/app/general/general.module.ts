@@ -8,7 +8,7 @@ import { HeaderRoutingModule } from './header/header-routing.module';
 import { HeaderComponent } from './header/header.component';
 import { SubheaderComponent } from './subheader/subheader.component';
 import { SubheaderMvtsComponent } from '../stocks/mouvements/subheader-mvts/subheader-mvts.component';
-import { HighlightDirective } from './_directives/highlight.directive';
+import { HighlightDirective } from '../shared/_directives/highlight.directive';
 
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';

@@ -1,16 +1,4 @@
 <h2>inventaire works!</h2>
 
-<mat-form-field style="text-align: right">
-  <input 
-  type="text" 
-  placeholder="Saisir le début..." 
-  matInput 
-  [formControl]="myControl" 
-  [matAutocomplete]="auto">
-  <mat-autocomplete #auto="matAutocomplete">
-          <mat-option *ngFor="let item of filteredItems | async" [value]="item">
-            {{item}}
-          </mat-option>
-        </mat-autocomplete>
-</mat-form-field>
-
+Test d'usage saisie autocomplete (idle)
+<app-autocomplete></app-autocomplete>
