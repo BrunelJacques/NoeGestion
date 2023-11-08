@@ -4,7 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
-import { Article } from '../_models/article';
+import { Article, ArticleNom } from '../_models/article';
 import { HandleError } from 'src/app/general/_helpers/error.interceptor';
 import { Constantes } from 'src/app/constantes';
 
@@ -12,6 +12,7 @@ import { Constantes } from 'src/app/constantes';
 export class ArticleService {
 
   articlesUrl = this.cst.STARTICLE_URL
+  articlesNomUrl = this.cst.STARTICLE_NOM_URL
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };
@@ -70,6 +71,17 @@ export class ArticleService {
           this.handleError.log(`fetched ${x.length} items`):
           this.handleError.log(`no items fetched`)),
       catchError(this.handleError.handleError<Article[]>('getArticles', []))
+      );
+  }
+
+  /** GET all articles' names from the server */
+  getArticlesNom(): Observable<ArticleNom[]> {
+    return this.http.get<ArticleNom[]>(this.articlesNomUrl)
+    .pipe(
+      tap(x => x ?
+          this.handleError.log(`fetched ${x.length} items`):
+          this.handleError.log(`no items fetched`)),
+      catchError(this.handleError.handleError<ArticleNom[]>('getArticlesNom', []))
       );
   }
 

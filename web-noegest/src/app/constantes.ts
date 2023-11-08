@@ -12,6 +12,7 @@ export class Constantes {
   public TOKENLOGOUT_URL = this.API_URL + '/api-auth/token/refresh/'
   public STMOUVEMENT_URL = this.API_URL + '/api/stmouvement'
   public STARTICLE_URL = this.API_URL + '/api/starticle/'
+  public STARTICLE_NOM_URL = this.API_URL + '/api/starticle/'
   public GEANALYTIQUE_URL = this.API_URL + '/api/geanalytique/'
   public STFOURNISSEUR_URL = this.API_URL + '/api/stfournisseur/'
   public STRAYON_URL = this.API_URL + '/api/strayon/'

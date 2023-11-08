@@ -12,3 +12,8 @@ export interface Article {
   tx_tva?: number;
   dernier_achat?: string;
 }
+
+export interface ArticleNom {
+  id: number;
+  nom: string;
+}

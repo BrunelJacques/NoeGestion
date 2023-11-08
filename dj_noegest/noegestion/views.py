@@ -65,8 +65,20 @@ class StArticleViewset(ModelViewSet):
                    | StArticle.objects.filter(nom_court__istartswith=nom,obsolete=obsolete)
         else:
             ret = StArticle.objects.all()
-        return ret.order_by('nom')[:15]
-    
+        return ret.order_by('nom')
+
+class StArticleNomViewset(ModelViewSet):
+    serializer_class = StArticleNomSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self, *args, **kwargs):
+        nom = self.request.GET.get('nom', '').strip()
+        obsolete = self.request.GET.get('obsolete', False)
+        if len(nom) > 0:
+            ret = StArticle.objects.filter(nom__istartswith=nom,obsolete=obsolete)
+        else:
+            ret = StArticle.objects.all()
+        return ret.order_by('nom')
 
 class StMagasinViewset(ModelViewSet):
 

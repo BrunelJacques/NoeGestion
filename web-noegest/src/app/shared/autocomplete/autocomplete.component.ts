@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Observable, map, startWith } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, MatAutocompleteDefaultOptions } from '@angular/material/autocomplete';
@@ -20,8 +20,14 @@ import { MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, MatAutocompleteDefaultOptions } from 
 })
 
 export class AutocompleteComponent {
-  items = ['Premier', 'Deuxième', 'Troisième', 'Quatrième', 'Cinquième'];
-  largeur = "350px"
+  @Input() kwds: {
+                  items: string[]; 
+                  width: string
+  } = {
+        items:["un","deux","trois"],
+        width:"250px"
+  };
+
   myControl = new FormControl();
   filteredItems: Observable<string[]>;
 
@@ -35,6 +41,6 @@ export class AutocompleteComponent {
 
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
-    return this.items.filter(item => item.toLowerCase().includes(filterValue));
+    return this.kwds.items.filter(item => item.toLowerCase().includes(filterValue));
   }
 }

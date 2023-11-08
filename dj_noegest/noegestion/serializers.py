@@ -33,6 +33,12 @@ class StArticleSerializer(ModelSerializer):
                    'colis_par','unite_colis','rations',
                    'fournisseur','tx_tva','dernier_achat']
 
+class StArticleNomSerializer(ModelSerializer):
+
+    class Meta:
+        model = StArticle
+        fields = ['id','nom']
+
 class StFournisseurSerializer(ModelSerializer):
 
     class Meta:
