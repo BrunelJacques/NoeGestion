@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { SeeyouService } from 'src/app/shared/_services';
 
@@ -8,18 +8,10 @@ import { SeeyouService } from 'src/app/shared/_services';
   styleUrls: ['./effectifs.component.less']
 })
 
-export class EffectifsComponent implements OnInit {
+export class EffectifsComponent  {
 
   module = new Subscription();
   namemodule = 'effectifs';
 
-  constructor(
-    private seeyouService: SeeyouService,
-  ) {}
-
-  ngOnInit(): void {
-    this.module = this.seeyouService.rootActive$.subscribe(
-      (value) => (this.namemodule = value)
-    );
-  }
+  
 }

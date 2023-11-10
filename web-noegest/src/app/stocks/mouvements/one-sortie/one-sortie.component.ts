@@ -159,7 +159,6 @@ export class OneSortieComponent implements OnInit, OnDestroy {
 
   // stocke l'url actuelle pour un prochain retour par onGoBack
   onSeeYou(): void {
-    this.seeyouService.setUrlParent()
     this.seeyouService.setModeLancement("")
   }
 

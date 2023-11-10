@@ -3,11 +3,12 @@ import { Router, NavigationEnd } from '@angular/router';
 import { BehaviorSubject, filter } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
+
+
 export class SeeyouService {
   public onSubmitEvent = new EventEmitter(undefined);
   public onGoBackEvent = new EventEmitter(undefined);
 
-  public urlActive$ = new BehaviorSubject<string>("")
   public rootActive$ = new BehaviorSubject<string>("")
   public templateActive$ = new BehaviorSubject<string>("")
   public modeLancement = ""
@@ -17,19 +18,20 @@ export class SeeyouService {
   constructor( 
     private router: Router 
     ){
+    console.log("constructor seeyou")
     this.router.events
       .pipe( filter(event => event instanceof NavigationEnd),)
       .subscribe(() => {
-        console.log("constructor seeyou")
+        console.log('subject router')
         this.updateUrl()})
     }
 
   updateUrl(){
-    this.urlActive$.next(this.router.url)
     const tblUrl = this.router.url.split('/')
     if (
       (tblUrl.length > 1) && (tblUrl[1].length >1) 
     ){ 
+
       this.rootActive$.next(tblUrl[1]) 
       this.templateActive$.next(tblUrl[2])
     } 
@@ -37,23 +39,22 @@ export class SeeyouService {
       this.rootActive$.next('-') 
       this.templateActive$.next('-')
     }
+    this.historiseUrl(this.router.url)
   }
 
-  setUrlParent(){
-    // stocke l'url actuelle pour un prochain retour par onGoBack
-    const url = this.router.url
-    console.log("setUrlParent "+ url)
+  historiseUrl(url:string): void{
     if (this.urlsHisto[0] != url)
     {this.urlsHisto.unshift(url)}
-    console.log("setUrlParent "+ this.urlsHisto)
+    console.log('Historise ',url)
   }
 
   goBackUrlParent() {
     //route vers le dernier parent inséré et le supprime
-    if (this.urlsHisto.length > 0) 
-    { this.router.navigate([this.urlsHisto.shift()])} 
+    console.log('bye', this.urlsHisto.shift())
+    if (this.urlsHisto.length > 1) 
+    { this.router.navigate([this.urlsHisto[0]])} 
     else { this.router.navigate(['/'])}
-    console.log("setUrlParent "+ this.urlsHisto)
+    console.log("goback "+ this.urlsHisto)
 
   }
 

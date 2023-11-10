@@ -5,6 +5,7 @@ import { filter } from 'rxjs/operators';
 import { Alert, AlertType } from '../_models';
 
 @Injectable({ providedIn: 'root' })
+
 export class AlertService {
     private subject = new Subject<Alert>();
     private defaultId = 'default-alert';
@@ -13,6 +14,10 @@ export class AlertService {
         autoClose: true,
         keepAfterRouteChange: false,
     };
+
+    constructor () {
+        console.log('constructor alert service')
+    }
 
     // enable subscribing to alerts observable
     onAlert(id = this.defaultId): Observable<Alert> {
@@ -48,6 +53,6 @@ export class AlertService {
 
     // clear alerts
     clear(id = this.defaultId) {
-        this.subject.next(new Alert({ id }));
+       this.subject.next(new Alert({ id }));
     }
 }

@@ -118,7 +118,7 @@ export class SortiesComponent implements OnInit, OnDestroy {
   }
 
   onSeeYou(): void {
-    this.seeyouService.setUrlParent()
+    this.alertService.error('alert :here sorties.onSeeYou')
     this.seeyouService.setModeLancement('modif')
   }
 }

@@ -63,7 +63,6 @@ export class SubheaderMvtsComponent {
 
   // stocke l'url actuelle pour un prochain retour par onGoBack
   onSeeYou(modeLancement:string): void {
-    this.seeyouService.setUrlParent()
     this.seeyouService.setModeLancement(modeLancement)
   }
 
