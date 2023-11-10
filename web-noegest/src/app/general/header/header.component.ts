@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 
 import { User } from 'src/app/general/_models';
 import { AuthenticationService } from 'src/app/general/_services';
-import { SeeyouService } from '../_services/seeyou.service';
+import { SeeyouService } from '../../shared/_services/seeyou.service';
 
 @Component({
   selector: 'app-header',
@@ -18,7 +18,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   title = 'matthania';
   user = new User();
-  module = new Subscription();
   namemodule = ""
   loginSub = new Subscription();
   isLoggedIn = false;
@@ -42,7 +41,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.module.unsubscribe();
     this.loginSub.unsubscribe();
   }
 

@@ -7,7 +7,8 @@ import { Params } from '../../_models/params';
 import { DatePipe } from '@angular/common';
 import { Constantes } from 'src/app/constantes';
 import { DateAnsiToFr } from 'src/app/general/_helpers/fonctions-perso'
-import { AlertService, SeeyouService } from 'src/app/general/_services';
+import { AlertService } from 'src/app/general/_services';
+import { SeeyouService } from 'src/app/shared/_services';
 import { Produit } from 'src/app/general/_helpers/fonctions-perso';
 
 @Component({

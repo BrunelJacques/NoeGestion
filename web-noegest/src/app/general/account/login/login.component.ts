@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
-import { AuthenticationService, AlertService, SeeyouService } from 'src/app/general/_services';
+import { AuthenticationService, AlertService } from 'src/app/general/_services';
 
 @Component({ 
     templateUrl: 'login.component.html' })

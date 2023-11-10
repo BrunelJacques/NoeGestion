@@ -1,12 +1,14 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
+
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { ParamsService } from '../_services/params.service';
 import { Camp, Fournisseur } from '../_models/params';
 import { Params } from '../_models/params';
 
-import { AlertService, SeeyouService } from 'src/app/general/_services';
+import { AlertService } from 'src/app/general/_services';
+import { SeeyouService } from 'src/app/shared/_services';
 import { Constantes } from 'src/app/constantes';
 
 @Component({
@@ -46,6 +48,8 @@ export class ParamsComponent implements OnInit, OnDestroy {
     ){}
   
   ngOnInit(): void {
+
+
     this.paramsForm = this.formBuilder.group({
       jour: [new Date(),Validators.required],
       origine:"repas",
@@ -67,6 +71,8 @@ export class ParamsComponent implements OnInit, OnDestroy {
       this.onSubmit();    
     })
   }
+
+
 
   ngOnDestroy(): void {
     this.onSubmitSubscrib.unsubscribe() 

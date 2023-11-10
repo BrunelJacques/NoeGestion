@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { SeeyouService} from 'src/app/general/_services';
+import { SeeyouService } from 'src/app/shared/_services';
 
 @Component({
   selector: 'app-effectifs',

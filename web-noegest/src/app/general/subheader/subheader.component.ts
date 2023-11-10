@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SeeyouService } from '../_services';
+import { SeeyouService } from 'src/app/shared/_services';
 
 @Component({
   selector: 'app-subheader',

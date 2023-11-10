@@ -3,7 +3,6 @@ import { Router, NavigationEnd } from '@angular/router';
 import { BehaviorSubject, filter } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
-
 export class SeeyouService {
   public onSubmitEvent = new EventEmitter(undefined);
   public onGoBackEvent = new EventEmitter(undefined);
@@ -20,7 +19,9 @@ export class SeeyouService {
     ){
     this.router.events
       .pipe( filter(event => event instanceof NavigationEnd),)
-      .subscribe(() => {this.updateUrl()})
+      .subscribe(() => {
+        console.log("constructor seeyou")
+        this.updateUrl()})
     }
 
   updateUrl(){
@@ -44,18 +45,22 @@ export class SeeyouService {
     console.log("setUrlParent "+ url)
     if (this.urlsHisto[0] != url)
     {this.urlsHisto.unshift(url)}
+    console.log("setUrlParent "+ this.urlsHisto)
   }
 
   goBackUrlParent() {
     //route vers le dernier parent inséré et le supprime
     if (this.urlsHisto.length > 0) 
     { this.router.navigate([this.urlsHisto.shift()])} 
-    else { this.router.navigate(['/'])}      
+    else { this.router.navigate(['/'])}
+    console.log("setUrlParent "+ this.urlsHisto)
+
   }
 
   getUrlParent(){
     return this.urlsHisto.shift()
   }
+  
   setModeLancement(mode:string) {
     this.modeLancement = mode
   }
