@@ -1,4 +1,4 @@
-import { Injectable, EventEmitter } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { BehaviorSubject, filter } from 'rxjs';
 
@@ -6,46 +6,48 @@ import { BehaviorSubject, filter } from 'rxjs';
 
 
 export class SeeyouService {
+  // historise les url pour faire des goback convoqués par des modules paratagés
+
   public onSubmitEvent = new EventEmitter(undefined);
   public onGoBackEvent = new EventEmitter(undefined);
+
 
   public rootActive$ = new BehaviorSubject<string>("")
   public templateActive$ = new BehaviorSubject<string>("")
   public modeLancement = ""
 
-  urlsHisto: string[] = []
+  urlsHisto: string[] = ['/',]
 
   constructor( 
     private router: Router 
     ){
-    console.log("constructor seeyou")
-    this.router.events
-      .pipe( filter(event => event instanceof NavigationEnd),)
-      .subscribe(() => {
-        console.log('subject router')
-        this.updateUrl()})
+      this.router.events
+        .pipe( filter(event => event instanceof NavigationEnd),)
+        .subscribe(() => {
+          this.updateUrl()})
     }
 
-  updateUrl(){
-    const tblUrl = this.router.url.split('/')
-    if (
-      (tblUrl.length > 1) && (tblUrl[1].length >1) 
-    ){ 
-
-      this.rootActive$.next(tblUrl[1]) 
-      this.templateActive$.next(tblUrl[2])
-    } 
-    else { 
-      this.rootActive$.next('-') 
-      this.templateActive$.next('-')
-    }
-    this.historiseUrl(this.router.url)
+  initUrlsHisto(){
+    this.urlsHisto = ['/',]
   }
-
-  historiseUrl(url:string): void{
-    if (this.urlsHisto[0] != url)
-    {this.urlsHisto.unshift(url)}
-    console.log('Historise ',url)
+  
+  updateUrl(){
+    const url = this.router.url
+    const splitUrl = url.split('/')
+    if (this.urlsHisto[0] !== url) {      
+      if ((splitUrl.length > 1) && (splitUrl[1].length >1))
+      { 
+        if (this.urlsHisto[0] != url)
+          {this.urlsHisto.unshift(url)
+          }
+        this.rootActive$.next(splitUrl[1]) 
+        this.templateActive$.next(splitUrl[2])
+      } else { 
+        this.initUrlsHisto()
+        this.rootActive$.next('-') 
+        this.templateActive$.next('-')
+      }
+    }
   }
 
   goBackUrlParent() {

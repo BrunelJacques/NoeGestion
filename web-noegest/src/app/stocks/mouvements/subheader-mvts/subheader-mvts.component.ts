@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { SeeyouService } from 'src/app/shared/_services';
+import { Component, EventEmitter } from '@angular/core';
+import { SeeyouService } from 'src/app/general/_services';
 import { ParamsService } from '../../_services/params.service';
 import { Constantes } from 'src/app/constantes'
 import { DatePipe } from '@angular/common'
@@ -11,6 +11,8 @@ import { Params } from '../../_models/params';
 })
 
 export class SubheaderMvtsComponent {
+  //public onSubmitEvent = new EventEmitter(undefined);
+  //public onGoBackEvent = new EventEmitter(undefined);
 
   isListe = false
   isToParams = false

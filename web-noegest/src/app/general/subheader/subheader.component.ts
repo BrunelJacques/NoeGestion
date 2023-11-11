@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { SeeyouService } from 'src/app/shared/_services';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { SeeyouService } from '../_services';
 
 @Component({
   selector: 'app-subheader',
@@ -7,7 +7,7 @@ import { SeeyouService } from 'src/app/shared/_services';
   styleUrls: ['./subheader.component.scss']
 })
 
-export class SubheaderComponent implements OnInit {
+export class SubheaderComponent implements OnInit, OnDestroy {
   bgcolor = "fond-sombre";
   lstUrls = ['stocks','kms']
   lstMvt = ['params','sorties','onesortie']
@@ -27,6 +27,11 @@ export class SubheaderComponent implements OnInit {
       (rootUrl) => { 
         this.updateCurrentURL(rootUrl)
       })
+  }
+
+  ngOnDestroy(): void {
+    this.seeyouService.templateActive$.unsubscribe()
+    this.seeyouService.rootActive$.unsubscribe()
   }
 
   private updateCurrentURL(rootUrl:string) {

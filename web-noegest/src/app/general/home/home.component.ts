@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 
 import { environment } from 'src/environments/environment';
 import { AuthenticationService } from '../_services';
-import { SeeyouService} from '../../shared/_services/seeyou.service';
+import { SeeyouService} from '../_services/seeyou.service';
 
 
 import { User } from 'src/app/general/_models';

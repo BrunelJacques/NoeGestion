@@ -7,9 +7,9 @@ import { ParamsService } from '../_services/params.service';
 import { Camp, Fournisseur } from '../_models/params';
 import { Params } from '../_models/params';
 
-import { AlertService } from 'src/app/general/_services';
-import { SeeyouService } from 'src/app/shared/_services';
+import { AlertService, SeeyouService } from 'src/app/general/_services';
 import { Constantes } from 'src/app/constantes';
+import { SubheaderMvtsComponent } from '../mouvements/subheader-mvts/subheader-mvts.component';
 
 @Component({
   selector: 'app-params',
@@ -45,11 +45,10 @@ export class ParamsComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private alertService: AlertService,
     private seeyouService: SeeyouService,
+    private subheader: SubheaderMvtsComponent
     ){}
   
   ngOnInit(): void {
-
-
     this.paramsForm = this.formBuilder.group({
       jour: [new Date(),Validators.required],
       origine:"repas",

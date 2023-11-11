@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 
 import { User } from 'src/app/general/_models';
 import { AuthenticationService } from 'src/app/general/_services';
-import { SeeyouService } from '../../shared/_services/seeyou.service';
+import { SeeyouService } from '../_services/seeyou.service';
 
 @Component({
   selector: 'app-header',
