@@ -1,10 +1,12 @@
- <!-- affichage d'informations  -->
-<h6 class="card start m-0 px-1">
-  <span>
-    {{lstModules[template]}}: {{modeLancement}}
+<div class="card start m-0 px-1">
+
+  <!-- infos en cours -->
+  <span >
+    {{lstModules[template]}}
   </span>
   &nbsp;
   <span *ngIf="isListe">
+    : {{modeLancement}}
     <span *ngIf="isToParams">pour {{params['origine']}} en cuisine</span>
     <span *ngIf="params['origine'] === 'camp'">pour camp '{{params['camp']}}'</span>
   </span>
@@ -12,50 +14,32 @@
   <div *ngIf="isListe" class= "col-8 col-sm-12 m-0 p-0" >
     <span class="">
       Le: {{jour}}
-      &nbsp;
-      <!--span *ngIf="isListe">Repas '{{lstservice[params['service']].code}}'&nbsp;</span-->
     </span>
   </div>
-  <!-- navigation pour écran étroit  -->
-  <div class="d-sm-none col card-container  m-0 p-1">
-    <a *ngIf = isToParams 
-    class="bi bi-gear"
-    (click)="onSeeYou('modif')"
+  
+  <!-- navigation contextuelle -->
+  <div *ngIf = isToParams
+    class="m-2 p-0 ">
+    <a class="bi bi-gear"
     routerLink="/stocks/params">
-      <span class="small12">Filtres</span>
+      <span class="p-1">Modif Filtres</span>
     </a>
-    <a  *ngIf = isListe
-    class="bi bi-plus-circle ps-1"
-    (click)="onSeeYou('création')"
+  </div>
+  <div *ngIf = isListe
+  class="m-2 p-0 ">
+    <a class="bi bi-plus-circle" 
     routerLink="/stocks/onesortie/0">
-    <span class="small12">ajout</span>
+      <span class="p-1">ajout ligne</span>
     </a>
   </div>
-  <!-- navigation pour écran plus large -->
-  <div class="p-0">
-    <div *ngIf = isToParams
-     class="row d-none d-sm-block card-container my-2 p-0 ">
-      <a class="bi bi-gear"
-      (click)="onSeeYou('modif')"
-      routerLink="/stocks/params">
-        <span class="p-1">Modif Filtres</span>
-      </a>
-    </div>
-    <div *ngIf = isListe
-    class="row d-none d-sm-block card-container my-2 p-0 ">
-      <a class="bi bi-plus-circle" 
-      (click)="onSeeYou('création')"
-      routerLink="/stocks/onesortie/0">
-        <span class="p-1">ajout ligne</span>
-      </a>
-    </div>
-  </div>
+
   <!-- boutons de retours -->
-  <div
-  *ngIf = isToGoBack>
-    <button type="submit"
-    class="btn btn-primary p-1 py-sm-2 mb-1 mb-sm-0"
+  <div *ngIf = isToGoBack>
+    <button mat-flat-button color="primary" 
+    type="submit"
+    class=" p-1 py-sm-2 mb-1 mb-sm-0"
     aria-label="Confirm"
+    [disabled]="!valid"
     (click)="onSubmit()">
     retour ok
     <i class="bi bi-sign-turn-right-fill"></i>
@@ -69,4 +53,4 @@
     <i class="bi bi-sign-turn-left"></i>
     </button>
   </div>
-</h6>
+</div>

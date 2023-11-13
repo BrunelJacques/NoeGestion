@@ -1,6 +1,6 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { BehaviorSubject, filter } from 'rxjs';
+import { BehaviorSubject, delay, filter } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 
@@ -22,13 +22,16 @@ export class SeeyouService {
     private router: Router 
     ){
       this.router.events
-        .pipe( filter(event => event instanceof NavigationEnd),)
+        .pipe( 
+          filter(event => event instanceof NavigationEnd),
+          delay(500),
+        )
         .subscribe(() => {
           this.updateUrl()})
     }
 
   initUrlsHisto(){
-    this.urlsHisto = ['/',]
+    this.urlsHisto = ['//',]
   }
   
   updateUrl(){
@@ -38,8 +41,9 @@ export class SeeyouService {
       if ((splitUrl.length > 1) && (splitUrl[1].length >1))
       { 
         if (this.urlsHisto[0] != url)
-          {this.urlsHisto.unshift(url)
-          }
+          {
+            this.urlsHisto.unshift(url)
+          } 
         this.rootActive$.next(splitUrl[1]) 
         this.templateActive$.next(splitUrl[2])
       } else { 
@@ -52,16 +56,17 @@ export class SeeyouService {
 
   goBackUrlParent() {
     //route vers le dernier parent inséré et le supprime
-    console.log('bye', this.urlsHisto.shift())
     if (this.urlsHisto.length > 1) 
-    { this.router.navigate([this.urlsHisto[0]])} 
+    { 
+      const url = this.urlsHisto[1]
+      this.urlsHisto.shift()
+      this.router.navigate([url])}
     else { this.router.navigate(['/'])}
-    console.log("goback "+ this.urlsHisto)
 
   }
 
   getUrlParent(){
-    return this.urlsHisto.shift()
+    return this.urlsHisto[1]
   }
   
   setModeLancement(mode:string) {

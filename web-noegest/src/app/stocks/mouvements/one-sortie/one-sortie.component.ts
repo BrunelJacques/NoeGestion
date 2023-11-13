@@ -11,7 +11,6 @@ import { AlertService, SeeyouService } from 'src/app/general/_services';
 import { Constantes } from 'src/app/constantes';
 import { ActivatedRoute } from '@angular/router';
 import { IsNull } from 'src/app/general/_helpers/fonctions-perso';
-import { SubheaderMvtsComponent } from '../subheader-mvts/subheader-mvts.component';
 
 @Component({
   selector: 'app-one-sortie',
@@ -43,7 +42,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
     { label: 'vers', type: 'text', value: '-' },
   ];
   fields: FormField[] = [
-    { label: 'service', type: 'select', 
+    { label: 'service', type: 'select',
       options: this.lstService_libelle },
     { label: 'prixUnit', type: 'number'},
     { label: 'qte', type: 'number' },
@@ -61,9 +60,8 @@ export class OneSortieComponent implements OnInit, OnDestroy {
     private datePipe: DatePipe,
     private route: ActivatedRoute,
     private mvtService: MvtService,
-    private subheader: SubheaderMvtsComponent,
     ) {
-      
+
     }
 
   isNull = IsNull
@@ -83,7 +81,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
       this.fg2.addControl(field.label,this.fb2.control(field.value));
       this.fg2.get(field.label)?.setValidators([Validators.required,])
     });
-            
+
     this.getParams();
     this.onSubmitSubscrib = this.seeyouService.onSubmitEvent
     .subscribe((data) => {

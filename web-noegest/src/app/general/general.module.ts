@@ -12,6 +12,7 @@ import { HighlightDirective } from '../shared/_directives/highlight.directive';
 
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { SharedModule } from '../shared/shared.modules';
 
 // Providers
 import { JwtInterceptor } from './_helpers/jwt.interceptor';
@@ -31,7 +32,8 @@ import { HandleError } from './_helpers/error.interceptor';
   ],
   imports: [
     CommonModule,
-    HeaderRoutingModule
+    HeaderRoutingModule,
+    SharedModule
   ],
   exports: [
     AlertComponent,

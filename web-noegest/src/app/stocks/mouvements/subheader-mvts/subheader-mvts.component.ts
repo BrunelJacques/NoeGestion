@@ -33,6 +33,7 @@ export class SubheaderMvtsComponent {
     'onesortie': 'Une Sortie',
     'oneentree': 'Une Entrée',
   };
+  valid = false
 
   constructor(
     private seeyouService: SeeyouService,
@@ -51,7 +52,6 @@ export class SubheaderMvtsComponent {
   
     this.getParams()
   }
-
   
   getParams(): void {
     this.paramsService.paramssubj$

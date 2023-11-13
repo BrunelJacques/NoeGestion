@@ -5,16 +5,20 @@
       <div class="card-body short text-center text-muted small">
         <div>
           Pour créer un compte ou réinitialiser un mot de passe
-        </div>      
-        <button type="submit"
-          [disabled]="loading"
-          class="btn btn-primary"
-          aria-label="Confirm"
-          (click)="onSubmit()">  
+        </div>
+        <div class="form-group "></div>  
+
+        <button mat-flat-button color="primary" 
+        type="submit"
+        [disabled]="loading"
+        aria-label="Confirm"
+        (click)="onSubmit()">  
           <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-          Envoi de la demande
+          Demande
         </button>
-        <a routerLink="../login" class="btn btn-link">Retour</a>
+        <button mat-flat-button class="fond-soutenu m-3">
+            <a routerLink="../login">Retour</a>
+        </button>
       </div>
     </div>
     <form [formGroup]="form"  

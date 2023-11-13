@@ -22,12 +22,15 @@
                     <div *ngIf="f['password'].errors?.['required']">Mot de passe à saisir</div>
                 </div>
             </div>   
+            
             <div class="form-group">
-                <button [disabled]="loading" class="btn btn-primary">
+                <button mat-flat-button color="primary" [disabled]="loading">
                     <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                     Envoi
                 </button>
-                <a routerLink="../register" class="btn btn-link">Mon Compte</a>
+                <button mat-flat-button class="fond-soutenu m-3">
+                    <a routerLink="../register" >Mon Compte</a>
+                </button>
             </div>
         </form>
     </div>

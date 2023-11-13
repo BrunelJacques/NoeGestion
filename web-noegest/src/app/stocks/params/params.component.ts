@@ -9,7 +9,6 @@ import { Params } from '../_models/params';
 
 import { AlertService, SeeyouService } from 'src/app/general/_services';
 import { Constantes } from 'src/app/constantes';
-import { SubheaderMvtsComponent } from '../mouvements/subheader-mvts/subheader-mvts.component';
 
 @Component({
   selector: 'app-params',
@@ -17,14 +16,13 @@ import { SubheaderMvtsComponent } from '../mouvements/subheader-mvts/subheader-m
 })
 
 export class ParamsComponent implements OnInit, OnDestroy {
-
+  name = "Params";
   params!: Params;
   camps!: Camp[];
   paramsForm!:FormGroup;
   parent = "";
 
   onSubmitSubscrib!:Subscription;
-  onGoBackSubscrib!:Subscription;
   paramsSubscrib!:Subscription;
   receivedData: unknown;
 
@@ -45,7 +43,6 @@ export class ParamsComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private alertService: AlertService,
     private seeyouService: SeeyouService,
-    private subheader: SubheaderMvtsComponent
     ){}
   
   ngOnInit(): void {
@@ -64,18 +61,12 @@ export class ParamsComponent implements OnInit, OnDestroy {
         this.receivedData = data
         this.onSubmit();    
       })
-    this.onGoBackSubscrib = this.seeyouService.onGoBackEvent
-      .subscribe((data) => {
-      this.receivedData = data
-      this.onSubmit();    
-    })
   }
 
 
 
   ngOnDestroy(): void {
     this.onSubmitSubscrib.unsubscribe() 
-    this.onGoBackSubscrib.unsubscribe()   
     if (this.paramsSubscrib){
       this.paramsSubscrib.unsubscribe()
     }  

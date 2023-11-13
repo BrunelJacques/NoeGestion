@@ -47,6 +47,7 @@ export class SortiesComponent implements OnInit, OnDestroy {
     this.getSorties();
     this.params.parent = this.name
     this.seeyouService.setModeLancement('liste')
+    console.log("onInit sorties")
     this.seeyouService.initUrlsHisto()
   }
 
