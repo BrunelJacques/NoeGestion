@@ -1,38 +1,33 @@
-﻿<div >
-  <div class="card"
-  style="width:300px">
-    <h3 class="card-header">Connexion</h3>
-    <div class="card-body container-fluid">
-        <form  [formGroup]="form" (ngSubmit)="onSubmit()">
-            <div class="form-group">
-                <label for="email">Identifiant</label>
-                <input type="text" formControlName="email" class="form-control" id="email"
-                autocomplete="username" 
-                [ngClass]="{ 'is-invalid': submitted && f['email'].errors }" />
-                <div *ngIf=" f['email'].errors?.['required'] && form.controls['email'].touched" class="invalid-feedback">
-                    <div  class="error">Identifiant à saisir</div>
-                </div>
+﻿<mat-card [formGroup]="form" class="center m-2 my-4 my-sm-2 " >
+  <mat-card-title>Connexion</mat-card-title>
+    <form  [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label for="email">Identifiant</label>
+            <input type="text" formControlName="email" class="form-control" id="email"
+            autocomplete="username" 
+            [ngClass]="{ 'is-invalid': submitted && f['email'].errors }" />
+            <div *ngIf=" f['email'].errors?.['required'] && form.controls['email'].touched" class="invalid-feedback">
+                <div  class="error">Identifiant à saisir</div>
             </div>
-            <div class="form-group">
-                <label for="password">Mot de passe</label>
-                <input type="password" formControlName="password" class="form-control" id="password"
-                    autocomplete="current-password"
-                    [ngClass]="{ 'is-invalid': submitted && f['password'].errors }" />
-                <div *ngIf="f['password'].errors?.['required'] && form.controls['password'].touched" class="invalid-feedback">
-                    <div *ngIf="f['password'].errors?.['required']">Mot de passe à saisir</div>
-                </div>
-            </div>   
-            
-            <div class="form-group">
-                <button mat-flat-button color="primary" [disabled]="loading">
-                    <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-                    Envoi
-                </button>
-                <button mat-flat-button class="fond-soutenu m-3">
-                    <a routerLink="../register" >Mon Compte</a>
-                </button>
+        </div>
+        <div class="form-group">
+            <label for="password">Mot de passe</label>
+            <input type="password" formControlName="password" class="form-control" id="password"
+                autocomplete="current-password"
+                [ngClass]="{ 'is-invalid': submitted && f['password'].errors }" />
+            <div *ngIf="f['password'].errors?.['required'] && form.controls['password'].touched" class="invalid-feedback">
+                <div *ngIf="f['password'].errors?.['required']">Mot de passe à saisir</div>
             </div>
-        </form>
-    </div>
-  </div>
-</div>
+        </div>   
+        
+        <div class="form-group">
+            <button mat-flat-button color="primary" [disabled]="loading">
+                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                Envoi
+            </button>
+            <button mat-flat-button class="fond-soutenu m-3">
+                <a routerLink="../register" >Mon Compte</a>
+            </button>
+        </div>
+    </form>
+</mat-card>

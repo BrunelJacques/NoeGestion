@@ -7,7 +7,8 @@
 }
 /* couleurs html choisies via libreoffice*/
 :root {
-  --fond-soutenu: #add8e6;
+  --fond-soutenu: #c5c5ff;
+  --fond-titre: #e8e8e8;
   --fond-ecran: whitesmoke;
   --fond-blanc: #ffffff;
   --fond-sombre: #3f729b;
@@ -18,7 +19,8 @@
 }
 
 .fond-ecran {background-color: var(--fond-ecran) !important;}
-.fond-boxes { background-color: var(--fond-blanc) !important;}
+.fond-box { background-color: var(--fond-blanc) !important;}
+.fond-titre { background-color: var(--fond-titre) !important;}
 .fond-soutenu {background-color: var(--fond-soutenu) !important;}
 .fond-saumon { background-color: var(--fond-saumon)!important;}
 .fond-rose {background-color: var(--fond-rose)!important;}
@@ -252,6 +254,16 @@ mat-form-field {
 
 .mat-radio-button ~ .mat-radio-button {
   margin-left: 16px;
+}
+
+mat-card-title {
+  width:100%;
+  background-color: var(--fond-titre);
+}
+
+mat-card {
+  margin: auto;
+  max-width: 650px
 }
 
 mat-card-actions {

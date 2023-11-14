@@ -11,6 +11,7 @@ export class RegisterComponent implements OnInit {
     form!: UntypedFormGroup;
     loading = false;
     submitted = false;
+    valid = false
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -21,14 +22,28 @@ export class RegisterComponent implements OnInit {
     ) { }
 
     ngOnInit() {
+        this.initFormControls()
+    }
+
+    initFormControls(): void {
         this.form = this.formBuilder.group({
             firstName: ['', Validators.required],
             lastName: ['', Validators.required],
-            email: ['', Validators.required],
-            password: ['', [Validators.required, Validators.minLength(6)]]
+            email: ['', [Validators.required,Validators.email]],
+            password: ['', [
+                Validators.required,
+                this.passwordValidator(),
+                Validators.minLength(6)
+            ]],
+            confirmPassword: ['', Validators.required]
         });
     }
-
+    
+    passwordValidator() {
+        // pour exiger un longeur mini de 6 avec les possibles [A-Za-z\d@$!%*?&]{6,}$   
+        return Validators.pattern(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&+-_()])/);
+      }
+    
     // convenience getter for easy access to form fields
     get f() { return this.form.controls; }
 

@@ -10,7 +10,7 @@
 
         <button mat-flat-button color="primary" 
         type="submit"
-        [disabled]="loading"
+        [disabled]="loading || !valid"
         aria-label="Confirm"
         (click)="onSubmit()">  
           <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
@@ -56,7 +56,10 @@
           L'initialisation n'est possible que pour des références connues de Matthania
       </div>
       <div class="form-group">
-          <label for="password">Mot de passe  (sera donné par noegest à terme)</label>
+          <label for="password">Mot de passe</label>
+          <div class="small10">
+            6 caractères dont majuscule, minuscule chiffre et spécial
+          </div>
           <input type="password" formControlName="password" class="form-control" id="password"
               [ngClass]="{ 'is-invalid': f['password'].errors }" />
           <div *ngIf="f['password'].errors?.['required'] && form.controls['password'].touched" class="invalid-feedback">
