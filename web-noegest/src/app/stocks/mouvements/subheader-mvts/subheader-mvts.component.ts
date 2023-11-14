@@ -33,7 +33,7 @@ export class SubheaderMvtsComponent {
     'onesortie': 'Une Sortie',
     'oneentree': 'Une Entrée',
   };
-  valid = false
+  valid = true
 
   constructor(
     private seeyouService: SeeyouService,

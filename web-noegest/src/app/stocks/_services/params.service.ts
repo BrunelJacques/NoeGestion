@@ -66,6 +66,9 @@ export class ParamsService {
       params = deepCopy(PARAMS)
       params.parent = "raz-sorties"
     }
+    if (params.service == -1) {
+      params.service = 0
+    }
     this.setParams(params)
     return params
   }

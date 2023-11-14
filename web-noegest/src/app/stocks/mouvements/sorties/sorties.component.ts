@@ -47,13 +47,12 @@ export class SortiesComponent implements OnInit, OnDestroy {
     this.getSorties();
     this.params.parent = this.name
     this.seeyouService.setModeLancement('liste')
-    console.log("onInit sorties")
     this.seeyouService.initUrlsHisto()
   }
 
   ngOnDestroy(): void {
-    this.paramsSubscrib.unsubscribe
-    this.sortiesSubscrib.unsubscribe
+    this.paramsSubscrib.unsubscribe()
+    this.sortiesSubscrib.unsubscribe()
   }
   mvtsFilter = (mvt: Mouvement) => {
     let ret = true
