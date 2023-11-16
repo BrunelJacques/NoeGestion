@@ -25,6 +25,7 @@ export class AuthenticationService {
         this.user = this.userSubject.asObservable();
     }
 
+    // appelé par auth guard
     public get userValue():User {
         return this.userSubject.value;
     }

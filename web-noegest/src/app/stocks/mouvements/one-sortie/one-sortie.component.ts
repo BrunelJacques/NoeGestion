@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subject, take, takeUntil } from 'rxjs';
 import { Mouvement } from '../../_models/mouvement';
 import { Article } from '../../_models/article';
 import { DatePipe } from '@angular/common';
@@ -10,7 +10,8 @@ import { Camp, Params, FormField } from '../../_models/params';
 import { AlertService, SeeyouService } from 'src/app/general/_services';
 import { Constantes } from 'src/app/constantes';
 import { ActivatedRoute } from '@angular/router';
-import { IsNull } from 'src/app/general/_helpers/fonctions-perso';
+import { FonctionsPerso } from 'src/app/shared/fonctions-perso';
+
 
 @Component({
   selector: 'app-one-sortie',
@@ -27,11 +28,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
   fg!:FormGroup;
   fg2!: FormGroup;
 
-  onSubmitSubscrib!:Subscription;
-  onGoBackSubscrib!:Subscription;
-  paramsSubscrib!:Subscription;
-  mvtSubscrib!:Subscription;
-  receivedData: unknown;
+  private destroy$!: Subject<boolean>
 
   lstService = Constantes.LSTSERVICE;
   lstService_libelle = this.lstService.map((x) => x.libelle)
@@ -60,17 +57,20 @@ export class OneSortieComponent implements OnInit, OnDestroy {
     private datePipe: DatePipe,
     private route: ActivatedRoute,
     private mvtService: MvtService,
+    private fp: FonctionsPerso,
     ) {
-
+      this.initSubscriptions()
     }
 
-  isNull = IsNull
+  isNull = this.fp.isNull
 
   ngOnInit(): void {
-    console.log('bonjour onesortie')
-    this.onSeeYou()
     this.id = this.route.snapshot.paramMap.get('id'),
+    this.initForm()
+    this.getParams();
+  }
 
+  initForm() {
     this.fg = this.fb.group({});
     this.fieldsParams.forEach(field => {
       this.fg.addControl(field.label, this.fb.control(field.value));
@@ -81,36 +81,35 @@ export class OneSortieComponent implements OnInit, OnDestroy {
       this.fg2.addControl(field.label,this.fb2.control(field.value));
       this.fg2.get(field.label)?.setValidators([Validators.required,])
     });
+  }
 
-    this.getParams();
-    this.onSubmitSubscrib = this.seeyouService.onSubmitEvent
-    .subscribe((data) => {
-      this.receivedData = data
-      console.log('onSubmitEvent received in on-sortie:click :', data);
+  initSubscriptions() {
+    this.destroy$ = new Subject<boolean>()
+
+    this.seeyouService.clicksOk$.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(() => {
       this.onSubmit();
-    })
-    this.onGoBackSubscrib = this.seeyouService.onGoBackEvent
-    .subscribe((data) => {
-      this.receivedData = data
-      this.onSubmit();
-    })
+    });
+    this.seeyouService.clicksQuit$.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(() => {
+      this.onQuit();
+    });    
   }
 
   ngOnDestroy(): void {
-    this.onSubmitSubscrib.unsubscribe()
-    this.onGoBackSubscrib.unsubscribe()
-    if (this.mvtSubscrib)
-      {this.mvtSubscrib.unsubscribe()}
-    if (this.paramsSubscrib)
-      {this.paramsSubscrib.unsubscribe()}
+    this.destroy$.next(true)
   }
 
   // convenience getter for easy access to form fields
   get f() { return this.fg.controls; }
   get f2() { return this.fg2.controls; }
 
-  goBack(): void {
-    this.seeyouService.goBackUrlParent()
+
+
+  onQuit(): void {
+    this.seeyouService.goBack()
   }
 
   onSubmit(){
@@ -119,10 +118,11 @@ export class OneSortieComponent implements OnInit, OnDestroy {
     this.alertService.clear();
     // stop here if form is invalid
     if (this.fg.invalid) {
+      console.log('one-sortie onSubmit invalide')
       return;
     }
     this.save()
-    this.goBack()
+    this.onQuit()
   }
 
   getMvt(): void {
@@ -130,14 +130,16 @@ export class OneSortieComponent implements OnInit, OnDestroy {
       console.log('this.id : ', this.id)
     } else {
       const id = this.id || ''
-      this.mvtSubscrib = this.mvtService.getMvt(id)
-      .subscribe(mvt => this.mvt = mvt);
+      this.mvtService.getMvt(id).pipe(
+        take(1)
+      ).subscribe(mvt => this.mvt = mvt);
     }
   }
 
   getParams(): void {
-    this.paramsSubscrib = this.paramsService.paramssubj$
-    .subscribe({
+    this.paramsService.paramssubj$.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe({
       next: (data:Params) => {
         this.params = data;
         if (!this.params.service || this.params.service < 0){
@@ -153,12 +155,6 @@ export class OneSortieComponent implements OnInit, OnDestroy {
         }
       }
     });
-  }
-
-
-  // stocke l'url actuelle pour un prochain retour par onGoBack
-  onSeeYou(): void {
-    this.seeyouService.setModeLancement("")
   }
 
   save(): void {

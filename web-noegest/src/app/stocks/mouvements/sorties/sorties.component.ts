@@ -6,9 +6,8 @@ import { ParamsService } from '../../_services/params.service'
 import { Params } from '../../_models/params';
 import { DatePipe } from '@angular/common';
 import { Constantes } from 'src/app/constantes';
-import { DateAnsiToFr } from 'src/app/general/_helpers/fonctions-perso'
+import { FonctionsPerso } from 'src/app/shared/fonctions-perso';
 import { AlertService, SeeyouService } from 'src/app/general/_services';
-import { Produit } from 'src/app/general/_helpers/fonctions-perso';
 
 @Component({
   selector: 'app-sorties',
@@ -30,23 +29,23 @@ export class SortiesComponent implements OnInit, OnDestroy {
 
   lstorigine_codes = Constantes.LSTORIGINE_SORTIES.map((x: { code: unknown })=>x.code) ;
   lstservice = Constantes.LSTSERVICE
-  ansiToFr = DateAnsiToFr
+  ansiToFr = this.fp.dateAnsiToFr
 
   constructor(
     private paramsService: ParamsService,
     private mvtService: MvtService,
     private datePipe: DatePipe,
     private seeyouService:SeeyouService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private fp: FonctionsPerso,
     ) {}
 
-  produit = Produit
+  produit = this.fp.produit
 
   ngOnInit(): void {
     this.getParams();
     this.getSorties();
     this.params.parent = this.name
-    this.seeyouService.setModeLancement('liste')
     this.seeyouService.initUrlsHisto()
   }
 

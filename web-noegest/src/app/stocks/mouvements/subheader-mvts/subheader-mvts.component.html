@@ -2,11 +2,10 @@
 
   <!-- infos en cours -->
   <span >
-    {{lstModules[template]}}
+    {{lstModules[template]}}:
   </span>
-  &nbsp;
   <span *ngIf="isListe">
-    : {{modeLancement}}
+    liste
     <span *ngIf="isToParams">pour {{params['origine']}} en cuisine</span>
     <span *ngIf="params['origine'] === 'camp'">pour camp '{{params['camp']}}'</span>
   </span>
@@ -34,21 +33,21 @@
   </div>
 
   <!-- boutons de retours -->
-  <div *ngIf = isToGoBack>
+  <div *ngIf = isToQuit>
     <button mat-flat-button color="primary" 
     type="submit"
     class=" p-1 py-sm-2 mb-1 mb-sm-0"
     aria-label="Confirm"
     [disabled]="!valid"
-    (click)="onSubmit()">
+    (click)="onClickOk()">
     retour ok
     <i class="bi bi-sign-turn-right-fill"></i>
     </button>
     &nbsp;
-    <button type="button"
+    <button  type="button"
     class="close btn btn-secondary p-1 py-sm-2 mb-1"
     aria-label="Close"
-    (click)="onGoBack()">
+    (click)="onClickQuit()">
     abandon
     <i class="bi bi-sign-turn-left"></i>
     </button>

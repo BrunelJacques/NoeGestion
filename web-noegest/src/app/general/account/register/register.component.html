@@ -7,18 +7,6 @@
           Pour créer un compte ou réinitialiser un mot de passe
         </div>
         <div class="form-group "></div>  
-
-        <button mat-flat-button color="primary" 
-        type="submit"
-        [disabled]="loading || !valid"
-        aria-label="Confirm"
-        (click)="onSubmit()">  
-          <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-          Demande
-        </button>
-        <button mat-flat-button class="fond-soutenu m-3">
-            <a routerLink="../login">Retour</a>
-        </button>
       </div>
     </div>
     <form [formGroup]="form"  
@@ -68,6 +56,18 @@
           </div>
       </div>
     </form>
+
+    <button mat-flat-button color="primary" 
+    type="submit"
+    [disabled]="loading || !valid"
+    aria-label="Confirm"
+    (click)="onSubmit()">  
+      <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+      Demande
+    </button>
+    <button mat-flat-button class="fond-soutenu m-3">
+        <a routerLink="../login">Retour</a>
+    </button>
   </div>
 </div>
  

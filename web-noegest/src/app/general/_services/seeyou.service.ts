@@ -1,20 +1,22 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { BehaviorSubject, delay, filter } from 'rxjs';
+import { Subject, BehaviorSubject, delay, filter } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 
 
 export class SeeyouService {
+  // permet les échanges entre subHeader et le component principal du DOM
   // historise les url pour faire des goback convoqués par des modules paratagés
 
-  public onSubmitEvent = new EventEmitter(undefined);
-  public onGoBackEvent = new EventEmitter(undefined);
-
+  public clicksOkSubject = new Subject<void>()
+  private clicksQuitSubject = new Subject<void>()
+  public clicksOk$ = this.clicksOkSubject.asObservable();
+  public clicksQuit$ = this.clicksQuitSubject.asObservable();
 
   public rootActive$ = new BehaviorSubject<string>("")
   public templateActive$ = new BehaviorSubject<string>("")
-  public modeLancement = ""
+  public parentName = "-"
 
   urlsHisto: string[] = ['/',]
 
@@ -27,11 +29,16 @@ export class SeeyouService {
           delay(500),
         )
         .subscribe(() => {
-          this.updateUrl()})
+          this.updateUrl()}
+        );
+      this.clicksOk$.subscribe(() => {
+        console.log('seeyou observe clickOk');
+      });
     }
 
   initUrlsHisto(){
     this.urlsHisto = ['//',]
+    this.parentName = "-"
   }
   
   updateUrl(){
@@ -46,6 +53,7 @@ export class SeeyouService {
           } 
         this.rootActive$.next(splitUrl[1]) 
         this.templateActive$.next(splitUrl[2])
+        this.setParentName(this.urlsHisto[1])
       } else { 
         this.initUrlsHisto()
         this.rootActive$.next('-') 
@@ -54,7 +62,16 @@ export class SeeyouService {
     }
   }
 
-  goBackUrlParent() {
+  emitClickOk() {
+    console.log('seeyou click ok emet next')
+    this.clicksOkSubject.next();
+  }
+
+  emitClickQuit() {
+    this.clicksQuitSubject.next();
+  }
+
+  goBack() {
     //route vers le dernier parent inséré et le supprime
     if (this.urlsHisto.length > 1) 
     { 
@@ -68,8 +85,18 @@ export class SeeyouService {
   getUrlParent(){
     return this.urlsHisto[1]
   }
-  
-  setModeLancement(mode:string) {
-    this.modeLancement = mode
+
+  setParentName(urlParent:string) {
+    const splitUrl = urlParent.split('/')
+    if ((splitUrl.length > 1 ) && (splitUrl[1].length > 1) ) {
+      this.parentName = splitUrl[1]
+    } else {
+      this.parentName = "-"
+    }
   }
+
+  getParentName(): string {
+    return this.parentName
+  }
+
 }

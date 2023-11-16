@@ -1,4 +1,4 @@
-import { Component, EventEmitter } from '@angular/core';
+import { Component } from '@angular/core';
 import { SeeyouService } from 'src/app/general/_services';
 import { ParamsService } from '../../_services/params.service';
 import { Constantes } from 'src/app/constantes'
@@ -11,21 +11,18 @@ import { Params } from '../../_models/params';
 })
 
 export class SubheaderMvtsComponent {
-  //public onSubmitEvent = new EventEmitter(undefined);
-  //public onGoBackEvent = new EventEmitter(undefined);
-
+  parentName = "-"
+  nomModule = "-"
   isListe = false
   isToParams = false
-  isToGoBack = false
+  isToQuit = false
   listes = ['sorties','entrees']
   toParams = ['sorties','entrees','onesortie','oneentree']
-  toGoBacks = ['onesortie','oneentree','params']
+  toQuits = ['onesortie','oneentree','params']
   template = "."
   params!:Params
   jour: string | null = ""
   lstservice = Constantes.LSTSERVICE
-  nomModule = "-"
-  modeLancement = ""
   lstModules: { [key: string]: string } = {
     'sorties': 'Sorties',
     'entrees': 'Entrées',
@@ -45,8 +42,8 @@ export class SubheaderMvtsComponent {
         this.template = template
         this.isListe = (this.listes.indexOf(template) != -1)
         this.isToParams = (this.toParams.indexOf(template) != -1)
-        this.isToGoBack = (this.toGoBacks.indexOf(template) != -1 )
-        this.modeLancement = this.seeyouService.modeLancement
+        this.isToQuit = (this.toQuits.indexOf(template) != -1 )
+        this.parentName = this.seeyouService.getParentName()
       }
     )
   
@@ -63,17 +60,16 @@ export class SubheaderMvtsComponent {
       })
   }
 
-  // stocke l'url actuelle pour un prochain retour par onGoBack
-  onSeeYou(modeLancement:string): void {
-    this.seeyouService.setModeLancement(modeLancement)
+
+  onClickOk() {
+    console.log('subheader clickOk')
+    this.seeyouService.emitClickOk()
   }
 
-  onSubmit(): void {
-    this.seeyouService.onSubmitEvent.emit(' Click submit from subheaderMvts');
+  onClickQuit() {
+    this.seeyouService.emitClickQuit()
   }
 
-  onGoBack() {
-    this.seeyouService.onGoBackEvent.emit(' Click toGoBack from subheaderMvts');
-  }
+
 
 }

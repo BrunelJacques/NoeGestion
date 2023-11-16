@@ -24,7 +24,7 @@
         (change)="onOrigineChange()"
         formControlName="origine"
         class="form-control" required aria-label="origine">
-        <option [ngValue]="'-'" disabled>Filtrer les {{parent}} pour :</option>
+        <option [ngValue]="'-'" disabled>Filtrer les mouvements pour :</option>
         <option *ngFor="let origine of lstorigine"
           [ngValue]="origine['code']">
           {{origine['libelle']}}
@@ -63,7 +63,7 @@
         </div>
       </div>
 
-      <div *ngIf="(parent.endsWith('entrees'))">
+      <div *ngIf="(parentName.endsWith('entrees'))">
         <label for="tva">Tva mtt:</label>
         <select id="tva" name="tva" formControlName="tva" class="form-control">
           <option value="ttc">en TTC</option>

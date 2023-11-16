@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject, catchError, of, tap } from 'rxjs';
-import { hoursDelta, deepCopy } from '../../general/_helpers/fonctions-perso';
+import { FonctionsPerso } from '../../shared/fonctions-perso';
 import { DatePipe } from '@angular/common';
 
 import { Params,  PARAMS, Camp, Fournisseur, Rayon, Magasin } from '../_models/params';
@@ -28,7 +28,8 @@ export class ParamsService {
     private constantes: Constantes,
     private http: HttpClient,
     private handleError: HandleError,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private fp: FonctionsPerso,
     ){
       const param = this.getStoredParams()
       if (param) 
@@ -60,10 +61,10 @@ export class ParamsService {
   ajusteParams(params:Params){
     // >6 heures après le dernier paramétrage, on réinitialise Params
     if (!(params instanceof Object)){
-      params = deepCopy(PARAMS)
+      params = this.fp.deepCopy(PARAMS)
     }
-    if (hoursDelta(new Date(params.modif),new Date()) > 6) {
-      params = deepCopy(PARAMS)
+    if (this.fp.hoursDelta(new Date(params.modif),new Date()) > 6) {
+      params = this.fp.deepCopy(PARAMS)
       params.parent = "raz-sorties"
     }
     if (params.service == -1) {

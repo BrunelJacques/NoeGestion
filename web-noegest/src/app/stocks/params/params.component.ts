@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subject, Observable, takeUntil } from 'rxjs';
 
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
@@ -17,14 +17,12 @@ import { Constantes } from 'src/app/constantes';
 
 export class ParamsComponent implements OnInit, OnDestroy {
   name = "Params";
+  parentName!:string;
   params!: Params;
   camps!: Camp[];
   paramsForm!:FormGroup;
-  parent = "";
-
-  onSubmitSubscrib!:Subscription;
-  paramsSubscrib!:Subscription;
-  receivedData: unknown;
+  
+  private destroy$!: Subject<boolean>;
 
   lstservice = Constantes.LSTSERVICE;
   lstorigine_sorties = Constantes.LSTORIGINE_SORTIES;
@@ -43,38 +41,56 @@ export class ParamsComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private alertService: AlertService,
     private seeyouService: SeeyouService,
-    ){}
+    ){
+      this.initSubscriptions()
+    }
+  
+    initSubscriptions() {
+      this.destroy$ = new Subject<boolean>()
+  
+      this.seeyouService.clicksOk$.pipe(
+        takeUntil(this.destroy$)
+      ).subscribe(() => {
+        this.onSubmit();
+      });
+      this.seeyouService.clicksQuit$.pipe(
+        takeUntil(this.destroy$)
+      ).subscribe(() => {
+        this.onQuit();
+      });    
+    }
   
   ngOnInit(): void {
-    this.paramsForm = this.formBuilder.group({
-      jour: [new Date(),Validators.required],
-      origine:"repas",
-      camp: ["00", Validators.required],
-      tva: "en TTC",
-      service: ["-", Validators.required],
-      fournisseur:"",
-    });
+    this.parentName = this.seeyouService.getParentName()
+    this.initForm()
     this.getParams()
     this.getCamps()
-    this.onSubmitSubscrib = this.seeyouService.onSubmitEvent
-      .subscribe((data) => {
-        this.receivedData = data
-        this.onSubmit();    
-      })
   }
 
+initForm(): void {
+  this.paramsForm = this.formBuilder.group({
+    jour: [new Date(),Validators.required],
+    origine:"repas",
+    camp: ["00", Validators.required],
+    tva: "en TTC",
+    service: ["-", Validators.required],
+    fournisseur:"",
+  });
+}
 
 
   ngOnDestroy(): void {
-    this.onSubmitSubscrib.unsubscribe() 
-    if (this.paramsSubscrib){
-      this.paramsSubscrib.unsubscribe()
-    }  
+    this.destroy$.next(true)
   }
 
 
   // convenience getter for easy access to form fields
   get f() { return this.paramsForm.controls; }
+
+  onQuit(): void {
+    this.seeyouService.goBack()
+  }
+
 
   onOrigineChange() {
       this.majOrigine(this.f['origine'].value)
@@ -95,9 +111,6 @@ export class ParamsComponent implements OnInit, OnDestroy {
     }
   }
   
-  goBack(): void {
-    this.seeyouService.goBackUrlParent()
-  }
 
   onSubmit(){
     this.submitted = true;
@@ -111,7 +124,7 @@ export class ParamsComponent implements OnInit, OnDestroy {
     this.paramsService.formToParams(this.paramsForm,this.params),
     this.params.modif = new Date(),
     this.paramsService.setParams(this.params)
-    this.goBack()
+    this.onQuit()
   }
   
   getCamps(): void {
@@ -121,7 +134,7 @@ export class ParamsComponent implements OnInit, OnDestroy {
   
   getParams(): void {
     this.loading = true;
-    this.paramsSubscrib = this.paramsService.paramssubj$
+    this.paramsService.paramssubj$
       .subscribe({
         next: (data:Params) => {
           this.params = data;
