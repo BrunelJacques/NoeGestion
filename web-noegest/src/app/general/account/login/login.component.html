@@ -23,11 +23,12 @@
         <div class="form-group">
             <button mat-flat-button color="primary" [disabled]="loading">
                 <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-                Envoi
+                Envoi<mat-icon>send</mat-icon>
             </button>
             <button mat-flat-button class="fond-soutenu m-3">
-                <a routerLink="../register" >Mon Compte</a>
+                <a routerLink="../register" >Compte<mat-icon>person</mat-icon></a>
             </button>
         </div>
     </form>
 </mat-card>
+<div class="my-1">

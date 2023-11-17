@@ -18,7 +18,7 @@ export class ZzTestComponent implements OnInit {
   mainForm!: FormGroup;
 
   personalInfoForm!: FormGroup;
-  contactPreferenceCtrl!: FormControl;
+  situationCtrl!: FormControl;
   phoneCtrl!: FormControl;
   usernameCtrl!: FormControl;
 
@@ -31,7 +31,7 @@ export class ZzTestComponent implements OnInit {
   passwordCtrl!: FormControl;
   confirmPasswordCtrl!: FormControl;  
 
-  showEmailCtrl$!: Observable<boolean>;
+  situationCtrl$!: Observable<string>;
   showPhoneCtrl$!: Observable<boolean>;
   showEmailError$!: Observable<boolean>;
   showPasswordError$!: Observable<boolean>;
@@ -53,7 +53,7 @@ export class ZzTestComponent implements OnInit {
     private initMainForm(): void {
       this.mainForm = this.formBuilder.group({
         personalInfo: this.personalInfoForm,
-        contactPreference: this.contactPreferenceCtrl,
+        situation: this.situationCtrl,
         email: this.emailForm,
         phone: this.phoneCtrl,
         loginInfo: this.loginInfoForm,
@@ -66,7 +66,7 @@ export class ZzTestComponent implements OnInit {
         lastName: ["", Validators.required]
       }),
   
-      this.contactPreferenceCtrl = this.formBuilder.control('email');
+      this.situationCtrl = this.formBuilder.control('info');
       this.emailCtrl = this.formBuilder.control('');
       this.confirmEmailCtrl = this.formBuilder.control('');
   
@@ -98,17 +98,18 @@ export class ZzTestComponent implements OnInit {
     }
   
     private initFormObservables() {
-      
-      this.showEmailCtrl$ = this.contactPreferenceCtrl.valueChanges.pipe(
-          startWith(this.contactPreferenceCtrl.value),
-          map(preference => preference === 'email'),
-          tap(showEmailCtrl => this.setEmailValidators(showEmailCtrl))
+      this.situationCtrl$ = this.situationCtrl.valueChanges.pipe(
+          startWith(this.situationCtrl.value),
+          map(situation => situation),
+          tap(situation => {
+            if (situation == "") {
+              this.setEmailValidators(false)
+            } else {
+              this.setEmailValidators(true)
+            }
+          })
       );
-      this.showPhoneCtrl$ = this.contactPreferenceCtrl.valueChanges.pipe(
-          startWith(this.contactPreferenceCtrl.value),
-          map(preference => preference === 'phone'),
-          tap(showPhoneCtrl => this.setPhoneValidators(showPhoneCtrl))
-      );
+
       this.showEmailError$ =  this.emailForm.statusChanges.pipe(
         map(status => status === 'INVALID' && 
           this.emailCtrl.value && 
@@ -184,15 +185,13 @@ export class ZzTestComponent implements OnInit {
 
     getFormControlErrorText(ctrl: AbstractControl) {
       if (ctrl.hasError('required')) {
-        return 'Ce champ est obligatoire'
+        return 'Obligatoire'
       } else if (ctrl.hasError('email')) {
-        return "merci d'entrer un adresse valide"
+        return "Mail invalide"
       } else if (ctrl.hasError('minlength')) {
-        return "Il n'y a pas assez de caracères"
+        return "Trop court"
       } else if (ctrl.hasError('maxlength')) {
-        return "Trop long pour ce champ"
-      } else if (ctrl.hasError('validValidator')){
-          return ctrl.value + " contient le mot tabou VALID"
+        return "Trop long"
       } else {
         return "Saisie non valide"
       }

@@ -238,12 +238,45 @@ td {
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+
 mat-form-field {
   width: 45%;
   &.full-width {
     width: 80%;
     margin-left: 10%;
   }
+}
+
+mat-form-field .mat-mdc-form-field-infix {
+  min-height: 28px !important; /* adjust the height as needed */
+  padding: 0 !important;
+  top: 6px;
+  vertical-align: bottom;
+}
+
+mat-form-field .mat-mdc-text-field-wrapper .mat-mdc-form-field-flex .mat-mdc-floating-label {
+  vertical-align: bottom;
+  top: 5px;
+}
+
+.mat-mdc-form-field-subscript-wrapper, .mat-mdc-form-field-bottom-align::before {
+  line-height: 16px !important;
+  height: 16px !important;
+  vertical-align: text-top;
+}
+
+//.customInput {
+.mat-mdc-input-element {
+  height: 18px !important;
+  min-height: 16px;
+}
+
+.mat-mdc-button .mat-mdc-button-touch-target, .mat-mdc-unelevated-button .mat-mdc-button-touch-target, .mat-mdc-raised-button .mat-mdc-button-touch-target, .mat-mdc-outlined-button .mat-mdc-button-touch-target {
+  position: absolute;
+  top: 20px !important;
+  height: 20px;
+  left: 0;
+  right: 0;
 }
 
 .form-row {
