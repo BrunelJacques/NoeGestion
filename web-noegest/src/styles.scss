@@ -220,7 +220,13 @@ td {
   align-items: center;
 }
 
-.right { text-align: right!important;}
+.right { 
+  text-align: right!important;
+  justify-content: right;
+  justify-items: right;
+  align-content: right;
+  align-items: right;
+}
 .left { text-align: left!important; }
 .start { justify-content: start !important;}
 .end   { justify-content: end   !important;}
@@ -238,7 +244,6 @@ td {
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
-
 mat-form-field {
   width: 45%;
   &.full-width {
@@ -250,6 +255,7 @@ mat-form-field {
 mat-form-field .mat-mdc-form-field-infix {
   min-height: 28px !important; /* adjust the height as needed */
   padding: 0 !important;
+  // ce top se cumule avec le suivant et permet d'écarter les deux noms du field avec ou sans contenu
   top: 6px;
   vertical-align: bottom;
 }
@@ -259,24 +265,27 @@ mat-form-field .mat-mdc-text-field-wrapper .mat-mdc-form-field-flex .mat-mdc-flo
   top: 5px;
 }
 
-.mat-mdc-form-field-subscript-wrapper, .mat-mdc-form-field-bottom-align::before {
-  line-height: 16px !important;
-  height: 16px !important;
-  vertical-align: text-top;
-}
 
-//.customInput {
+// custom Input  in formfield
 .mat-mdc-input-element {
   height: 18px !important;
   min-height: 16px;
 }
 
+// custom position mat-flat-button
 .mat-mdc-button .mat-mdc-button-touch-target, .mat-mdc-unelevated-button .mat-mdc-button-touch-target, .mat-mdc-raised-button .mat-mdc-button-touch-target, .mat-mdc-outlined-button .mat-mdc-button-touch-target {
   position: absolute;
   top: 20px !important;
   height: 20px;
   left: 0;
   right: 0;
+}
+
+// custom affichage d'erreurs formfield
+.mat-mdc-form-field-subscript-wrapper, .mat-mdc-form-field-bottom-align::before {
+  line-height: 13px !important;
+  height: 13px !important;
+  vertical-align: text-bottom;
 }
 
 .form-row {
