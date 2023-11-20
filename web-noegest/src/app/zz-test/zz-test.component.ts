@@ -62,7 +62,7 @@ export class ZzTestComponent implements OnInit {
   
     private initFormControls(): void {
       this.personalInfoForm = this.formBuilder.group({
-        firstName: ['',validValidator()],
+        firstName: ['',Validators.required],
         lastName: ["", Validators.required]
       }),
   

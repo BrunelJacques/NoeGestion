@@ -6,27 +6,13 @@
     <mat-radio-button value="new">Membre</mat-radio-button>
     <mat-radio-button value="info">Info</mat-radio-button>
   </mat-radio-group>
-  <mat-card class="left" *ngIf=" 'info' === (situationCtrl$ | async)">
-    <mat-card-subtitle class="mx-1 fond-titre">
-      <mat-icon>search</mat-icon>Réservé aux collaborateurs Matthania, pas aux membres ou clients.
-    </mat-card-subtitle>
-    <mat-card-subtitle class="mx-3">
-      <p class="m-0"><mat-icon>done</mat-icon> Si vous êtes titulaires d'un compte existant vous pourrez changer votre mot de passe ou vos coordonnées</p>
-      <p class="m-0"><mat-icon>done</mat-icon> Sinon votre demande de création de compte sera analysée, vous serez informés en cas de validation</p>
-    </mat-card-subtitle>
-    
-    <mat-card-actions class="right">
-      <button mat-flat-button class="fond-soutenu  my-1 small10">
-        <a routerLink="www.matthania.com">Voir Site Matthania<mat-icon>language</mat-icon></a>
-      </button>
-    </mat-card-actions>
-  </mat-card>
 
+  
   <div *ngIf=" 'info' !== (situationCtrl$ | async)">
-    <mat-card class=" m-1" formGroupName="personalInfo" >
+    <mat-card class=" m-1" formGroupName="personalInfo">
       <mat-card-subtitle>Informations personnelles</mat-card-subtitle>
       <div class="form-row m-1">
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="fill" >
           <mat-label>Prénom</mat-label>
           <input type="text" matInput formControlName="firstName">
           <mat-error>Champ nécessaire </mat-error>
