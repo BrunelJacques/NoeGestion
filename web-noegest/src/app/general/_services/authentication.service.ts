@@ -5,24 +5,23 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { User } from '../_models';
 import { Constantes } from 'src/app/constantes';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
-    public loginSubject = new Subject<boolean>();
     private cst = new Constantes;
     public userSubject: BehaviorSubject<User>;
-    public user: Observable<User>;
+    public user$: Observable<User>;
 
     constructor(
         private router: Router,
         private http: HttpClient,
     ) {
         this.userSubject = new BehaviorSubject<User>(new User);
-        this.user = this.userSubject.asObservable();
+        this.user$ = this.userSubject.asObservable();
     }
 
     // appelé par auth guard
@@ -39,7 +38,6 @@ export class AuthenticationService {
             ).pipe(map(user => {
                 user.jwtToken = user.access;
                 this.userSubject.next(user);
-                this.loginSubject.next(true)
                 this.startRefreshTokenTimer();
                 return user;
             }));
@@ -48,7 +46,6 @@ export class AuthenticationService {
     logout() {
         //pas de revoke token avec Django RestFramework
         this.stopRefreshTokenTimer();
-        this.loginSubject.next(false)
         this.userSubject.next(new User);
         this.router.navigate(['/account/login']);
     }

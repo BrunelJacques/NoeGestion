@@ -12,9 +12,9 @@ const stocksModule = () => import('./stocks/stocks.module').then(x => x.StocksMo
 
 const routes: Routes = [
     { path: 'zztest', component: ZzTestComponent},
-    { path: '', component: HomeComponent, canActivate: [AuthGuard] },
     { path: 'account', loadChildren: accountModule },
     { path: 'stocks', loadChildren: stocksModule },
+    { path: '', component: HomeComponent, canActivate: [AuthGuard] },
 
     // otherwise redirect to home
     { path: '**', component: NotFoundComponent }

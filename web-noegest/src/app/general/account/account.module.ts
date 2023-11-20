@@ -7,6 +7,8 @@ import { LayoutComponent } from './layout';
 import { LoginComponent } from './login';
 import { RegisterComponent } from './register';
 import { SharedModule } from 'src/app/shared/shared.modules';
+import { InfoComponent } from './subregister/info/info.component';
+import { CompteComponent } from './subregister/compte/compte.component';
 
 @NgModule({
     imports: [
@@ -18,7 +20,9 @@ import { SharedModule } from 'src/app/shared/shared.modules';
     declarations: [
         LayoutComponent,
         LoginComponent,
-        RegisterComponent
+        RegisterComponent,
+        InfoComponent,
+        CompteComponent
     ]
 })
 export class AccountModule { }

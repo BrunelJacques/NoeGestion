@@ -27,7 +27,7 @@ export class HomeComponent  {
     private seeyouService: SeeyouService,
     )
      {
-      this.authenticationService.user.subscribe(x => this.user = x);
+      this.authenticationService.user$.subscribe(x => this.user = x);
      }
 
 

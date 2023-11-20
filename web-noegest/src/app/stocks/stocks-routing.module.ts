@@ -11,13 +11,11 @@ import { InventaireComponent } from './inventaire/inventaire.component';
 import { PrixJourneeComponent } from './prix-journee/prix-journee.component';
 import { ParamsComponent } from './params/params.component';
 import { ArticlesNomResolver } from './_resolvers/articles.resolvers';
-import { ZzTestComponent } from '../zz-test/zz-test.component';
 
 const routes: Routes = [
     {
         path: '',
         children: [
-            { path: 'zztest', component: ZzTestComponent },
             { path: 'sorties', component: SortiesComponent },
             { path: 'entrees', component: EntreesComponent, canActivate: [AuthGuard] },
             { path: 'effectifs', component: EffectifsComponent, canActivate: [AuthGuard] },

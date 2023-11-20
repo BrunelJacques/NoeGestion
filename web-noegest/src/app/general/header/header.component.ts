@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { Subscription } from 'rxjs';
+import { Observable, Subject, Subscription, takeUntil, tap } from 'rxjs';
 
 import { User } from 'src/app/general/_models';
 import { AuthenticationService } from 'src/app/general/_services';
@@ -17,11 +17,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
   isNavbarCollapsed = false;
 
   title = 'matthania';
-  user = new User();
   namemodule = ""
-  loginSub = new Subscription();
-  isLoggedIn = false;
-
+  username!: string |undefined
+  public isLoggedIn = false;
+  private destroy$!:Subject<boolean>
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: object,
@@ -30,10 +29,20 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.loginSub = this.authenticationService.loginSubject.subscribe(
-      (value) => (this.isLoggedIn = value)
-    );
-    this.seeyouService.rootActive$.subscribe(
+    this.destroy$ = new Subject<boolean>;
+    this.authenticationService.user$.pipe(
+      tap(x => {
+      if (x) {
+        this.isLoggedIn = true,
+        this.username = x.username
+        }
+      }),
+      takeUntil(this.destroy$)
+    ).subscribe()
+
+    this.seeyouService.rootActive$.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(
       (value) => (this.namemodule = value)
     );
     /* Permet la fermeture du menu après un choix*/ 
@@ -41,7 +50,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.loginSub.unsubscribe();
+    this.destroy$.next(true);
   }
 
   toggleNavbar() { this.isNavbarCollapsed = !this.isNavbarCollapsed;}
