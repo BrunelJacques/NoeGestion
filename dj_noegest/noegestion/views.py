@@ -1,5 +1,5 @@
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.permissions import IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from noegestion.serializers import *
@@ -20,11 +20,9 @@ def home(request):
     message = "Bonjour %s " %(name)
     return render(request, 'home.html', context={'message': message})
 
-# via serialiser Rest
+# via serialiser-Rest retourne le détail du user authentifié
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
-    
-
 
 class GeAnalytiqueViewset(ModelViewSet):
     serializer_class = GeAnalytiqueSerializer

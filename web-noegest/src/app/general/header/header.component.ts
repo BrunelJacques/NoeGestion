@@ -1,9 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { Observable, Subject, Subscription, takeUntil, tap } from 'rxjs';
+import { Subject, takeUntil, tap } from 'rxjs';
 
-import { User } from 'src/app/general/_models';
 import { AuthenticationService } from 'src/app/general/_services';
 import { SeeyouService } from '../_services/seeyou.service';
 
@@ -25,7 +24,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constructor(
     @Inject(PLATFORM_ID) private platformId: object,
     private seeyouService: SeeyouService,
-    private authenticationService: AuthenticationService,
+    public authenticationService: AuthenticationService,
   ) {}
 
   ngOnInit(): void {

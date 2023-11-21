@@ -2,9 +2,16 @@ import sys
 sys.path.append("..")
 from outils import xconst, xformat
 
+from django.contrib.auth.models import AbstractUser
 from django.db import models, transaction
 #import requests # pour appels api externes transaction.atomic
 
+# extension possible lors d'une première initialisation seulement, d'autres modifs sont nécessaires
+# https://docs.djangoproject.com/en/dev/topics/auth/customizing/#substituting-a-custom-user-model
+"""class User(AbstractUser):
+    phone_number = models.CharField(max_length=20,blank=True, default='')
+    id_matthania = models.CharField(blank=True, default='')
+"""
 class StMagasin(models.Model):
 
     id = models.CharField(max_length=5, primary_key=True)

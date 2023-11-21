@@ -9,10 +9,8 @@ export class LayoutComponent {
         private router: Router,
         private authenticationService: AuthenticationService
     ) {
-        // redirect to home if already logged in
         const user = this.authenticationService.userValue
-        if (user) {
-            console.log('vu par layout user:',user.username);
-        }
+        // redirect to home if already logged in
+        console.log('user layout:',user)
     }
 }

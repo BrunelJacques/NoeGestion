@@ -2,7 +2,7 @@
 from rest_framework.serializers import ModelSerializer, CharField
 from noegestion.models import *
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-
+from django.contrib.auth.models import User
 
 # https://stackoverflow.com/questions/54544978/customizing-jwt-response-from-django-rest-framework-simplejwt
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -13,13 +13,15 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         data['id'] = self.user.id
         data['username'] = self.user.username
         data['password'] = self.user.password
-        data['lastname'] = self.user.last_name
-        data['firstname'] = self.user.first_name
+        data['lastName'] = self.user.last_name
+        data['firstName'] = self.user.first_name
+        data['email'] = self.user.email
         data['groups'] = self.user.groups.values_list('name', flat=True)
+        data['isStaff'] = self.user.is_staff
+        data['isActive'] = self.user.is_active
         return data
 
 class GeAnalytiqueSerializer(ModelSerializer):
-
     class Meta:
         model = GeAnalytique
         fields = [

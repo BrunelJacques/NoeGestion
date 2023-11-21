@@ -1,6 +1,6 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
-import { Observable, first, map, startWith, take } from 'rxjs';
+import { Observable, Subject, first, map, startWith, take, takeUntil, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertService, AuthenticationService } from 'src/app/general/_services';
 import { User } from '../../_models';
@@ -16,6 +16,8 @@ export class RegisterComponent implements OnInit {
     userValue!: User
     situationCtrl!: FormControl
     situationCtrl$!: Observable<string>
+    destroy$!: Subject<boolean>
+    isLogged!:boolean
   
     constructor(
       private route: ActivatedRoute,
@@ -36,6 +38,18 @@ export class RegisterComponent implements OnInit {
     }
 
     private initObservables() {
+      this.destroy$ = new Subject<boolean>;
+      this.authenticationService.user$.pipe(
+        tap(x => {
+        if (x) {
+          this.isLogged = true,
+          this.userValue = x
+          }
+        }),
+        takeUntil(this.destroy$)
+      ).subscribe()
+  
+  
       this.authenticationService.user$.pipe(
         take(1),
         map(x => this.userValue = x)
