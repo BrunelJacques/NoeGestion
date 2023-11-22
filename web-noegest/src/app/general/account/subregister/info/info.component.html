@@ -1,15 +1,19 @@
-<mat-card class="left">
-  <mat-card-subtitle class="mx-1 fond-titre">
-    <mat-icon>search</mat-icon>Réservé aux staff Matthania, être membre ne suffit pas.
-  </mat-card-subtitle>
+  <mat-error>choisissez votre situation Noegest" </mat-error>
+  <div class="mx-1 my-3 fond-titre row">
+    <mat-icon class="col">search</mat-icon>
+    <div class="col-11"> Réservé aux staff Matthania, être membre ne suffit pas pour pouvoir utiliser NoeGest.</div>
+  </div>
   <mat-card-subtitle class="mx-3">
     <p class="m-0"><mat-icon>done</mat-icon> Si vous êtes titulaires d'un compte existant vous pourrez changer votre mot de passe ou vos coordonnées.</p>
     <p class="m-0"><mat-icon>done</mat-icon> Sinon votre demande de création d'un compte staff sera analysée.</p>
   </mat-card-subtitle>
   
-  <mat-card-actions class="right">
+  <mat-card-actions >
+    <button mat-flat-button class="fond-soutenu m-3">
+      <a routerLink="../login">Abandon<mat-icon>reply</mat-icon></a>
+    </button>
+  
     <button mat-flat-button class="fond-soutenu  my-1 small10">
       <a routerLink="www.matthania.com">Voir Site Matthania<mat-icon>language</mat-icon></a>
     </button>
   </mat-card-actions>
-</mat-card>

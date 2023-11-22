@@ -11,15 +11,12 @@
   <div *ngIf=" 'info' === (situationCtrl.value)">
     <app-info></app-info>
   </div>
-  <div *ngIf=" 'exist' === (situationCtrl.value)">
-    <app-compte></app-compte>
-  </div>
-  <div *ngIf=" 'new' === (situationCtrl.value)">
-    <app-compte></app-compte>
+  <div *ngIf=" 'info' !== (situationCtrl.value)">
+    <app-compte  [userValue]="userValue" (valid)="onValid($event)"></app-compte>
   </div>
 
-  <mat-card-actions>
-    <button *ngIf=" 'info' !== (situationCtrl.value)"
+  <mat-card-actions *ngIf=" 'info' !== (situationCtrl.value)">
+    <button
     mat-flat-button color="primary" 
     type="submit"
     [disabled]="loading || !userFormValid"

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, map, startWith } from 'rxjs';
 import { confirmEqualValidator } from 'src/app/shared/_validators/confirm-equal.validator';
@@ -11,10 +11,13 @@ import { User } from 'src/app/general/_models';
 })
 export class CompteComponent implements OnInit {
 
-  userValue!: User
+  @Input() userValue!: User;
+  @Output() valid = new EventEmitter<User>();
+
   userForm!: FormGroup
   isDisabled = true
-  
+  situation!: string
+    
   personalInfoForm!: FormGroup
   situationCtrl!: FormControl
   phoneCtrl!: FormControl
@@ -38,6 +41,7 @@ export class CompteComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+
     this.initFormControls()
     this.initMainForm()
     this.setEmailValidators(true)
@@ -72,10 +76,6 @@ export class CompteComponent implements OnInit {
   }
   
   private initFormObservables() {
-    this.situationCtrl$ = this.situationCtrl.valueChanges.pipe(
-        startWith(this.situationCtrl.value),
-        map(situation => situation),
-        );
 
     this.showEmailError$ =  this.emailForm.statusChanges.pipe(
         map(status => status === 'INVALID' && 
@@ -104,13 +104,12 @@ export class CompteComponent implements OnInit {
 
   private initFormControls(): void {
     this.personalInfoForm = this.formBuilder.group({
-      firstName: ['monprénom', Validators.required],
-      lastName: ["", Validators.required],
+      firstName: [this.userValue.firstName, Validators.required],
+      lastName: [this.userValue.lastName, Validators.required],
     }),
 
-    this.situationCtrl = this.formBuilder.control('info')
-    this.emailCtrl = this.formBuilder.control('')
-    this.confirmEmailCtrl = this.formBuilder.control('')
+    this.emailCtrl = this.formBuilder.control(this.userValue.email)
+    this.confirmEmailCtrl = this.formBuilder.control(this.userValue.email)
 
     this.emailForm = this.formBuilder.group({
       email: this.emailCtrl,
@@ -121,13 +120,13 @@ export class CompteComponent implements OnInit {
       updateOn: 'blur'
     });
 
-    this.phoneCtrl = this.formBuilder.control('')
-    this.passwordCtrl = this.formBuilder.control('', Validators.required)
-    this.confirmPasswordCtrl = this.formBuilder.control('', Validators.required)
+    this.phoneCtrl = this.formBuilder.control(this.userValue.phone)
+    this.passwordCtrl = this.formBuilder.control(this.userValue.password, Validators.required)
+    this.confirmPasswordCtrl = this.formBuilder.control(this.userValue.password, Validators.required)
     this.usernameCtrl = this.formBuilder.control('', Validators.required)
     
     this.loginInfoForm = this.formBuilder.group({
-      username: this.usernameCtrl = this.formBuilder.control('', Validators.required),
+      username: this.usernameCtrl = this.formBuilder.control(this.userValue.username, Validators.required),
       password: this.passwordCtrl,
       confirmPassword: this.confirmPasswordCtrl,
     }, {

@@ -10,4 +10,5 @@
     phone?: string;
     groups?: [string];
     jwtToken?: string;
+    situation?:string;
 }
