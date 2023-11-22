@@ -49,21 +49,21 @@ export class RegisterComponent implements OnInit, OnDestroy {
   
       this.situationCtrl.valueChanges.pipe(
         startWith(this.situationCtrl.value),
-        tap( () =>  this.onIncoherence()),
+        tap( () =>  this.testCoherenceSituation()),
         takeUntil(this.destroy$),
       ).subscribe()
     }
 
-  onIncoherence(): void {
-    this.alertService.clear()
+  testCoherenceSituation(): void {
     const log = this.isLogged
     const situ = this.situationCtrl.value
     if (!log && situ === 'exist') {
+      this.alertService.clear()
       const mess = "Si votre compte existe, il faut d'abord vous connecter avant d'y apporter des modifs"
       this.alertService.info(mess)
       this.situationCtrl.setValue('info')
-    }
-    if (log && situ === 'new') {
+    } else if (log && situ === 'new') {
+      this.alertService.clear()
       const mess = "Votre compte existe, vous ne pouvez pas demander une nouvelle création de compte"
       this.alertService.info(mess)
       this.situationCtrl.setValue('info')
