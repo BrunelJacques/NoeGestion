@@ -1,25 +1,25 @@
 ﻿<mat-card class="main-form">
-  <mat-card-title>Mon Compte</mat-card-title>
-  <mat-card-subtitle>Votre situation Noegest?</mat-card-subtitle>
+  <mat-card-title>Mon Compte {{userValue.username}} </mat-card-title>
+  <mat-card-subtitle class="fs-6">Votre situation Noegest?</mat-card-subtitle>
   <mat-radio-group [formControl]="situationCtrl">
     <mat-radio-button value="exist">Compte existant</mat-radio-button>
-    <mat-radio-button value="new">Membre</mat-radio-button>
+    <mat-radio-button value="new">Staff</mat-radio-button>
     <mat-radio-button value="info">Info</mat-radio-button>
   </mat-radio-group>
 
   
-  <div *ngIf=" 'info' === (situationCtrl$ | async)">
+  <div *ngIf=" 'info' === (situationCtrl.value)">
     <app-info></app-info>
   </div>
-  <div *ngIf=" 'exist' === (situationCtrl$ | async)">
+  <div *ngIf=" 'exist' === (situationCtrl.value)">
     <app-compte></app-compte>
   </div>
-  <div *ngIf=" 'new' === (situationCtrl$ | async)">
+  <div *ngIf=" 'new' === (situationCtrl.value)">
     <app-compte></app-compte>
   </div>
 
   <mat-card-actions>
-    <button *ngIf=" 'info' !== (situationCtrl$ | async)"
+    <button *ngIf=" 'info' !== (situationCtrl.value)"
     mat-flat-button color="primary" 
     type="submit"
     [disabled]="loading || !userFormValid"

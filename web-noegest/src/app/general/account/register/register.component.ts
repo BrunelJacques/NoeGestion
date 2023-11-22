@@ -1,4 +1,4 @@
-﻿import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { Observable, Subject, first, map, startWith, take, takeUntil, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -8,14 +8,12 @@ import { User } from '../../_models';
 
 @Component({ templateUrl: 'register.component.html' })
 
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, OnDestroy {
 
-    valid = true
     loading = false  
     userFormValid = true
     userValue!: User
     situationCtrl!: FormControl
-    situationCtrl$!: Observable<string>
     destroy$!: Subject<boolean>
     isLogged!:boolean
   
@@ -30,7 +28,7 @@ export class RegisterComponent implements OnInit {
     ngOnInit(): void {
       this.initSituationCtrl()
       this.initObservables()
-      console.log('user: ',this.userValue)
+      this.alertService.clear()
     }
 
     private initSituationCtrl() {
@@ -39,25 +37,41 @@ export class RegisterComponent implements OnInit {
 
     private initObservables() {
       this.destroy$ = new Subject<boolean>;
+
+      this.userValue = new User
       this.authenticationService.user$.pipe(
+        takeUntil(this.destroy$),
         tap(x => {
-        if (x) {
-          this.isLogged = true,
+          this.isLogged = (x.username !== undefined),
           this.userValue = x
-          }
         }),
-        takeUntil(this.destroy$)
       ).subscribe()
   
-  
-      this.authenticationService.user$.pipe(
-        take(1),
-        map(x => this.userValue = x)
-      )
-      this.situationCtrl$ = this.situationCtrl.valueChanges.pipe(
+      this.situationCtrl.valueChanges.pipe(
         startWith(this.situationCtrl.value),
-        map(x => x)
-      )
+        tap( () =>  this.onIncoherence()),
+        takeUntil(this.destroy$),
+      ).subscribe()
+    }
+
+  onIncoherence(): void {
+    this.alertService.clear()
+    const log = this.isLogged
+    const situ = this.situationCtrl.value
+    if (!log && situ === 'exist') {
+      const mess = "Si votre compte existe, il faut d'abord vous connecter avant d'y apporter des modifs"
+      this.alertService.info(mess)
+      this.situationCtrl.setValue('info')
+    }
+    if (log && situ === 'new') {
+      const mess = "Votre compte existe, vous ne pouvez pas demander une nouvelle création de compte"
+      this.alertService.info(mess)
+      this.situationCtrl.setValue('info')
+    }
+  }
+
+    ngOnDestroy(): void {
+      this.destroy$.next(true)
     }
 
     onSubmitForm(): void {
@@ -76,7 +90,7 @@ export class RegisterComponent implements OnInit {
                 .pipe(first())
                 .subscribe({
                     next: () => {
-                        this.alertService.success('Votre mot de passe vous sera envoyé par mail après vérification', { keepAfterRouteChange: true });
+                        this.alertService.success('Votre demande sera analysée dans quelques jours', { keepAfterRouteChange: true });
                         this.router.navigate(['../login'], { relativeTo: this.route });
                     },
                     error: error => {

@@ -25,11 +25,11 @@ export class AlertService {
     }
 
     // convenience methods
-    success(message: string, options?: any) {
+    success(message: string, options?: object) {
         this.alert(new Alert({ ...options, type: AlertType.Success, message }));
     }
 
-    error(message: string, options?: any) {
+    error(message: string, options?:object) {
         if (!options) {options = {
             autoClose: false,
             keepAfterRouteChange: true
@@ -37,11 +37,12 @@ export class AlertService {
         this.alert(new Alert({ ...options, type: AlertType.Error, message }));
     }
 
-    info(message: string, options?: any) {
+    info(message: string, options?: object) {
+        this.clear()
         this.alert(new Alert({ ...options, type: AlertType.Info, message }));
     }
 
-    warn(message: string, options?: any) {
+    warn(message: string, options?: object) {
         this.alert(new Alert({ ...options, type: AlertType.Warning, message }));
     }
 

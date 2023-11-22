@@ -28,6 +28,8 @@
   color: white;
   background-color:  var(--fond-sombre) !important;
 }
+.texte-clair {color: var(--texte-clair)}
+.texte-sombre {color: var(--texte-sombre)}
 
 .white {color: white}
 .whitesmoke {color: whitesmoke}
@@ -301,6 +303,11 @@ mat-form-field .mat-mdc-text-field-wrapper .mat-mdc-form-field-flex .mat-mdc-flo
 mat-card-title {
   width:100%;
   background-color: var(--fond-titre);
+  color: var(--texte-sombre) !important;
+}
+
+mat-card-subtitle {
+  color: var(--texte-sombre) !important;
 }
 
 mat-card {

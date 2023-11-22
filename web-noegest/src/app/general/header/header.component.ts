@@ -31,10 +31,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.destroy$ = new Subject<boolean>;
     this.authenticationService.user$.pipe(
       tap(x => {
-      if (x) {
-        this.isLoggedIn = true,
+        this.isLoggedIn = (x.username !== undefined),
         this.username = x.username
-        }
       }),
       takeUntil(this.destroy$)
     ).subscribe()
@@ -44,6 +42,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     ).subscribe(
       (value) => (this.namemodule = value)
     );
+
     /* Permet la fermeture du menu après un choix*/ 
     this.collapseNavbar()
   }
