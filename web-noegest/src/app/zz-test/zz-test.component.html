@@ -1,5 +1,7 @@
 
-<span>Mon span</span>
+
+<span class="fond-primary">Mon span</span>
+<div>Mon div</div>
 <input type="text" [disabled]="isBusy">
 
 
@@ -10,12 +12,13 @@
 
   <mat-card-actions>
     <button 
+    id="myButton"
     mat-flat-button color="primary" 
     type="submit"
     [disabled]="false"
     aria-label="Confirm">
       <span *ngIf="isBusy" class="spinner-border spinner-border-sm mr-1"></span>
-      Demande<mat-icon>send</mat-icon>
+      Compte Clicks<mat-icon>send</mat-icon>
     </button>
     <button mat-flat-button class="fond-soutenu m-3">
         <a routerLink="../login">Abandon<mat-icon>reply</mat-icon></a>

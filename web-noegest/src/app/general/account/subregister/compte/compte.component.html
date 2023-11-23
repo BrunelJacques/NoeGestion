@@ -17,30 +17,40 @@ class=" m-1"
   </div>
 </mat-card>
 
-<mat-card class="m-1" [formGroup]="emailForm" >
-    <mat-card-subtitle>Vous joindre?</mat-card-subtitle>
-    <div class="form-row m-1">
-      <mat-form-field >
-        <mat-label>Adresse mail</mat-label>
-        <input type="text" matInput [formControl]="emailCtrl">
-        <mat-error> {{getFormControlErrorText(emailCtrl)}} </mat-error>
-      </mat-form-field>
+<mat-card class="m-1" [formGroup]="joinForm" >
+
+    <div class="form-row">
+      <mat-card-subtitle class="fs-6">Vous joindre?</mat-card-subtitle>
       <mat-form-field >
         <mat-label>Téléphone</mat-label>
         <input type="text" matInput [formControl]="phoneCtrl">
         <mat-error> {{getFormControlErrorText(phoneCtrl)}} </mat-error>
       </mat-form-field>
     </div>
+    <div class="form-row">
+      <mat-form-field >
+        <mat-label>Adresse mail</mat-label>
+        <input type="text" matInput [formControl]="emailCtrl">
+        <mat-error> {{getFormControlErrorText(emailCtrl)}} </mat-error>
+      </mat-form-field>
+      <mat-form-field >
+        <mat-label>Confirmer le mail</mat-label>
+        <input type="text" matInput [formControl]="confirmEmailCtrl">
+        <mat-error> {{getFormControlErrorText(confirmEmailCtrl)}} </mat-error>
+      </mat-form-field>
+  
+    </div>
     <small class="error-text" *ngIf="showEmailError$ | async">Adresses différentes</small>
 </mat-card>
 
 <mat-card class="m-1" [formGroup]="loginInfoForm" >
+  
   <div class="form-row">        
-    <mat-card-subtitle class="fs-6" >Informations de connexion</mat-card-subtitle>
+    <mat-card-subtitle class="fs-6" >Connexion</mat-card-subtitle>
     <mat-form-field >
       <mat-label>Identifiant</mat-label>
       <input type="text" matInput [formControl]="usernameCtrl">
-      <mat-error>Champrequis</mat-error>
+      <mat-error> {{getFormControlErrorText(usernameCtrl)}}</mat-error>
     </mat-form-field>
   </div>
 
@@ -51,7 +61,7 @@ class=" m-1"
       <mat-error> {{getFormControlErrorText(passwordCtrl)}} </mat-error>
     </mat-form-field>
     <mat-form-field >
-      <mat-label>Confirmation</mat-label>
+      <mat-label>Confirm. mot de passe</mat-label>
       <input type="password" matInput [formControl]="confirmPasswordCtrl">
       <mat-error> {{getFormControlErrorText(confirmPasswordCtrl)}} </mat-error>
     </mat-form-field>

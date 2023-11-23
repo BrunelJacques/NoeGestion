@@ -1,7 +1,22 @@
 @media (min-width: 576px) {
   .custom-vh {
-    height: 100vh;
+    height: 5vh;
   }
+  :host {
+    position: fixed;
+    top: 155px;
+    width: 25%;
+  } 
+}
+
+@media (min-width: 768px) {
+  .custom-vh {
+    height: 5vh;
+  }
+  :host {
+    position: sticky;
+    width: auto;
+  } 
 }
 
 

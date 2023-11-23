@@ -14,6 +14,8 @@
   --fond-sombre: #3f729b;
   --fond-saumon: navajowhite;
   --fond-rose: mistyrose;
+  --fond-primary: #673ab7;
+  --fond-primary-clair: #c5c5ff;
   --texte-clair:  cornflowerblue;
   --texte-sombre:  #09238D;
 }
@@ -28,6 +30,15 @@
   color: white;
   background-color:  var(--fond-sombre) !important;
 }
+.fond-primary { 
+  background-color: var(--fond-primary)!important;
+  color:white
+}
+.fond-primary-clair { 
+  background-color: var(--fond-primary-clair)!important;
+  color: var(--texte-sombre);
+}
+
 .texte-clair {color: var(--texte-clair)}
 .texte-sombre {color: var(--texte-sombre)}
 
