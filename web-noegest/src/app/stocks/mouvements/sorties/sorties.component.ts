@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { Mouvement } from '../../_models/mouvement';
 import { MvtService } from '../../_services/mvt.service';
 import { ParamsService } from '../../_services/params.service'
@@ -18,6 +18,7 @@ import { AlertService, SeeyouService } from 'src/app/general/_services';
 
 export class SortiesComponent implements OnInit, OnDestroy {
   name = "Sorties";
+  private destroy$!: Subject<boolean>
   paramsSubscrib!:Subscription;
   sortiesSubscrib!:Subscription;
   sorties!: Mouvement[];
@@ -38,7 +39,17 @@ export class SortiesComponent implements OnInit, OnDestroy {
     private seeyouService:SeeyouService,
     private alertService: AlertService,
     private fp: FonctionsPerso,
-    ) {}
+    ) {this.initSubscriptions()}
+
+  initSubscriptions() {
+    this.destroy$ = new Subject<boolean>()
+    this.seeyouService.initUrlsHisto()
+    this.seeyouService.clicksQuit$.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(() => {
+      this.seeyouService.goBack();
+    });    
+  }
 
   produit = this.fp.produit
 
@@ -46,10 +57,10 @@ export class SortiesComponent implements OnInit, OnDestroy {
     this.getParams();
     this.getSorties();
     this.params.parent = this.name
-    this.seeyouService.initUrlsHisto()
   }
 
   ngOnDestroy(): void {
+    this.destroy$.next(true)
     this.paramsSubscrib.unsubscribe()
     this.sortiesSubscrib.unsubscribe()
   }

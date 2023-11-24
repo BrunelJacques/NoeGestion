@@ -1,24 +1,23 @@
+@media (max-width: 576px) {
+  .custom-vh { height: auto; }
+}
+
 @media (min-width: 576px) {
-  .custom-vh {
-    height: 5vh;
-  }
+  .custom-vh { height:100vh; }
   :host {
-    position: fixed;
-    top: 155px;
+    position: relative;
+    top: 1px;
     width: 25%;
   } 
 }
 
 @media (min-width: 768px) {
-  .custom-vh {
-    height: 5vh;
-  }
+  .custom-vh { height: auto; }
   :host {
     position: sticky;
     width: auto;
   } 
 }
-
 
 
 

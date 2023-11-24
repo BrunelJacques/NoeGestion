@@ -62,7 +62,6 @@ export class SubheaderMvtsComponent {
 
 
   onClickOk() {
-    console.log('subheader clickOk')
     this.seeyouService.emitClickOk()
   }
 

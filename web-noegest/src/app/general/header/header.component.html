@@ -1,32 +1,32 @@
 <!--icones bootstrap   i class="bi bi-alarm" style="font-size: 2rem; clogoolor: cornflowerblue;"></i-->
 
-<header class="sticky-top navbar-dark fond-sombre">
-  <div class="">
-    <nav class="navbar flex-wrap m-0 py-0 px-1" aria-label="Main navigation">
-      <button type="button m-1"
-      id="btnhome"
-      (click)="home()"
-      class="btn btn-outline-light m-1 m-sm-2 p-0"
-      data-bs-toggle="tooltip"
-      data-bs-placement="right"
-      >
-        <i class="bi bi-arrow-left"></i>
-      </button>
-      <div id="titre">
-        <a routerLink="/"
-          class="navbar-brand fw-bold"
-          alt="Accueil">
-          <img class="mx-1 my-sm-2" src="assets/images/noegest@2x.png"
-          srcset="assets/images/noegest@1x.png,
-          assets/images/noegest@2x.png"
-          alt="Logo">
-        </a>
-        <span class="text-white m-1 m-sm-2">{{namemodule}}</span>
-      </div>
+<header class=" navbar-dark fond-sombre sticky-top">
+  <nav class="navbar m-0 py-0 px-1" aria-label="Main navigation">
+    <button type="button m-1"
+    id="btnhome"
+    (click)="home()"
+    class="btn m-1 m-sm-2 p-0"
+    data-bs-toggle="tooltip"
+    data-bs-placement="right"
+    >
+      <i class="bi bi-arrow-left"></i>
+    </button>
+    <div class="col-md-10">
+      <a routerLink="/"
+        class="titre navbar-brand fw-bold"
+        alt="Accueil">
+        <img class="mx-1 my-sm-2" src="assets/images/noegest@2x.png"
+        srcset="assets/images/noegest@1x.png,
+        assets/images/noegest@2x.png"
+        alt="Logo">
+      </a>
+      <span class="titre texte-clair m-1 m-sm-2">{{namemodule}}</span>
+    </div>
 
-      <!-- aria-expanded="false" -->
+    <div class="menu col-12 col-md-3">
+      <!-- Bouton-menu -->
       <button #navbarCollapse id='toggler' type="button"
-      class="btn navbar-toggler  btn-outline-light m-1 m-sm-2"
+      class="btn navbar-toggler m-1 m-sm-2"
       (click)="toggleNavbar()"
       [attr.aria-expanded]="!isNavbarCollapsed"
       data-bs-toggle="collapse"
@@ -39,11 +39,11 @@
 
       <!-- Menu déroulant -->
       <div
-          class=" collapse navbar-collapse"
+          class="collapse navbar-collapse"
           id="navbarCollapse"
           toggle="collapse"
           data-target=".navbar-collapse"  >
-        <ul class="col-auto navbar-nav" id="home">
+        <ul class=" navbar-nav" id="home">
           <li class="nav-item">
             <a class="nav-link bi"
             routerLink="/" href="#"
@@ -53,9 +53,9 @@
             </a>
           </li>
         </ul>
-        <span class="col-auto navbar-nav" 
+        <span class=" navbar-nav" 
         *ngIf="namemodule === 'stocks' || namemodule === '-'">
-          <ul class="col-auto navbar-nav" id="menustock">
+          <ul class=" navbar-nav" id="menustock">
             <li class="nav-item">
               <a class="nav-link bi"
               routerLink="/stocks/sorties">
@@ -93,8 +93,8 @@
             </li>
           </ul>
         </span>
-        <span class="col-auto navbar-nav" *ngIf="namemodule === 'kms'">
-          <ul class="col-auto navbar-nav"id="menukms">
+        <span class=" navbar-nav" *ngIf="namemodule === 'kms'">
+          <ul class=" navbar-nav"id="menukms">
             <li class="nav-item">
               <a class="nav-link bi"
               routerLink="/kms/depart">
@@ -112,19 +112,19 @@
             </li>
           </ul>
         </span>
-        <span class="col-auto navbar-nav">
-          <ul class="col-auto navbar-nav" id="logout">
+        <span class=" navbar-nav">
+          <ul class=" navbar-nav" id="logout">
             <li class="nav-item">
               <a class="nav-link bi"
               routerLink="/account/register">
               <mat-icon>person</mat-icon>
-               Mon Compte <span class="text-white m-1 m-sm-2">{{username}}</span>
+                <span class="text-white m-1 m-sm-2"> Mon Compte {{username}}</span>
               </a>
             </li>
           </ul>
         </span>
-        <span class="col-auto navbar-nav">
-          <ul class="col-auto navbar-nav" id="logout">
+        <span class=" navbar-nav">
+          <ul class=" navbar-nav" id="logout">
             <li class="nav-item">
               <a class="nav-link bi"
               (click)="logout()"
@@ -137,7 +137,11 @@
           </ul>
         </span>
       </div>
-    </nav>
+    </div>
+  </nav>
+  <div>
+    <app-subheader></app-subheader>
   </div>
 </header>
+
 

@@ -1,37 +1,49 @@
 i {
   color: whitesmoke;
-  background-color: var(--fond-sombre);
 }
 
-.zombre {
-  border: 1;
-  border-color: whitesmoke!important;
-  box-shadow: 0px 0px 15px white;
-}
-
-.bi {
-  color: white !important;
-  font-size: 18px; 
+.bi { 
+  color: whitesmoke;
+  font-size: 16px; 
   min-width: 27px;
+}
+
+.border {
+  border-width: 1px;
+  border-color: white !important;
+}
+
+.titre {
+  min-width: 160px;
 }
 
 .navbar  {
   z-index: 1;
   -webkit-box-shadow: 0 9px 6px -6px #999;
   box-shadow: 0 9px 6px -6px #999;
+  align-items: first baseline;
 }
 
-.nav-link {
-  padding: 4px;
-  vertical-align: middle;
-  color: white;
-}
-
-.navbar-toggler{
+.navbar-toggler {
   padding: 0;
-  border-width: 2px;
+  border-width: 1px;
   border-color: white !important;
+  background-color: var(--fond-sombre);
   min-height: 30px;
+  position: fixed;
+  top: 0px;
+  left: 45px;
+}
+
+.navbar-collapse {
+  position: static
+}
+
+.menu {
+  position: static;
+  top: 50px;
+  right: 25px;
+  background: var(--fond-sombre)
 }
 
 .navbar-toggler:focus  {
@@ -41,10 +53,6 @@ i {
   box-shadow: 0px 0px 15px white;
 }
 
-.navbar-toggler-icon {
-  height: 30px;
-  width: 25px;
-}
 .navbar-nav .nav-item {
   color: white;
   font-weight: 400;

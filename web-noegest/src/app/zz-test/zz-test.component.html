@@ -1,30 +1,30 @@
 
+<div class="fond-primary sticky-top">
+  <span >Mon span</span>
+  <div>Mon div</div>
+  <input type="text" [disabled]="isBusy">
+</div>
 
-<span class="fond-primary">Mon span</span>
-<div>Mon div</div>
-<input type="text" [disabled]="isBusy">
+  <button (click)="desactiverInput()">Modifier l'effet</button>
 
+  <mat-card class="main-form">
+    <div>zztest works</div>
 
-<button (click)="desactiverInput()">Modifier l'effet</button>
+    <mat-card-actions>
+      <button 
+      id="myButton"
+      mat-flat-button color="primary" 
+      type="submit"
+      [disabled]="false"
+      aria-label="Confirm">
+        <span *ngIf="isBusy" class="spinner-border spinner-border-sm mr-1"></span>
+        Compte Clicks<mat-icon>send</mat-icon>
+      </button>
+      <button mat-flat-button class="fond-soutenu m-3">
+          <a routerLink="../login">Abandon<mat-icon>reply</mat-icon></a>
+      </button>
+    </mat-card-actions>
 
-<mat-card class="main-form">
-  <div>zztest works</div>
-
-  <mat-card-actions>
-    <button 
-    id="myButton"
-    mat-flat-button color="primary" 
-    type="submit"
-    [disabled]="false"
-    aria-label="Confirm">
-      <span *ngIf="isBusy" class="spinner-border spinner-border-sm mr-1"></span>
-      Compte Clicks<mat-icon>send</mat-icon>
-    </button>
-    <button mat-flat-button class="fond-soutenu m-3">
-        <a routerLink="../login">Abandon<mat-icon>reply</mat-icon></a>
-    </button>
-  </mat-card-actions>
-
-  <mat-spinner *ngIf="isBusy" color="primary" mode="indeterminate" > </mat-spinner>
-</mat-card>
+    <mat-spinner *ngIf="isBusy" color="primary" mode="indeterminate" > </mat-spinner>
+  </mat-card>
 

@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, OnDestroy, OnInit, Renderer2 } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { SeeyouService } from '../_services';
 
 @Component({
@@ -9,7 +9,7 @@ import { SeeyouService } from '../_services';
 
 export class SubheaderComponent implements OnInit, OnDestroy {
 
-  bgcolor = "fond-sombre";
+  bgcolor = 'fond-sombre'
   lstUrls = ['stocks','kms']
   lstMvt = ['params','sorties','onesortie']
   isSpecial = false
@@ -17,8 +17,6 @@ export class SubheaderComponent implements OnInit, OnDestroy {
 
   constructor(
     private seeyouService: SeeyouService,
-    private el:ElementRef,
-    private renderer: Renderer2
     ){}
 
   ngOnInit(): void {
