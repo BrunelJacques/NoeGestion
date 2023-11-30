@@ -15,7 +15,7 @@
       Le: {{jour}}
     </span>
   </div>
-  
+
   <!-- navigation contextuelle -->
   <div *ngIf = isToParams
     class="m-1 p-0 ">
@@ -26,7 +26,7 @@
   </div>
   <div *ngIf = isListe
   class="m-1 p-0 ">
-    <a class="bi bi-plus-circle" 
+    <a class="bi bi-plus-circle"
     routerLink="/stocks/onesortie/0">
       <span class="p-1">ajout ligne</span>
     </a>
@@ -34,14 +34,14 @@
 
   <!-- boutons de retours -->
   <div *ngIf = isToQuit>
-    <button mat-flat-button color="primary" 
+    <button mat-flat-button color="primary"
     type="submit"
     class=" p-1 py-sm-2 mb-1 mb-sm-0"
     aria-label="Confirm"
     [disabled]="!valid"
     (click)="onClickOk()">
-    retour ok
-    <i class="bi bi-sign-turn-right-fill"></i>
+      retour ok
+      <i class="bi bi-sign-turn-right-fill"></i>
     </button>
     &nbsp;
     <button  type="button"
