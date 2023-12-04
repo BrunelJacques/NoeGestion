@@ -1,6 +1,6 @@
 export interface Article {
-  id: number|null;
-  nom: string|null;
+  id: number;
+  nom: string;
   nom_court?: string;
   qte_stock?: number;
   prix_moyen?: number;

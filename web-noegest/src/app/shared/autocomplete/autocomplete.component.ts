@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Observable, map, startWith } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, MatAutocompleteDefaultOptions } from '@angular/material/autocomplete';
@@ -19,24 +19,33 @@ import { MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, MatAutocompleteDefaultOptions } from 
   ]
 })
 
-export class AutocompleteComponent {
+export class AutocompleteComponent implements OnInit {
   @Input() kwds: {
                   items: string[]; 
+                  selectedItem: string|undefined;
                   width: string
   } = {
         items:["un","deux","trois"],
+        selectedItem:undefined,
         width:"250px"
   };
 
   myControl = new FormControl();
   filteredItems: Observable<string[]>;
+  
 
-  constructor(
-  ) {
-    this.filteredItems = this.myControl.valueChanges.pipe(
+  constructor( ) {
+    this.filteredItems = this.myControl.valueChanges
+    .pipe(
       startWith(''),
       map(value => this._filter(value))
     );
+  }
+
+  ngOnInit(): void {
+    if (this.kwds.selectedItem) { 
+      this.myControl.setValue(this.kwds.selectedItem); 
+    }
   }
 
   private _filter(value: string): string[] {

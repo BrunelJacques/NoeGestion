@@ -5,7 +5,7 @@ export interface Mouvement {
     jour: string;
     sens: number;
     origine: string;
-    article: Article
+    article: Article;
     nbcolis: number;
     qtemouvement: number;
     prixunit: number;

@@ -48,16 +48,12 @@ export class ParamsComponent implements OnInit, OnDestroy {
     initSubscriptions() {
       this.destroy$ = new Subject<boolean>()
   
-      this.seeyouService.clicksOk$.pipe(
-        takeUntil(this.destroy$)
-      ).subscribe(() => {
-        this.onSubmit();
-      });
-      this.seeyouService.clicksQuit$.pipe(
-        takeUntil(this.destroy$)
-      ).subscribe(() => {
-        this.onQuit();
-      });    
+      this.seeyouService.clicksOk$
+        .pipe( takeUntil(this.destroy$))
+        .subscribe(() => this.onSubmit());
+      this.seeyouService.clicksQuit$
+        .pipe( takeUntil(this.destroy$) )
+        .subscribe(() => { this.onQuit() });    
     }
   
   ngOnInit(): void {

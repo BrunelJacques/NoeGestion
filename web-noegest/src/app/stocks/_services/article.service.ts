@@ -49,7 +49,6 @@ export class ArticleService {
   /* GET articles whose nom contains search term */
   searchArticles(term: string) {
     const url = this.articlesUrl + '?nom=' + term 
-    console.log(url)
     if (!term.trim()) {
       // if not search term, return empty article array.
       return of([]);
@@ -100,18 +99,20 @@ export class ArticleService {
   deleteArticle(id: number): Observable<Article> {
     const url = `${this.articlesUrl}/${id}`;
 
-    return this.http.delete<Article>(url, this.httpOptions).pipe(
-      tap(() => this.handleError.log(`deleted article id=${id}`)),
-      catchError(this.handleError.handleError<Article>('deleteArticle'))
-    );
+    return this.http.delete<Article>(url, this.httpOptions)
+      .pipe(
+        tap(() => this.handleError.log(`deleted article id=${id}`)),
+        catchError(this.handleError.handleError<Article>('deleteArticle'))
+      );
   }
 
   /** PUT: update the article on the server */
   updateArticle(article: Article): Observable<unknown> {
-    return this.http.put(this.articlesUrl, article, this.httpOptions).pipe(
-      tap(() => this.handleError.log(`updated article id=${article.id}`)),
-      catchError(this.handleError.handleError<unknown>('updateArticle'))
-    );
+    return this.http.put(this.articlesUrl, article, this.httpOptions)
+      .pipe(
+        tap(() => this.handleError.log(`updated article id=${article.id}`)),
+        catchError(this.handleError.handleError<unknown>('updateArticle'))
+      );
   }
 
   /**

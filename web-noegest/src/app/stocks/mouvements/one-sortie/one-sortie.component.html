@@ -32,12 +32,15 @@
   </div>
 
   <!-- 2ème colonne données à saisir-->
-  <div class="col-sm-9 card mb-1 p-1">
+  <div  *ngIf="mvt" class="col-sm-9 card mb-1 p-1">
     <form [formGroup]="fg2"
     class="form-group was-validated">
+
       <!-- choix d'un article -->
-      <app-article-search></app-article-search>      
-      <div *ngIf="!isNull(article.nom)" >
+      <app-article-search [article]="mvt.article"></app-article-search>      
+
+      <!-- gestion du mouvement -->
+      <div>
         <div class="row"
         *ngFor="let field of fields">
           <div class="col-4">

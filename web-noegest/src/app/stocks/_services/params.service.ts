@@ -123,9 +123,9 @@ export class ParamsService {
         data => {
           const container = data
           this.handleError.log(`lus: ${container.length} ${url}`)
-          return container
+          return container;
         }
-      )
+      );
     return []
   }
 
@@ -139,8 +139,8 @@ export class ParamsService {
         (data) => {
           this.camps = data
         }
-      )
-      return this.camps
+      );
+    return this.camps
     }
   
   getFournisseurs() {

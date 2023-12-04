@@ -44,11 +44,9 @@ export class SortiesComponent implements OnInit, OnDestroy {
   initSubscriptions() {
     this.destroy$ = new Subject<boolean>()
     this.seeyouService.initUrlsHisto()
-    this.seeyouService.clicksQuit$.pipe(
-      takeUntil(this.destroy$)
-    ).subscribe(() => {
-      this.seeyouService.goBack();
-    });    
+    this.seeyouService.clicksQuit$
+      .pipe( takeUntil(this.destroy$))
+      .subscribe(() => this.seeyouService.goBack())    
   }
 
   produit = this.fp.produit

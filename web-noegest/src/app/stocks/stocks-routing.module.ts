@@ -23,7 +23,7 @@ const routes: Routes = [
             { path: 'prixjournees', component: PrixJourneeComponent, canActivate: [AuthGuard] },
             { path: 'params', component: ParamsComponent },
             { path: 'oneentree/:id', component: OneEntreeComponent, canActivate: [AuthGuard] },
-            { path: 'onesortie/:id', component: OneSortieComponent, resolve: { onesortie: ArticlesNomResolver}, },
+            { path: 'onesortie/:id', component: OneSortieComponent, resolve: { articlesNom: ArticlesNomResolver}, },
         ]
     }
 ];

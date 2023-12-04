@@ -9,7 +9,7 @@ export function confirmEqualValidator(main:string, confirm:string): ValidatorFn 
     }
     const mainValue = ctrl.get(main)?.value;    
     const confirmValue = ctrl.get(confirm)?.value;
-    console.log("compare : ",mainValue, confirmValue)
+    //console.log("compare : ",mainValue, confirmValue)
     return mainValue === confirmValue ? null: {
       confirmEqual: {
         main: mainValue,

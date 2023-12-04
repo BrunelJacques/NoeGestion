@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Observable, Subject, take, takeUntil } from 'rxjs';
+import { Observable, Subject, Subscription, takeUntil } from 'rxjs';
 import { Mouvement } from '../../_models/mouvement';
-import { Article } from '../../_models/article';
 import { DatePipe } from '@angular/common';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MvtService } from '../../_services/mvt.service';
@@ -19,16 +18,15 @@ import { FonctionsPerso } from 'src/app/shared/fonctions-perso';
 })
 
 export class OneSortieComponent implements OnInit, OnDestroy {
-  article$!: Observable<Article[]>;
-  id!: string|null;
-  article: Article={id:null,nom:null,rations:0};
-  mvt?: Mouvement;
+
+  private destroy$!: Subject<boolean>
+  id!: string;
+  mvtSubscription!: Subscription
+  mvt!: Mouvement;
   params!: Params;
   camps!: Camp[];
   fg!:FormGroup;
   fg2!: FormGroup;
-
-  private destroy$!: Subject<boolean>
 
   lstService = Constantes.LSTSERVICE;
   lstService_libelle = this.lstService.map((x) => x.libelle)
@@ -58,16 +56,22 @@ export class OneSortieComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private mvtService: MvtService,
     private fp: FonctionsPerso,
-    ) {
-      this.initSubscriptions()
-    }
+    ) {}
+
+  // convenience getter for easy access to form fields
+  get f() { return this.fg.controls; }
+  get f2() { return this.fg2.controls; }
 
   isNull = this.fp.isNull
 
   ngOnInit(): void {
-    this.id = this.route.snapshot.paramMap.get('id'),
+    const id = this.route.snapshot.paramMap.get('id')
+    if (id) {this.id = id}
+    this.initSubscriptions()
+
     this.initForm()
-    this.getParams();
+    this.getParams()
+    this.getMvt(this.id)
   }
 
   initForm() {
@@ -86,14 +90,15 @@ export class OneSortieComponent implements OnInit, OnDestroy {
   initSubscriptions() {
     this.destroy$ = new Subject<boolean>()
 
-    this.seeyouService.clicksOk$.pipe(
-      takeUntil(this.destroy$)
-    ).subscribe(() => {
+    this.seeyouService.clicksOk$
+      .pipe( takeUntil(this.destroy$) ) 
+      .subscribe(() => {
       this.onSubmit();
-    });
-    this.seeyouService.clicksQuit$.pipe(
-      takeUntil(this.destroy$)
-    ).subscribe(() => {
+      });
+
+    this.seeyouService.clicksQuit$
+      .pipe( takeUntil(this.destroy$) )
+      .subscribe(() => {
       this.onQuit();
     });    
   }
@@ -101,12 +106,6 @@ export class OneSortieComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next(true)
   }
-
-  // convenience getter for easy access to form fields
-  get f() { return this.fg.controls; }
-  get f2() { return this.fg2.controls; }
-
-
 
   onQuit(): void {
     this.seeyouService.goBack()
@@ -125,36 +124,31 @@ export class OneSortieComponent implements OnInit, OnDestroy {
     this.onQuit()
   }
 
-  getMvt(): void {
-    if (this.id === null){
-      console.log('this.id : ', this.id)
-    } else {
-      const id = this.id || ''
-      this.mvtService.getMvt(id).pipe(
-        take(1)
-      ).subscribe(mvt => this.mvt = mvt);
-    }
-  }
+  getMvt(id:string): void {
+    this.mvtService.getMvt(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(mvt => this.mvt=mvt);
+  } 
 
   getParams(): void {
-    this.paramsService.paramssubj$.pipe(
-      takeUntil(this.destroy$)
-    ).subscribe({
-      next: (data:Params) => {
-        this.params = data;
-        if (!this.params.service || this.params.service < 0){
-          this.params.service = 0 }
-        this.fg.patchValue({
-          'jour': this.datePipe.transform(this.params.jour, 'yyyy-MM-dd'),
-          'vers': this.params.origine,
-        })
-      },
-      error: (e) => {
-        if (e != 'Not Found') {
-          console.error(e)
+    this.paramsService.paramssubj$
+      .pipe( takeUntil(this.destroy$))
+      .subscribe({
+        next: (data:Params) => {
+          this.params = data;
+          if (!this.params.service || this.params.service < 0){
+            this.params.service = 0 }
+          this.fg.patchValue({
+            'jour': this.datePipe.transform(this.params.jour, 'yyyy-MM-dd'),
+            'vers': this.params.origine,
+          })
+        },
+        error: (e) => {
+          if (e != 'Not Found') {
+            console.error(e)
+          }
         }
-      }
-    });
+      })
   }
 
   save(): void {

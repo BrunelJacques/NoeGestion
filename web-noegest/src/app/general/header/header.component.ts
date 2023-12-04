@@ -29,17 +29,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.destroy$ = new Subject<boolean>;
-    this.authenticationService.user$.pipe(
+    this.authenticationService.user$
+    .pipe(
       tap(x => {
         this.isLoggedIn = (x.username !== undefined),
         this.username = x.username
       }),
-      takeUntil(this.destroy$)
-    ).subscribe()
+      takeUntil(this.destroy$))
+    .subscribe()
 
-    this.seeyouService.rootActive$.pipe(
-      takeUntil(this.destroy$)
-    ).subscribe(
+    this.seeyouService.rootActive$
+    .pipe( takeUntil(this.destroy$))
+    .subscribe(
       (value) => (this.namemodule = value)
     );
 

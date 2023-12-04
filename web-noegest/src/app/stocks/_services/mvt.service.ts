@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap, catchError } from 'rxjs';
+import { Observable, tap, catchError, map } from 'rxjs';
 
 import { Mouvement } from '../_models/mouvement';
 import { HandleError } from 'src/app/general/_helpers/error.interceptor';
@@ -18,13 +18,16 @@ export class MvtService {
     private handleError: HandleError,
   ) {}
 
-   /** GET mvt by id. Will 404 if id not found */
+   /** GET mvt by id, http renvoie un tableau avec un seul item */
   getMvt(id: string): Observable<Mouvement> {
     this.url = this.cst.STMOUVEMENT_URL+"/?id="+id;
-    return this.http.get<Mouvement>(this.url)
+    return this.http.get<Mouvement[]>(this.url)
       .pipe(
-        tap(() => this.handleError.log(`fetched mvt id=${id}`)),
-        catchError(this.handleError.handleError<Mouvement>(`getMvt id=${id}`))
+        tap(x => x.length ?
+          this.handleError.log(`fetched mvt id=${id}`) :
+          this.handleError.handleError<Mouvement[]>(`getMvt id=${id}`)),
+        catchError(this.handleError.handleError<Mouvement[]>(`getMvt id=${id}`)),
+        map(mvts => mvts[0])
       );
   }
 
@@ -39,11 +42,8 @@ export class MvtService {
         tap(x => x.length ?
           this.handleError.log(`found ${x.length} mvts`) :
           this.handleError.log(`no mvts`)),
-          
-        catchError(
-          this.handleError.handleError<Mouvement[]>('getSorties',)
-        )
-      )
+        catchError(this.handleError.handleError<Mouvement[]>('getSorties',))
+      );
   }
 
 
