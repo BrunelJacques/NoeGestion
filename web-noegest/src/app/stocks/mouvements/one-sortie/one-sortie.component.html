@@ -9,7 +9,7 @@
       </h4>
     </div>
     <form
-    [formGroup]="fg"
+    [formGroup]="fgParams"
     class="form-group short"
     >
       <div class="row" *ngFor="let field of fieldsParams">
@@ -33,16 +33,16 @@
 
   <!-- 2ème colonne données à saisir-->
   <div  *ngIf="mvt" class="col-sm-9 card mb-1 p-1">
-    <form [formGroup]="fg2"
+    <form [formGroup]="fgMvt"
     class="form-group was-validated">
 
       <!-- choix d'un article -->
-      <app-article-search [article]="mvt.article"></app-article-search>      
+      <app-article-search [article]="mvt.article" (retour)="onArticle($event)"></app-article-search>      
 
       <!-- gestion du mouvement -->
       <div>
         <div class="row"
-        *ngFor="let field of fields">
+        *ngFor="let field of fieldsMvt">
           <div class="col-4">
             <label for="{{ field.label}}">{{ field.label  | titlecase }}</label>
           </div>

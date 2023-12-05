@@ -25,7 +25,7 @@ export class MvtService {
       .pipe(
         tap(x => x.length ?
           this.handleError.log(`fetched mvt id=${id}`) :
-          this.handleError.handleError<Mouvement[]>(`getMvt id=${id}`)),
+          this.handleError.handleError<Mouvement[]>(`getMvt id=${id}`) ),
         catchError(this.handleError.handleError<Mouvement[]>(`getMvt id=${id}`)),
         map(mvts => mvts[0])
       );

@@ -1,7 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Observable, map, startWith } from 'rxjs';
 import { FormControl } from '@angular/forms';
-import { MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, MatAutocompleteDefaultOptions } from '@angular/material/autocomplete';
+import { MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, MatAutocompleteDefaultOptions, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 
 @Component({
@@ -22,17 +22,16 @@ import { MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, MatAutocompleteDefaultOptions } from 
 export class AutocompleteComponent implements OnInit {
   @Input() kwds: {
                   items: string[]; 
-                  selectedItem: string|undefined;
-                  width: string
+                  selectedItem?: string;
+                  width?: string
   } = {
         items:["un","deux","trois"],
-        selectedItem:undefined,
         width:"250px"
   };
+  @Output() retour: EventEmitter<string>  = new EventEmitter()
 
   myControl = new FormControl();
   filteredItems: Observable<string[]>;
-  
 
   constructor( ) {
     this.filteredItems = this.myControl.valueChanges
@@ -48,8 +47,12 @@ export class AutocompleteComponent implements OnInit {
     }
   }
 
-  private _filter(value: string): string[] {
+  _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
     return this.kwds.items.filter(item => item.toLowerCase().includes(filterValue));
+  }
+
+  onSelection(event: MatAutocompleteSelectedEvent): void {
+    this.retour.emit(event.option.value)
   }
 }

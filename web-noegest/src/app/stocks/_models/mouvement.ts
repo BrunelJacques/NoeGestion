@@ -6,16 +6,16 @@ export interface Mouvement {
     sens: number;
     origine: string;
     article: Article;
-    nbcolis: number;
+    nbcolis?: number;
     qtemouvement: number;
     prixunit: number;
     service: number;
-    nbrations: number;
+    nbrations?: number;
     analytique: number;
-    fournisseur: string;
+    fournisseur?: string;
     ordi: string;
     saisie: string;
-    transfert: Date;
+    transfert?: Date;
 }
 
 export interface DataMvts {

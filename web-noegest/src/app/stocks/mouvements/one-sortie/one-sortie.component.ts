@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Observable, Subject, Subscription, takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { Mouvement } from '../../_models/mouvement';
 import { DatePipe } from '@angular/common';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -10,6 +10,9 @@ import { AlertService, SeeyouService } from 'src/app/general/_services';
 import { Constantes } from 'src/app/constantes';
 import { ActivatedRoute } from '@angular/router';
 import { FonctionsPerso } from 'src/app/shared/fonctions-perso';
+import { Article } from '../../_models/article';
+import { NgbDateNativeUTCAdapter } from '@ng-bootstrap/ng-bootstrap';
+import { isNumber } from '@ng-bootstrap/ng-bootstrap/util/util';
 
 
 @Component({
@@ -21,12 +24,11 @@ export class OneSortieComponent implements OnInit, OnDestroy {
 
   private destroy$!: Subject<boolean>
   id!: string;
-  mvtSubscription!: Subscription
   mvt!: Mouvement;
   params!: Params;
   camps!: Camp[];
-  fg!:FormGroup;
-  fg2!: FormGroup;
+  fgParams!:FormGroup;
+  fgMvt!: FormGroup;
 
   lstService = Constantes.LSTSERVICE;
   lstService_libelle = this.lstService.map((x) => x.libelle)
@@ -36,7 +38,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
     { label: 'jour', type: 'date', value: '__ /__ /____' },
     { label: 'vers', type: 'text', value: '-' },
   ];
-  fields: FormField[] = [
+  fieldsMvt: FormField[] = [
     { label: 'service', type: 'select',
       options: this.lstService_libelle },
     { label: 'prixUnit', type: 'number'},
@@ -49,8 +51,8 @@ export class OneSortieComponent implements OnInit, OnDestroy {
   constructor(
     private paramsService: ParamsService,
     private seeyouService: SeeyouService,
-    private fb:FormBuilder,
-    private fb2:FormBuilder,
+    private fbParams:FormBuilder,
+    private fbMvt:FormBuilder,
     private alertService: AlertService,
     private datePipe: DatePipe,
     private route: ActivatedRoute,
@@ -58,9 +60,8 @@ export class OneSortieComponent implements OnInit, OnDestroy {
     private fp: FonctionsPerso,
     ) {}
 
-  // convenience getter for easy access to form fields
-  get f() { return this.fg.controls; }
-  get f2() { return this.fg2.controls; }
+  // convenience getter for easy access to form fieldsMvt
+  get f() { return this.fgParams.controls; }
 
   isNull = this.fp.isNull
 
@@ -75,16 +76,47 @@ export class OneSortieComponent implements OnInit, OnDestroy {
   }
 
   initForm() {
-    this.fg = this.fb.group({});
+    this.fgParams = this.fbParams.group({});
     this.fieldsParams.forEach(field => {
-      this.fg.addControl(field.label, this.fb.control(field.value));
+      this.fgParams.addControl(field.label, this.fbParams.control(field.value));
     });
 
-    this.fg2 = this.fb2.group({});
-    this.fields.forEach(field => {
-      this.fg2.addControl(field.label,this.fb2.control(field.value));
-      this.fg2.get(field.label)?.setValidators([Validators.required,])
+    this.fgMvt = this.fbMvt.group({});
+    this.fieldsMvt.forEach(field => {
+      this.fgMvt.addControl(field.label,this.fbMvt.control(field.value));
+      this.fgMvt.get(field.label)?.setValidators([Validators.required,])
     });
+  }
+
+  numToString(nombre:number|undefined,nbDecimales?:number): string {
+    if (!nbDecimales) {nbDecimales = 2}
+    if (typeof(nombre) === 'number') {
+        return nombre.toFixed(nbDecimales)
+      } else {return " "}
+  }
+
+  formatNumber(value: number | undefined): string {
+    if (typeof value === 'number') {
+      return value.toFixed(2);
+    } else {
+      return ' ';
+    }
+  }
+
+  setValuesMvt(mvt:Mouvement) {
+    let coutRation
+    if (typeof mvt.nbrations === 'number' && mvt.nbrations > 0) {
+      coutRation = Math.round(mvt.prixunit * mvt.qtemouvement / mvt.nbrations ).toFixed(2)
+    } else {coutRation = undefined}
+    this.fgMvt.patchValue({
+      'service': mvt.service,
+      'prixUnit': mvt.prixunit,
+      'qte': - mvt.qtemouvement,
+      'nbRations': mvt.nbrations,
+      'cout Ration': coutRation,
+      'qteStock': mvt.article.qte_stock
+    })
+    console.log('import mouvement :',mvt,  )
   }
 
   initSubscriptions() {
@@ -116,7 +148,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
     // reset alerts on submit
     this.alertService.clear();
     // stop here if form is invalid
-    if (this.fg.invalid) {
+    if (this.fgParams.invalid) {
       console.log('one-sortie onSubmit invalide')
       return;
     }
@@ -127,7 +159,13 @@ export class OneSortieComponent implements OnInit, OnDestroy {
   getMvt(id:string): void {
     this.mvtService.getMvt(id)
       .pipe(takeUntil(this.destroy$))
-      .subscribe(mvt => this.mvt=mvt);
+      .subscribe({
+        next: (mvt:Mouvement) => {
+          this.mvt=mvt,
+          this.setValuesMvt(mvt)
+        },
+        error: (e) =>{ if (e != 'Not Found') { console.error('one-sortie.getMvt',e)}}
+      });
   } 
 
   getParams(): void {
@@ -138,17 +176,19 @@ export class OneSortieComponent implements OnInit, OnDestroy {
           this.params = data;
           if (!this.params.service || this.params.service < 0){
             this.params.service = 0 }
-          this.fg.patchValue({
+          this.fgParams.patchValue({
             'jour': this.datePipe.transform(this.params.jour, 'yyyy-MM-dd'),
             'vers': this.params.origine,
           })
         },
         error: (e) => {
-          if (e != 'Not Found') {
-            console.error(e)
-          }
+          if (e != 'Not Found') { console.error('one-sortie.getParams',e)}
         }
       })
+  }
+
+  onArticle(retour: Article): void {
+    console.log('event article: ',retour)
   }
 
   save(): void {
