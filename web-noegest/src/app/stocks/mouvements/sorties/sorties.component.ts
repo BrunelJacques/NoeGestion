@@ -9,6 +9,7 @@ import { Constantes } from 'src/app/constantes';
 import { FonctionsPerso } from 'src/app/shared/fonctions-perso';
 import { AlertService, SeeyouService } from 'src/app/general/_services';
 
+
 @Component({
   selector: 'app-sorties',
   templateUrl: './sorties.component.html',
@@ -49,7 +50,8 @@ export class SortiesComponent implements OnInit, OnDestroy {
       .subscribe(() => this.seeyouService.goBack())    
   }
 
-  produit = this.fp.produit
+  // appelé par .html
+  division = this.fp.division
 
   ngOnInit(): void {
     this.getParams();

@@ -33,7 +33,6 @@ class GeAnalytiqueViewset(ModelViewSet):
         obsolete = self.request.GET.get('obsolete', False)
         return GeAnalytique.objects.filter(axe=axe,obsolete=obsolete)
 
-
 class StMouvementViewset(ModelViewSet):
     serializer_class = StMouvementSerializer
     permission_classes = [IsAuthenticated]
@@ -86,13 +85,11 @@ class StMagasinViewset(ModelViewSet):
     def get_queryset(self, *args, **kwargs):
         return StMagasin.objects.all()
 
-
 class StRayonViewset(ModelViewSet):
     serializer_class = StRayonSerializer
 
     def get_queryset(self, *args, **kwargs):
         return StRayon.objects.all()
-    
 
 class StFournisseurViewset(ModelViewSet):
 

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DatePipe } from "@angular/common";
 
+
 @Injectable({ providedIn: 'root' })
 
 export class FonctionsPerso{
@@ -12,7 +13,7 @@ export class FonctionsPerso{
       return (object === null || object === undefined)
     }
   }
- hoursDelta(date1: Date, date2: Date): number {
+  hoursDelta(date1: Date, date2: Date): number {
     return Math.floor(((date2.getTime()) - (date1.getTime())) / 1000 / 60 / 60)
   }
 
@@ -39,14 +40,26 @@ export class FonctionsPerso{
       return null
     }
   }
-  produit(dividende?:unknown,diviseur?:unknown): number{
+  division(dividende?:unknown,diviseur?:unknown): number{
     if (typeof diviseur == 'number' 
     && typeof dividende == 'number'
-    && !this.isNull(diviseur)){
+    && diviseur !== 0){
       return diviseur / dividende
     } else {
       return 0
     }
   }
-
+  numToString(nombre:number|undefined,nbDecimales?:number): string {
+    if (!nbDecimales) {nbDecimales = 2}
+    if (typeof(nombre) === 'number') {
+        return nombre.toFixed(nbDecimales)
+      } else {return " "}
+  }
+  round(nombre?:unknown,nbDecimales?:number){
+    if (!nbDecimales) {nbDecimales = 2}
+    if (typeof nombre == 'number') {
+      const puissance10 = Math.pow(10, nbDecimales)
+      return Math.round(nombre * puissance10) / puissance10
+    } else return nombre
+  }
 }

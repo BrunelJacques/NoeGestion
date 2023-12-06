@@ -42,6 +42,7 @@
       <!-- gestion du mouvement -->
       <div>
         <div class="row"
+
         *ngFor="let field of fieldsMvt">
           <div class="col-4">
             <label for="{{ field.label}}">{{ field.label  | titlecase }}</label>
@@ -70,6 +71,7 @@
             type="field.type" 
             [formControlName]="field.label" />
           </div>
+
         </div>
       </div>
     </form>
