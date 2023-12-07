@@ -65,7 +65,6 @@ export class ParamsService {
     }
     if (this.fp.hoursDelta(new Date(params.modif),new Date()) > 6) {
       params = this.fp.deepCopy(PARAMS)
-      params.parent = "raz-sorties"
     }
     if (params.service == -1) {
       params.service = 0

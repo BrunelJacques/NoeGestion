@@ -1,10 +1,8 @@
 <div class="card start m-0 px-1">
-
   <!-- infos en cours -->
-  <span >
-    {{lstModules[template]}}:
+  <span class="bold m-1"> {{lstModules[template]}}
   </span>
-  <span *ngIf="isListe">
+  <span *ngIf="isListe" class="mat-body my-1">
     liste
     <span *ngIf="isToParams">pour {{params['origine']}} en cuisine</span>
     <span *ngIf="params['origine'] === 'camp'">pour camp '{{params['camp']}}'</span>

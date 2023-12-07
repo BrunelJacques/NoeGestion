@@ -1,6 +1,6 @@
-import { EventEmitter, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { Subject, BehaviorSubject, delay, filter } from 'rxjs';
+import { Subject, BehaviorSubject, delay, filter, tap } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 
@@ -29,10 +29,11 @@ export class SeeyouService {
           delay(500),
         )
         .subscribe(() => {
-          this.updateUrl()}
+          this.updateUrl()
+        }
         );
       this.clicksOk$.subscribe(() => {
-        console.log('seeyou observe clickOk');
+        this.updateUrl()
       });
     }
 
@@ -44,26 +45,21 @@ export class SeeyouService {
   updateUrl(){
     const url = this.router.url
     const splitUrl = url.split('/')
-    if (this.urlsHisto[0] !== url) {      
-      if ((splitUrl.length > 1) && (splitUrl[1].length >1))
-      { 
-        if (this.urlsHisto[0] != url)
-          {
-            this.urlsHisto.unshift(url)
-          } 
-        this.rootActive$.next(splitUrl[1]) 
-        this.templateActive$.next(splitUrl[2])
-        this.setParentName(this.urlsHisto[1])
-      } else { 
-        this.initUrlsHisto()
-        this.rootActive$.next('-') 
-        this.templateActive$.next('-')
-      }
+    if ((splitUrl.length > 1) && (splitUrl[1].length >1))
+    { 
+      if (this.urlsHisto[0] !== url)
+        {this.urlsHisto.unshift(url)}
+      this.rootActive$.next(splitUrl[1]) 
+      this.templateActive$.next(splitUrl[2])
+      this.setParentName(this.urlsHisto[1])
+    } else { 
+      this.initUrlsHisto()
+      this.rootActive$.next('-') 
+      this.templateActive$.next('-')
     }
   }
 
   emitClickOk() {
-    console.log('seeyou click ok emet next')
     this.clicksOkSubject.next();
   }
 

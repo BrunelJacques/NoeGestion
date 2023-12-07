@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subject, Observable, takeUntil } from 'rxjs';
+import { Subject,takeUntil } from 'rxjs';
 
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
@@ -63,22 +63,20 @@ export class ParamsComponent implements OnInit, OnDestroy {
     this.getCamps()
   }
 
-initForm(): void {
-  this.paramsForm = this.formBuilder.group({
-    jour: [new Date(),Validators.required],
-    origine:"repas",
-    camp: ["00", Validators.required],
-    tva: "en TTC",
-    service: ["-", Validators.required],
-    fournisseur:"",
-  });
-}
-
+  initForm(): void {
+    this.paramsForm = this.formBuilder.group({
+      jour: [new Date(),Validators.required],
+      origine:"repas",
+      camp: ["00", Validators.required],
+      tva: "en TTC",
+      service: ["-", Validators.required],
+      fournisseur:"",
+    });
+  }
 
   ngOnDestroy(): void {
     this.destroy$.next(true)
   }
-
 
   // convenience getter for easy access to form fields
   get f() { return this.paramsForm.controls; }
@@ -86,7 +84,6 @@ initForm(): void {
   onQuit(): void {
     this.seeyouService.goBack()
   }
-
 
   onOrigineChange() {
       this.majOrigine(this.f['origine'].value)
@@ -106,7 +103,6 @@ initForm(): void {
       this.paramsForm.get("service")?.disable()
     }
   }
-  
 
   onSubmit(){
     this.submitted = true;
@@ -135,9 +131,7 @@ initForm(): void {
         next: (data:Params) => {
           this.params = data;
           this.paramsService.paramsToForm(this.params,this.paramsForm)
-          //if (this.params.parent.endsWith('sorties')) {
           this.lstorigine = this.lstorigine_sorties
-          //  } else {this.lstorigine = this.lstorigine_entrees}    
           this.loading = false
           this.majOrigine(this.params.origine)
         },        

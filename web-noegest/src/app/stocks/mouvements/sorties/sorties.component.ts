@@ -56,7 +56,6 @@ export class SortiesComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.getParams();
     this.getSorties();
-    this.params.parent = this.name
   }
 
   ngOnDestroy(): void {

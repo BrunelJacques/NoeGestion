@@ -7,7 +7,6 @@ export const  PARAMS: Params= {
   camp: "00",
   fournisseur: "",
   tva: "en TTC",
-  parent: "",
   modif: new Date()
 }
 
@@ -20,7 +19,6 @@ export interface Params {
   camp: string;
   fournisseur: string;
   tva: string;
-  parent: string;
   modif: Date
 }
 
