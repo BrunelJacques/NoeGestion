@@ -1,35 +1,26 @@
-<div class="container-fluid m-0 p-0">
-<div class="row mx-0 p-0">
+<div class="row m-0 p-0">
   <!-- 1ere colonne reprenant les paramètres d'affichage-->
-  <div class="col-sm-3 my-0 p-0 fond-saumon">
-    <div>    
-      <h4 class="row">
-        <span class="col-2 col-sm-12 small12">sortie: {{id}}</span>
-        <span class="col">Filtres actifs</span> 
-      </h4>
-    </div>
-    <form
-    [formGroup]="fgParams"
-    class="form-group short"
-    >
-      <div class="row" *ngFor="let field of fieldsParams">
-        <div class="col-3 col-sm-12">
-          <label for="{{ field.label}}">
-            {{ field.label  | titlecase }}
-          </label>
-        </div>
-        <div class="col-9 col-sm-12">
-          <input
-          class="form-control"
-          formControlName="{{ field.label}}"
-          type= "{{field.type}}"
-          id="{{ field.label}}" name="{{ field.label}}"
-          readonly
-          >
+  <mat-card [formGroup]="fgParams" class="main-form col-sm-3 my-0 p-0 fond-saumon">
+    <mat-card-title>Filtres actifs </mat-card-title>
+      <div class="row">
+        <div class="row fond-saumon" *ngFor="let field of fieldsParams">
+          <div class="col-3 col-sm-12 m-1 p-1">
+            <label for="{{ field.label}}">
+              {{ field.label  | titlecase }}
+            </label>
+          </div>
+          <div class="col-9 col-sm-12 p-1">
+            <input
+            class="form-control"
+            formControlName="{{ field.label}}"
+            type= "{{field.type}}"
+            id="{{ field.label}}" name="{{ field.label}}"
+            readonly
+            >
+          </div>
         </div>
       </div>
-    </form>
-  </div>
+  </mat-card>
 
   <!-- 2ème colonne données à saisir-->
   <div  *ngIf="mvt" class="col-sm-9 card mb-1 p-1">
@@ -76,7 +67,6 @@
       </div>
     </form>
   </div>
-</div>
 </div>
 
 

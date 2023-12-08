@@ -10,7 +10,6 @@ import { SubheaderComponent } from './subheader/subheader.component';
 import { SubheaderMvtsComponent } from '../stocks/mouvements/subheader-mvts/subheader-mvts.component';
 import { HighlightDirective } from '../shared/_directives/highlight.directive';
 
-import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { SharedModule } from '../shared/shared.modules';
 
@@ -43,7 +42,6 @@ import { HandleError } from './_helpers/error.interceptor';
     SubheaderComponent,
     SubheaderMvtsComponent,
     HighlightDirective,
-    ReactiveFormsModule,
     HttpClientModule,
   ],
   providers: [

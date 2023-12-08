@@ -1,30 +1,77 @@
 
-<div class="fond-primary sticky-top">
-  <span >Mon span</span>
-  <div>Mon div</div>
-  <input type="text" [disabled]="isBusy">
+<mat-card class="">
+  <mat-card-title >Titre</mat-card-title>
+  <div class="row m-1">
+  <div class="col-12 col-sm-4 p-0">
+    <mat-card-subtitle>1.1 sous-titre</mat-card-subtitle>
+    <div class="form-row">
+      <div class="fond-saumon">ma colonne 1.1</div>
+      <div>ma colonne 1.2</div>
+    </div>
+    </div>
+  <div class="col-12 col-sm-8">
+    <div class="row">
+      <div>ma colonne 2.1</div>
+      <div class="fond-box">ma colonne 2.2</div>
+    </div>
+  </div>
 </div>
 
-  <button (click)="desactiverInput()">Modifier l'effet</button>
+</mat-card>
 
-  <mat-card class="main-form">
-    <div>zztest works</div>
 
-    <mat-card-actions>
-      <button 
-      id="myButton"
-      mat-flat-button color="primary" 
-      type="submit"
-      [disabled]="false"
-      aria-label="Confirm">
-        <span *ngIf="isBusy" class="spinner-border spinner-border-sm mr-1"></span>
-        Compte Clicks<mat-icon>send</mat-icon>
-      </button>
-      <button mat-flat-button class="fond-soutenu m-3">
-          <a routerLink="../login">Abandon<mat-icon>reply</mat-icon></a>
-      </button>
-    </mat-card-actions>
+<div class="">
+  <div>Titre2</div>
+  <mat-card-subtitle>
+    <span>matcardtitle</span>
+  </mat-card-subtitle>
+</div>
+<div class="row m-1">
+  <div class="col-12 col-sm-4 p-0 fond-titre">
+      <mat-card-subtitle class="fond-titre">1.1 sous-titre</mat-card-subtitle>
+      <mat-form-field appearance="fill" class="p-0">
+        <mat-label>Ma date</mat-label>
+        <input type="date" matInput [formControl]="myDateCtrl">
+        <mat-error> {{getFormControlErrorText(myDateCtrl)}} </mat-error>
+      </mat-form-field>
 
-    <mat-spinner *ngIf="isBusy" color="primary" mode="indeterminate" > </mat-spinner>
-  </mat-card>
+      <mat-form-field appearance="fill">
+        <mat-label>Mon_Texte</mat-label>
+        <input type="text" matInput [formControl]="myTxtCtrl">
+        <mat-error>{{getFormControlErrorText(myDateCtrl)}} </mat-error>
+      </mat-form-field>
+    
+      <mat-card-subtitle>1.2 sous-titre</mat-card-subtitle>
+      <mat-form-field appearance="fill">
+        <mat-label>Ma date</mat-label>
+        <input type="date" matInput [formControl]="myDateCtrl">
+        <mat-error> {{getFormControlErrorText(myDateCtrl)}} </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Mon Texte</mat-label>
+        <input type="text" matInput [formControl]="myTxtCtrl">
+        <mat-error>{{getFormControlErrorText(myDateCtrl)}} </mat-error>
+      </mat-form-field>
+  </div>
+  <div class="col-12 col-sm-8">
+      <mat-card-subtitle>Mon deuxième sous-titre</mat-card-subtitle>
+        <mat-form-field appearance="fill">
+          <mat-label>
+            ceci est mon label
+          </mat-label>
+          <input type="text" matInput [formControl]="myTxtCtrl">
+
+          <mat-error>Ce champ est nécessaire </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>
+            ceci est mon label2
+          </mat-label>
+          <input type="date" matInput [formControl]="myDateCtrl">
+  
+          <mat-error>Ce champ est nécessaire </mat-error>
+        </mat-form-field>
+  </div>
+</div>
 

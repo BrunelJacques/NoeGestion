@@ -76,6 +76,11 @@ input, select {
 
 label { margin: 7px 0 2px 8px; }
 
+.full-width {
+  width: 96%!important;
+  margin-left: 2%;
+}
+
 .app-container {
   min-height: 350px;
   overflow: hidden;
@@ -148,7 +153,7 @@ label { margin: 7px 0 2px 8px; }
 }
 
 .short {
-  max-width: 250px;
+  max-width: 170px;
 }
 
 .bloc-expand {
@@ -227,14 +232,14 @@ td {
 }
 
 .bold {
-  font-weight: 500!important;
+  font-weight: 00!important;
 }
 
 .center { 
   text-align: center!important;
-  justify-content: center;
+  justify-content: space-evenly;
   justify-items: center;
-  align-content: center;
+  align-content: space-evenly;
   align-items: center;
 }
 
@@ -260,10 +265,11 @@ td {
 // openClassRoom pour material
 
 mat-form-field {
-  width: 45%;
+  width: 96%;
+  margin-left: 2% ;
+  margin-right: 2% ;
   &.full-width {
-    width: 80%;
-    margin-left: 10%;
+    width: 100%;
   }
 }
 
@@ -280,6 +286,9 @@ mat-form-field .mat-mdc-text-field-wrapper .mat-mdc-form-field-flex .mat-mdc-flo
   top: 5px;
 }
 
+mat-form-field .mdc-text-field{
+  padding: 0 2px 0 6px;
+}
 
 // custom Input  in formfield
 .mat-mdc-input-element {
@@ -305,7 +314,7 @@ mat-form-field .mat-mdc-text-field-wrapper .mat-mdc-form-field-flex .mat-mdc-flo
 
 .form-row {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   align-items: center;
 }
 
@@ -314,12 +323,17 @@ mat-form-field .mat-mdc-text-field-wrapper .mat-mdc-form-field-flex .mat-mdc-flo
 }
 
 mat-card-title {
+  display: flex;
+  justify-content: space-evenly;
   width:100%;
   background-color: var(--fond-titre);
   color: var(--texte-sombre) !important;
 }
 
 mat-card-subtitle {
+  display: flex;
+  justify-content: space-evenly;
+  width:100%;
   color: var(--texte-sombre) !important;
 }
 

@@ -1,5 +1,7 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { delay, fromEvent, map, scan, tap, throttleTime } from 'rxjs';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+
 
 @Component({
   selector: 'app-zz-test',
@@ -14,10 +16,27 @@ export class ZzTestComponent implements OnInit, AfterViewInit {
 
   clickCount!: number
 
+  mainForm!: FormGroup;
+  myTxtCtrl!: FormControl;
+  myDateCtrl!: FormControl;
+
+  constructor (
+    private formBuilder: FormBuilder) {}
+
 
   ngOnInit(): void {
     console.log("ngOninit zztest")
+    this.initForm()
     this.initObservables()
+  }
+
+  initForm(): void {
+    this.myTxtCtrl = this.formBuilder.control('invite',Validators.required)
+    this.myDateCtrl = this.formBuilder.control('',Validators.required)
+    this.mainForm = this.formBuilder.group({
+      myTxt: this.myTxtCtrl,
+      myDate: this.myDateCtrl
+    })
   }
 
   ngAfterViewInit(): void {
@@ -49,9 +68,15 @@ export class ZzTestComponent implements OnInit, AfterViewInit {
     }
   }
 
-    desactiverInput() {
-      this.isBusy = !this.isBusy;
-    }
+  desactiverInput() {
+    this.isBusy = !this.isBusy;
+  }
+
+  getFormControlErrorText(ctrl: AbstractControl) {
+    if (ctrl.hasError('required')) {
+      return 'Ce champ est obligatoire'
+    } else {return "Saisie non valide"}
+  }
 
 }
   
