@@ -3,10 +3,10 @@
 class=" m-1"
 [formGroup]="personalInfoForm"> 
   <mat-card-subtitle>Informations personnelles</mat-card-subtitle>
-  <div class="form-row m-1">
-    <mat-form-field>
+  <div class="form-row">
+    <mat-form-field class="custom">
       <mat-label>Prénom</mat-label>
-      <input type="text" matInput formControlName="firstName" >
+      <input type="text" matInput formControlName="firstName" class="inputField" >
       <mat-error>Champ nécessaire </mat-error>
     </mat-form-field>
     <mat-form-field appearance="fill">
@@ -18,9 +18,8 @@ class=" m-1"
 </mat-card>
 
 <mat-card class="m-1" [formGroup]="joinForm" >
-
     <div class="form-row">
-      <mat-card-subtitle class="fs-6">Vous joindre?</mat-card-subtitle>
+      <mat-card-subtitle  class="form-field fs-6">Vous joindre?</mat-card-subtitle>
       <mat-form-field >
         <mat-label>Téléphone</mat-label>
         <input type="text" matInput [formControl]="phoneCtrl">
@@ -46,7 +45,7 @@ class=" m-1"
 <mat-card class="m-1" [formGroup]="loginInfoForm" >
   
   <div class="form-row">        
-    <mat-card-subtitle class="fs-6" >Connexion</mat-card-subtitle>
+    <mat-card-subtitle  class="form-field fs-6">Connexion :</mat-card-subtitle>
     <mat-form-field >
       <mat-label>Identifiant</mat-label>
       <input type="text" matInput [formControl]="usernameCtrl">

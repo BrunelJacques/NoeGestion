@@ -14,7 +14,6 @@ export class CompteComponent implements OnInit {
   @Input() userValue!: User;
   @Output() valid = new EventEmitter<User>();
 
-  isDisabled = true
   situation!: string | undefined  
   showEmailError$!: Observable<boolean>
   showPasswordError$!: Observable<boolean>
@@ -36,15 +35,17 @@ export class CompteComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-  ) {}
+    ) {}
 
   ngOnInit(): void {
     this.situation = this.userValue.situation
+    if (this.situation === 'exists') { this.setCtrlDisabled}
+    console.log('situation: ',this.situation)
     this.initFormControls()
     this.initMainForm()
     this.setValidators()
     this.initFormObservables()
-    if (this.isDisabled) {
+    if (this.situation === 'exist') {
       this.setCtrlDisabled()
     }
   }

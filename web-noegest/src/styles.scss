@@ -231,10 +231,6 @@ td {
   font-size: 10px;
 }
 
-.bold {
-  font-weight: 00!important;
-}
-
 .center { 
   text-align: center!important;
   justify-content: space-evenly;
@@ -268,32 +264,39 @@ mat-form-field {
   width: 96%;
   margin-left: 2% ;
   margin-right: 2% ;
+  max-width: 220px;
   &.full-width {
     width: 100%;
   }
 }
 
+.form-field { /* Utilisable avec label ou subtitle pour harmoniser avec formfield */
+  width: 96%;
+  margin-left: 2% !important;
+  margin-right: 2% !important ;
+  max-width: 220px;
+}
+
 mat-form-field .mat-mdc-form-field-infix {
-  min-height: 28px !important; /* adjust the height as needed */
+  min-height: 33px !important; /* hauteur de la partie grisée - adjust the height as needed */
   padding: 0 !important;
   // ce top se cumule avec le suivant et permet d'écarter les deux noms du field avec ou sans contenu
-  top: 6px;
+  top: 5px;
   vertical-align: bottom;
 }
-
+// Nom du field qui monte lors de l'imput
 mat-form-field .mat-mdc-text-field-wrapper .mat-mdc-form-field-flex .mat-mdc-floating-label {
   vertical-align: bottom;
-  top: 5px;
+  top: 8px;
 }
 
-mat-form-field .mdc-text-field{
-  padding: 0 2px 0 6px;
+mat-form-field .mdc-text-field {
+  padding:  2px;
 }
 
 // custom Input  in formfield
-.mat-mdc-input-element {
-  height: 18px !important;
-  min-height: 16px;
+.inputField {
+  padding: 6px 0 0 4px !important;
 }
 
 // custom position mat-flat-button
@@ -310,12 +313,6 @@ mat-form-field .mdc-text-field{
   line-height: 13px !important;
   height: 13px !important;
   vertical-align: text-bottom;
-}
-
-.form-row {
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
 }
 
 .mat-radio-button ~ .mat-radio-button {
@@ -348,6 +345,14 @@ mat-card-actions {
 .main-form {
   padding-bottom: 10px;
   position: relative;
+}
+
+.form-row {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
+  align-items: center;
+  margin: 4px 0;
 }
 
 .loading {
