@@ -1,24 +1,27 @@
 <div class="row m-0 p-0">
   <!-- 1ere colonne reprenant les paramètres d'affichage-->
-  <mat-card [formGroup]="fgParams" class="main-form col-sm-3 my-0 p-0 fond-saumon">
-    <mat-card-title>Filtres actifs </mat-card-title>
-      <div class="row">
-        <div class="row fond-saumon" *ngFor="let field of fieldsParams">
-          <div class="col-3 col-sm-12 m-1 p-1">
-            <label for="{{ field.label}}">
-              {{ field.label  | titlecase }}
-            </label>
-          </div>
-          <div class="col-9 col-sm-12 p-1">
-            <input
-            class="form-control"
-            formControlName="{{ field.label}}"
-            type= "{{field.type}}"
-            id="{{ field.label}}" name="{{ field.label}}"
-            readonly
-            >
-          </div>
+  <mat-card [formGroup]="fgMvt" class="main-form col-sm-3 my-0 p-0 fond-saumon">
+    <mat-card-title class="fs-6">Filtres actifs </mat-card-title>
+    <div class="form-row">   
+      <mat-label>Jour mouvement</mat-label>
+      <input
+          type= "date" id="jour" name="jour"
+          formControlName="jour"
+          class="form-control dateInput"
+          min="2020-01-01" max="2050-12-31"
+          [ngClass]="{ 'is-invalid': f['jour'].errors}">
+      <div *ngIf="f['jour'].errors" class="invalid-feedback">
+        <div *ngIf="f['jour'].errors">
+          date incorrecte!
         </div>
+      </div>
+      
+        <mat-form-field appearance="fill" class="p-0">
+          <mat-label>Vers</mat-label>
+          <input class="inputField" type="text" matInput
+          formControlName='vers' >
+          <mat-error>erreur de saisie</mat-error>
+        </mat-form-field> 
       </div>
   </mat-card>
 

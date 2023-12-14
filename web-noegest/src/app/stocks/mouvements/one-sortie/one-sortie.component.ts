@@ -4,14 +4,12 @@ import { Mouvement } from '../../_models/mouvement';
 import { DatePipe } from '@angular/common';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MvtService } from '../../_services/mvt.service';
-import { ParamsService } from '../../_services/params.service';
-import { Camp, Params, FormField } from '../../_models/params';
+import { Camp, FormField } from '../../_models/params';
 import { AlertService, SeeyouService } from 'src/app/general/_services';
 import { Constantes } from 'src/app/constantes';
 import { ActivatedRoute } from '@angular/router';
 import { FonctionsPerso } from 'src/app/shared/fonctions-perso';
 import { Article } from '../../_models/article';
-
 
 @Component({
   selector: 'app-one-sortie',
@@ -21,22 +19,20 @@ import { Article } from '../../_models/article';
 export class OneSortieComponent implements OnInit, OnDestroy {
 
   private destroy$!: Subject<boolean>
+  minDate = new Date(2020, 0, 1);
+  maxDate = new Date(2050, 0, 1);
   id!: string;
   mvt!: Mouvement;
-  params!: Params;
   camps!: Camp[];
-  fgParams!:FormGroup;
   fgMvt!: FormGroup;
 
   lstService = Constantes.LSTSERVICE;
   lstService_libelle = this.lstService.map((x) => x.libelle)
   submitted = false;
 
-  fieldsParams: FormField[] = [
-    { label: 'jour', type: 'date', value: '__ /__ /____' },
-    { label: 'vers', type: 'text', value: '-' },
-  ];
   fieldsMvt: FormField[] = [
+    { label: 'jour', type: 'text'},
+    { label: 'vers', type: 'text'},
     { label: 'service', type: 'select',
       options: this.lstService_libelle },
     { label: 'prixUnit', type: 'number'},
@@ -47,9 +43,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
   ];
 
   constructor(
-    private paramsService: ParamsService,
     private seeyouService: SeeyouService,
-    private fbParams:FormBuilder,
     private fbMvt:FormBuilder,
     private alertService: AlertService,
     private datePipe: DatePipe,
@@ -59,7 +53,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
     ) {}
 
   // convenience getter for easy access to form fieldsMvt
-  get f() { return this.fgParams.controls; }
+  get f() { return this.fgMvt.controls; }
 
   isNull = this.fp.isNull
 
@@ -69,16 +63,10 @@ export class OneSortieComponent implements OnInit, OnDestroy {
     this.initSubscriptions()
 
     this.initForm()
-    this.getParams()
     this.getMvt(this.id)
   }
 
   initForm() {
-    this.fgParams = this.fbParams.group({});
-    this.fieldsParams.forEach(field => {
-      this.fgParams.addControl(field.label, this.fbParams.control(field.value));
-    });
-
     this.fgMvt = this.fbMvt.group({});
     this.fieldsMvt.forEach(field => {
       this.fgMvt.addControl(field.label,this.fbMvt.control(field.value));
@@ -87,17 +75,19 @@ export class OneSortieComponent implements OnInit, OnDestroy {
   }
 
   setValuesMvt(mvt:Mouvement) {
-
-    const coutRation = this.fp.round(mvt.prixunit * mvt.sens * this.fp.division(mvt.qtemouvement , mvt.nbrations ))
+    const qteParRation = mvt.sens * this.fp.division(mvt.qtemouvement, mvt.nbrations ) 
+    const coutRation = this.fp.round( mvt.prixunit * qteParRation)
     this.fgMvt.patchValue({
+      //'jour': this.datePipe.transform(mvt.jour, 'dd-MM-yyyy'),
+      'jour': mvt.jour,
+      'vers': mvt.origine,
       'service': this.lstService_libelle[mvt.service],
       'prixUnit': this.fp.round(mvt.prixunit,4),
-      'qte': - mvt.qtemouvement,
+      'qte': mvt.qtemouvement * mvt.qtemouvement,
       'nbRations': mvt.nbrations,
       'coutRation': coutRation,
       'qteStock': mvt.article.qte_stock
     })
-    console.log('mouvement :',mvt,this.fgMvt.value )
   }
 
   initSubscriptions() {
@@ -121,6 +111,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
   }
 
   onQuit(): void {
+    console.log('fin onesortie: ', this.fgMvt.value)
     this.seeyouService.goBack()
   }
 
@@ -129,7 +120,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
     // reset alerts on submit
     this.alertService.clear();
     // stop here if form is invalid
-    if (this.fgParams.invalid) {
+    if (this.fgMvt.invalid) {
       console.log('one-sortie onSubmit invalide')
       return;
     }
@@ -149,29 +140,14 @@ export class OneSortieComponent implements OnInit, OnDestroy {
       });
   }
 
-  getParams(): void {
-    this.paramsService.paramssubj$
-      .pipe( takeUntil(this.destroy$))
-      .subscribe({
-        next: (data:Params) => {
-          this.params = data;
-          if (!this.params.service || this.params.service < 0){
-            this.params.service = 0 }
-          this.fgParams.patchValue({
-            'jour': this.datePipe.transform(this.params.jour, 'yyyy-MM-dd'),
-            'vers': this.params.origine,
-          })
-        },
-        error: (e) => {
-          if (e != 'Not Found') { console.error('one-sortie.getParams',e)}
-        }
-      })
-  }
-
   onArticle(retour: Article): void {
     console.log('event article: ',retour)
   }
 
+  onDateChange($event: undefined) {
+    console.log($event);
+  }
+  
   save(): void {
     if (this.id ) {
       console.log('à faire save')

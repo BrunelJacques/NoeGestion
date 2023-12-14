@@ -96,16 +96,17 @@ export class SortiesComponent implements OnInit, OnDestroy {
     this.sortiesSubscrib = this.mvtService.getSorties(this.urlparams)
       .subscribe( 
         data => {
-          const i = data.length
-          this.sorties = data.filter(this.mvtsFilter)
-          const j = this.sorties.length
-          if ((j == 0) && (i > 0)) {
-            this.alertService.error(`Modifiez les filtres: Ils n'ont retenu aucune des ${i} lignes présentes`)
-          } else if (j == 0) {
-            this.alertService.error(`Modifiez les filtres: aucune ligne n'a été chargée`)
+          if (data) {
+            const i = data.length
+            this.sorties = data.filter(this.mvtsFilter)
+            const j = this.sorties.length
+            if ((j == 0) && (i > 0)) {
+              this.alertService.error(`Modifiez les filtres: Ils n'ont retenu aucune des ${i} lignes présentes`)
+            } else if (j == 0) {
+              this.alertService.error(`Modifiez les filtres: aucune ligne n'a été chargée`)
+            }
           }
         }
-
       )
   }
 

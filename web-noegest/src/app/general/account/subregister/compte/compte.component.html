@@ -6,12 +6,12 @@ class=" m-1"
   <div class="form-row">
     <mat-form-field class="custom">
       <mat-label>Prénom</mat-label>
-      <input type="text" matInput formControlName="firstName" class="inputField" >
+      <input class="inputField" type="text" matInput formControlName="firstName">
       <mat-error>Champ nécessaire </mat-error>
     </mat-form-field>
     <mat-form-field appearance="fill">
       <mat-label>Nom</mat-label>
-      <input type="text" matInput formControlName="lastName">
+      <input class="inputField" type="text" matInput formControlName="lastName">
       <mat-error>Champ nécessaire </mat-error>
     </mat-form-field>
   </div>
@@ -22,19 +22,19 @@ class=" m-1"
       <mat-card-subtitle  class="form-field fs-6">Vous joindre?</mat-card-subtitle>
       <mat-form-field >
         <mat-label>Téléphone</mat-label>
-        <input type="text" matInput [formControl]="phoneCtrl">
+        <input class="inputField" type="text" matInput [formControl]="phoneCtrl">
         <mat-error> {{getFormControlErrorText(phoneCtrl)}} </mat-error>
       </mat-form-field>
     </div>
     <div class="form-row">
       <mat-form-field >
         <mat-label>Adresse mail</mat-label>
-        <input type="text" matInput [formControl]="emailCtrl">
+        <input class="inputField" type="text" matInput [formControl]="emailCtrl">
         <mat-error> {{getFormControlErrorText(emailCtrl)}} </mat-error>
       </mat-form-field>
       <mat-form-field >
         <mat-label>Confirmer le mail</mat-label>
-        <input type="text" matInput [formControl]="confirmEmailCtrl">
+        <input class="inputField" type="text" matInput [formControl]="confirmEmailCtrl">
         <mat-error> {{getFormControlErrorText(confirmEmailCtrl)}} </mat-error>
       </mat-form-field>
   
@@ -48,7 +48,7 @@ class=" m-1"
     <mat-card-subtitle  class="form-field fs-6">Connexion :</mat-card-subtitle>
     <mat-form-field >
       <mat-label>Identifiant</mat-label>
-      <input type="text" matInput [formControl]="usernameCtrl">
+      <input class="inputField" type="text" matInput [formControl]="usernameCtrl">
       <mat-error> {{getFormControlErrorText(usernameCtrl)}}</mat-error>
     </mat-form-field>
   </div>
@@ -56,12 +56,12 @@ class=" m-1"
   <div class="form-row">        
     <mat-form-field >
       <mat-label>Mot de passe</mat-label>
-      <input type="password" matInput [formControl]="passwordCtrl">
+      <input class="inputField" type="password" matInput [formControl]="passwordCtrl">
       <mat-error> {{getFormControlErrorText(passwordCtrl)}} </mat-error>
     </mat-form-field>
     <mat-form-field >
       <mat-label>Confirm. mot de passe</mat-label>
-      <input type="password" matInput [formControl]="confirmPasswordCtrl">
+      <input class="inputField" type="password" matInput [formControl]="confirmPasswordCtrl">
       <mat-error> {{getFormControlErrorText(confirmPasswordCtrl)}} </mat-error>
     </mat-form-field>
   </div>

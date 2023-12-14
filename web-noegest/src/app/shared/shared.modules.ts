@@ -20,6 +20,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 // Fait maison
 import { AutocompleteComponent } from "./autocomplete/autocomplete.component";
@@ -55,7 +56,10 @@ import { AutocompleteComponent } from "./autocomplete/autocomplete.component";
     MatRadioModule,
     MatProgressSpinnerModule,
     MatAutocompleteModule,
+    MatDatepickerModule,
   ],
+
+
   providers: [
     { provide: LOCALE_ID, useValue: 'fr-FR'},
     { provide: DatePipe },
