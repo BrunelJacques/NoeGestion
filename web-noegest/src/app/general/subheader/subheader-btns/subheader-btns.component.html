@@ -1,0 +1,23 @@
+<div class="card fond-ecran m-0 px-1">
+  <!-- boutons de retours -->
+  <div class="w-100 form-group" *ngIf = isToQuit>
+    <div class="col-sm-12 fw-bold m-1 mx-2"> {{template}}</div>
+    <button mat-flat-button color="primary"
+    type="submit"
+    class="btn w100px p-1 py-sm-2 m-1"
+    aria-label="Confirm"
+    [disabled]="!valid"
+    (click)="onClickOk()">
+      retour ok
+      <i class="bi bi-sign-turn-right-fill"></i>
+    </button>
+    <button mat-flat-button
+    type="button"
+    class="btn w100px fond-soutenu texte-sombre p-1 py-sm-2 m-1"
+    aria-label="Close"
+    (click)="onClickQuit()">
+    abandon
+    <i class="bi bi-sign-turn-left"></i>
+    </button>
+  </div>
+</div>
