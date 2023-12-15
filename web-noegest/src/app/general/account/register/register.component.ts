@@ -10,9 +10,6 @@ import { User } from '../../_models';
 @Component({ templateUrl: 'register.component.html' })
 
 export class RegisterComponent implements OnInit, OnDestroy {
-	
-
-
 	loading = false  
 	userFormValid = true
 	userValue!: User

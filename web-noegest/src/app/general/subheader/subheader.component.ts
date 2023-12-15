@@ -14,6 +14,7 @@ export class SubheaderComponent implements OnInit, OnDestroy {
   lstMvt = ['params','sorties','onesortie']
   isSpecial = false
   mvt = false
+  register = false
 
   constructor(
     private seeyouService: SeeyouService,
@@ -22,7 +23,8 @@ export class SubheaderComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.seeyouService.templateActive$.subscribe(
       (template) => { 
-        this.mvt = (this.lstMvt.indexOf(template)!= -1 )
+        this.mvt = (this.lstMvt.indexOf(template)!= -1 ),
+        this.register = (template === 'register')
       })
     this.seeyouService.rootActive$.subscribe(
       (rootUrl) => { 

@@ -20,13 +20,18 @@
   --fond-primary-clair: #c5c5ff;
   --texte-clair:  cornflowerblue;
   --texte-sombre:  #09238D;
+  --max-width-field: 200px;
+  --mdc-filled-button-label-text-color:#09238D;
 }
 
 .fond-ecran { background-color: var(--fond-ecran) !important;}
 .fond-saisie { background-color: var(--fond-saisie) !important;}
 .fond-box { background-color: var(--fond-blanc) !important;}
 .fond-titre { background-color: var(--fond-titre) !important;}
-.fond-soutenu {background-color: var(--fond-soutenu) !important;}
+.fond-soutenu {
+  background-color: var(--fond-soutenu) !important;
+  color: vat(--texte-sombre)
+}
 .fond-saumon { background-color: var(--fond-saumon)!important;}
 .fond-rose {background-color: var(--fond-rose)!important;}
 .fond-sombre {
@@ -50,6 +55,11 @@
 
 .ombre { box-shadow: 0 9px 6px -6px  #999;}
 
+.mw-field {
+  margin-left: 2% !important;
+  margin-right: 2% !important;
+  max-width: var(--max-width-field);}
+
 body {
   max-width: 1000px;
   background-color: var(--fond-ecran);
@@ -72,17 +82,24 @@ main {
 }
 
 input, select { 
-  max-width: 220px;
+  margin-left: 2%;
+  margin-right: 2%;
+  max-width: var(--max-width-field);
   min-height: 1.55rem;
   font-size: 1.05rem;
   background-color: var(--fond-saisie);
 }
 
-label { margin: 7px 0 2px 8px; }
+label { 
+  margin: 7px 5px 2px 5px; 
+  flex-grow: 100;
+  text-align-last: center ;
+}
 
 .full-width {
-  width: 96%!important;
+  width: 100%!important;
   margin-left: 2%;
+  margin-right: 2%;
 }
 
 .app-container {
@@ -176,6 +193,11 @@ label { margin: 7px 0 2px 8px; }
   height: 100%;
 }
 
+.w100px {
+  display: flex;
+  flex-flow: row nowrap;
+  width: 110px;
+}
 .btn {
   margin-top: 5px;
   max-width: 110px;
@@ -194,14 +216,45 @@ form {
 text-align: start;
 }
 
+.form-row {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
+  align-items: center;
+  margin: 0;
+  gap: 10px 4px;
+}
+
 .form-group {
    margin: 0.5rem 0.3rem;
+   display: flex;
+   flex-flow: row wrap;
+}
+
+zzrow {
+  --bs-gutter-x: 1.5rem;
+  --bs-gutter-y: 0;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: calc(-1 * var(--bs-gutter-y));
+  margin-right: calc(-0.5 * var(--bs-gutter-x));
+  margin-left: calc(-0.5 * var(--bs-gutter-x));
 }
 
 .form-control {
-   font-size: 1.05rem;
-   padding: 1px 6px ;
-   line-height: 1;
+  margin-left: 2%;
+  margin-right: 2%;
+  font-size: 1.05rem;
+  padding: 1px 6px ;
+  line-height: 1;
+  background-color: var(--fond-saisie);
+  --mdc-filled-text-field-container-shape: 5px;
+  border-width: 0 0 1px 0;
+  border-top-left-radius: var(--mdc-filled-text-field-container-shape);
+  border-top-right-radius: var(--mdc-filled-text-field-container-shape);
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+  border-color: var(--texte-sombre) !important;
 }
 
 .table>:not(caption)>*>* {
@@ -265,25 +318,17 @@ td {
 // openClassRoom pour material
 
 mat-form-field {
-  width: 96%;
   margin-left: 2% ;
   margin-right: 2% ;
-  max-width: 220px;
-  &.full-width {
-    width: 100%;
-  }
+  max-width: var(--max-width-field);
 }
 
 .form-field { /* Utilisable avec label ou subtitle pour harmoniser avec formfield */
-  width: 96%;
   margin-left: 2% !important;
   margin-right: 2% !important ;
-  max-width: 220px;
+  max-width: var(--max-width-field);
   background-color: var(--fond-saisie);
 
-}
-.dateInput {
-  padding: 2px;
 }
 
 
@@ -308,6 +353,7 @@ mat-form-field .mat-mdc-form-field-infix {
   margin: 0px!important;
   top: 12px !important;
 }
+
 mat-form-field .mdc-text-field {
   //top: 5px !important;
   padding: 0  8px;
@@ -370,14 +416,6 @@ mat-card-actions {
 .main-form {
   padding-bottom: 10px;
   position: relative;
-}
-
-.form-row {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: space-evenly;
-  align-items: center;
-  margin: 4px 0;
 }
 
 .loading {

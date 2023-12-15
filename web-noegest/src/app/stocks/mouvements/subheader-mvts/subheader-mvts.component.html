@@ -1,4 +1,4 @@
-<div class="card start m-0 px-1">
+<div class="card fond-ecran start m-0 px-1">
   <!-- infos en cours -->
   <span class="fw-bold m-1"> {{lstModules[template]}}
   </span>
@@ -8,10 +8,8 @@
     <span *ngIf="params['origine'] === 'camp'">pour camp '{{params['camp']}}'</span>
   </span>
 
-  <div *ngIf="isListe" class= "col-8 col-sm-12 m-0 p-0" >
-    <span class="">
+  <div *ngIf="isListe" class="col my-1 ps-2" >
       Le: {{jour}}
-    </span>
   </div>
 
   <!-- navigation contextuelle -->

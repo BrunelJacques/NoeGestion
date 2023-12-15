@@ -7,8 +7,8 @@ import { LayoutComponent } from './layout';
 import { LoginComponent } from './login';
 import { RegisterComponent } from './register';
 import { SharedModule } from 'src/app/shared/shared.modules';
-import { InfoComponent } from './subregister/info/info.component';
-import { CompteComponent } from './subregister/compte/compte.component';
+import { InfoComponent } from './register/info/info.component';
+import { CompteComponent } from './register/compte/compte.component';
 
 @NgModule({
     imports: [

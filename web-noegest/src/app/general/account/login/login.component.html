@@ -1,9 +1,9 @@
 ﻿<mat-card [formGroup]="form" class="center m-2 my-4 my-sm-2 " >
   <mat-card-title>Connexion</mat-card-title>
     <form  [formGroup]="form" (ngSubmit)="onSubmit()">
-        <div class="form-group">
+        <div class="form-control">
             <label for="email">Identifiant</label>
-            <input type="text" formControlName="email" class="form-control" id="email"
+            <input type="text" formControlName="email" id="email"
             autocomplete="username" 
             [ngClass]="{ 'is-invalid': submitted && f['email'].errors }" />
             <div *ngIf=" f['email'].errors?.['required'] && form.controls['email'].touched" class="invalid-feedback">
@@ -21,11 +21,11 @@
         </div>   
         
         <div class="form-group">
-            <button mat-flat-button color="primary" [disabled]="loading">
+            <button mat-flat-button color="primary" [disabled]="loading" class="w100px m-3">
                 <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                 Envoi<mat-icon>send</mat-icon>
             </button>
-            <button mat-flat-button class="fond-soutenu m-3">
+            <button mat-flat-button class="fond-soutenu m-3 ">
                 <a routerLink="../register" >Compte<mat-icon>person</mat-icon></a>
             </button>
         </div>
