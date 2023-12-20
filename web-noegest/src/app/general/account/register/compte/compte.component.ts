@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Observable, map } from 'rxjs';
+import { Observable, concat, map, tap } from 'rxjs';
 import { confirmEqualValidator } from 'src/app/shared/_validators/confirm-equal.validator';
 import { validValidator } from 'src/app/shared/_validators/valid.validator';
 import { User } from 'src/app/general/_models';
@@ -30,7 +30,9 @@ export class CompteComponent implements OnInit {
   loginInfoForm!: FormGroup
   usernameCtrl!: FormControl
   passwordCtrl!: FormControl
-  confirmPasswordCtrl!: FormControl 
+  confirmPasswordCtrl!: FormControl
+
+  //validation$!: Observable<boolean>
 
 
   constructor(
@@ -89,6 +91,27 @@ export class CompteComponent implements OnInit {
         this.confirmPasswordCtrl.value
         )
     );
+
+    concat(
+      this.personalInfoForm.statusChanges.pipe(
+        map(status => status === 'VALID' &&
+        this.joinForm.valid &&
+        this.loginInfoForm.valid)
+        ),
+      this.joinForm.statusChanges.pipe(
+        map(status => status === 'VALID' &&
+        this.personalInfoForm.valid &&
+        this.loginInfoForm.valid)
+      ),
+      this.loginInfoForm.statusChanges.pipe(
+        map(status => status === 'VALID' &&
+        this.joinForm.valid &&
+        this.personalInfoForm.valid)
+      ),
+      ).subscribe(data => {
+        console.log('data subscribe:',data)
+        this.emitValid
+      })
   }
 
   private initMainForm(): void {
@@ -135,19 +158,25 @@ export class CompteComponent implements OnInit {
     });
   }
      
-
-  getFormControlErrorText(ctrl: AbstractControl) {
-    if (ctrl.hasError('required')) {
-      return 'Obligatoire'
-    } else if (ctrl.hasError('email')) {
-      return "Mail invalide"
-    } else if (ctrl.hasError('minlength')) {
-      return "Trop court"
-    } else if (ctrl.hasError('maxlength')) {
-      return "Trop long"
+  private emitValid(): void {
+    if (this.personalInfoForm.valid && this.joinForm.valid && this.userForm.valid) {
+      this.valid.emit(this.getFormsValues())
     } else {
-      return "Saisie non valide"
+      this.valid.emit(undefined)
     }
+    console.log('emit')
+  }
+
+  private getFormsValues(){
+    const user = new User
+    return user
+  }
+  getFormControlErrorText(ctrl: AbstractControl) {
+    if (ctrl.hasError('required')) { return 'Obligatoire'} 
+    else if (ctrl.hasError('email')) { return "Mail invalide"} 
+    else if (ctrl.hasError('minlength')) { return "Trop court"} 
+    else if (ctrl.hasError('maxlength')) { return "Trop long"} 
+    else { return "Saisie non valide"}
   }
 
 }

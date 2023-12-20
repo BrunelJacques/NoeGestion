@@ -11,7 +11,7 @@ import { User } from '../../_models';
 
 export class RegisterComponent implements OnInit, OnDestroy {
 	loading = false  
-	userFormValid = true
+	userFormValid = false
 	userValue!: User
 	situationCtrl!: FormControl
 	destroy$!: Subject<boolean>
@@ -78,6 +78,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
 	}
 
 	onValid(valid: User) {
+		if (!valid) { this.userFormValid = false } 
+		else { this.userFormValid = true }
 		console.log('validation reçue',valid)
 	}
 
