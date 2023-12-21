@@ -1,9 +1,12 @@
 ﻿<mat-card [formGroup]="form" class="center m-2 my-4 my-sm-2 " >
   <mat-card-title>Connexion</mat-card-title>
-    <form  [formGroup]="form" (ngSubmit)="onSubmit()">
-        <div class="form-control">
-            <label for="email">Identifiant</label>
-            <input type="text" formControlName="email" id="email"
+    <div class="form-group" [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label class="form-label" for="email">Identifiant</label>
+            <input type="text" 
+            formControlName="email"
+            class="form-control" 
+            id="email"
             autocomplete="username" 
             [ngClass]="{ 'is-invalid': submitted && f['email'].errors }" />
             <div *ngIf=" f['email'].errors?.['required'] && form.controls['email'].touched" class="invalid-feedback">
@@ -11,10 +14,13 @@
             </div>
         </div>
         <div class="form-group">
-            <label for="password">Mot de passe</label>
-            <input type="password" formControlName="password" class="form-control" id="password"
-                autocomplete="current-password"
-                [ngClass]="{ 'is-invalid': submitted && f['password'].errors }" />
+            <label class="form-label" for="password">Mot de passe</label>
+            <input type="password" 
+            formControlName="password" 
+            class="form-control" 
+            id="password"
+            autocomplete="current-password"
+            [ngClass]="{ 'is-invalid': submitted && f['password'].errors }" />
             <div *ngIf="f['password'].errors?.['required'] && form.controls['password'].touched" class="invalid-feedback">
                 <div *ngIf="f['password'].errors?.['required']">Mot de passe à saisir</div>
             </div>
@@ -29,6 +35,6 @@
                 <a routerLink="../register" >Compte<mat-icon>person</mat-icon></a>
             </button>
         </div>
-    </form>
+    </div>
 </mat-card>
 <div class="my-1">

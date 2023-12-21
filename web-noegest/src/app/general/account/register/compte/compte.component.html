@@ -1,7 +1,7 @@
 
 <mat-card 
 class=" m-1"
-[formGroup]="personalInfoForm"> 
+[formGroup]="mainForm"> 
   <mat-card-subtitle>Informations personnelles</mat-card-subtitle>
   <div class="form-row">
     <mat-form-field class="custom">
@@ -17,7 +17,7 @@ class=" m-1"
   </div>
 </mat-card>
 
-<mat-card class="m-1" [formGroup]="joinForm" >
+<mat-card class="m-1" [formGroup]="mainForm" >
     <div class="form-row">
       <mat-card-subtitle  class="mw-field fs-6">Vous joindre?</mat-card-subtitle>
       <mat-form-field >
@@ -42,7 +42,7 @@ class=" m-1"
     <small class="error-text" *ngIf="showEmailError$ | async">Adresses différentes</small>
 </mat-card>
 
-<mat-card class="m-1" [formGroup]="loginInfoForm" >
+<mat-card class="m-1" [formGroup]="mainForm" >
   
   <div class="form-row">        
     <mat-card-subtitle  class="mw-field fs-6">Connexion :</mat-card-subtitle>

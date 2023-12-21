@@ -55,6 +55,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
 			}),
 			takeUntil(this.destroy$),
 		).subscribe()
+
+
 	}
 
 	testCoherenceSituation(): void {
@@ -80,7 +82,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
 	onValid(valid: User) {
 		if (!valid) { this.userFormValid = false } 
 		else { this.userFormValid = true }
-		console.log('validation reçue',valid)
 	}
 
 	onSubmitForm(): void {
