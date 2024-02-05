@@ -70,7 +70,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   home(){
     if (!this.isNavbarCollapsed)
-    { this.onClickQuit() }
+    { this.logout() }
     else
     {
       const navMain = document.getElementById('navbarCollapse');

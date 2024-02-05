@@ -3,7 +3,7 @@
   <mat-card [formGroup]="fgMvt" class="main-form col-sm-3 my-0 p-0 fond-saumon">
     <mat-card-title class="fs-6">Filtres actifs </mat-card-title>
     <div class="">
-      <div class="form-row right">
+      <div class="form-row">
         <label class="col-3 col-sm-12" for='jour'>Jour</label>
         <input
         type= "date" id="jour" name="jour"
@@ -15,13 +15,18 @@
           date incorrecte!
         </div>
       </div>
-        <mat-form-field appearance="fill" class="p-0">
-          <mat-label>Vers</mat-label>
-          <input type="text" matInput
-          formControlName='vers' >
-          <mat-error>erreur de saisie</mat-error>
-        </mat-form-field> 
+      <div class="form-row">
+        <label class="col-3 col-sm-12" for='jour'>Vers</label>
+        <input
+        type= "text" id="vers" name="vers"
+        formControlName="vers"
+        class="form-control col-7 col-sm-12"
+        [ngClass]="{ 'is-invalid': f['vers'].errors}">
+        <div *ngIf="f['vers'].errors" class="invalid-feedback">
+          obligatoire
+        </div>
       </div>
+    </div>
   </mat-card>
 
   <!-- 2ème colonne données à saisir-->

@@ -1,6 +1,6 @@
-﻿<mat-card [formGroup]="form" class="center m-2 my-4 my-sm-2 " >
+﻿<mat-card  class="center m-2 my-4 my-sm-2 " >
   <mat-card-title>Connexion</mat-card-title>
-    <div class="form-group" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <form class="form-group" [formGroup]="form" (ngSubmit)="onSubmit()">
         <div class="form-group">
             <label class="form-label" for="email">Identifiant</label>
             <input type="text" 
@@ -35,6 +35,5 @@
                 <a routerLink="../register" >Compte<mat-icon>person</mat-icon></a>
             </button>
         </div>
-    </div>
+    </form>
 </mat-card>
-<div class="my-1">

@@ -14,6 +14,7 @@ import { Article } from '../../_models/article';
 @Component({
   selector: 'app-one-sortie',
   templateUrl: './one-sortie.component.html',
+  styleUrls: ['./one-sortie.component.scss']
 })
 
 export class OneSortieComponent implements OnInit, OnDestroy {

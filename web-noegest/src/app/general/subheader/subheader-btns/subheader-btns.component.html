@@ -1,13 +1,12 @@
 <div class="card fond-ecran m-0 px-1">
   <!-- boutons de retours -->
   <div class="w-100 form-group" *ngIf = isToQuit>
-    <mat-card-actions *ngIf=" 'info' !== (situationCtrl.value)">
+    <mat-card-actions>
       <button
       mat-flat-button color="primary" 
       type="submit"
-      [disabled]="isValid"
       aria-label="Confirm">
-        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+        <span  class="spinner-border spinner-border-sm mr-1"></span>
         Demande<mat-icon>send</mat-icon>
       </button>
       <button mat-flat-button class="fond-soutenu m-3">

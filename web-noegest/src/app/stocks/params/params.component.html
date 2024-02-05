@@ -4,83 +4,89 @@
       <h2>Filtres d'affichage</h2>      
     </div>
     <form [formGroup]="paramsForm" 
-        class="form-group short was-validated"
+        class="form-group was-validated"
         (ngSubmit)="onSubmit()">
-      <label for="jour">Date:</label>
-      <input
-          type= "date" id="jour" name="jour"
-          formControlName="jour"
-          class="form-control"
-          min="2020-01-01" max="2050-12-31"
-          [ngClass]="{ 'is-invalid': f['jour'].errors}">
-      <div *ngIf="f['jour'].errors" class="invalid-feedback">
-        <div *ngIf="f['jour'].errors">
-          Choisissez une date ou abandonnez!
+      <div class="form-row">
+        <label for="jour">Date:</label>
+        <input
+            type= "date" id="jour" name="jour"
+            formControlName="jour"
+            class="form-control"
+            min="2020-01-01" max="2050-12-31"
+            [ngClass]="{ 'is-invalid': f['jour'].errors}">
+        <div *ngIf="f['jour'].errors" class="invalid-feedback">
+          <div *ngIf="f['jour'].errors">
+            Choisissez une date ou abandonnez!
+          </div>
         </div>
       </div>
-      
-      <label for="origine">Vers :</label>
-      <select id="origine" name="origine"
-        (change)="onOrigineChange()"
-        formControlName="origine"
-        class="form-control" required aria-label="origine">
-        <option [ngValue]="'-'" disabled>Filtrer les mouvements pour :</option>
-        <option *ngFor="let origine of lstorigine"
-          [ngValue]="origine['code']">
-          {{origine['libelle']}}
-        </option>
-      </select>
-
-      <div class="form-group" *ngIf="(f['origine'].value === 'camp')">
-        <label for="camp">Camp:</label>
-        <select id="camp" name="camp" 
-          formControlName="camp" 
-          class="form-control" required aria-label="camp"
-          [ngClass]="{ 'is-invalid': submitted && f['camp'].errors}">
-          <option [ngValue]="" disabled>Choisir un camp</option>
-          <option *ngFor="let camp of camps"
-            [ngValue]="camp.id">
-            {{camp['nom']}}
-          </option>
-        </select> 
-        <div *ngIf="submitted && f['camp'].errors" class="invalid-feedback" id="camp">
-          <div *ngIf="f['camp'].errors['required']">Choisissez un camp extérieur ou choisissez une autre destination</div>
-        </div>
-      </div>
-      <div *ngIf="(f['origine'].value === 'repas')">
-        <label for="service">Repas:</label>
-        <select formControlName="service"
-          id="service" name="service"
-          class="form-control" required>
-          <option [ngValue]="" disabled>Lignes pour les services :</option>
-          <option *ngFor="let service of lstservice"
-            [ngValue]="service.code">
-            {{service.libelle}}
-          </option>
-        </select>
-        <div *ngIf="submitted && f['service'].errors" class="invalid-feedback" id="service">
-          <div *ngIf="f['service'].errors['required']">Choisissez un service de repas ou 'pour tout'</div>
-        </div>
-      </div>
-
-      <div *ngIf="(parentName.endsWith('entrees'))">
-        <label for="tva">Tva mtt:</label>
-        <select id="tva" name="tva" formControlName="tva" class="form-control">
-          <option value="ttc">en TTC</option>
-          <option value="ht">en HT</option>
-        </select>
-
-        <label for="fournisseur">Fournisseur :</label>
-        <select id="fournisseur" name="fournisseur"
-          formControlName="fournisseur"
-          class="form-control" required aria-label="fournisseur">
-          <option *ngFor="let fournisseur of fournisseurs"
-            [ngValue]="fournisseur['id']">
-            {{fournisseur['nom']}}
+      <div class="form-row">  
+        <label for="origine">Vers :</label>
+        <select id="origine" name="origine"
+          (change)="onOrigineChange()"
+          formControlName="origine"
+          class="form-control" required aria-label="origine">
+          <option [ngValue]="'-'" disabled>Filtrer les mouvements pour :</option>
+          <option *ngFor="let origine of lstorigine"
+            [ngValue]="origine['code']">
+            {{origine['libelle']}}
           </option>
         </select>
       </div>
+      <div class="form-row">  
+        <div class="form-group" *ngIf="(f['origine'].value === 'camp')">
+          <label for="camp">Camp:</label>
+          <select id="camp" name="camp" 
+            formControlName="camp" 
+            class="form-control" required aria-label="camp"
+            [ngClass]="{ 'is-invalid': submitted && f['camp'].errors}">
+            <option [ngValue]="" disabled>Choisir un camp</option>
+            <option *ngFor="let camp of camps"
+              [ngValue]="camp.id">
+              {{camp['nom']}}
+            </option>
+          </select> 
+          <div *ngIf="submitted && f['camp'].errors" class="invalid-feedback" id="camp">
+            <div *ngIf="f['camp'].errors['required']">Choisissez un camp extérieur ou choisissez une autre destination</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-row">  
+        <div *ngIf="(f['origine'].value === 'repas')">
+          <label for="service">Repas:</label>
+          <select formControlName="service"
+            id="service" name="service"
+            class="form-control" required>
+            <option [ngValue]="" disabled>Lignes pour les services :</option>
+            <option *ngFor="let service of lstservice"
+              [ngValue]="service.code">
+              {{service.libelle}}
+            </option>
+          </select>
+          <div *ngIf="submitted && f['service'].errors" class="invalid-feedback" id="service">
+            <div *ngIf="f['service'].errors['required']">Choisissez un service de repas ou 'pour tout'</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-row">  
+        <div *ngIf="(parentName.endsWith('entrees'))">
+          <label for="tva">Tva mtt:</label>
+          <select id="tva" name="tva" formControlName="tva" class="form-control">
+            <option value="ttc">en TTC</option>
+            <option value="ht">en HT</option>
+          </select>
 
+          <label for="fournisseur">Fournisseur :</label>
+          <select id="fournisseur" name="fournisseur"
+            formControlName="fournisseur"
+            class="form-control" required aria-label="fournisseur">
+            <option *ngFor="let fournisseur of fournisseurs"
+              [ngValue]="fournisseur['id']">
+              {{fournisseur['nom']}}
+            </option>
+          </select>
+        </div>
+      </div>
     </form>
   </div>
 </div>
