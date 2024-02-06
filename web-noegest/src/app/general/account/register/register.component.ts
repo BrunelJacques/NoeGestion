@@ -2,7 +2,7 @@
 import { FormBuilder, FormControl } from '@angular/forms';
 import { Subject, first, startWith, takeUntil, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AlertService, AuthenticationService } from 'src/app/general/_services';
+import { AlertService, AuthenticationService, SeeyouService } from 'src/app/general/_services';
 import { User } from '../../_models';
 
 
@@ -23,8 +23,22 @@ export class RegisterComponent implements OnInit, OnDestroy {
 		private authenticationService: AuthenticationService,
 		private alertService: AlertService,
 		private formBuilder: FormBuilder,
-		) {}
-
+		private seeyouService: SeeyouService,
+    ){
+      this.initSubscriptions()
+    }
+  
+    initSubscriptions() {
+      this.destroy$ = new Subject<boolean>()
+  
+      this.seeyouService.clicksOk$
+        .pipe( takeUntil(this.destroy$))
+        .subscribe(() => this.onSubmit());
+      this.seeyouService.clicksQuit$
+        .pipe( takeUntil(this.destroy$) )
+        .subscribe(() => { this.onQuit() });    
+    }
+  
 	ngOnInit(): void {
 		this.initSituationCtrl()
 		this.initObservables()
@@ -82,32 +96,38 @@ export class RegisterComponent implements OnInit, OnDestroy {
 	onValid(valid: User) {
 		if (!valid) { this.userFormValid = false } 
 		else { this.userFormValid = true }
+		this.onSubmit()
 	}
 
-	onSubmitForm(): void {
-			this.loading = true;
+	onSubmit(): void {
+		this.loading = true;
 
-			// reset alerts on submit
-			this.alertService.clear();
+		// reset alerts on submit
+		this.alertService.clear();
 
-			// stop here if form is invalid
-			if (!this.userFormValid) {
-					return;
-			}
+		// stop here if form is invalid
+		if (!this.userFormValid) {
+				return;
+		}
 
-					this.loading = true;
-					this.authenticationService.register(this.userValue)
-							.pipe(first())
-							.subscribe({
-									next: () => {
-											this.alertService.success('Votre demande sera analysée dans quelques jours', { keepAfterRouteChange: true });
-											this.router.navigate(['../login'], { relativeTo: this.route });
-									},
-									error: error => {
-											this.alertService.error(error);
-											this.loading = false;
-									}
-							});
+		this.loading = true;
+		this.authenticationService.register(this.userValue)
+			.pipe(first())
+			.subscribe({
+					next: () => {
+							this.alertService.success('Votre demande sera analysée dans quelques jours', { keepAfterRouteChange: true });
+							this.router.navigate(['/account/login'], { relativeTo: this.route });
+					},
+					error: error => {
+							this.alertService.error(error);
+							this.loading = false;
+					}
+			});
+		this.onQuit()
 	}
-				
+
+	onQuit(): void {
+    this.seeyouService.goBack()
+  }
+	
 }  

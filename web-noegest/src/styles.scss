@@ -20,6 +20,7 @@
   --fond-primary-clair: #c5c5ff;
   --texte-clair:  cornflowerblue;
   --texte-sombre:  #09238D;
+  --texte-link: #0d6efd;
   --max-width-field: 200px;
   --mdc-filled-button-label-text-color:#09238D;
 }
@@ -47,9 +48,12 @@
   color: var(--texte-sombre);
 }
 
-.texte-clair {color: var(--texte-clair)}
-.texte-sombre {color: var(--texte-sombre)}
-
+.texte-clair {color: var(--texte-clair)!important}
+.texte-sombre {color: var(--texte-sombre)!important}
+.link {
+  color: var(--texte-link)!important;
+  text-decoration: underline;
+}
 .white {color: white}
 .whitesmoke {color: whitesmoke}
 
@@ -198,17 +202,29 @@ label {
   height: 100%;
 }
 
+
 .w100px {
+  display: flex;
+  flex-flow: row nowrap;
+  width: 100px;
+}
+
+.w110px {
   display: flex;
   flex-flow: row nowrap;
   width: 110px;
 }
+.w130px {
+  display: flex;
+  flex-flow: row nowrap;
+  width: 130px;
+}
+
 .btn {
   margin-top: 5px;
-  max-width: 110px;
   min-width: 30px;
   border-width: 1px;
-  border-color: whitesmoke;
+  border-color: var(--texte-link);
 }
 
 .btn:focus  {

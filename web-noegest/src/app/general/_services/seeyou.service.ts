@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { Subject, BehaviorSubject, delay, filter, tap } from 'rxjs';
+import { Subject, BehaviorSubject, delay, filter } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 

@@ -39,7 +39,7 @@ export class SubheaderMvtsComponent {
     private datePipe: DatePipe,
   ){
     this.seeyouService.templateActive$.subscribe(
-      (template) => { 
+      (template) => {
         this.template = template
         this.isListe = (this.listes.indexOf(template) != -1)
         this.isToParams = (this.toParams.indexOf(template) != -1)
@@ -47,15 +47,15 @@ export class SubheaderMvtsComponent {
         this.parentName = this.seeyouService.getParentName()
       }
     )
-  
+
     this.getParams()
   }
-  
+
   getParams(): void {
     this.paramsService.paramssubj$
       .subscribe({
-        next: (data:Params) => { 
-          this.params = data; 
+        next: (data:Params) => {
+          this.params = data;
           this.jour = this.datePipe.transform(this.params['jour'], 'dd/MM/yyyy');
         }
       })

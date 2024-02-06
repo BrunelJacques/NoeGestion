@@ -12,7 +12,6 @@ export class SubheaderComponent implements OnInit, OnDestroy {
   bgcolor = 'fond-sombre'
   lstUrls = ['stocks','kms']
   lstMvt = ['params','sorties','onesortie']
-  isSpecial = false
   mvt = false
   register = false
 
@@ -22,13 +21,9 @@ export class SubheaderComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.seeyouService.templateActive$.subscribe(
-      (template) => { 
+      (template) => {
         this.mvt = (this.lstMvt.indexOf(template)!= -1 ),
         this.register = (template === 'register')
-      })
-    this.seeyouService.rootActive$.subscribe(
-      (rootUrl) => { 
-        this.updateCurrentURL(rootUrl)
       })
   }
 
@@ -37,16 +32,4 @@ export class SubheaderComponent implements OnInit, OnDestroy {
     this.seeyouService.rootActive$.unsubscribe()
   }
 
-  private updateCurrentURL(rootUrl:string) {
-    const ix = this.lstUrls.indexOf(rootUrl)
-    if (ix !== -1){
-      this.isSpecial = true;
-      this.bgcolor = 'fond-ecran'
-    } 
-    else { 
-      this.mvt = false
-      this.isSpecial = false
-      this.bgcolor = 'fond-sombre'
-    }
-  }
 }

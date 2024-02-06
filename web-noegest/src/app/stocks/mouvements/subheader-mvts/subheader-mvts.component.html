@@ -1,6 +1,6 @@
-<div class="card fond-ecran start m-0 px-1">
+<div class="card fond-ecran cebter m-0 px-1">
   <!-- infos en cours -->
-  <span class="fw-bold m-1"> {{lstModules[template]}}
+  <span class="w-100 fw-bold m-1"> {{lstModules[template]}}
   </span>
   <span *ngIf="isListe" class="mat-body my-1">
     liste
@@ -14,14 +14,14 @@
 
   <!-- navigation contextuelle -->
   <div *ngIf = isToParams
-    class="m-1 p-0 ">
+  class="btn fond-ecran w130px p-1 m-1">
     <a class="bi bi-gear"
     routerLink="/stocks/params">
       <span class="p-1">Modif Filtres</span>
     </a>
   </div>
   <div *ngIf = isListe
-  class="m-1 p-0 ">
+  class="btn fond-soutenu w130px p-1 m-1">
     <a class="bi bi-plus-circle"
     routerLink="/stocks/onesortie/0">
       <span class="p-1">ajout ligne</span>
@@ -29,23 +29,21 @@
   </div>
 
   <!-- boutons de retours -->
-  <div *ngIf = isToQuit>
+  <div class="center" *ngIf = isToQuit>
     <button mat-flat-button color="primary"
     type="submit"
-    class=" p-1 py-sm-2 mb-1 mb-sm-0"
+    class="w130px p-1 py-sm-2 m-1"
     aria-label="Confirm"
     [disabled]="!valid"
     (click)="onClickOk()">
-      retour ok
-      <i class="bi bi-sign-turn-right-fill"></i>
+      valider<mat-icon>send</mat-icon>
     </button>
-    &nbsp;
-    <button  type="button"
-    class="close btn btn-secondary p-1 py-sm-2 mb-1"
+    <button mat-flat-button  
+    type="button"
+    class="w130px fond-soutenu link p-1 py-sm-2 m-1"
     aria-label="Close"
     (click)="onClickQuit()">
-    abandon
-    <i class="bi bi-sign-turn-left"></i>
+      abandon<mat-icon>reply</mat-icon>
     </button>
   </div>
 </div>
