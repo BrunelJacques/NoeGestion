@@ -64,6 +64,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
 		this.situationCtrl.valueChanges.pipe(
 			startWith(this.situationCtrl.value),
 			tap( () => { 
+				console.log("test coherence")
 				this.testCoherenceSituation(),
 				this.userValue.situation = this.situationCtrl.value
 			}),
@@ -81,6 +82,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
 			const mess = "Si votre compte existe, il faut d'abord vous connecter avant d'y apporter des modifs"
 			this.alertService.info(mess)
 			this.situationCtrl.setValue('info')
+		} else if (log && situ === 'exist') {
+			console.log('gestion register exists')
 		} else if (log && situ === 'new') {
 			this.alertService.clear()
 			const mess = "Votre compte existe, vous ne pouvez pas demander une nouvelle création de compte"

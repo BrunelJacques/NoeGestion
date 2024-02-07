@@ -51,8 +51,8 @@ export class AuthenticationService {
     }
 
     register(user: User) {
-        console.log(this.cst.API_URL+'/register',user);
-        return this.http.post(this.cst.API_URL+'/register', user);
+        const path = `/admin/auth/user/`+ user.id + `/change/`;
+        return this.http.post(this.cst.API_URL + path, user );
     }
 
     refreshToken() {
