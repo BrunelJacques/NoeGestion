@@ -1,24 +1,26 @@
 <div class="card fond-ecran start m-0 px-1">
   <div class="col-sm-12 m-1 mx-2"> {{template}}</div>
   <!-- boutons de retours -->
-  <div class="w-100 form-group" *ngIf = isToQuit>
+  <div class="w-100 form-group">
     <div>
       <button mat-flat-button 
+      *ngIf = isBtnOk
       type="submit"
       class="btn w130px p-1 py-sm-2 m-1"
       color="primary" 
       aria-label="Confirm"
       [disabled]="!valid"
       (click)="onClickOk()">  
-        Demande<mat-icon>send</mat-icon>
+        {{libBtnOk}}<mat-icon>send</mat-icon>
       </button>
 
       <button mat-flat-button 
+      *ngIf = isBtnQuit
       type="submit"
       class="btn w130px fond-soutenu link p-1 py-sm-2 m-1"
       aria-label="Close"
       (click)="onClickQuit()">
-        Login<mat-icon>reply</mat-icon>
+        Abandon<mat-icon>reply</mat-icon>
       </button>
     </div>
   </div>

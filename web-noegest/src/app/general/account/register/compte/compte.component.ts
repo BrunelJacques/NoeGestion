@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Observable, map } from 'rxjs';
+import { Observable, map, tap } from 'rxjs';
 import { confirmEqualValidator } from 'src/app/shared/_validators/confirm-equal.validator';
 import { validValidator } from 'src/app/shared/_validators/valid.validator';
 import { User } from 'src/app/general/_models';
@@ -73,7 +73,11 @@ export class CompteComponent implements OnInit {
   private initFormObservables() {
 
     this.showEmailError$ =  this.mainForm.statusChanges.pipe(
-        map(status => status === 'INVALID' && 
+      tap((status: string) => console.log(status === 'INVALID', 
+      this.emailCtrl.value ===
+      this.confirmEmailCtrl.value)
+      ),
+      map(status => status === 'INVALID' && 
         this.emailCtrl.value && 
         this.confirmEmailCtrl.value
         )

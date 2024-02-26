@@ -10,7 +10,9 @@ import { SeeyouService } from 'src/app/general/_services';
 export class SubheaderBtnsComponent {
   parentName = "-"
   nomModule = "-"
-  isToQuit = true
+  isBtnQuit = true
+  isBtnOk = true
+  libBtnOk = "Ok"
   template = "."
   valid = true
 
@@ -22,7 +24,10 @@ export class SubheaderBtnsComponent {
         this.template = template
         this.parentName = this.seeyouService.getParentName()
       }
-    )  
+    )
+    this.seeyouService.isBtnOk$.subscribe(
+      (x) => {this.isBtnOk = x}
+    )
   }
 
   onClickOk() {

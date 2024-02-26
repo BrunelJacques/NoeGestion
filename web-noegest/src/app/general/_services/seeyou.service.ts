@@ -16,6 +16,9 @@ export class SeeyouService {
 
   public rootActive$ = new BehaviorSubject<string>("")
   public templateActive$ = new BehaviorSubject<string>("")
+  public isBtnOk$ = new BehaviorSubject<boolean>(false)
+  public isBtnQuit$ = new BehaviorSubject<boolean>(false)
+    
   public parentName = "-"
 
   urlsHisto: string[] = ['/',]

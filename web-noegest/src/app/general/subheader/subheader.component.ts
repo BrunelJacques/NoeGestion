@@ -13,7 +13,7 @@ export class SubheaderComponent implements OnInit, OnDestroy {
   lstUrls = ['stocks','kms']
   lstMvt = ['params','sorties','onesortie']
   mvt = false
-  register = false
+  boutons = false
 
   constructor(
     private seeyouService: SeeyouService,
@@ -23,7 +23,7 @@ export class SubheaderComponent implements OnInit, OnDestroy {
     this.seeyouService.templateActive$.subscribe(
       (template) => {
         this.mvt = (this.lstMvt.indexOf(template)!= -1 ),
-        this.register = (template === 'register')
+        this.boutons = (template === 'register')
       })
   }
 
