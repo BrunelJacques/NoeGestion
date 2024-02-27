@@ -1,139 +1,20 @@
+<mat-card [formGroup]="mainForm" class="main-form">
 
-<div [formGroup]="mainForm" class="card">
-  <mat-card-subtitle>Email</mat-card-subtitle>
-  <div class="form-row p-2">
-    <mat-form-field class="col-10 col-sm-5 " appearance="fill">
-      <mat-label>Adresse mail</mat-label>
-      <input type="text" matInput formControlName="myTxt">
-      <mat-error> "une erreur possible" </mat-error>
-    </mat-form-field>
-    <mat-form-field class="col-10 col-sm-5" appearance="fill">
-      <mat-label>Confirmer votre mail</mat-label>
-      <input type="text" matInput formControlName="myTxt">
-      <mat-error> une erreur  </mat-error>
-    </mat-form-field>
-  </div>
-  <small class="error-text" >Les deux adresses ne correspondent pas</small>
-</div>
-
-<div class="mb-3 form-check">
-      <input type="checkbox" class="form-check-input" id="exampleCheck1">
-      <label class="form-check-label" for="exampleCheck1">Check me out</label>
-  </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
-
-
-<div class="card"
-     fxLayout
-     fxLayout.xs="column"
-     fxLayoutAlign="center"
-     fxLayoutGap="10px"
-     fxLayoutGap.xs="0"
->
-  <div class="item item-1">
-    Item 1
-  </div>
-  <div class="item item-2">
-    Item 2
-  </div>
-  <div class="item item-3">
-    Item 3
-  </div>
-</div >
-
-<div class="container"
-     fxLayout
-     fxLayout.xs="column"
-     fxLayoutAlign="center"
-     fxLayoutGap="10px"
-     fxLayoutGap.xs="0"
->
-  <div class="item item-4">
-    Item 4
-  </div>
-  <div class="item item-5">
-    Item 5
-  </div>
-</div>
-
-
-
-
-
-<mat-card class="">
-  <mat-card-title >Titre</mat-card-title>
-  <div class="row m-1">
-  <div class="col-12 col-sm-4 p-0">
-    <mat-card-subtitle>1.1 sous-titre</mat-card-subtitle>
+  <mat-card class="form-card" [formGroup]="emailForm" >
+    <mat-card-subtitle>Email</mat-card-subtitle>
     <div class="form-row">
-      <div class="fond-saumon">ma colonne 1.1</div>
-      <div>ma colonne 1.2</div>
+      <mat-form-field appearance="fill">
+        <mat-label>Adresse mail</mat-label>
+        <input type="text" matInput formControlName="email">
+        <mat-error> {{getFormControlErrorText(emailCtrl)}} </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Confirmer votre adresse mail</mat-label>
+        <input type="text" matInput formControlName="confirm">
+        <mat-error> {{getFormControlErrorText(confirmEmailCtrl)}} </mat-error>
+      </mat-form-field>
     </div>
-    </div>
-  <div class="col-12 col-sm-8">
-    <div class="row">
-      <div>ma colonne 2.1</div>
-      <div class="fond-box">ma colonne 2.2</div>
-    </div>
-  </div>
-</div>
+    <small class="error-text" *ngIf="showEmailError$ | async">Les deux adresses ne correspondent pas</small>
+  </mat-card>
 
 </mat-card>
-
-
-<div class="">
-  <div>Titre2</div>
-  <mat-card-subtitle>
-    <span>matcardtitle</span>
-  </mat-card-subtitle>
-</div>
-<div class="row m-1">
-  <div class="col-12 col-sm-4 p-0 fond-titre">
-      <mat-card-subtitle class="fond-titre">1.1 sous-titre</mat-card-subtitle>
-
-      <mat-form-field appearance="fill" class="p-0">
-        <mat-label>Ma date</mat-label>
-        <input type="date" matInput [formControl]="myDateCtrl">
-        <mat-error> {{getFormControlErrorText(myDateCtrl)}} </mat-error>
-      </mat-form-field>
-
-      <mat-form-field appearance="fill">
-        <mat-label>Mon_Texte</mat-label>
-        <input type="text" matInput [formControl]="myTxtCtrl">
-        <mat-error>{{getFormControlErrorText(myDateCtrl)}} </mat-error>
-      </mat-form-field>
-    
-      <mat-card-subtitle>1.2 sous-titre</mat-card-subtitle>
-      <mat-form-field appearance="fill">
-        <mat-label>Ma date</mat-label>
-        <input type="date" matInput [formControl]="myDateCtrl">
-        <mat-error> {{getFormControlErrorText(myDateCtrl)}} </mat-error>
-      </mat-form-field>
-
-      <mat-form-field appearance="fill">
-        <mat-label>Mon Texte</mat-label>
-        <input type="text" matInput [formControl]="myTxtCtrl">
-        <mat-error>{{getFormControlErrorText(myDateCtrl)}} </mat-error>
-      </mat-form-field>
-  </div>
-  <div class="col-12 col-sm-8">
-      <mat-card-subtitle>Mon deuxième sous-titre</mat-card-subtitle>
-        <mat-form-field appearance="fill">
-          <mat-label>
-            ceci est mon label
-          </mat-label>
-          <input type="text" matInput [formControl]="myTxtCtrl">
-
-          <mat-error>Ce champ est nécessaire </mat-error>
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label>
-            ceci est mon label2
-          </mat-label>
-          <input type="date" matInput [formControl]="myDateCtrl">
-  
-          <mat-error>Ce champ est nécessaire </mat-error>
-        </mat-form-field>
-  </div>
-</div>
-

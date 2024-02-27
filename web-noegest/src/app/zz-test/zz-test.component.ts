@@ -1,6 +1,10 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { delay, fromEvent, map, scan, tap, throttleTime } from 'rxjs';
+/* eslint-disable @typescript-eslint/ban-types */
+import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { Observable, tap, map } from 'rxjs';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { confirmEqualValidator } from '../shared/_validators/confirm-equal.validator';
+import { User } from '../general/_models';
+import { validValidator } from '../shared/_validators/valid.validator';
 
 
 @Component({
@@ -10,66 +14,121 @@ import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from
 })
 export class ZzTestComponent implements OnInit, AfterViewInit {
 
-  valeurInput = 'mon input'
-  isDisabled = true
-  isBusy = false
+  @Input() userValue!: User;
+  
+  mainForm!: FormGroup
+  personalInfoForm!: FormGroup;
+  phoneCtrl!: FormControl;
+  usernameCtrl!: FormControl;
 
-  clickCount!: number
+  emailCtrl!: FormControl;
+  confirmEmailCtrl!: FormControl;
+  emailForm!: FormGroup;
+  showEmailError$!: Observable<Boolean>;
 
-  mainForm!: FormGroup;
-  myTxtCtrl!: FormControl;
-  myDateCtrl!: FormControl;
+  passwordCtrl!: FormControl
+  confirmPasswordCtrl!: FormControl
+  loginInfoForm!: FormGroup;
+  showPasswordError$!: Observable<Boolean>;
 
   constructor (
     private formBuilder: FormBuilder) {}
 
 
   ngOnInit(): void {
-    console.log("ngOninit zztest")
-    this.initForm()
+    this.initFormControls();
+    this.initMainForm()
     this.initObservables()
   }
 
-  initForm(): void {
-    this.myTxtCtrl = this.formBuilder.control('invite',Validators.required)
-    this.myDateCtrl = this.formBuilder.control('',Validators.required)
+  private initMainForm(): void {
     this.mainForm = this.formBuilder.group({
-      myTxt: this.myTxtCtrl,
-      myDate: this.myDateCtrl
+      personalInfo: this.personalInfoForm,
+      email: this.emailForm,
+      phone: this.phoneCtrl,
+      loginInfo: this.loginInfoForm,
     })
+  }
+
+  private initFormControls(): void {
+    this.personalInfoForm = this.formBuilder.group({
+      firstName: ['',validValidator()],
+      lastName: ["", Validators.required]
+    }),
+
+    this.emailCtrl = this.formBuilder.control('');
+    this.confirmEmailCtrl = this.formBuilder.control('');
+   
+    this.emailForm = this.formBuilder.group({
+      email: this.emailCtrl,
+      confirm: this.confirmEmailCtrl
+    }, {
+      validators: [confirmEqualValidator('email', 'confirm')],
+      // updateOn détermine la fréquence de l'action, blur c'est quand on sort du groupe
+      updateOn: 'blur'
+    });
+    
+    this.phoneCtrl = this.formBuilder.control('');
+    this.passwordCtrl = this.formBuilder.control('', Validators.required)
+    this.confirmPasswordCtrl = this.formBuilder.control('', Validators.required)
+    this.usernameCtrl = this.formBuilder.control('', Validators.required)
+    
+    this.loginInfoForm = this.formBuilder.group({
+      username: this.usernameCtrl = this.formBuilder.control('', Validators.required),
+      password: this.passwordCtrl,
+      confirmPassword: this.confirmPasswordCtrl,
+    }, {
+      validators: [confirmEqualValidator('password', 'confirmPassword')],
+      updateOn: 'blur'
+    });
   }
 
   ngAfterViewInit(): void {
     console.log("ngAfterViewInit zztest")
-    
   }
 
   initObservables() {
-    const element = document.getElementById('myButton');
+    this.setEmailValidators()
+    this.setPhoneValidators()
+    
+    this.showEmailError$ =  this.emailForm.statusChanges.pipe(
+      tap((status: string) => console.log(status === 'INVALID', 
+        this.emailCtrl.value ===
+        this.confirmEmailCtrl.value)
+      ),
+      map(status => status === 'INVALID' && 
+        this.emailCtrl.value && 
+        this.confirmEmailCtrl.value
+      )
+    );
 
-    if (element) {
-      fromEvent(element, 'click')
-        .pipe(
-          map((event) => event),
-          // scan crée un index interne
-          scan((count) => count + 1, 0),
-          tap((count) => console.log(`delay reçoit : ${count}`)),
-          // delay retient avant d'envoyer seulement le dernier arrivé
-          delay(2000),
-          tap((count) => console.log(`delay lache : ${count}`)),
-          // ignore les répétitions non séparées de 1.5 secondes
-          throttleTime(1500),
-          map((count) => {
-            this.clickCount = count;
-            console.log(`Clicked ${count} times`);
-          })
-        )
-        .subscribe();
-    }
+    this.showPasswordError$ = this.loginInfoForm.statusChanges.pipe(
+      map(status => status === 'INVALID' && 
+        this.passwordCtrl.value && 
+        this.confirmPasswordCtrl.value
+      )
+    );
   }
 
-  desactiverInput() {
-    this.isBusy = !this.isBusy;
+  private setPhoneValidators(): void {
+    // ajouter Validators
+    this.phoneCtrl.addValidators([Validators.required, 
+      Validators.minLength(10), 
+      Validators.maxLength(16)])
+    // ensuite pour réactualiser le contrôle de validité qui vient de changer
+    this.phoneCtrl.updateValueAndValidity();
+  }
+
+
+  private setEmailValidators(): void {
+    this.emailCtrl.addValidators([
+        validValidator(),
+        Validators.required,
+        Validators.email]);
+    this.confirmEmailCtrl.addValidators([
+        Validators.required,
+        Validators.email
+    ]);
   }
 
   getFormControlErrorText(ctrl: AbstractControl) {

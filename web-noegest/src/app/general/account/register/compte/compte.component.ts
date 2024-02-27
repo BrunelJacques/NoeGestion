@@ -1,8 +1,10 @@
+
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, map, tap } from 'rxjs';
 import { confirmEqualValidator } from 'src/app/shared/_validators/confirm-equal.validator';
 import { validValidator } from 'src/app/shared/_validators/valid.validator';
+import { PasswordValidator } from 'src/app/shared/_validators/valid.validator';
 import { User } from 'src/app/general/_models';
 
 @Component({
@@ -14,137 +16,123 @@ export class CompteComponent implements OnInit {
   @Input() userValue!: User;
   @Output() valid = new EventEmitter<User>();
 
-  situation!: string | undefined  
-  showEmailError$!: Observable<boolean>
-  showPasswordError$!: Observable<boolean>
-
   mainForm!: FormGroup
+  personalInfoForm!: FormGroup;
+  phoneCtrl!: FormControl;
+  usernameCtrl!: FormControl;
 
-  firstNameCtrl!: FormControl
-  lastNameCtrl!: FormControl
-  phoneCtrl!: FormControl
-  emailCtrl!: FormControl
-  confirmEmailCtrl!: FormControl
-  usernameCtrl!: FormControl
+  emailCtrl!: FormControl;
+  confirmEmailCtrl!: FormControl;
+  emailForm!: FormGroup;
+  showEmailError$!: Observable<boolean>;
+
   passwordCtrl!: FormControl
   confirmPasswordCtrl!: FormControl
+  loginInfoForm!: FormGroup;
+  showPasswordError$!: Observable<boolean>;
 
-  constructor(
-    private formBuilder: FormBuilder,
-    ) {}
+  constructor (
+    private formBuilder: FormBuilder) {}
+
 
   ngOnInit(): void {
-    this.situation = this.userValue.situation
-    if (this.situation === 'exists') { this.setCtrlDisabled}
-    this.initFormControls()
-    //this.initMainForm()
-    this.setValidators()
-    this.initFormObservables()
-    if (this.situation === 'exist') {
-      this.setCtrlDisabled()
-    }
+    this.initFormControls();
+    this.initMainForm()
+    this.initObservables()
   }
 
-  private setCtrlDisabled() {
-    // l'option 'exist' grise certains controls non modifiables
-    this.mainForm.get('firstName')?.disable()
-    this.mainForm.get('lastName')?.disable()
-    this.mainForm.get('username')?.disable()
+  private initMainForm(): void {
+    this.mainForm = this.formBuilder.group({
+      personalInfo: this.personalInfoForm,
+      email: this.emailForm,
+      phone: this.phoneCtrl,
+      loginInfo: this.loginInfoForm,
+    })
   }
 
-  private setValidators(): void {
-    this.emailCtrl.addValidators([
-      validValidator(),
-      Validators.required,
-      Validators.email]);
-    this.emailCtrl.updateValueAndValidity();
+  private initFormControls(): void {
+    this.personalInfoForm = this.formBuilder.group({
+      firstName: ['',validValidator()],
+      lastName: ["", Validators.required]
+    }),
 
-    this.confirmEmailCtrl.addValidators([
-      Validators.required,
-      Validators.email]);
-    this.confirmEmailCtrl.updateValueAndValidity();
-
-    this.phoneCtrl.addValidators([
-      Validators.minLength(10), 
-      Validators.maxLength(16)]);
-    this.phoneCtrl.updateValueAndValidity();
+    this.emailCtrl = this.formBuilder.control('');
+    this.confirmEmailCtrl = this.formBuilder.control('');
+   
+    this.emailForm = this.formBuilder.group({
+      email: this.emailCtrl,
+      confirm: this.confirmEmailCtrl
+    }, {
+      validators: [confirmEqualValidator('email', 'confirm')],
+      // updateOn détermine la fréquence de l'action, blur c'est quand on sort du groupe
+      updateOn: 'blur'
+    });
+    
+    this.phoneCtrl = this.formBuilder.control('');
+    this.passwordCtrl = this.formBuilder.control('', [Validators.required, 
+      Validators.minLength(6), ] )
+    this.confirmPasswordCtrl = this.formBuilder.control('', Validators.required)
+    this.usernameCtrl = this.formBuilder.control('', Validators.required)
+    
+    this.loginInfoForm = this.formBuilder.group({
+      username: this.usernameCtrl = this.formBuilder.control('', Validators.required),
+      password: this.passwordCtrl,
+      confirmPassword: this.confirmPasswordCtrl,
+    }, {
+      validators: [confirmEqualValidator('password', 'confirmPassword')],
+      updateOn: 'blur'
+    });
   }
 
-  private initFormObservables() {
-
-    this.showEmailError$ =  this.mainForm.statusChanges.pipe(
+  initObservables() {
+    this.setEmailValidators()
+    this.setPhoneValidators()
+    
+    this.showEmailError$ =  this.emailForm.statusChanges.pipe(
       tap((status: string) => console.log(status === 'INVALID', 
-      this.emailCtrl.value ===
-      this.confirmEmailCtrl.value)
+        this.emailCtrl.value ===
+        this.confirmEmailCtrl.value)
       ),
       map(status => status === 'INVALID' && 
         this.emailCtrl.value && 
         this.confirmEmailCtrl.value
-        )
+      )
     );
 
-    this.showPasswordError$ = this.mainForm.statusChanges.pipe(
-        map(status => status === 'INVALID' && 
+    this.showPasswordError$ = this.loginInfoForm.statusChanges.pipe(
+      map(status => status === 'INVALID' && 
         this.passwordCtrl.value && 
         this.confirmPasswordCtrl.value
-        )
-    );
-
-    this.mainForm.statusChanges.pipe(
-      map(status => {
-        this.emitValid(status === 'VALID')
-        }
       )
-    ).subscribe()
+    );
   }
 
-  private initFormControls(): void {
-
-    this.firstNameCtrl = this.formBuilder.control(this.userValue.firstName, Validators.required)
-    this.lastNameCtrl = this.formBuilder.control(this.userValue.lastName, Validators.required)
-    this.phoneCtrl = this.formBuilder.control(this.userValue.phone)
-    this.emailCtrl = this.formBuilder.control(this.userValue.email, Validators.required)
-    this.confirmEmailCtrl = this.formBuilder.control(this.userValue.email, Validators.required)  
-    this.usernameCtrl = this.formBuilder.control(this.userValue.username, [ Validators.minLength(5), Validators.required ])
-    this.passwordCtrl = this.formBuilder.control(this.userValue.password, Validators.required)
-    this.confirmPasswordCtrl = this.formBuilder.control(this.userValue.password, Validators.required)
-    this.mainForm = this.formBuilder.group({
-      firstName: this.firstNameCtrl,
-      lastName: this.lastNameCtrl,
-      phone: this.phoneCtrl,
-      email: this.emailCtrl,
-      confirm: this.confirmEmailCtrl,
-      username: this.usernameCtrl,
-      password: this.passwordCtrl,
-      confirmPassword: this.confirmPasswordCtrl
-    }, {
-      validators: [
-        confirmEqualValidator('email', 'confirm'),
-        confirmEqualValidator('password', 'confirmPassword')
-      ],
-      updateOn: 'blur'// fréquence de l'action validation, blur c'est quand on sort du groupe
-    });
-
-  }
-     
-  private emitValid(ok: boolean): void {
-    if (ok) {
-
-      this.valid.emit({...this.userValue, ...this.getFormsValues()})
-    } else {
-      this.valid.emit(undefined)
-    }
+  private setPhoneValidators(): void {
+    // ajouter Validators
+    this.phoneCtrl.addValidators([Validators.required, 
+      Validators.minLength(10), 
+      Validators.maxLength(16)])
+    // ensuite pour réactualiser le contrôle de validité qui vient de changer
+    this.phoneCtrl.updateValueAndValidity();
   }
 
-  private getFormsValues(){
-    return this.mainForm.value
+  private setEmailValidators(): void {
+    this.emailCtrl.addValidators([
+        validValidator(),
+        Validators.required,
+        Validators.email]);
+    this.confirmEmailCtrl.addValidators([
+        Validators.required,
+        Validators.email
+    ]);
   }
+
   getFormControlErrorText(ctrl: AbstractControl) {
-    if (ctrl.hasError('required')) { return 'Obligatoire'} 
-    else if (ctrl.hasError('email')) { return "Mail invalide"} 
-    else if (ctrl.hasError('minlength')) { return "Trop court"} 
-    else if (ctrl.hasError('maxlength')) { return "Trop long"} 
-    else { return "Saisie non valide"}
+    if (ctrl.hasError('required')) {
+      return 'Ce champ est obligatoire'
+    } else {return "Saisie non valide"}
   }
 
 }
+  
+  
