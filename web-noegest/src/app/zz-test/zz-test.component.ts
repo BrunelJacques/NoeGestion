@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
-import { Observable, tap, map } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { confirmEqualValidator } from '../shared/_validators/confirm-equal.validator';
 import { User } from '../general/_models';
+import { passwordValidator } from '../shared/_validators/valid.validator';
 import { validValidator } from '../shared/_validators/valid.validator';
-
 
 @Component({
   selector: 'app-zz-test',
@@ -18,7 +18,6 @@ export class ZzTestComponent implements OnInit, AfterViewInit {
   
   mainForm!: FormGroup
   personalInfoForm!: FormGroup;
-  phoneCtrl!: FormControl;
   usernameCtrl!: FormControl;
 
   emailCtrl!: FormControl;
@@ -30,6 +29,8 @@ export class ZzTestComponent implements OnInit, AfterViewInit {
   confirmPasswordCtrl!: FormControl
   loginInfoForm!: FormGroup;
   showPasswordError$!: Observable<Boolean>;
+
+  passwordError!: string;
 
   constructor (
     private formBuilder: FormBuilder) {}
@@ -45,14 +46,13 @@ export class ZzTestComponent implements OnInit, AfterViewInit {
     this.mainForm = this.formBuilder.group({
       personalInfo: this.personalInfoForm,
       email: this.emailForm,
-      phone: this.phoneCtrl,
       loginInfo: this.loginInfoForm,
     })
   }
 
   private initFormControls(): void {
     this.personalInfoForm = this.formBuilder.group({
-      firstName: ['',validValidator()],
+      firstName: [''],
       lastName: ["", Validators.required]
     }),
 
@@ -68,13 +68,11 @@ export class ZzTestComponent implements OnInit, AfterViewInit {
       updateOn: 'blur'
     });
     
-    this.phoneCtrl = this.formBuilder.control('');
-    this.passwordCtrl = this.formBuilder.control('', Validators.required)
-    this.confirmPasswordCtrl = this.formBuilder.control('', Validators.required)
+    this.passwordCtrl = this.formBuilder.control('');
+    this.confirmPasswordCtrl = this.formBuilder.control('');
     this.usernameCtrl = this.formBuilder.control('', Validators.required)
     
     this.loginInfoForm = this.formBuilder.group({
-      username: this.usernameCtrl = this.formBuilder.control('', Validators.required),
       password: this.passwordCtrl,
       confirmPassword: this.confirmPasswordCtrl,
     }, {
@@ -89,13 +87,9 @@ export class ZzTestComponent implements OnInit, AfterViewInit {
 
   initObservables() {
     this.setEmailValidators()
-    this.setPhoneValidators()
+    this.setPasswordValidators()
     
     this.showEmailError$ =  this.emailForm.statusChanges.pipe(
-      tap((status: string) => console.log(status === 'INVALID', 
-        this.emailCtrl.value ===
-        this.confirmEmailCtrl.value)
-      ),
       map(status => status === 'INVALID' && 
         this.emailCtrl.value && 
         this.confirmEmailCtrl.value
@@ -110,15 +104,6 @@ export class ZzTestComponent implements OnInit, AfterViewInit {
     );
   }
 
-  private setPhoneValidators(): void {
-    // ajouter Validators
-    this.phoneCtrl.addValidators([Validators.required, 
-      Validators.minLength(10), 
-      Validators.maxLength(16)])
-    // ensuite pour réactualiser le contrôle de validité qui vient de changer
-    this.phoneCtrl.updateValueAndValidity();
-  }
-
 
   private setEmailValidators(): void {
     this.emailCtrl.addValidators([
@@ -129,6 +114,13 @@ export class ZzTestComponent implements OnInit, AfterViewInit {
         Validators.required,
         Validators.email
     ]);
+  }
+
+  private setPasswordValidators(): void {
+    this.passwordCtrl.addValidators([
+        passwordValidator(),
+        Validators.required,
+        ]);
   }
 
   getFormControlErrorText(ctrl: AbstractControl) {

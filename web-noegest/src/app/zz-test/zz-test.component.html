@@ -1,7 +1,6 @@
 <mat-card [formGroup]="mainForm" class="main-form">
-
+  <mat-card-subtitle>Email</mat-card-subtitle>
   <mat-card class="form-card" [formGroup]="emailForm" >
-    <mat-card-subtitle>Email</mat-card-subtitle>
     <div class="form-row">
       <mat-form-field appearance="fill">
         <mat-label>Adresse mail</mat-label>
@@ -15,6 +14,26 @@
       </mat-form-field>
     </div>
     <small class="error-text" *ngIf="showEmailError$ | async">Les deux adresses ne correspondent pas</small>
+    <div> TEST {{showEmailError$| async}}</div>
   </mat-card>
 
+  <mat-card class="m-1" [formGroup]="loginInfoForm" >  
+    <mat-card-subtitle>mot de passe</mat-card-subtitle>
+    <div class="form-row">
+      <mat-form-field >
+        <mat-label>Mot de passe</mat-label>
+        <input type="password" matInput formControlName="password">
+        <mat-error> {{getFormControlErrorText(passwordCtrl)}} </mat-error>
+      </mat-form-field>
+      <mat-form-field >
+        <mat-label>Confirm. mot de passe</mat-label>
+        <input type="password" matInput formControlName="confirmPassword">
+        <mat-error> {{getFormControlErrorText(confirmPasswordCtrl)}} </mat-error>
+      </mat-form-field>
+    </div>
+    <small class="error-text" *ngIf="showPasswordError$ | async">Mots de passe différents</small>
+    <div> TEST {{showPasswordError$| async}}</div>
+    <div>getErrorCtrl : {{getFormControlErrorText(passwordCtrl)}}</div>
+  </mat-card>
+  
 </mat-card>

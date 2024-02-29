@@ -3,7 +3,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, map, tap } from 'rxjs';
 import { confirmEqualValidator } from 'src/app/shared/_validators/confirm-equal.validator';
-import { validValidator } from 'src/app/shared/_validators/valid.validator';
+import { validValidator }    from 'src/app/shared/_validators/valid.validator';
 import { PasswordValidator } from 'src/app/shared/_validators/valid.validator';
 import { User } from 'src/app/general/_models';
 
@@ -70,7 +70,7 @@ export class CompteComponent implements OnInit {
     
     this.phoneCtrl = this.formBuilder.control('');
     this.passwordCtrl = this.formBuilder.control('', [Validators.required, 
-      Validators.minLength(6), ] )
+      Validators.minLength(6), PasswordValidator.strong ] )
     this.confirmPasswordCtrl = this.formBuilder.control('', Validators.required)
     this.usernameCtrl = this.formBuilder.control('', Validators.required)
     
@@ -118,7 +118,6 @@ export class CompteComponent implements OnInit {
 
   private setEmailValidators(): void {
     this.emailCtrl.addValidators([
-        validValidator(),
         Validators.required,
         Validators.email]);
     this.confirmEmailCtrl.addValidators([
