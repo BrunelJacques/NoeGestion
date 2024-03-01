@@ -3,8 +3,8 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, map, tap } from 'rxjs';
 import { confirmEqualValidator } from 'src/app/shared/_validators/confirm-equal.validator';
-import { validValidator }    from 'src/app/shared/_validators/valid.validator';
-import { PasswordValidator } from 'src/app/shared/_validators/valid.validator';
+import { tabooValidator }    from 'src/app/shared/_validators/valid.validator';
+import { passwordValidator } from 'src/app/shared/_validators/valid.validator';
 import { User } from 'src/app/general/_models';
 
 @Component({
@@ -19,7 +19,6 @@ export class CompteComponent implements OnInit {
   mainForm!: FormGroup
   personalInfoForm!: FormGroup;
   phoneCtrl!: FormControl;
-  usernameCtrl!: FormControl;
 
   emailCtrl!: FormControl;
   confirmEmailCtrl!: FormControl;
@@ -52,7 +51,7 @@ export class CompteComponent implements OnInit {
 
   private initFormControls(): void {
     this.personalInfoForm = this.formBuilder.group({
-      firstName: ['',validValidator()],
+      firstName: ['',tabooValidator('test')],
       lastName: ["", Validators.required]
     }),
 
@@ -69,13 +68,12 @@ export class CompteComponent implements OnInit {
     });
     
     this.phoneCtrl = this.formBuilder.control('');
-    this.passwordCtrl = this.formBuilder.control('', [Validators.required, 
-      Validators.minLength(6), PasswordValidator.strong ] )
+
+    this.passwordCtrl = this.formBuilder.control('' )
     this.confirmPasswordCtrl = this.formBuilder.control('', Validators.required)
-    this.usernameCtrl = this.formBuilder.control('', Validators.required)
     
     this.loginInfoForm = this.formBuilder.group({
-      username: this.usernameCtrl = this.formBuilder.control('', Validators.required),
+      username: ['', Validators.required],
       password: this.passwordCtrl,
       confirmPassword: this.confirmPasswordCtrl,
     }, {
@@ -87,24 +85,29 @@ export class CompteComponent implements OnInit {
   initObservables() {
     this.setEmailValidators()
     this.setPhoneValidators()
+    this.setPasswordValidators()
     
     this.showEmailError$ =  this.emailForm.statusChanges.pipe(
       tap((status: string) => console.log(status === 'INVALID', 
         this.emailCtrl.value ===
         this.confirmEmailCtrl.value)
       ),
-      map(status => status === 'INVALID' && 
+      map(status => 
+        this.emailCtrl.value !== this.confirmEmailCtrl.value &&
+        status === 'INVALID' && 
         this.emailCtrl.value && 
         this.confirmEmailCtrl.value
       )
     );
 
     this.showPasswordError$ = this.loginInfoForm.statusChanges.pipe(
-      map(status => status === 'INVALID' && 
-        this.passwordCtrl.value && 
-        this.confirmPasswordCtrl.value
+      map(status => 
+          this.passwordCtrl.value !== this.confirmPasswordCtrl.value &&
+          status === 'INVALID' && 
+          this.passwordCtrl.value && 
+          this.confirmPasswordCtrl.value
       )
-    );
+    )
   }
 
   private setPhoneValidators(): void {
@@ -123,6 +126,16 @@ export class CompteComponent implements OnInit {
     this.confirmEmailCtrl.addValidators([
         Validators.required,
         Validators.email
+    ]);
+  }
+
+  private setPasswordValidators(): void {
+    this.passwordCtrl.addValidators([
+        passwordValidator(),
+        Validators.required,
+        ]);
+    this.confirmPasswordCtrl.addValidators([
+      Validators.required,
     ]);
   }
 

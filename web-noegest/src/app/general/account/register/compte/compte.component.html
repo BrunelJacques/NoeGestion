@@ -7,7 +7,7 @@ class=" m-1"
       <mat-form-field class="custom">
         <mat-label>Prénom</mat-label>
         <input class="" type="text" matInput formControlName="firstName">
-        <mat-error>Champ nécessaire </mat-error>
+        <mat-error> Saisie incorrecte </mat-error>
       </mat-form-field>
       <mat-form-field appearance="fill">
         <mat-label>Nom</mat-label>
@@ -48,8 +48,8 @@ class=" m-1"
     <mat-card-subtitle  class="mw-field fs-6">Connexion :</mat-card-subtitle>
     <mat-form-field >
       <mat-label>Identifiant</mat-label>
-      <input type="text" matInput [formControl]="usernameCtrl">
-      <mat-error> {{getFormControlErrorText(usernameCtrl)}}</mat-error>
+      <input type="text" matInput formControlName="username">
+      <mat-error>Champ nécessaire</mat-error>
     </mat-form-field>
   </div>
 

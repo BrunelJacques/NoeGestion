@@ -5,7 +5,7 @@ import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from
 import { confirmEqualValidator } from '../shared/_validators/confirm-equal.validator';
 import { User } from '../general/_models';
 import { passwordValidator } from '../shared/_validators/valid.validator';
-import { validValidator } from '../shared/_validators/valid.validator';
+import { tabooValidator } from '../shared/_validators/valid.validator';
 
 @Component({
   selector: 'app-zz-test',
@@ -107,7 +107,7 @@ export class ZzTestComponent implements OnInit, AfterViewInit {
 
   private setEmailValidators(): void {
     this.emailCtrl.addValidators([
-        validValidator(),
+        tabooValidator('provisoire'),
         Validators.required,
         Validators.email]);
     this.confirmEmailCtrl.addValidators([

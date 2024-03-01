@@ -1,16 +1,17 @@
 import { AbstractControl, ValidationErrors,  ValidatorFn } from "@angular/forms";
-import { FormControl } from "@angular/forms";
 
-export function validValidator(): ValidatorFn {
+export function tabooValidator(taboo:string|null): ValidatorFn {
   return (ctrl: AbstractControl): null | ValidationErrors => {
-    if (ctrl.value === null) {
-      return {validValidator: ctrl.value}
+    if (ctrl.value === null || ctrl.value.length === 0 ) {
+      return null
     }
     // exemple simple pour test d'un mot tabou, 'ne doit pas contenir'
-    if (!ctrl.value.toUpperCase().includes('PROVISOIRE')) {
+    if (!ctrl.value.toUpperCase().includes(taboo?.toUpperCase())) {
+        // valide
         return null;
     } else {
-      return { validValidator: ctrl.value } ;
+      //invalide
+      return { tabooValidator: ctrl.value } ;
     }
   } 
 }
@@ -25,33 +26,13 @@ export function passwordValidator(): ValidatorFn {
     const hasLower = /[a-z]/.test(ctrl.value);
     // console.log('Num, Upp, Low', hasNumber, hasUpper, hasLower);
     const valid = hasNumber && hasUpper && hasLower;
-    if (!valid) {
+    if (valid) {
+      console.log('valid password',null)
       return null;
     } else {
-      return {
-        passwordValidator: ctrl.value
-      };
+      console.log('invalid password',ctrl.value)
+      return { passwordValidator: ctrl.value };
     }
   } 
 }
 
-
-export interface ValidationResult {
-  [key: string]: boolean;
-}
-
-export class PasswordValidator {
-
-  public static strong(control: FormControl): ValidationResult|null {
-    const hasNumber = /\d/.test(control.value);
-    const hasUpper = /[A-Z]/.test(control.value);
-    const hasLower = /[a-z]/.test(control.value);
-    // console.log('Num, Upp, Low', hasNumber, hasUpper, hasLower);
-    const valid = hasNumber && hasUpper && hasLower;
-    if (!valid) {
-        // return what´s not valid
-        return { strong: true };
-    }
-    return null;
-}
-}
