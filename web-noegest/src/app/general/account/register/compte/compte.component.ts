@@ -142,7 +142,12 @@ export class CompteComponent implements OnInit {
   getFormControlErrorText(ctrl: AbstractControl) {
     if (ctrl.hasError('required')) {
       return 'Ce champ est obligatoire'
-    } else {return "Saisie non valide"}
+    } else if (ctrl.hasError('passwordValidator')) {
+      const err = ctrl.getError('passwordValidator')
+      return err
+    }
+    
+    {return "Saisie non valide"}
   }
 
 }

@@ -24,15 +24,13 @@ export function passwordValidator(): ValidatorFn {
     const hasNumber = /\d/.test(ctrl.value);
     const hasUpper = /[A-Z]/.test(ctrl.value);
     const hasLower = /[a-z]/.test(ctrl.value);
+    const isLong = ctrl.value.length > 5;
     // console.log('Num, Upp, Low', hasNumber, hasUpper, hasLower);
-    const valid = hasNumber && hasUpper && hasLower;
+    const valid = hasNumber && hasUpper && hasLower && isLong;
     if (valid) {
-      console.log('valid password',null)
       return null;
     } else {
-      console.log('invalid password',ctrl.value)
-      return { passwordValidator: ctrl.value };
+      return { passwordValidator: "6 caractéres nécessaires, dont majuscule, minuscule et chiffre" };
     }
   } 
 }
-
