@@ -12,7 +12,7 @@
     <app-info></app-info>
   </div>
   <div *ngIf=" 'info' !== (situationCtrl.value)">
-    <app-compte  [userValue]="userValue" (valid)="onValid($event)"></app-compte>
+    <app-compte  [user]="userValue" (valid)="onValid($event)"></app-compte>
   </div>
 
   <mat-card-actions *ngIf=" 'info' !== (situationCtrl.value)">

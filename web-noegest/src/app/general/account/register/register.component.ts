@@ -96,9 +96,10 @@ export class RegisterComponent implements OnInit, OnDestroy {
 		this.destroy$.next(true)
 	}
 
-	onValid(valid: User) {
-		if (!valid) { this.userFormValid = false } 
-		else { this.userFormValid = true }
+	onValid(valid: {value: boolean, user:User}) {
+		if (!valid.value) { this.userFormValid = false } 
+		else { this.userFormValid = true,
+			console.log('user', valid.user) }
 		this.onSubmit()
 	}
 

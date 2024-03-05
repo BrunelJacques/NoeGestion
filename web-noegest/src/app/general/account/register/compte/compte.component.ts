@@ -1,7 +1,7 @@
 
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Observable, map, tap } from 'rxjs';
+import { Observable, distinctUntilChanged, map, tap } from 'rxjs';
 import { confirmEqualValidator } from 'src/app/shared/_validators/confirm-equal.validator';
 import { tabooValidator }    from 'src/app/shared/_validators/valid.validator';
 import { passwordValidator } from 'src/app/shared/_validators/valid.validator';
@@ -13,8 +13,8 @@ import { User } from 'src/app/general/_models';
 })
 export class CompteComponent implements OnInit {
 
-  @Input() userValue!: User;
-  @Output() valid = new EventEmitter<User>();
+  @Input() user!: User;
+  @Output() valid = new EventEmitter<{value:boolean,user:User}>();
 
   mainForm!: FormGroup
   personalInfoForm!: FormGroup;
@@ -37,7 +37,9 @@ export class CompteComponent implements OnInit {
   ngOnInit(): void {
     this.initFormControls();
     this.initMainForm()
+    this.setUser(this.user)
     this.initObservables()
+    
   }
 
   private initMainForm(): void {
@@ -107,7 +109,12 @@ export class CompteComponent implements OnInit {
           this.passwordCtrl.value && 
           this.confirmPasswordCtrl.value
       )
-    )
+    );
+
+    this.mainForm.statusChanges.pipe(
+      distinctUntilChanged()).subscribe((status) => {
+      this.valid.emit({value:status==='VALID',user:this.getUser()});
+    });
   }
 
   private setPhoneValidators(): void {
@@ -137,6 +144,33 @@ export class CompteComponent implements OnInit {
     this.confirmPasswordCtrl.addValidators([
       Validators.required,
     ]);
+  }
+
+  // convenience getter for easy access to form fields
+  get f() { return this.mainForm.controls; }
+
+  private getUser():User {
+      let user!:User
+      user.firstName = this.f['firstName'].value,
+      user.lastName = this.f['lastName'].value,
+      user.email = this.f['email'].value,
+      user.phone = this.f['phone'].value,
+      user.username = this.f['username'].value,
+      user.password = this.f['password'].value
+      return user
+  }
+
+  private setUser(user:User){
+    this.mainForm.setValue({
+      personalInfo: {firstName:user.firstName,
+                      lastName:user.lastName},
+      email: {email:user.email,
+              confirm:user.email},
+      phone: user.phone,
+      loginInfo: {username:user.username,
+                  password:user.password},
+                  confirmPassword:user.password
+    })
   }
 
   getFormControlErrorText(ctrl: AbstractControl) {
