@@ -12,7 +12,7 @@ import { User } from '../../_models';
 export class RegisterComponent implements OnInit, OnDestroy {
 	loading = false  
 	userFormValid = false
-	userValue!: User
+	user!: User
 	situationCtrl!: FormControl
 	destroy$!: Subject<boolean>
 	isLogged!:boolean
@@ -52,12 +52,12 @@ export class RegisterComponent implements OnInit, OnDestroy {
 	private initObservables() {
 		this.destroy$ = new Subject<boolean>;
 
-		this.userValue = new User
+		this.user = new User
 		this.authenticationService.user$.pipe(
 			takeUntil(this.destroy$),
 			tap(x => {
 				this.isLogged = (x.username !== undefined),
-				this.userValue = x
+				this.user = x
 			}),
 		).subscribe()
 
@@ -66,7 +66,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
 			tap( () => { 
 				console.log("test coherence")
 				this.testCoherenceSituation(),
-				this.userValue.situation = this.situationCtrl.value
+				this.user.situation = this.situationCtrl.value
 			}),
 			takeUntil(this.destroy$),
 		).subscribe()
@@ -115,7 +115,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
 		}
 
 		this.loading = true;
-		this.authenticationService.register(this.userValue)
+		this.authenticationService.register(this.user)
 			.pipe(first())
 			.subscribe({
 					next: () => {

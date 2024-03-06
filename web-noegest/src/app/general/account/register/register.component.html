@@ -1,5 +1,5 @@
 ﻿<mat-card class="main-form">
-  <mat-card-title>Mon Compte {{userValue.username}} </mat-card-title>
+  <mat-card-title>Mon Compte {{user.username}} </mat-card-title>
   <mat-card-subtitle class="fs-6">Votre situation Noegest?</mat-card-subtitle>
   <mat-radio-group [formControl]="situationCtrl">
     <mat-radio-button value="exist">Compte existant</mat-radio-button>
@@ -12,7 +12,7 @@
     <app-info></app-info>
   </div>
   <div *ngIf=" 'info' !== (situationCtrl.value)">
-    <app-compte  [user]="userValue" (valid)="onValid($event)"></app-compte>
+    <app-compte  [user]="user" (valid)="onValid($event)"></app-compte>
   </div>
 
   <mat-card-actions *ngIf=" 'info' !== (situationCtrl.value)">

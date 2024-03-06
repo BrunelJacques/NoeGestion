@@ -33,13 +33,13 @@ export class CompteComponent implements OnInit {
   constructor (
     private formBuilder: FormBuilder) {}
 
-
   ngOnInit(): void {
     this.initFormControls();
     this.initMainForm()
-    this.setUser(this.user)
-    this.initObservables()
-    
+    if (this.user.username) {
+      this.setUser(this.user)
+    }
+    this.initObservables()    
   }
 
   private initMainForm(): void {
