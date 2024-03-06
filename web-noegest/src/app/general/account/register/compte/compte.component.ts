@@ -46,7 +46,6 @@ export class CompteComponent implements OnInit {
     this.mainForm = this.formBuilder.group({
       personalInfo: this.personalInfoForm,
       email: this.emailForm,
-      phone: this.phoneCtrl,
       loginInfo: this.loginInfoForm,
     })
   }
@@ -61,6 +60,7 @@ export class CompteComponent implements OnInit {
     this.confirmEmailCtrl = this.formBuilder.control('');
    
     this.emailForm = this.formBuilder.group({
+      phone: this.phoneCtrl,
       email: this.emailCtrl,
       confirm: this.confirmEmailCtrl
     }, {
@@ -138,9 +138,9 @@ export class CompteComponent implements OnInit {
 
   private setPasswordValidators(): void {
     this.passwordCtrl.addValidators([
-        passwordValidator(),
-        Validators.required,
-        ]);
+      passwordValidator(),
+      Validators.required,
+    ]);
     this.confirmPasswordCtrl.addValidators([
       Validators.required,
     ]);
@@ -150,26 +150,37 @@ export class CompteComponent implements OnInit {
   get f() { return this.mainForm.controls; }
 
   private getUser():User {
-      let user!:User
-      user.firstName = this.f['firstName'].value,
-      user.lastName = this.f['lastName'].value,
-      user.email = this.f['email'].value,
-      user.phone = this.f['phone'].value,
-      user.username = this.f['username'].value,
-      user.password = this.f['password'].value
-      return user
+    let user!:User
+    user.firstName = this.f['firstName'].value,
+    user.lastName = this.f['lastName'].value,
+    user.email = this.f['email'].value,
+    user.phone = this.f['phone'].value,
+    user.username = this.f['username'].value,
+    user.password = this.f['password'].value
+    return user
   }
 
   private setUser(user:User){
+    if (!user.phone) {user.phone = ""}
+    this.personalInfoForm.setValue({
+      firstName:user.firstName,
+      lastName:user.lastName
+    }),
     this.mainForm.setValue({
-      personalInfo: {firstName:user.firstName,
-                      lastName:user.lastName},
-      email: {email:user.email,
-              confirm:user.email},
-      phone: user.phone,
-      loginInfo: {username:user.username,
-                  password:user.password},
-                  confirmPassword:user.password
+      personalInfo: {
+        firstName:user.firstName,
+        lastName:user.lastName
+      },
+      email: {
+        phone: user.phone,
+        email:user.email,
+        confirm:user.email,
+      },
+      loginInfo: {
+        username:user.username,
+        password:user.password,
+        confirmPassword:user.password
+      },
     })
   }
 
