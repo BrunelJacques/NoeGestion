@@ -19,7 +19,6 @@ export class CompteComponent implements OnInit {
   mainForm!: FormGroup
   personalInfoForm!: FormGroup;
   phoneCtrl!: FormControl;
-
   emailCtrl!: FormControl;
   confirmEmailCtrl!: FormControl;
   emailForm!: FormGroup;
@@ -53,9 +52,10 @@ export class CompteComponent implements OnInit {
   private initFormControls(): void {
     this.personalInfoForm = this.formBuilder.group({
       firstName: ['',tabooValidator('test')],
-      lastName: ["", Validators.required]
+      lastName: ['', Validators.required]
     }),
 
+    this.phoneCtrl = this.formBuilder.control('');
     this.emailCtrl = this.formBuilder.control('');
     this.confirmEmailCtrl = this.formBuilder.control('');
    
@@ -68,8 +68,6 @@ export class CompteComponent implements OnInit {
       // updateOn détermine la fréquence de l'action, blur c'est quand on sort du groupe
       updateOn: 'blur'
     });
-    
-    this.phoneCtrl = this.formBuilder.control('');
 
     this.passwordCtrl = this.formBuilder.control('' )
     this.confirmPasswordCtrl = this.formBuilder.control('', Validators.required)
@@ -86,14 +84,9 @@ export class CompteComponent implements OnInit {
 
   initObservables() {
     this.setEmailValidators()
-    this.setPhoneValidators()
     this.setPasswordValidators()
     
     this.showEmailError$ =  this.emailForm.statusChanges.pipe(
-      tap((status: string) => console.log(status === 'INVALID', 
-        this.emailCtrl.value ===
-        this.confirmEmailCtrl.value)
-      ),
       map(status => 
         this.emailCtrl.value !== this.confirmEmailCtrl.value &&
         status === 'INVALID' && 
@@ -113,20 +106,20 @@ export class CompteComponent implements OnInit {
 
     this.mainForm.statusChanges.pipe(
       distinctUntilChanged()).subscribe((status) => {
-      this.valid.emit({value:status==='VALID',user:this.getUser()});
-    });
-  }
-
-  private setPhoneValidators(): void {
-    // ajouter Validators
-    this.phoneCtrl.addValidators([Validators.required, 
-      Validators.minLength(10), 
-      Validators.maxLength(16)])
-    // ensuite pour réactualiser le contrôle de validité qui vient de changer
-    this.phoneCtrl.updateValueAndValidity();
+      if (status==='VALID') {
+        this.valid.emit({value:true,user:this.getUser()});
+      } else {
+        this.valid.emit({value:false,user:this.user});
+      }
+      }
+    );
   }
 
   private setEmailValidators(): void {
+    this.phoneCtrl.addValidators([
+      Validators.required, 
+      Validators.minLength(10), 
+      Validators.maxLength(16)])
     this.emailCtrl.addValidators([
         Validators.required,
         Validators.email]);
@@ -147,21 +140,21 @@ export class CompteComponent implements OnInit {
   }
 
   // convenience getter for easy access to form fields
-  get f() { return this.mainForm.controls; }
+  get fpi() { return this.personalInfoForm.controls}
+  get fem() { return this.emailForm.controls}
+  get fli() { return this.loginInfoForm.controls}
 
   private getUser():User {
-    let user!:User
-    user.firstName = this.f['firstName'].value,
-    user.lastName = this.f['lastName'].value,
-    user.email = this.f['email'].value,
-    user.phone = this.f['phone'].value,
-    user.username = this.f['username'].value,
-    user.password = this.f['password'].value
-    return user
+    this.user.firstName = this.fpi['firstName'].value
+    this.user.lastName = this.fpi['lastName'].value
+    this.user.email = this.fem['email'].value
+    this.user.phone = this.fem['phone'].value
+    this.user.username = this.fli['username'].value
+    this.user.password = this.fli['password'].value
+    return this.user
   }
 
   private setUser(user:User){
-    if (!user.phone) {user.phone = ""}
     this.personalInfoForm.setValue({
       firstName:user.firstName,
       lastName:user.lastName
@@ -172,7 +165,7 @@ export class CompteComponent implements OnInit {
         lastName:user.lastName
       },
       email: {
-        phone: user.phone,
+        phone: null,
         email:user.email,
         confirm:user.email,
       },

@@ -22,7 +22,7 @@ class=" m-1"
       <mat-card-subtitle  class="mw-field fs-6">Vous joindre?</mat-card-subtitle>
       <mat-form-field >
         <mat-label>Téléphone</mat-label>
-        <input type="text" matInput [formControl]="phoneCtrl">
+        <input type="text" matInput formControlName="phone">
         <mat-error> {{getFormControlErrorText(phoneCtrl)}} </mat-error>
       </mat-form-field>
     </div>
@@ -48,7 +48,7 @@ class=" m-1"
     <mat-card-subtitle  class="mw-field fs-6">Connexion :</mat-card-subtitle>
     <mat-form-field >
       <mat-label>Identifiant</mat-label>
-      <input type="text" matInput formControlName="username" [disabled]= true>
+      <input type="text" matInput formControlName="username">
       <mat-error>Champ nécessaire</mat-error>
     </mat-form-field>
   </div>
