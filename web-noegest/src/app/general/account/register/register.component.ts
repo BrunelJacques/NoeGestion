@@ -64,7 +64,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
 		this.situationCtrl.valueChanges.pipe(
 			startWith(this.situationCtrl.value),
 			tap( () => { 
-				console.log("test coherence")
 				this.testCoherenceSituation(),
 				this.user.situation = this.situationCtrl.value
 			}),
@@ -100,7 +99,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
 		if (!valid.value) { this.userFormValid = false } 
 		else { this.userFormValid = true,
 			console.log('user', valid.user) }
-		this.onSubmit()
+		//this.onSubmit()
 	}
 
 	onSubmit(): void {

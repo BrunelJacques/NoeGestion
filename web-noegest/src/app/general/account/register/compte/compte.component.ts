@@ -38,15 +38,8 @@ export class CompteComponent implements OnInit {
     if (this.user.username) {
       this.setUser(this.user)
     }
-    this.initObservables()    
-  }
-
-  private initMainForm(): void {
-    this.mainForm = this.formBuilder.group({
-      personalInfo: this.personalInfoForm,
-      email: this.emailForm,
-      loginInfo: this.loginInfoForm,
-    })
+    this.initObservables()
+    this.validerChampsRequis() 
   }
 
   private initFormControls(): void {
@@ -55,7 +48,7 @@ export class CompteComponent implements OnInit {
       lastName: ['', Validators.required]
     }),
 
-    this.phoneCtrl = this.formBuilder.control('');
+    this.phoneCtrl = this.formBuilder.control(null);
     this.emailCtrl = this.formBuilder.control('');
     this.confirmEmailCtrl = this.formBuilder.control('');
    
@@ -82,7 +75,15 @@ export class CompteComponent implements OnInit {
     });
   }
 
-  initObservables() {
+  private initMainForm(): void {
+    this.mainForm = this.formBuilder.group({
+      personalInfo: this.personalInfoForm,
+      email: this.emailForm,
+      loginInfo: this.loginInfoForm,
+    })
+  }
+
+  private initObservables() {
     this.setEmailValidators()
     this.setPasswordValidators()
     
@@ -113,6 +114,23 @@ export class CompteComponent implements OnInit {
       }
       }
     );
+  }
+
+  private validerChampsRequis(): void {
+    [this.emailForm.controls,].forEach(ctrl => {
+      Object.keys(ctrl).forEach(key => {
+        const control = this.mainForm.get(key);
+        console.log('test: ', key, control)
+        if (control) {
+          control.updateValueAndValidity();
+        } else {
+          this.phoneCtrl.updateValueAndValidity()
+          console.log("c'est null!!")
+          console.log(this.phoneCtrl)
+          console.log(this.emailForm)
+      }
+      });      
+    });
   }
 
   private setEmailValidators(): void {
@@ -165,7 +183,7 @@ export class CompteComponent implements OnInit {
         lastName:user.lastName
       },
       email: {
-        phone: null,
+        phone:"01",
         email:user.email,
         confirm:user.email,
       },
