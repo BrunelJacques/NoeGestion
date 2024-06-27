@@ -1,28 +1,28 @@
 <div class="row m-0 p-0">
   <!-- 1ere colonne reprenant les paramètres d'affichage-->
-  <mat-card [formGroup]="fgMvt" class="main-form col-sm-3 my-0 p-0 fond-saumon">
+  <mat-card [formGroup]="fgPar" class="main-form col-sm-3 my-0 p-0 fond-saumon">
     <mat-card-title class="fs-6">Filtres actifs </mat-card-title>
     <div class="">
       <div class="form-row">
-        <label class="col-3 col-sm-12" for='jour'>Jour</label>
+        <label class="col-3 col-sm-12" for='jourPar'>Jour</label>
         <input
-        type= "date" id="jour" name="jour"
-        formControlName="jour"
+        type= "date" id="jourPar" name="jourPar"
+        formControlName="jourPar"
         class="form-control col-7 col-sm-12"
         min="2020-01-01" max="2050-12-31"
-        [ngClass]="{ 'is-invalid': f['jour'].errors}">
-        <div *ngIf="f['jour'].errors" class="invalid-feedback">
+        [ngClass]="{ 'is-invalid': fpar['jourPar'].errors}">
+        <div *ngIf="fpar['jourPar'].errors" class="invalid-feedback">
           date incorrecte!
         </div>
       </div>
       <div class="form-row">
-        <label class="col-3 col-sm-12" for='jour'>Vers</label>
+        <label class="col-3 col-sm-12" for='versPar'>Vers</label>
         <input
-        type= "text" id="vers" name="vers"
-        formControlName="vers"
+        type= "text" id="versPar" name="versPar"
+        formControlName="versPar"
         class="form-control col-7 col-sm-12"
-        [ngClass]="{ 'is-invalid': f['vers'].errors}">
-        <div *ngIf="f['vers'].errors" class="invalid-feedback">
+        [ngClass]="{ 'is-invalid': fpar['versPar'].errors}">
+        <div *ngIf="fpar['versPar'].errors" class="invalid-feedback">
           obligatoire
         </div>
       </div>
@@ -30,12 +30,13 @@
   </mat-card>
 
   <!-- 2ème colonne données à saisir-->
-  <div  *ngIf="mvt" class="col-sm-9 card mb-1 p-1">
+  <div  class="col-sm-9 card mb-1 p-1">
     <form [formGroup]="fgMvt"
     class="form-group was-validated">
 
       <!-- choix d'un article -->
-      <app-article-search [article]="mvt.article" (retour)="onArticle($event)"></app-article-search>      
+      <app-article-search *ngIf="mvt" [article]="mvt.article" (retour)="onArticle($event)"></app-article-search>      
+      <app-article-search *ngIf="!mvt" [article]="" (retour)="onArticle($event)"></app-article-search>      
 
       <!-- gestion du mouvement -->
       <div>

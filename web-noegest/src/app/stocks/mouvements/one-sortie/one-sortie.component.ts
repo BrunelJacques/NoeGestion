@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { Mouvement } from '../../_models/mouvement';
-import { DatePipe } from '@angular/common';
+//import { DatePipe } from '@angular/common';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MvtService } from '../../_services/mvt.service';
 import { Camp, FormField } from '../../_models/params';
@@ -26,10 +26,16 @@ export class OneSortieComponent implements OnInit, OnDestroy {
   mvt!: Mouvement;
   camps!: Camp[];
   fgMvt!: FormGroup;
+  fgPar!: FormGroup;
 
   lstService = Constantes.LSTSERVICE;
   lstService_libelle = this.lstService.map((x) => x.libelle)
   submitted = false;
+
+  fieldsPar: FormField[] = [
+    { label: 'jourPar', type:'text'},
+    { label: 'versPar', type: 'text'},
+  ]
 
   fieldsMvt: FormField[] = [
     { label: 'jour', type: 'text'},
@@ -46,25 +52,26 @@ export class OneSortieComponent implements OnInit, OnDestroy {
   constructor(
     private seeyouService: SeeyouService,
     private fbMvt:FormBuilder,
+    private fbPar:FormBuilder,
     private alertService: AlertService,
-    private datePipe: DatePipe,
+    //private datePipe: DatePipe,
     private route: ActivatedRoute,
     private mvtService: MvtService,
-    private fp: FonctionsPerso,
+    private fxPerso: FonctionsPerso,
     ) {}
 
   // convenience getter for easy access to form fieldsMvt
   get f() { return this.fgMvt.controls; }
+  get fpar() { return this.fgPar.controls; }
 
-  isNull = this.fp.isNull
+  isNull = this.fxPerso.isNull
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id')
     if (id) {this.id = id}
     this.initSubscriptions()
-
+    this.getMvt(this.id)   
     this.initForm()
-    this.getMvt(this.id)
   }
 
   initForm() {
@@ -73,17 +80,22 @@ export class OneSortieComponent implements OnInit, OnDestroy {
       this.fgMvt.addControl(field.label,this.fbMvt.control(field.value));
       this.fgMvt.get(field.label)?.setValidators([Validators.required,])
     });
+    this.fgPar = this.fbPar.group({});
+    this.fieldsPar.forEach(field => {
+      this.fgPar.addControl(field.label,this.fbPar.control(field.value));
+      this.fgPar.get(field.label)?.setValidators([Validators.required,])
+    });
   }
 
   setValuesMvt(mvt:Mouvement) {
-    const qteParRation = mvt.sens * this.fp.division(mvt.qtemouvement, mvt.nbrations ) 
-    const coutRation = this.fp.round( mvt.prixunit * qteParRation)
+    const qteParRation = mvt.sens * this.fxPerso.division(mvt.qtemouvement, mvt.nbrations ) 
+    const coutRation = this.fxPerso.round( mvt.prixunit * qteParRation)
     this.fgMvt.patchValue({
       //'jour': this.datePipe.transform(mvt.jour, 'dd-MM-yyyy'),
       'jour': mvt.jour,
       'vers': mvt.origine,
       'service': this.lstService_libelle[mvt.service],
-      'prixUnit': this.fp.round(mvt.prixunit,4),
+      'prixUnit': this.fxPerso.round(mvt.prixunit,4),
       'qte': mvt.qtemouvement * mvt.qtemouvement,
       'nbRations': mvt.nbrations,
       'coutRation': coutRation,
@@ -134,8 +146,10 @@ export class OneSortieComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (mvt:Mouvement) => {
-          this.mvt=mvt,
-          this.setValuesMvt(mvt)
+          this.mvt=mvt
+          if (this.mvt ) {
+            this.setValuesMvt(mvt)
+          }
         },
         error: (e) =>{ if (e != 'Not Found') { console.error('one-sortie.getMvt',e)}}
       });

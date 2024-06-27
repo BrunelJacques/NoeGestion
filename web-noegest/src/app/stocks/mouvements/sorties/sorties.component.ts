@@ -91,6 +91,7 @@ export class SortiesComponent implements OnInit, OnDestroy {
 
   getSorties(): void {
     const jour = this.datePipe.transform(this.params.jour, 'yyyy-MM-dd')
+    const jourFr   = this.datePipe.transform(this.params['jour'], 'dd/MM/yyyy');
     this.urlparams = `/?origine=${this.params.origine}&jour=${jour}`
 
     this.sortiesSubscrib = this.mvtService.getSorties(this.urlparams)
@@ -101,9 +102,9 @@ export class SortiesComponent implements OnInit, OnDestroy {
             this.sorties = data.filter(this.mvtsFilter)
             const j = this.sorties.length
             if ((j == 0) && (i > 0)) {
-              this.alertService.error(`Modifiez les filtres: Ils n'ont retenu aucune des ${i} lignes présentes`)
+              this.alertService.error(`Modifiez les filtres:  ${i} lignes présentes`)
             } else if (j == 0) {
-              this.alertService.error(`Modifiez les filtres: aucune ligne n'a été chargée`)
+              this.alertService.error(`Aucune ligne connue au ${jourFr}`)
             }
           }
         }

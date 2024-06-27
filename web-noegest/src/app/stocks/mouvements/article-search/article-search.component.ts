@@ -5,7 +5,6 @@ import { ActivatedRoute } from '@angular/router';
 import { Article } from '../../_models/article';
 import { ArticleService } from '../../_services/article.service';
 
-
 @Component({
   selector: 'app-article-search',
   templateUrl: './article-search.component.html',
@@ -14,7 +13,7 @@ import { ArticleService } from '../../_services/article.service';
 
 export class ArticleSearchComponent implements OnInit {
 
-  @Input() article!: Article;
+  @Input() article!: Article| undefined;
   @Output() retour:EventEmitter<Article> = new EventEmitter();
 
   articleNom$!: Observable<ArticleNom[]>;
@@ -43,7 +42,9 @@ export class ArticleSearchComponent implements OnInit {
       this.items = articles.map((article) => article.nom );
       this.articles = articles
     });
-    this.kwds = {items:this.items, selectedItem:this.article.nom, width: "300px"}
+    let initArticle = ""
+    if (this.article) { initArticle = this.article.nom }
+    this.kwds = {items:this.items, selectedItem:initArticle, width: "300px"}
   }
 
   onArticle(nomArticle: string): void {
