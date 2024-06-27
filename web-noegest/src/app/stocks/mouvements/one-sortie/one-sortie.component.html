@@ -4,25 +4,25 @@
     <mat-card-title class="fs-6">Filtres actifs </mat-card-title>
     <div class="">
       <div class="form-row">
-        <label class="col-3 col-sm-12" for='jourPar'>Jour</label>
+        <label class="col-3 col-sm-12" for='jourPar'>Jour:</label>
         <input
         type= "date" id="jourPar" name="jourPar"
-        formControlName="jourPar"
+        formControlName="jour"
         class="form-control col-7 col-sm-12"
         min="2020-01-01" max="2050-12-31"
-        [ngClass]="{ 'is-invalid': fpar['jourPar'].errors}">
-        <div *ngIf="fpar['jourPar'].errors" class="invalid-feedback">
-          date incorrecte!
+        [ngClass]="{ 'is-invalid': fPar['jour'].errors}">
+        <div *ngIf="fPar['jour'].errors" class="invalid-feedback">
+          date incorrecte! {{params.jour}}
         </div>
       </div>
       <div class="form-row">
-        <label class="col-3 col-sm-12" for='versPar'>Vers</label>
+        <label class="col-3 col-sm-12" for='versPar'>Vers:</label>
         <input
         type= "text" id="versPar" name="versPar"
-        formControlName="versPar"
+        formControlName="vers"
         class="form-control col-7 col-sm-12"
-        [ngClass]="{ 'is-invalid': fpar['versPar'].errors}">
-        <div *ngIf="fpar['versPar'].errors" class="invalid-feedback">
+        [ngClass]="{ 'is-invalid': fPar['vers'].errors}">
+        <div *ngIf="fPar['vers'].errors" class="invalid-feedback">
           obligatoire
         </div>
       </div>

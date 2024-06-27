@@ -4,6 +4,7 @@ import { ParamsService } from '../../_services/params.service';
 import { Constantes } from 'src/app/constantes';
 import { DatePipe } from '@angular/common';
 import { Params } from '../../_models/params';
+import { Subject, takeUntil } from 'rxjs';
 
 
 @Component({
@@ -12,6 +13,8 @@ import { Params } from '../../_models/params';
 })
 
 export class SubheaderMvtsComponent {
+
+  private destroy$!: Subject<boolean>;
   parentName = "-"
   nomModule = "-"
   isListe = false
@@ -52,7 +55,9 @@ export class SubheaderMvtsComponent {
   }
 
   getParams(): void {
+    this.destroy$ = new Subject<boolean>()
     this.paramsService.paramssubj$
+      .pipe( takeUntil(this.destroy$) )
       .subscribe({
         next: (data:Params) => {
           this.params = data;
