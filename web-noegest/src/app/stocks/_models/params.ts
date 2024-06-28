@@ -1,5 +1,5 @@
 
-export const  PARAMS: Params= {
+export const  PARAMS0: Params= {
   id: 0,
   jour: new Date(2022,8,17),//valeur pour démo, provisoire
   origine: "repas",
@@ -9,7 +9,6 @@ export const  PARAMS: Params= {
   tva: "en TTC",
   modif: new Date()
 }
-
 
 export interface Params {
   id: number;

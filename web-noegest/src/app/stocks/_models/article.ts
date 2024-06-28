@@ -13,6 +13,11 @@ export interface Article {
   dernier_achat?: string;
 }
 
+export const ARTICLE0 : Article = {
+  id: 0,
+  nom: "",
+}
+
 export interface ArticleNom {
   id: number;
   nom: string;

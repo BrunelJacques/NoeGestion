@@ -4,7 +4,7 @@ import { Observable, BehaviorSubject, catchError, of, tap } from 'rxjs';
 import { FonctionsPerso } from '../../shared/fonctions-perso';
 import { DatePipe } from '@angular/common';
 
-import { Params,  PARAMS, Camp, Fournisseur, Rayon, Magasin } from '../_models/params';
+import { Params,  PARAMS0, Camp, Fournisseur, Rayon, Magasin } from '../_models/params';
 import { Constantes } from 'src/app/constantes';
 import { Mouvement } from '../_models/mouvement';
 import { HandleError } from 'src/app/general/_helpers/error.interceptor';
@@ -15,7 +15,7 @@ import { FormGroup } from '@angular/forms';
 export class ParamsService {
   lstservice = Constantes.LSTSERVICE;
   lstservice_code = this.lstservice.map((x) => x.id)
-  public paramssubj$= new BehaviorSubject<Params>(PARAMS);
+  public paramssubj$= new BehaviorSubject<Params>(PARAMS0);
   private key = "stParams";
   public camps: Camp[] = [];
   public fournisseurs: Fournisseur[] = [];
@@ -61,10 +61,10 @@ export class ParamsService {
   ajusteParams(params:Params){
     // >6 heures après le dernier paramétrage, on réinitialise Params
     if (!(params instanceof Object)){
-      params = this.fp.deepCopy(PARAMS)
+      params = this.fp.deepCopy(PARAMS0)
     }
     if (this.fp.hoursDelta(new Date(params.modif),new Date()) > 6) {
-      params = this.fp.deepCopy(PARAMS)
+      params = this.fp.deepCopy(PARAMS0)
     }
     if (params.service == -1) {
       params.service = 0

@@ -3,7 +3,6 @@ import { Observable, map, startWith } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, MatAutocompleteDefaultOptions, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
-
 @Component({
   selector: 'app-autocomplete',
   templateUrl: './autocomplete.component.html',
@@ -26,12 +25,13 @@ export class AutocompleteComponent implements OnInit {
                   width?: string
   } = {
         items:["un","deux","trois"],
-        width:"250px"
+        width:"254px"
   };
   @Output() retour: EventEmitter<string>  = new EventEmitter()
 
   myControl = new FormControl();
   filteredItems: Observable<string[]>;
+font: any;
 
   constructor( ) {
     this.filteredItems = this.myControl.valueChanges

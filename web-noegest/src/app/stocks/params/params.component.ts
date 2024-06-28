@@ -141,7 +141,6 @@ export class ParamsComponent implements OnInit, OnDestroy {
         }
       });
     this.fournisseurs = this.paramsService.fournisseurs
-    console.log(this.fournisseurs)
   }
 
 }

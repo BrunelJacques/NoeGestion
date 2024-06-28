@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subject, Subscription, takeUntil } from 'rxjs';
-import { Mouvement } from '../../_models/mouvement';
+import { Mouvement, MVT0 } from '../../_models/mouvement';
 import { DatePipe } from '@angular/common';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MvtService } from '../../_services/mvt.service';
@@ -23,7 +23,6 @@ export class OneSortieComponent implements OnInit, OnDestroy {
   private destroy$!: Subject<boolean>;
   paramsSubscrib!:Subscription;
   params!: Params;
-  jour: string | null = ""
 
   id!: string;
   mvt!: Mouvement;
@@ -36,15 +35,15 @@ export class OneSortieComponent implements OnInit, OnDestroy {
   submitted = false;
 
   fieldsMvt: FormField[] = [
-    { label: 'jour', type: 'text'},
-    { label: 'vers', type: 'text'},
-    { label: 'service', type: 'select',
+    { label: 'Jour', type: 'text'},
+    { label: 'Vers', type: 'text'},
+    { label: 'Service', type: 'select',
       options: this.lstService_libelle },
-    { label: 'prixUnit', type: 'number'},
-    { label: 'qte', type: 'number' },
-    { label: 'nbRations', type: 'number' },
-    { label: 'coutRation', type: 'number' },
-    { label: 'qteStock', type: 'number' },
+    { label: 'PrixUnit', type: 'number'},
+    { label: 'Qte', type: 'number' },
+    { label: 'NbRations', type: 'number' },
+    { label: 'CoutRation', type: 'number' },
+    { label: 'QteStock', type: 'number' },
   ];
 
   constructor(
@@ -73,15 +72,17 @@ export class OneSortieComponent implements OnInit, OnDestroy {
   }
 
   initForm() {
+    // form Filtres actifs (params)
+    this.fgPar = this.fbPar.group({
+      jour: this.datePipe.transform(this.params.jour, 'yyyy-MM-dd'),
+      vers:this.params.origine,
+    });
+    this.fgPar.disable();
+    // form de saisie de l'enregistrement
     this.fgMvt = this.fbMvt.group({});
     this.fieldsMvt.forEach(field => {
       this.fgMvt.addControl(field.label,this.fbMvt.control(field.value));
       this.fgMvt.get(field.label)?.setValidators([Validators.required,])
-    });
-    const jj =  this.datePipe.transform(this.params.jour, 'yyyy-MM-dd')
-    this.fgPar = this.fbPar.group({
-      jour: [jj,Validators.required],
-      vers:this.params.origine,
     });
   }
 
@@ -89,14 +90,14 @@ export class OneSortieComponent implements OnInit, OnDestroy {
     const qteParRation = mvt.sens * this.fxPerso.division(mvt.qtemouvement, mvt.nbrations ) 
     const coutRation = this.fxPerso.round( mvt.prixunit * qteParRation)
     this.fgMvt.patchValue({
-      'jour': this.datePipe.transform(mvt.jour, 'dd/MM/yyyy'),
-      'vers': mvt.origine,
-      'service': this.lstService_libelle[mvt.service],
-      'prixUnit': this.fxPerso.round(mvt.prixunit,4),
-      'qte': mvt.qtemouvement * mvt.qtemouvement,
-      'nbRations': mvt.nbrations,
-      'coutRation': coutRation,
-      'qteStock': mvt.article.qte_stock
+      'Jour': this.datePipe.transform(mvt.jour, 'dd/MM/yyyy'),
+      'Vers': mvt.origine,
+      'Service': this.lstService_libelle[mvt.service],
+      'PrixUnit': this.fxPerso.round(mvt.prixunit,4),
+      'Qte': mvt.qtemouvement * mvt.qtemouvement,
+      'NbRations': mvt.nbrations,
+      'CoutRation': coutRation,
+      'QteStock': mvt.article.qte_stock
     })
   }
 
@@ -134,10 +135,17 @@ export class OneSortieComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (mvt:Mouvement) => {
-          this.mvt = mvt
-          if (this.mvt ) {
-            this.setValuesMvt(mvt)
+          mvt =  mvt || MVT0
+          if (!this.mvt && mvt == MVT0 && this.params.jour) {
+            const jj = this.datePipe.transform(this.params.jour, 'yyyy-MM-dd')
+            const origine = this.params.origine
+            if (jj) {
+              mvt.jour = jj
+              mvt.origine = origine
+            } 
           }
+          this.mvt = mvt; 
+          this.setValuesMvt(mvt)
         },
         error: (e) =>{ if (e != 'Not Found') { console.error('one-sortie.getMvt',e)}}
     });
@@ -169,10 +177,6 @@ export class OneSortieComponent implements OnInit, OnDestroy {
     console.log('event article: ',retour)
   }
 
-  onDateChange($event: undefined) {
-    console.log($event);
-  }
-  
   save(): void {
     if (this.id ) {
       console.log('à faire save')

@@ -341,7 +341,8 @@ td {
 mat-form-field {
   margin-left: 2% ;
   margin-right: 2% ;
-  max-width: var(--max-width-field);
+  max-width: 286px;
+  width: 100%;
 }
 
 .form-field { /* Utilisable avec label ou subtitle pour harmoniser avec formfield */

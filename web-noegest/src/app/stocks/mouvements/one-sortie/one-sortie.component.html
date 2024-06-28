@@ -20,11 +20,9 @@
         <input
         type= "text" id="versPar" name="versPar"
         formControlName="vers"
-        class="form-control col-7 col-sm-12"
-        [ngClass]="{ 'is-invalid': fPar['vers'].errors}">
-        <div *ngIf="fPar['vers'].errors" class="invalid-feedback">
-          obligatoire
-        </div>
+        class="form-control col-7 col-sm-12">
+
+
       </div>
     </div>
   </mat-card>
@@ -41,10 +39,9 @@
       <!-- gestion du mouvement -->
       <div>
         <div class="row"
-
         *ngFor="let field of fieldsMvt">
-          <div class="col-4">
-            <label for="{{ field.label}}">{{ field.label  | titlecase }}</label>
+          <div class="col-4 ">
+            <label for="{{ field.label}}">{{ field.label }}</label>
           </div>
           <div class="col-8" [ngSwitch]="field.type">
             <select class="form-control my-1" 
@@ -76,5 +73,3 @@
     </form>
   </div>
 </div>
-
-
