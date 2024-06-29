@@ -75,15 +75,25 @@ export class OneSortieComponent implements OnInit, OnDestroy {
     // form Filtres actifs (params)
     this.fgPar = this.fbPar.group({
       jour: this.datePipe.transform(this.params.jour, 'yyyy-MM-dd'),
-      vers:this.params.origine,
+      origine:this.params.origine,
+      camp:this.params.camp,
     });
+    this.fgPar.addControl("camp",this.fbPar.control(this.params.camp));
     this.fgPar.disable();
+
     // form de saisie de l'enregistrement
     this.fgMvt = this.fbMvt.group({});
     this.fieldsMvt.forEach(field => {
       this.fgMvt.addControl(field.label,this.fbMvt.control(field.value));
       this.fgMvt.get(field.label)?.setValidators([Validators.required,])
     });
+  }
+  setValuesPar(params:Params) {
+    this.fgPar.patchValue({
+      'Jour': this.datePipe.transform(params.jour, 'yyyy-MM-dd'),
+      'origine': params.origine,
+      'camp': this.params.camp,
+    })
   }
 
   setValuesMvt(mvt:Mouvement) {
@@ -104,6 +114,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
   initSubscriptions(id:string): void {
     this.destroy$ = new Subject<boolean>()
 
+    // gestion des navigation et retours
     this.seeyouService.clicksOk$
       .pipe( takeUntil(this.destroy$) )
       .subscribe(() => {
@@ -116,12 +127,30 @@ export class OneSortieComponent implements OnInit, OnDestroy {
       this.onQuit();
     });
 
-    this.paramsSubscrib = this.paramsService.paramssubj$
+    // getCamps
+    this.paramsService.campsSubj$
+      .pipe( takeUntil(this.destroy$) )
+      .subscribe({
+          next: (data:Camp[]) => {
+            this.camps = data;
+          },        
+          error: (e) => {
+            if (e != 'Camps Not Found') {
+              console.error(e)
+            }
+          }
+        });
+          
+    // getParams
+    this.paramsSubscrib = this.paramsService.paramsSubj$
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (data: Params) => {
           if ( data ) {
             this.params = data;
+            if (data && this.fgPar) {
+              this.setValuesPar(data)
+            }
           }
         },
         error: (e: string) => {
@@ -131,6 +160,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
         }
     });
 
+    // getMvt
     this.mvtService.getMvt(id)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
@@ -156,7 +186,6 @@ export class OneSortieComponent implements OnInit, OnDestroy {
   }
 
   onQuit(): void {
-    console.log('fin onesortie: ', this.fgMvt.value)
     this.seeyouService.goBack()
   }
 

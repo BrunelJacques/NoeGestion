@@ -15,7 +15,7 @@ import { tabooValidator } from '../shared/_validators/valid.validator';
 export class ZzTestComponent implements OnInit, AfterViewInit {
 
   @Input() userValue!: User;
-  
+
   mainForm!: FormGroup
   personalInfoForm!: FormGroup;
   usernameCtrl!: FormControl;
@@ -129,6 +129,9 @@ export class ZzTestComponent implements OnInit, AfterViewInit {
     } else {return "Saisie non valide"}
   }
 
+  onRetour(param: unknown) {
+    console.log(param)
+  }
 }
   
   

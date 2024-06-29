@@ -6,7 +6,7 @@ import { Subject, BehaviorSubject, delay, filter } from 'rxjs';
 
 
 export class SeeyouService {
-  // permet les échanges entre subHeader et le component principal du DOM
+  // permet les échanges navigation entre subHeader et le component principal du DOM
   // historise les url pour faire des goback convoqués par des modules paratagés
 
   public clicksOkSubject = new Subject<void>()

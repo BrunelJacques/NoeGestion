@@ -112,7 +112,7 @@ export class SortiesComponent implements OnInit, OnDestroy {
   }
 
   getParams(): void {
-    this.paramsSubscrib = this.paramsService.paramssubj$
+    this.paramsSubscrib = this.paramsService.paramsSubj$
       .subscribe({
         next: (data: Params) => {
           this.params = data;

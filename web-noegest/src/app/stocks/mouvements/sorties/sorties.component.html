@@ -9,11 +9,11 @@
         <th class="col pb-0">Coût</th>
         <th class="col  px-0 pt-0">Repas</th>
         <th class="col  px-0 pb-0 d-none d-sm-table-cell">Parts</th>
-        <th class="col  px-0 pb-0 d-none d-sm-table-cell">Px Moy</th>
+        <th class="col  p-0 d-none d-sm-table-cell">Px Moy</th>
         <th class="col  px-0 pb-0 d-none d-sm-table-cell">Saisie/</th>
         <th class="col  px-0 pb-0 d-none d-sm-table-cell left">Ordi</th>
-        <th class="col  px-0 pb-0">Reste Stock</th>
-        <th class="col  d-sm-table-cell">last buy</th>
+        <th class="col  p-0">Reste Stock</th>
+        <th class="col  small12 px-0 pb-0 d-sm-table-cell right">last buy</th>
       </tr>
     </thead>
     <tbody pb-0>
@@ -43,7 +43,7 @@
           {{mvt.ordi}} 
         </td>
         <td routerLink="/stocks/onesortie/{{mvt.id}}"> {{mvt.article.qte_stock| number : '1.0-2'}} </td>
-        <td class= "small12 date"  routerLink="/stocks/onesortie/{{mvt.id}}"> 
+        <td class= "small10 date"  routerLink="/stocks/onesortie/{{mvt.id}}"> 
           {{ansiToFr(mvt.article.dernier_achat)}} 
         </td>
       </tr>

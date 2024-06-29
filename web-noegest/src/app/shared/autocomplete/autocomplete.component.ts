@@ -31,7 +31,7 @@ export class AutocompleteComponent implements OnInit {
 
   myControl = new FormControl();
   filteredItems: Observable<string[]>;
-font: any;
+  font: unknown;
 
   constructor( ) {
     this.filteredItems = this.myControl.valueChanges

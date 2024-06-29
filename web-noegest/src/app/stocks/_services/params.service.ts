@@ -15,9 +15,9 @@ import { FormGroup } from '@angular/forms';
 export class ParamsService {
   lstservice = Constantes.LSTSERVICE;
   lstservice_code = this.lstservice.map((x) => x.id)
-  public paramssubj$= new BehaviorSubject<Params>(PARAMS0);
+  public paramsSubj$= new BehaviorSubject<Params>(PARAMS0);
+  public campsSubj$= new BehaviorSubject<Camp[]>([]);
   private key = "stParams";
-  public camps: Camp[] = [];
   public fournisseurs: Fournisseur[] = [];
   public rayons: Rayon[] = [] ;
   public magasins: Magasin[] = [];
@@ -31,14 +31,12 @@ export class ParamsService {
     private datePipe: DatePipe,
     private fp: FonctionsPerso,
     ){
-      const param = this.getStoredParams()
-      if (param) 
-      { this.paramssubj$.next(param) }
+      this.getStoredParams()
+      this.getCamps()
     }
 
 
-  initParams() {
-    this.getCamps()
+  initParamsOptions() {
     this.getFournisseurs()
     this.getMagasins()
     this.getRayons()
@@ -47,7 +45,7 @@ export class ParamsService {
   // stockage de l'info en local & affectation subject
   setParams(item: Params) {
     localStorage.setItem(this.key, JSON.stringify(item))
-    this.paramssubj$.next(item)
+    this.paramsSubj$.next(item)
   }
 
   getStoredParams() {
@@ -55,7 +53,7 @@ export class ParamsService {
     if (key === null ) 
     {return}
     else
-    { return this.ajusteParams(JSON.parse(key)) }
+    {  this.paramsSubj$.next(this.ajusteParams(JSON.parse(key))) }
   }
 
   ajusteParams(params:Params){
@@ -97,22 +95,6 @@ export class ParamsService {
     params.tva = form.value.tva
   }
 
-  /* GET heroes adapté pour exemple */
-  searchCamps(term: string): Observable<Camp[]> {
-    if (!term.trim()) {
-      // if not search term, return empty hero array.
-      return of([]);
-    }
-    const url = this.constantes.GEANALYTIQUE_URL+"?axe=ACTIVITES&obsolete=False"
-    return this.http.get<Camp[]>(url)
-      .pipe(
-        tap(x => x.length ?
-          this.handleError.log(`found lignes matching "${term}"`) :
-          this.handleError.log(`no lignes matching "${term}"`)),
-        catchError(this.handleError.handleError<Camp[]>('searchCampes', []))
-      );
-  }
-    
   getHttp(url:string)  {
     this.http.get<[]>(url)
       .pipe(
@@ -128,7 +110,7 @@ export class ParamsService {
     return []
   }
 
-  getCamps():Camp[] {
+  getCamps(){
     const url = this.constantes.GEANALYTIQUE_URL+"?axe=ACTIVITES&obsolete=False"
     this.http.get<[]>(url)
       .pipe(
@@ -136,10 +118,9 @@ export class ParamsService {
       )
       .subscribe(
         (data) => {
-          this.camps = data
+          this.campsSubj$.next(data)
         }
       );
-    return this.camps
     }
   
   getFournisseurs() {

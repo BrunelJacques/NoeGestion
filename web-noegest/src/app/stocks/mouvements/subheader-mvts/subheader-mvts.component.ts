@@ -56,7 +56,7 @@ export class SubheaderMvtsComponent {
 
   getParams(): void {
     this.destroy$ = new Subject<boolean>()
-    this.paramsService.paramssubj$
+    this.paramsService.paramsSubj$
       .pipe( takeUntil(this.destroy$) )
       .subscribe({
         next: (data:Params) => {
