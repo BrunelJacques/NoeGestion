@@ -1,8 +1,8 @@
-from django.contrib import admin
+import django.contrib.admin as admin
 from django.urls import path, include
-from rest_framework import routers
+import rest_framework.routers as routers
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-import django.contrib.auth.views as authviews
+#import django.contrib.auth.views as authviews
 
 #import noegestion.views
 from noegestion.views import *

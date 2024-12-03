@@ -51,7 +51,7 @@ export class SortiesComponent implements OnInit, OnDestroy {
   }
 
   // appelé par .html
-  division = this.fp.division
+  division = this.fp.quotient
 
   ngOnInit(): void {
     this.getParams();

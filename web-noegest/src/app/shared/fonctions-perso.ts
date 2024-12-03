@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DatePipe } from "@angular/common";
+import { isNumber } from '@ng-bootstrap/ng-bootstrap/util/util';
 
 
 @Injectable({ providedIn: 'root' })
@@ -40,14 +41,15 @@ export class FonctionsPerso{
       return null
     }
   }
-  division(dividende?:unknown,diviseur?:unknown): number{
-    if (typeof diviseur == 'number' 
-    && typeof dividende == 'number'
-    && diviseur !== 0){
-      return diviseur / dividende
-    } else {
-      return 0
-    }
+  produit(facteur1: unknown, facteur2: unknown): number{
+    const fact1 = typeof facteur1 === "number" ? facteur1 : 1;
+    const fact2 = typeof facteur2 == 'number' ? facteur2 : 1; 
+    return fact1 * fact2
+  }  
+  quotient(dividende:unknown, diviseur:unknown): number{
+    const div1 = typeof dividende == 'number' ? dividende : 1
+    const div2 = (typeof diviseur == 'number' && diviseur != 0) ? diviseur : 1
+    return div1 / div2
   }
   numToString(nombre:number|undefined,nbDecimales?:number): string {
     if (!nbDecimales) {nbDecimales = 2}

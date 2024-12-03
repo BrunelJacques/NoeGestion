@@ -144,12 +144,12 @@ class StMouvement(models.Model):
     nbcolis = models.DecimalField(max_digits=6, decimal_places=0, null=True, default=0,
                                   help_text="Pour les achats, nombre d'unité de vente")
     qtemouvement = models.DecimalField(max_digits=8, decimal_places=2,
-                                       help_text="Nombre d'unité stockées")
+                                       help_text="Nombre d'unités en mouvement")
     prixunit = models.DecimalField(max_digits=10, decimal_places=4)
     service = models.IntegerField(default=0, choices=xconst.SERVICE_CHOICES,
                                   help_text="Service repas concerné")
     nbrations = models.DecimalField(max_digits=8, decimal_places=4,
-                                    help_text="Nbre de ration par qteMouvement", null=True)
+                                    help_text="Nbre de ration par unité Mouvement", null=True)
     transfert = models.DateField(null=True, help_text="non modifiable si date de transfert")
     ordi = models.CharField(max_length=32, blank=True, default="",
                             help_text="pour tracer les mouvements")

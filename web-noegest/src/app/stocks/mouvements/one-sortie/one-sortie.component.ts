@@ -41,7 +41,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
       options: this.lstService_libelle },
     { label: 'PrixUnit', type: 'number'},
     { label: 'Qte', type: 'number' },
-    { label: 'NbRations', type: 'number' },
+    { label: 'TotRations', type: 'number' },
     { label: 'CoutRation', type: 'number' },
     { label: 'QteStock', type: 'number' },
   ];
@@ -97,15 +97,15 @@ export class OneSortieComponent implements OnInit, OnDestroy {
   }
 
   setValuesMvt(mvt:Mouvement) {
-    const qteParRation = mvt.sens * this.fxPerso.division(mvt.qtemouvement, mvt.nbrations ) 
-    const coutRation = this.fxPerso.round( mvt.prixunit * qteParRation)
+    const totRations =  mvt.sens * this.fxPerso.produit(mvt.nbrations,mvt.qtemouvement)
+    const coutRation = this.fxPerso.round( this.fxPerso.quotient(mvt.prixunit, mvt.nbrations))
     this.fgMvt.patchValue({
       'Jour': this.datePipe.transform(mvt.jour, 'dd/MM/yyyy'),
       'Vers': mvt.origine,
       'Service': this.lstService_libelle[mvt.service],
       'PrixUnit': this.fxPerso.round(mvt.prixunit,4),
-      'Qte': mvt.qtemouvement * mvt.qtemouvement,
-      'NbRations': mvt.nbrations,
+      'Qte': mvt.qtemouvement * mvt.sens,
+      'TotRations': totRations,
       'CoutRation': coutRation,
       'QteStock': mvt.article.qte_stock
     })
