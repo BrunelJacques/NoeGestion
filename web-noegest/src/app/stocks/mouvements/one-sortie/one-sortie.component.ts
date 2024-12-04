@@ -103,12 +103,14 @@ export class OneSortieComponent implements OnInit, OnDestroy {
       'Jour': this.datePipe.transform(mvt.jour, 'dd/MM/yyyy'),
       'Vers': mvt.origine,
       'Service': this.lstService_libelle[mvt.service],
-      'PrixUnit': this.fxPerso.round(mvt.prixunit,4),
+      'PrixUnit': this.fxPerso.round(mvt.prixunit,2),
       'Qte': mvt.qtemouvement * mvt.sens,
       'TotRations': totRations,
       'CoutRation': coutRation,
       'QteStock': mvt.article.qte_stock
     })
+    this.fgMvt.get('CoutRation')?.disable()
+    this.fgMvt.get('QteStock')?.disable()
   }
 
   initSubscriptions(id:string): void {
@@ -164,9 +166,9 @@ export class OneSortieComponent implements OnInit, OnDestroy {
     this.mvtService.getMvt(id)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: (mvt:Mouvement) => {
-          mvt =  mvt || MVT0
-          if (!this.mvt && mvt == MVT0 && this.params.jour) {
+        next: (mvt:Mouvement | null) => {
+          mvt =  mvt || { ...MVT0 };
+          if (!this.mvt && mvt === MVT0 && this.params.jour) {
             const jj = this.datePipe.transform(this.params.jour, 'yyyy-MM-dd')
             const origine = this.params.origine
             if (jj) {
@@ -177,7 +179,9 @@ export class OneSortieComponent implements OnInit, OnDestroy {
           this.mvt = mvt; 
           this.setValuesMvt(mvt)
         },
-        error: (e) =>{ if (e != 'Not Found') { console.error('one-sortie.getMvt',e)}}
+        error: (e) =>{ if (e != 'Not Found') { 
+          console.error('one-sortie.getMvt',e)
+        }}
     });
   }
 
@@ -208,8 +212,18 @@ export class OneSortieComponent implements OnInit, OnDestroy {
 
   save(): void {
     if (this.id ) {
-      console.log('à faire save')
-      //this.mvtService.updateMvt(this.id.toString())
+      const updatedMvt:Mouvement = this.mvt
+      //this.mvtService.putMvt(this.id.toString())
+      this.mvtService.putMvt(this.id, updatedMvt).subscribe({
+        next: (updated) => {
+          if (updated) {
+            console.log('Movement updated successfully', updated);
+          } else {
+            console.log('Movement update failed or no changes');
+          }
+        },
+        error: (e) => console.error('Error updating movement', e)
+      });
     }
   }
 }
