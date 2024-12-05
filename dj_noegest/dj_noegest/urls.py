@@ -9,7 +9,7 @@ from noegestion.views import *
 
 # Ici nous créons notre routeur
 router_api = routers.SimpleRouter()
-# Puis lui déclarons les url qu'ils doit orienter
+# Puis lui déclarons les url qu'il doit orienter
 router_api.register('geanalytique', GeAnalytiqueViewset, basename='geanalytique')
 router_api.register('stmouvement', StMouvementViewset, basename='stmouvement')
 router_api.register('starticle', StArticleViewset, basename='starticle')

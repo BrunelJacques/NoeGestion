@@ -14,10 +14,9 @@ import os
 from datetime import timedelta
 from pathlib import Path
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+APPEND_SLASH=False
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -33,7 +32,6 @@ ALLOWED_HOSTS = [
     '192.168.1.54',
     '192.168.1.98',
 ]
-
 
 # Application definition
 
@@ -95,7 +93,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'dj_noegest.wsgi.application'
-
 
 DATABASES = {
     'default': {

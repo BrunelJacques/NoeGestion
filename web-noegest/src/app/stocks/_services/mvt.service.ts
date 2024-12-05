@@ -35,6 +35,7 @@ export class MvtService {
   getMvt(id: string): Observable<Mouvement | null> {
     const params = new HttpParams().set('id', id); // Use HttpParams for URL parameters
     const url = this.cst.STMOUVEMENT_URL; // Keep URL clean and readable
+    console.log(url)
     return this.http.get<Mouvement[]>(url, { params }).pipe(
       map((mvts) => (mvts.length > 0 ? mvts[0] : null)), // Safely map to the first item or null
       tap((mvt) =>
@@ -52,7 +53,8 @@ export class MvtService {
   /** PUT mvt by id, http updates an existing item */
   putMvt(id: string, updatedMvt: Mouvement): Observable<Mouvement | null> {
     const params = new HttpParams().set('id', id); // Use HttpParams for URL parameters
-    const url = this.cst.STMOUVEMENT_URL; 
+    const url = this.cst.STMOUVEMENT_URL+'/';
+    console.log(url)
 
     return this.http.put<Mouvement[]>(url, updatedMvt, { params }).pipe(
       map((mvts) => (mvts.length > 0 ? mvts[0] : null)), // Safely map to the updated item or null
