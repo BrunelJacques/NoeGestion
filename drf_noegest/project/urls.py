@@ -18,15 +18,14 @@ router.register('stfournisseur', StFournisseurViewset, basename='stfournisseur')
 router.register('strayon', StRayonViewset, basename='strayon')
 router.register('stmagasin', StMagasinViewset, basename='stmagasin')
 
-# https://stackoverflow.com/questions/54544978/customizing-jwt-response-from-django-rest-framework-simplejwt
-from noegestion.views import MyTokenObtainPairView
+#router.register('admin/starticle', AdminArticleViewset, basename='admin-article')
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
     path('home/', home, name='home'),
     path('', include('rest_framework.urls')),
-    #path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api-auth/token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api-auth/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('admin/', admin.site.urls),
+    #path('api-auth/', include('rest_framework.urls')),
+    path('api/token/', TokenObtainPairView.as_view(), name='obtain_tokens'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='refresh_token'),
     path('api/', include(router.urls))
 ]
