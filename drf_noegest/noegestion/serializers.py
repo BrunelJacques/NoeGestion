@@ -1,8 +1,9 @@
 
-from rest_framework.serializers import ModelSerializer, CharField
+from rest_framework.serializers import ModelSerializer
+from rest_framework import serializers
+
 from noegestion.models import *
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from django.contrib.auth.models import User
 
 # https://stackoverflow.com/questions/54544978/customizing-jwt-response-from-django-rest-framework-simplejwt
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -35,6 +36,13 @@ class StArticleSerializer(ModelSerializer):
                    'colis_par','unite_colis','rations',
                    'fournisseur','tx_tva','dernier_achat']
 
+        def validate_name(self, value):
+            if StArticle.objects.filter(nom=value).exists():
+                raise serializers.ValidationError('Cet article existe déja')
+            if StArticle.objects.filter(nom_court=value).exists():
+                raise serializers.ValidationError('Ce nom court d article existe déja')
+            return value
+
 class StArticleNomSerializer(ModelSerializer):
 
     class Meta:
@@ -52,6 +60,19 @@ class StMagasinSerializer(ModelSerializer):
     class Meta:
         model = StMagasin
         exclude = ['id',]
+
+class StMagasin_articleSerializer(ModelSerializer):
+
+    articles = serializers.SerializerMethodField()
+
+    class Meta:
+        model = StMagasin
+        fields = ['id','nom','articles']
+
+    def get_articles(self, instance):
+        queryset = instance.articles.filter(active=True)
+        serializer = StArticleSerializer(queryset, many=True)
+        return serializer.data
 
 class StRayonSerializer(ModelSerializer):
 

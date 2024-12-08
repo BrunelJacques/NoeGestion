@@ -3,7 +3,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.response import Response
 from rest_framework import status
-from noegestion.serializers import *
+from .serializers import *
 import datetime
 
 # pour test d'accès direct à django
@@ -21,11 +21,20 @@ def home(request):
     message = "Bonjour %s " %(name)
     return render(request, 'home.html', context={'message': message})
 
+class MultipleSerializerMixin:
+
+    detail_serializer_class = None
+
+    def get_serializer_class(self):
+        if self.action == 'retrieve' and self.detail_serializer_class is not None:
+            return self.detail_serializer_class
+        return super().get_serializer_class()
+
 # via serialiser-Rest retourne le détail du user authentifié
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
-class GeAnalytiqueViewset(ModelViewSet):
+class GeAnalytiqueViewset(ReadOnlyModelViewSet):
     serializer_class = GeAnalytiqueSerializer
     permission_classes = [IsAuthenticated]
 
@@ -96,14 +105,6 @@ class StArticleNomViewset(ModelViewSet):
             ret = StArticle.objects.all()
         return ret.order_by('nom')
 
-class StMagasinViewset(ModelViewSet):
-
-    serializer_class = StMagasinSerializer
-    permission_classes = [IsAuthenticated]
-
-    def get_queryset(self, *args, **kwargs):
-        return StMagasin.objects.all()
-
 class StRayonViewset(ModelViewSet):
     serializer_class = StRayonSerializer
 
@@ -117,9 +118,21 @@ class StFournisseurViewset(ModelViewSet):
     def get_queryset(self, *args, **kwargs):
         return StFournisseur.objects.all()
 
-class AdminArticleViewset(ReadOnlyModelViewSet):
+class StMagasinViewset(ReadOnlyModelViewSet):
 
-    serializer_class = StArticleSerializer
-    queryset = StArticle.objects.all()
+    serializer_class = StMagasinSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self, *args, **kwargs):
+        return StMagasin.objects.all()
+
+class AdminStMagasinViewset(MultipleSerializerMixin,ModelViewSet):
+
+    serializer_class = StMagasinSerializer
+    detail_serializer_class = StMagasin_articleSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return StMagasin.objects.all()
 
 
