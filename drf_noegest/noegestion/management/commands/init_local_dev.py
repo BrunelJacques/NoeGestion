@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from django.contrib.auth import get_user_model
+import django.contrib.auth.get_user_model as get_user_model
 
 from noegestion.models import GeAnalytique,StMagasin,StRayon,StFournisseur,StEffectif
 from noegestion.models import StArticle,StMouvement,StInventaire

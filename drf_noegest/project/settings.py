@@ -140,8 +140,13 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+""" 
+    La pagination REST_FRAMEWORK est importante car elle elle génére en entête du retour 
+    les deux liens page précédente et page suivante qui permettront de proposer des boutons accès
+    Il y a aussi le nombre de pages
+"""
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 10,
+    'PAGE_SIZE': 30, # Nombre d'instances affichées dans une page
     'DEFAULT_AUTHENTICATION_CLASSES': ('rest_framework_simplejwt.authentication.JWTAuthentication',)
 }

@@ -1,4 +1,4 @@
-from django.db import models
+import django.db.models as models
 from utils import xconst
 
 class StMagasin(models.Model):

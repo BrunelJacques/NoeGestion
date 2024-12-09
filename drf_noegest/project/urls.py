@@ -1,6 +1,6 @@
 from rest_framework import routers
-from django.contrib import admin
-from django.urls import path, include
+import  django.contrib.admin as admin
+from django.urls.conf import path,include
 
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
@@ -18,6 +18,7 @@ router.register('stfournisseur', StFournisseurViewset, basename='stfournisseur')
 router.register('strayon', StRayonViewset, basename='strayon')
 router.register('stmagasin', StMagasinViewset, basename='stmagasin')
 
+router.register('stfournisseur_article', StFournisseur_articleViewset,basename='stfournisseur_article')
 #router.register('admin/starticle', AdminArticleViewset, basename='admin-article')
 
 urlpatterns = [

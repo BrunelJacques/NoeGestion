@@ -36,7 +36,6 @@ class MyTokenObtainPairView(TokenObtainPairView):
 
 class GeAnalytiqueViewset(ReadOnlyModelViewSet):
     serializer_class = GeAnalytiqueSerializer
-    permission_classes = [IsAuthenticated]
 
     def get_queryset(self,  *args, **kwargs):
         axe = self.request.GET.get('axe', 'ACTIVITES')
@@ -45,7 +44,8 @@ class GeAnalytiqueViewset(ReadOnlyModelViewSet):
 
 class StMouvementViewset(ModelViewSet):
     serializer_class = StMouvementSerializer
-    permission_classes = [IsAuthenticated]
+
+    #permission_classes = [IsAuthenticated]
 
     def get_queryset(self,  *args, **kwargs):
         id = self.request.GET.get('id',None)
@@ -94,7 +94,6 @@ class StArticleViewset(ModelViewSet):
 
 class StArticleNomViewset(ModelViewSet):
     serializer_class = StArticleNomSerializer
-    permission_classes = [IsAuthenticated]
 
     def get_queryset(self, *args, **kwargs):
         nom = self.request.GET.get('nom', '').strip()
@@ -114,7 +113,6 @@ class StRayonViewset(ModelViewSet):
 class StFournisseurViewset(ModelViewSet):
 
     serializer_class = StFournisseurSerializer
-
     def get_queryset(self, *args, **kwargs):
         return StFournisseur.objects.all()
 
@@ -135,4 +133,10 @@ class AdminStMagasinViewset(MultipleSerializerMixin,ModelViewSet):
     def get_queryset(self):
         return StMagasin.objects.all()
 
+
+class StFournisseur_articleViewset(ModelViewSet):
+
+    serializer_class = StFournisseur_articleSerializer
+    def get_queryset(self, *args, **kwargs):
+        return StFournisseur.objects.all()
 

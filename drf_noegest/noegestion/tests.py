@@ -1,4 +1,4 @@
-from django.urls import reverse_lazy, reverse
+from django.urls.base import reverse_lazy, reverse
 from rest_framework.test import APITestCase
 
 from noegestion.models import StRayon, StArticle
@@ -8,7 +8,7 @@ class NoegestionAPITestCase(APITestCase):
 
     @classmethod
     def setUpTestData(cls):
-        cls.category = StRayon.objects.create(name='Fruits', active=True)
+        cls.category = StRayon.objects.create(nom='Fruits')
         StRayon.objects.create(name='Légumes', active=False)
 
         cls.product = cls.category.products.create(name='Ananas', active=True)
@@ -23,7 +23,7 @@ class NoegestionAPITestCase(APITestCase):
 
 class TestStRayon(NoegestionAPITestCase):
 
-    url = reverse_lazy('category-list')
+    url = reverse_lazy('strayon')
 
     def test_list(self):
         response = self.client.get(self.url)
