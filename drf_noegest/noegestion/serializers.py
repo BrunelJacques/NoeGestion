@@ -41,7 +41,7 @@ class StRayonSerializer(ModelSerializer):
 
     class Meta:
         model = StRayon
-        exclude = ['id',]
+        exclude = []
 
 class StFournisseurSerializer(ModelSerializer):
 
@@ -87,16 +87,8 @@ class StFournisseur_articleSerializer(ModelSerializer):
         fields = ['id','nom','articles']
 
     def get_articles(self, instance):
-        """ Définition nécessaire en cas de SerializerMethodField()
-        Le paramètre 'instance' est l'instance du fournisseur consulté.
-        Dans le cas d'une liste, cette méthode est appelée autant de fois qu'il y a
-         d'entités dans la liste"""
-
-        # On applique le filtre sur notre queryset pour n'avoir que les produits actifs
         queryset = instance.articles.filter(obsolete=False)
-        # Le serializer est créé avec le queryset défini et toujours défini en tant que many=True
         serializer = StArticleNomSerializer(queryset, many=True)
-        # la propriété '.data' est le rendu de notre serializer que nous retournons ici
         return serializer.data
 
 class StMagasin_articleSerializer(ModelSerializer):
@@ -118,6 +110,19 @@ class StMagasin_articleSerializer(ModelSerializer):
         # Le serializer est créé avec le queryset défini et toujours défini en tant que many=True
         serializer = StArticleNomSerializer(queryset, many=True)
         # la propriété '.data' est le rendu de notre serializer que nous retournons ici
+        return serializer.data
+
+class StRayon_articleSerializer(ModelSerializer):
+
+    articles = serializers.SerializerMethodField()
+
+    class Meta:
+        model = StRayon
+        fields = ['id','nom','articles']
+
+    def get_articles(self, instance):
+        queryset = instance.articles.filter(obsolete=False)
+        serializer = StArticleNomSerializer(queryset, many=True)
         return serializer.data
 
 class StArticleNomSerializer(ModelSerializer):

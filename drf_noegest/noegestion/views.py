@@ -21,7 +21,6 @@ def home(request):
     message = "Bonjour %s " %(name)
     return render(request, 'home.html', context={'message': message})
 
-
 class GetRetrieveSerializer:
 
     retrieve_serializer_class = None
@@ -34,29 +33,36 @@ class GetRetrieveSerializer:
 # Views simples
 class GeAnalytiqueViewset(ReadOnlyModelViewSet):
     serializer_class = GeAnalytiqueSerializer
+    #permission_classes = [IsAuthenticated]
 
     def get_queryset(self,  *args, **kwargs):
         axe = self.request.GET.get('axe', 'ACTIVITES')
         obsolete = self.request.GET.get('obsolete', False)
         return GeAnalytique.objects.filter(axe=axe,obsolete=obsolete)
 
-class StMagasinViewset(ReadOnlyModelViewSet):
+class StMagasinViewset(GetRetrieveSerializer, ModelViewSet):
 
     serializer_class = StMagasinSerializer
-    permission_classes = [IsAuthenticated]
+    retrieve_serializer_class = StMagasin_articleSerializer
+    #permission_classes = [IsAuthenticated]
 
     def get_queryset(self, *args, **kwargs):
         return StMagasin.objects.all()
 
-class StRayonViewset(ModelViewSet):
+class StRayonViewset(GetRetrieveSerializer,ModelViewSet):
     serializer_class = StRayonSerializer
+    retrieve_serializer_class = StRayon_articleSerializer
+    #permission_classes = [IsAuthenticated]
 
     def get_queryset(self, *args, **kwargs):
         return StRayon.objects.all()
 
-class StFournisseurViewset(ModelViewSet):
+class StFournisseurViewset(GetRetrieveSerializer,ModelViewSet):
 
     serializer_class = StFournisseurSerializer
+    retrieve_serializer_class = StFournisseur_articleSerializer
+    #permission_classes = [IsAuthenticated]
+
     def get_queryset(self, *args, **kwargs):
         return StFournisseur.objects.all()
 
@@ -78,58 +84,28 @@ class StArticleViewset(ModelViewSet):
         return ret.order_by('nom')
 
 # Retour différent selon nature requête
-class StMouvementViewset(GetRetrieveSerializer,ModelViewSet):
+class StMouvementViewset(ModelViewSet):
     serializer_class = StMouvementSerializer
-
     #permission_classes = [IsAuthenticated]
 
     def get_queryset(self,  *args, **kwargs):
-        id = self.request.GET.get('id',None)
         if self.action == 'retrieve':
-            print('retrieve', id)
-            return StMouvement.objects.filter(id=id)
+            return StMouvement.objects.all()
         else:
             origine = self.request.GET.get('origine', 'repas')
             jour = self.request.GET.get('jour','2022-09-17')
-            print('list', origine,jour)
             return StMouvement.objects.filter(origine=origine,jour=jour)
 
-    def create(self, request, *args, **kwargs):  # POST
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    def update(self, request, *args, **kwargs):  # PUT
-        partial = kwargs.pop('partial', False)  # For partial updates (PATCH)
-        instance = self.get_object()
-        serializer = self.get_serializer(instance, data=request.data, partial=partial)
-        serializer.is_valid(raise_exception=True)
-        self.perform_update(serializer)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-    def destroy(self, request, *args, **kwargs):  # DELETE
-        instance = self.get_object()
-        self.perform_destroy(instance)
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
-# Listes d'articles diverses-------------------------
-class StFournisseur_articleViewset(ModelViewSet):
+# Liste complete avec articles actifs ---------------------
+class StFournisseur_articleViewset(ReadOnlyModelViewSet):
 
     serializer_class = StFournisseur_articleSerializer
     def get_queryset(self, *args, **kwargs):
         return StFournisseur.objects.all()
 
-class StMagasin_articleViewset(GetRetrieveSerializer, ModelViewSet):
 
-    serializer_class = StMagasinSerializer
-    retrieve_serializer_class = StMagasin_articleSerializer
-    #permission_classes = [IsAuthenticated]
-
-    def get_queryset(self):
-        return StMagasin.objects.all()
-
-class StArticleNomViewset(ModelViewSet):
+class StArticleNomViewset(ReadOnlyModelViewSet):
     serializer_class = StArticleNomSerializer
 
     def get_queryset(self, *args, **kwargs):
