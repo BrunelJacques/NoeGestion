@@ -20,13 +20,13 @@ router.register('stmagasin', StMagasinViewset, basename='stmagasin')
 
 router.register('stfournisseur_article', StFournisseur_articleViewset,basename='stfournisseur_article')
 #router.register('admin/starticle', AdminArticleViewset, basename='admin-article')
+from noegestion.views import MyTokenObtainPairView
 
 urlpatterns = [
-    path('home/', home, name='home'),
-    path('', include('rest_framework.urls')),
     path('admin/', admin.site.urls),
-    #path('api-auth/', include('rest_framework.urls')),
-    path('api/token/', TokenObtainPairView.as_view(), name='obtain_tokens'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='refresh_token'),
+    path('', include('rest_framework.urls')),
+    #path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api-auth/token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api-auth/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/', include(router.urls))
 ]

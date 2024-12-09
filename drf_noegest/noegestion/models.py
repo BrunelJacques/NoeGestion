@@ -71,8 +71,8 @@ class StArticle(models.Model):
                                    help_text="Utilisé lors des entrées pour un prix au conditionnement")
     colis_par = models.DecimalField(max_digits=10, decimal_places=4, default=1,
                                     help_text="Nbre d'unités stock par unité de colis")
-    magasin = models.ForeignKey('StMagasin',
-                                on_delete=models.DO_NOTHING,
+    magasin = models.ForeignKey('StMagasin',related_name='articles',
+                                on_delete=models.RESTRICT,
                                 help_text="Lieu de stockage"
                                 )
     rayon = models.ForeignKey('StRayon', default=1,related_name='articles',
@@ -116,13 +116,13 @@ class StMouvement(models.Model):
                                help_text="Entrée +1, Sortie -1")
     origine = models.CharField(max_length=8,db_index=True,choices=xconst.ORIGINE_CHOICES,
                                default='od_out',help_text="Type de mouvement selon sens")
-    article = models.ForeignKey("StArticle",
+    article = models.ForeignKey("StArticle",related_name='+',
                                 on_delete=models.RESTRICT,
                                 )
-    analytique = models.ForeignKey("GeAnalytique",
-                                   on_delete=models.SET("deleted"),
+    analytique = models.ForeignKey("GeAnalytique",related_name='+',
+                                   on_delete=models.RESTRICT,
                                    )
-    fournisseur = models.ForeignKey("StFournisseur", models.SET_NULL, null=True,
+    fournisseur = models.ForeignKey("StFournisseur", models.SET_NULL, null=True,related_name='+',
                                     help_text="Le fournisseur habituel de l'article est proposé"
                                     )
     nbcolis = models.DecimalField(max_digits=6, decimal_places=0, null=True, default=0,

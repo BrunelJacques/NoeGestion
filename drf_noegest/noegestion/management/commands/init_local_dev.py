@@ -3371,12 +3371,12 @@ StInventaire_data = [
         }
     ]
 
-LstTablesData = [GeAnalytique_data,StMagasin_data,StRayon_data,StFournisseur_data,
-                 StEffectif_data,StArticle_data,StMouvement_data,StInventaire_data
-                 ]
-LstTablesNom = [GeAnalytique, StMagasin, StRayon, StFournisseur, StEffectif,
-                StArticle, StMouvement, StInventaire
-                ]
+LST_TABLES_DATA = [GeAnalytique_data, StMagasin_data, StRayon_data, StFournisseur_data,
+                   StEffectif_data, StArticle_data, StMouvement_data, StInventaire_data
+                   ]
+LST_TABLES_NOMS = [GeAnalytique, StMagasin, StRayon, StFournisseur, StEffectif,
+                   StArticle, StMouvement, StInventaire
+                   ]
 
 ADMIN_ID = 'admin'
 USER_ID = 'user'
@@ -3391,12 +3391,13 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.stdout.write(self.style.MIGRATE_HEADING(self.help))
 
-        for table in LstTablesNom:
+        for table in LST_TABLES_NOMS:
             table.objects.all().delete()
-            table_data = LstTablesData[LstTablesNom.index(table)]
+            table_data = LST_TABLES_DATA[LST_TABLES_NOMS.index(table)]
 
             for item in table_data:
                 table.objects.create(**item)
+
         UserModel.objects.create_superuser(ADMIN_ID, 'admin@foo.fr', PASSWORD)
         UserModel.objects.create_user(USER_ID, 'user@foo.fr', PASSWORD)
 

@@ -6,6 +6,7 @@ from noegestion.models import *
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 # https://stackoverflow.com/questions/54544978/customizing-jwt-response-from-django-rest-framework-simplejwt
+# permet de récupérer l'id user et ses groupes pour le front end
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
         data = super().validate(attrs)
