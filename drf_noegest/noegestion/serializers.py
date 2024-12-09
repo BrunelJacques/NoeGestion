@@ -23,11 +23,31 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         data['isActive'] = self.user.is_active
         return data
 
+# Sérializers simples -----------------
+
 class GeAnalytiqueSerializer(ModelSerializer):
     class Meta:
         model = GeAnalytique
         fields = [
-            "id", "nom", "abrege","params", ]
+            "id", "nom", "abrege","params"]
+
+class StMagasinSerializer(ModelSerializer):
+
+    class Meta:
+        model = StMagasin
+        exclude = []
+
+class StRayonSerializer(ModelSerializer):
+
+    class Meta:
+        model = StRayon
+        exclude = ['id',]
+
+class StFournisseurSerializer(ModelSerializer):
+
+    class Meta:
+        model = StFournisseur
+        fields = '__all__'
 
 class StArticleSerializer(ModelSerializer):
 
@@ -44,23 +64,40 @@ class StArticleSerializer(ModelSerializer):
                 raise serializers.ValidationError('Ce nom court d article existe déja')
             return value
 
-class StArticleNomSerializer(ModelSerializer):
+# Réponse différentiée selon nature de reqiête
+class StMouvementSerializer(ModelSerializer):
+    article = StArticleSerializer()
+    fournisseur = StFournisseurSerializer()
 
     class Meta:
-        model = StArticle
-        fields = ['id','nom']
+        model = StMouvement
+        fields = [
+            "id","jour","sens","origine","article","nbcolis",
+            "qtemouvement","prixunit","service","nbrations",
+            "analytique","fournisseur","ordi","saisie","transfert"
+        ]
 
-class StFournisseurSerializer(ModelSerializer):
+# Listes d'articles----------------------------
+class StFournisseur_articleSerializer(ModelSerializer):
+
+    articles = serializers.SerializerMethodField()
 
     class Meta:
         model = StFournisseur
-        fields = '__all__'
+        fields = ['id','nom','articles']
 
-class StMagasinSerializer(ModelSerializer):
+    def get_articles(self, instance):
+        """ Définition nécessaire en cas de SerializerMethodField()
+        Le paramètre 'instance' est l'instance du fournisseur consulté.
+        Dans le cas d'une liste, cette méthode est appelée autant de fois qu'il y a
+         d'entités dans la liste"""
 
-    class Meta:
-        model = StMagasin
-        exclude = ['id',]
+        # On applique le filtre sur notre queryset pour n'avoir que les produits actifs
+        queryset = instance.articles.filter(obsolete=False)
+        # Le serializer est créé avec le queryset défini et toujours défini en tant que many=True
+        serializer = StArticleNomSerializer(queryset, many=True)
+        # la propriété '.data' est le rendu de notre serializer que nous retournons ici
+        return serializer.data
 
 class StMagasin_articleSerializer(ModelSerializer):
 
@@ -83,42 +120,9 @@ class StMagasin_articleSerializer(ModelSerializer):
         # la propriété '.data' est le rendu de notre serializer que nous retournons ici
         return serializer.data
 
-class StRayonSerializer(ModelSerializer):
+class StArticleNomSerializer(ModelSerializer):
 
     class Meta:
-        model = StRayon
-        exclude = ['id',]
+        model = StArticle
+        fields = ['id','nom']
 
-class StMouvementSerializer(ModelSerializer):
-    article = StArticleSerializer()
-    fournisseur = StFournisseurSerializer()
-
-    class Meta:
-        model = StMouvement
-        fields = [
-            "id","jour","sens","origine","article","nbcolis",
-            "qtemouvement","prixunit","service","nbrations",
-            "analytique","fournisseur","ordi","saisie","transfert"
-        ]
-
-
-class StFournisseur_articleSerializer(ModelSerializer):
-
-    articles = serializers.SerializerMethodField()
-
-    class Meta:
-        model = StFournisseur
-        fields = ['id','nom','articles']
-
-    def get_articles(self, instance):
-        """ Définition nécessaire en cas de SerializerMethodField()
-        Le paramètre 'instance' est l'instance du fournisseur consulté.
-        Dans le cas d'une liste, cette méthode est appelée autant de fois qu'il y a
-         d'entités dans la liste"""
-
-        # On applique le filtre sur notre queryset pour n'avoir que les produits actifs
-        queryset = instance.articles.filter(obsolete=False)
-        # Le serializer est créé avec le queryset défini et toujours défini en tant que many=True
-        serializer = StArticleNomSerializer(queryset, many=True)
-        # la propriété '.data' est le rendu de notre serializer que nous retournons ici
-        return serializer.data

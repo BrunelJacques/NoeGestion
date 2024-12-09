@@ -21,19 +21,17 @@ def home(request):
     message = "Bonjour %s " %(name)
     return render(request, 'home.html', context={'message': message})
 
-class MultipleSerializerMixin:
 
-    detail_serializer_class = None
+class GetRetrieveSerializer:
+
+    retrieve_serializer_class = None
 
     def get_serializer_class(self):
-        if self.action == 'retrieve' and self.detail_serializer_class is not None:
-            return self.detail_serializer_class
+        if self.action == 'retrieve' and self.retrieve_serializer_class is not None:
+            return self.retrieve_serializer_class
         return super().get_serializer_class()
 
-# via serialiser-Rest retourne le détail du user authentifié
-class MyTokenObtainPairView(TokenObtainPairView):
-    serializer_class = MyTokenObtainPairSerializer
-
+# Views simples
 class GeAnalytiqueViewset(ReadOnlyModelViewSet):
     serializer_class = GeAnalytiqueSerializer
 
@@ -42,18 +40,58 @@ class GeAnalytiqueViewset(ReadOnlyModelViewSet):
         obsolete = self.request.GET.get('obsolete', False)
         return GeAnalytique.objects.filter(axe=axe,obsolete=obsolete)
 
-class StMouvementViewset(ModelViewSet):
+class StMagasinViewset(ReadOnlyModelViewSet):
+
+    serializer_class = StMagasinSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self, *args, **kwargs):
+        return StMagasin.objects.all()
+
+class StRayonViewset(ModelViewSet):
+    serializer_class = StRayonSerializer
+
+    def get_queryset(self, *args, **kwargs):
+        return StRayon.objects.all()
+
+class StFournisseurViewset(ModelViewSet):
+
+    serializer_class = StFournisseurSerializer
+    def get_queryset(self, *args, **kwargs):
+        return StFournisseur.objects.all()
+
+class StArticleViewset(ModelViewSet):
+    serializer_class = StArticleSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self, *args, **kwargs):
+        id = self.request.GET.get('id',None)
+        nom = self.request.GET.get('nom', '').strip()
+        if id:
+            ret = StArticle.objects.filter(id=id)
+        elif len(nom) > 0:
+            obsolete = self.request.GET.get('obsolete',False)
+            ret = StArticle.objects.filter(nom__istartswith=nom,obsolete=obsolete) \
+                   | StArticle.objects.filter(nom_court__istartswith=nom,obsolete=obsolete)
+        else:
+            ret = StArticle.objects.all()
+        return ret.order_by('nom')
+
+# Retour différent selon nature requête
+class StMouvementViewset(GetRetrieveSerializer,ModelViewSet):
     serializer_class = StMouvementSerializer
 
     #permission_classes = [IsAuthenticated]
 
     def get_queryset(self,  *args, **kwargs):
         id = self.request.GET.get('id',None)
-        if id:
+        if self.action == 'retrieve':
+            print('retrieve', id)
             return StMouvement.objects.filter(id=id)
         else:
             origine = self.request.GET.get('origine', 'repas')
-            jour = self.request.GET.get('jour',str(datetime.date.today()))
+            jour = self.request.GET.get('jour','2022-09-17')
+            print('list', origine,jour)
             return StMouvement.objects.filter(origine=origine,jour=jour)
 
     def create(self, request, *args, **kwargs):  # POST
@@ -75,22 +113,21 @@ class StMouvementViewset(ModelViewSet):
         self.perform_destroy(instance)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-class StArticleViewset(ModelViewSet):
-    serializer_class = StArticleSerializer
-    permission_classes = [IsAuthenticated]
+# Listes d'articles diverses-------------------------
+class StFournisseur_articleViewset(ModelViewSet):
 
+    serializer_class = StFournisseur_articleSerializer
     def get_queryset(self, *args, **kwargs):
-        id = self.request.GET.get('id',None)
-        nom = self.request.GET.get('nom', '').strip()
-        if id:
-            ret = StArticle.objects.filter(id=id)
-        elif len(nom) > 0:
-            obsolete = self.request.GET.get('obsolete',False)
-            ret = StArticle.objects.filter(nom__istartswith=nom,obsolete=obsolete) \
-                   | StArticle.objects.filter(nom_court__istartswith=nom,obsolete=obsolete)
-        else:
-            ret = StArticle.objects.all()
-        return ret.order_by('nom')
+        return StFournisseur.objects.all()
+
+class StMagasin_articleViewset(GetRetrieveSerializer, ModelViewSet):
+
+    serializer_class = StMagasinSerializer
+    retrieve_serializer_class = StMagasin_articleSerializer
+    #permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return StMagasin.objects.all()
 
 class StArticleNomViewset(ModelViewSet):
     serializer_class = StArticleNomSerializer
@@ -103,40 +140,4 @@ class StArticleNomViewset(ModelViewSet):
         else:
             ret = StArticle.objects.all()
         return ret.order_by('nom')
-
-class StRayonViewset(ModelViewSet):
-    serializer_class = StRayonSerializer
-
-    def get_queryset(self, *args, **kwargs):
-        return StRayon.objects.all()
-
-class StFournisseurViewset(ModelViewSet):
-
-    serializer_class = StFournisseurSerializer
-    def get_queryset(self, *args, **kwargs):
-        return StFournisseur.objects.all()
-
-class StMagasinViewset(ReadOnlyModelViewSet):
-
-    serializer_class = StMagasinSerializer
-    permission_classes = [IsAuthenticated]
-
-    def get_queryset(self, *args, **kwargs):
-        return StMagasin.objects.all()
-
-class AdminStMagasinViewset(MultipleSerializerMixin,ModelViewSet):
-
-    serializer_class = StMagasinSerializer
-    detail_serializer_class = StMagasin_articleSerializer
-    permission_classes = [IsAuthenticated]
-
-    def get_queryset(self):
-        return StMagasin.objects.all()
-
-
-class StFournisseur_articleViewset(ModelViewSet):
-
-    serializer_class = StFournisseur_articleSerializer
-    def get_queryset(self, *args, **kwargs):
-        return StFournisseur.objects.all()
 

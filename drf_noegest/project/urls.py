@@ -2,10 +2,14 @@ from rest_framework import routers
 import  django.contrib.admin as admin
 from django.urls.conf import path,include
 
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from rest_framework_simplejwt.views import TokenRefreshView
 
-#import noegestion.views
 from noegestion.views import *
+
+
+# Token qui retourne le détail de l'user authentifié via DRF_serializer
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer
 
 # Ici nous créons notre routeur
 router = routers.SimpleRouter()
@@ -19,8 +23,8 @@ router.register('strayon', StRayonViewset, basename='strayon')
 router.register('stmagasin', StMagasinViewset, basename='stmagasin')
 
 router.register('stfournisseur_article', StFournisseur_articleViewset,basename='stfournisseur_article')
+router.register('stmagasin_article', StMagasin_articleViewset,basename='stmagasin_article')
 #router.register('admin/starticle', AdminArticleViewset, basename='admin-article')
-from noegestion.views import MyTokenObtainPairView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
