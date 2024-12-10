@@ -49,6 +49,15 @@ class StFournisseurSerializer(ModelSerializer):
         model = StFournisseur
         fields = '__all__'
 
+    def validate_nom(self, value):
+        objects = StFournisseur.objects.filter(nom__icontains=value)
+        if objects.exists():
+            first = str(objects.first())
+            raise serializers.ValidationError('Le nom %s est contenu dans %s'%(value,first))
+        if not value or len(value) < 3:
+            raise serializers.ValidationError('Longueur: 3c requis, sinon ambiguités possibles')
+        return value
+
 class StArticleSerializer(ModelSerializer):
 
     class Meta:
@@ -57,12 +66,18 @@ class StArticleSerializer(ModelSerializer):
                    'colis_par','unite_colis','rations',
                    'fournisseur','tx_tva','dernier_achat']
 
-        def validate_name(self, value):
-            if StArticle.objects.filter(nom=value).exists():
-                raise serializers.ValidationError('Cet article existe déja')
-            if StArticle.objects.filter(nom_court=value).exists():
-                raise serializers.ValidationError('Ce nom court d article existe déja')
-            return value
+    def validate_nom(self, value):
+        if StArticle.objects.filter(nom=value).exists():
+            raise serializers.ValidationError("Ce nom d'article existe déja")
+        return value
+
+    def validate_nom_court(self,value):
+        objects = StArticle.objects.filter(nom__icontains=value)
+        if objects.exists():
+            first = str(objects.first())
+            raise serializers.ValidationError(
+                'Le nom court %s est contenu dans %s, différentiez les mieux' % (value, first))
+        return value
 
 # Réponse différentiée selon nature de reqiête
 class StMouvementSerializer(ModelSerializer):
@@ -76,6 +91,12 @@ class StMouvementSerializer(ModelSerializer):
             "qtemouvement","prixunit","service","nbrations",
             "analytique","fournisseur","ordi","saisie","transfert"
         ]
+
+    def validate(self, data):
+        if data['origine'] == 'achat'and (not data['fournisseur'] or len(data['fournisseur']) < 3):
+            raise serializers.ValidationError("Les achats nécessitent un nom fournisseur")
+        return data
+
 
 # Listes d'articles----------------------------
 class StFournisseur_articleSerializer(ModelSerializer):

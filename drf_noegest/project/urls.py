@@ -23,8 +23,8 @@ router.register('stmouvement', StMouvementViewset, basename='stmouvement')
 
 router.register('starticlenom', StArticleNomViewset, basename='starticlenom')
 
+# lecture seule de tous les fournisseurs avec les articles associés
 router.register('stfournisseur_article', StFournisseur_articleViewset,basename='stfournisseur_article')
-#router.register('admin/starticle', AdminArticleViewset, basename='admin-article')
 
 urlpatterns = [
     path('admin/', admin.site.urls),

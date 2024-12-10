@@ -7,15 +7,12 @@ class StMagasin(models.Model):
     nom = models.CharField(max_length=30, unique=True)
     position = models.PositiveSmallIntegerField("Position", null=True)
 
-    class Meta:
-        verbose_name = "StMagasin: Lieu de stockage"
-        ordering = ["position"]
-
-    def __unicode__(self):
-        return self.nom
-
     def __str__(self):
-        return self.nom
+        return f"{self.nom} ({self.id})"
+
+    class Meta:
+        verbose_name = "Lieu stockage: StMagasin"
+        ordering = ["position"]
 
 class StRayon(models.Model):
 
@@ -23,28 +20,23 @@ class StRayon(models.Model):
     nom = models.CharField(max_length=30, unique=True)
     position = models.PositiveSmallIntegerField("Position", null=True)
 
-    class Meta:
-        verbose_name = "StRayon: Subdivisions de magasin"
-        ordering = ["position"]
-
-    def __unicode__(self):
-        return self.id
     def __str__(self):
-        return self.nom
+        return f"Rayon {self.id}-{self.nom}"
+
+    class Meta:
+        verbose_name = "Rayon/magasin: StRayon"
+        ordering = ["position"]
 
 class StFournisseur(models.Model):
 
     nom = models.CharField(max_length=30, unique=True)
 
-    class Meta:
-        verbose_name = "StFournisseur: approvisionnements d'article"
-        ordering = ["nom"]
-
-    def __unicode__(self):
-        return "{} {:d}".format(self.nom, self.id)
-
     def __str__(self):
-        return self.nom
+        return f"Fournisseur {self.id}-{self.nom}"
+
+    class Meta:
+        verbose_name = "StFournisseur"
+        ordering = ["nom"]
 
 class GeAnalytique(models.Model):
     #État des stocks à une date donnée
@@ -56,10 +48,11 @@ class GeAnalytique(models.Model):
     saisie = models.DateField(auto_now=True,help_text="Date de l'entrée de l'item")
     obsolete = models.BooleanField(default=False)
 
-    def __str__(self): return self.id
+    def __str__(self):
+        return f"Analytique {self.id}-{self.nom}"
 
     class Meta:
-        verbose_name = 'GeAnalytique: Gestion générale, codes analytique'
+        verbose_name = 'Codes analytique'
         ordering = ['id',]
 
 class StArticle(models.Model):
@@ -73,15 +66,15 @@ class StArticle(models.Model):
                                     help_text="Nbre d'unités stock par unité de colis")
     magasin = models.ForeignKey('StMagasin',related_name='articles',
                                 on_delete=models.RESTRICT,
-                                help_text="Lieu de stockage"
+                                help_text="Stockage_lieu"
                                 )
-    rayon = models.ForeignKey('StRayon', default=1,related_name='articles',
+    rayon = models.ForeignKey('StRayon', related_name='articles',
                               on_delete=models.RESTRICT,
                               help_text="Catégorie de produit"
                               )
     rations = models.DecimalField(max_digits=10, decimal_places=4, blank=False, default=1,
                                   help_text="Nbre de rations par unité de stock")
-    fournisseur = models.ForeignKey('StFournisseur', default=1,related_name='articles',
+    fournisseur = models.ForeignKey('StFournisseur', null=True,related_name='articles',
                                     on_delete=models.RESTRICT,
                                     help_text="Fournisseur habituel"
                                     )
@@ -89,26 +82,26 @@ class StArticle(models.Model):
                                     help_text="recalculé régulièrement pour inventaire")
     tx_tva = models.DecimalField(max_digits=10, decimal_places=4, default=5.5,
                                  help_text="tx de TVA en %")
-    qte_mini = models.DecimalField(blank=True,max_digits=8,decimal_places=2,null=True,
+    qte_mini = models.DecimalField(blank=True,null=True,max_digits=8,decimal_places=2,
                                    help_text="Déclencheur d'alerte pour réappro")
-    prix_moyen = models.DecimalField(max_digits=10, decimal_places=4, blank=True, null=True,
+    prix_moyen = models.DecimalField(blank=True, null=True,max_digits=10, decimal_places=4,
                                      help_text="Prix unitaire moyen historique du stock")
-    prix_actuel = models.DecimalField(max_digits=10, decimal_places=4, blank=True, null=True,
+    prix_actuel = models.DecimalField(blank=True, null=True,max_digits=10, decimal_places=4,
                                       help_text="Dernier prix TTC unitaire livré ou de réappro")
     dernier_achat = models.DateField(null=True,
                                      help_text="Date de dernière entrée avec prix saisi")
-    ordi = models.CharField( blank=True, max_length=32,
+    ordi = models.CharField( blank=True, null=True, max_length=32,
                              help_text="Nom de l'ordi utilisé pour l'entrée ou la modif")
     saisie = models.DateField(auto_now=True,help_text="Date de l'entrée de l'item")
 
     obsolete = models.BooleanField(default=False)
 
-    class Meta:
-        verbose_name = "StArticle: Items de stock géré"
-        ordering = ["nom_court"]
-
     def __str__(self):
-        return self.nom_court
+        return f"{self.nom_court}-{self.nom}"
+
+    class Meta:
+        verbose_name = "Item stocké: StArticle"
+        ordering = ["nom_court"]
 
 class StMouvement(models.Model):
     jour = models.DateField()
@@ -125,7 +118,7 @@ class StMouvement(models.Model):
     fournisseur = models.ForeignKey("StFournisseur", models.SET_NULL, null=True,related_name='+',
                                     help_text="Le fournisseur habituel de l'article est proposé"
                                     )
-    nbcolis = models.DecimalField(max_digits=6, decimal_places=0, null=True, default=0,
+    nbcolis = models.DecimalField(max_digits=6, decimal_places=0, null=True,
                                   help_text="Pour les achats, nombre d'unité de vente")
     qtemouvement = models.DecimalField(max_digits=8, decimal_places=2,
                                        help_text="Nombre d'unités en mouvement")
@@ -139,13 +132,13 @@ class StMouvement(models.Model):
                             help_text="pour tracer les mouvements")
     saisie = models.DateField(auto_now=True,help_text="Date de l'entrée de l'item")
 
+    def __str__(self):
+        return f"{self.jour.strftime('%d/%m;%Y')}-{self.origine}-{self.article}"
+
     class Meta:
-        verbose_name = "StMouvement: Entrées et sorties de stock "
+        verbose_name = "Mvt d'article: StMouvement"
         indexes = [models.Index(fields=['jour','article','sens','origine']),
                    models.Index(fields=['article','sens','jour'])]
-
-    def __str__(self):
-        return "{:d/:m/:Y} {:d} {} {}".format(self.jour,self.sens,self.origine,self.article)
 
 class StEffectif(models.Model):
     jour = models.DateField()
@@ -158,15 +151,14 @@ class StEffectif(models.Model):
     ordi = models.CharField(max_length=32)
     saisie = models.DateField(auto_now=True,help_text="Date de l'entrée de l'item")
 
+    def __str__(self):
+        repas = self.midi_repas + self.soir_repas
+        clients = self.midi_clients + self.soir_clients
+        return f"{self.jour.strftime('%d/%m/%Y')}-{repas} {clients}"
 
     class Meta:
-        verbose_name = "StEffectifs: Présents aux repas quotidien"
+        verbose_name = "Présents aux repas: StEffectif"
         indexes = [models.Index(fields=["jour",]),]
-
-    def __str__(self):
-        return "{:%d/:%m/:%Y} {:d} repas {:d} clients".format(self.jour,
-                                                         self.midi_repas + self.soir_repas,
-                                                         self.midi_clients + self.soir_clients,)
 
 class StInventaire(models.Model):
     jour = models.DateField(help_text="Date de l'inventaire")
@@ -184,9 +176,9 @@ class StInventaire(models.Model):
     ordi = models.CharField(null=True, max_length=32)
     saisie = models.DateField(auto_now=True,help_text="Date de l'entrée de l'item")
 
-    class Meta:
-        verbose_name = "StInventaire: archivages d'états de stock"
-        indexes = [models.Index(fields=["jour", 'article']),]
-
     def __str__(self):
-        return "{:d/:m/:Y} {}".format(self.jour, self.libelle)
+        return "{:d/:m/:Y} {}".format(self.jour, self.article_nom)
+
+    class Meta:
+        verbose_name = "archivages d'états de stock: StInventaire"
+        indexes = [models.Index(fields=["jour", 'article']),]
