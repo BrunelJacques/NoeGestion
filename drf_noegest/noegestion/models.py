@@ -1,4 +1,6 @@
 import django.db.models as models
+from django.db.models.functions import Lower
+
 from utils import xconst
 
 class StMagasin(models.Model):
@@ -11,7 +13,7 @@ class StMagasin(models.Model):
         return f"{self.nom} ({self.id})"
 
     class Meta:
-        verbose_name = "Lieu stockage: StMagasin"
+        verbose_name = "(Lieu stockage) magasin"
         ordering = ["position"]
 
 class StRayon(models.Model):
@@ -21,10 +23,10 @@ class StRayon(models.Model):
     position = models.PositiveSmallIntegerField("Position", null=True)
 
     def __str__(self):
-        return f"Rayon {self.id}-{self.nom}"
+        return f"{self.nom} ({self.id})"
 
     class Meta:
-        verbose_name = "Rayon/magasin: StRayon"
+        verbose_name = "(Rayon/magasin) rayon"
         ordering = ["position"]
 
 class StFournisseur(models.Model):
@@ -32,11 +34,11 @@ class StFournisseur(models.Model):
     nom = models.CharField(max_length=30, unique=True)
 
     def __str__(self):
-        return f"Fournisseur {self.id}-{self.nom}"
+        return f"{self.nom} ({self.id})"
 
     class Meta:
-        verbose_name = "StFournisseur"
-        ordering = ["nom"]
+        verbose_name = "fournisseur"
+        ordering = [Lower("nom")]
 
 class GeAnalytique(models.Model):
     #État des stocks à une date donnée
@@ -49,10 +51,10 @@ class GeAnalytique(models.Model):
     obsolete = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"Analytique {self.id}-{self.nom}"
+        return f"{self.id}-{self.abrege}"
 
     class Meta:
-        verbose_name = 'Codes analytique'
+        verbose_name = '(Gestion) analytique'
         ordering = ['id',]
 
 class StArticle(models.Model):
@@ -97,11 +99,16 @@ class StArticle(models.Model):
     obsolete = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"{self.nom_court}-{self.nom}"
+        return f"{self.nom_court} ({self.id})"
+
+    def save(self, *args,**kwargs):
+        self.nom_court = self.nom_court.upper()
+        self.nom = self.nom.upper()
+        super(StArticle,self).save(*args,**kwargs)
 
     class Meta:
-        verbose_name = "Item stocké: StArticle"
-        ordering = ["nom_court"]
+        verbose_name = "(Item stocké) article"
+        ordering = [Lower("nom_court")]
 
 class StMouvement(models.Model):
     jour = models.DateField()
@@ -136,9 +143,10 @@ class StMouvement(models.Model):
         return f"{self.jour.strftime('%d/%m;%Y')}-{self.origine}-{self.article}"
 
     class Meta:
-        verbose_name = "Mvt d'article: StMouvement"
+        verbose_name = "(Mvt d'article) mouvement"
         indexes = [models.Index(fields=['jour','article','sens','origine']),
                    models.Index(fields=['article','sens','jour'])]
+        ordering = ['jour',Lower('article__nom_court')]
 
 class StEffectif(models.Model):
     jour = models.DateField()
@@ -157,7 +165,7 @@ class StEffectif(models.Model):
         return f"{self.jour.strftime('%d/%m/%Y')}-{repas} {clients}"
 
     class Meta:
-        verbose_name = "Présents aux repas: StEffectif"
+        verbose_name = "(Nbre de repas) effectif"
         indexes = [models.Index(fields=["jour",]),]
 
 class StInventaire(models.Model):
@@ -180,5 +188,5 @@ class StInventaire(models.Model):
         return "{:d/:m/:Y} {}".format(self.jour, self.article_nom)
 
     class Meta:
-        verbose_name = "archivages d'états de stock: StInventaire"
+        verbose_name = "(Etats de stock) inventaire"
         indexes = [models.Index(fields=["jour", 'article']),]

@@ -27,9 +27,10 @@ router.register('starticlenom', StArticleNomViewset, basename='starticlenom')
 router.register('stfournisseur_article', StFournisseur_articleViewset,basename='stfournisseur_article')
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('rest_framework.urls')),
     path('api-auth/token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api-auth/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('api/', include(router.urls))
+    path('api/', include(router.urls)),
+    path('api-auth/', include('rest_framework.urls')),
+    path('admin/', admin.site.urls),
+    #path('',admin.site.urls)
 ]

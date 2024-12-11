@@ -29,7 +29,7 @@ class GeAnalytiqueSerializer(ModelSerializer):
     class Meta:
         model = GeAnalytique
         fields = [
-            "id", "nom", "abrege","params"]
+            "id", "nom", "abrege","params", "obsolete"]
 
 class StMagasinSerializer(ModelSerializer):
 
@@ -50,10 +50,18 @@ class StFournisseurSerializer(ModelSerializer):
         fields = '__all__'
 
     def validate_nom(self, value):
-        objects = StFournisseur.objects.filter(nom__icontains=value)
+        # Check if this is an update action, and skip if it is
+        if self.instance:
+            if self.instance.nom == value:
+                return value
+        objects = StFournisseur.objects.filter(nom__startswith=value)
+
+        # teste les noms imbriqués pouvant porter à confusion
         if objects.exists():
             first = str(objects.first())
             raise serializers.ValidationError('Le nom %s est contenu dans %s'%(value,first))
+
+        # Teste les noms trop courts qui vont bloquer les futures saisies
         if not value or len(value) < 3:
             raise serializers.ValidationError('Longueur: 3c requis, sinon ambiguités possibles')
         return value
@@ -62,27 +70,41 @@ class StArticleSerializer(ModelSerializer):
 
     class Meta:
         model = StArticle
-        fields = ['id','nom','nom_court','qte_stock','prix_moyen','unite_stock',
-                   'colis_par','unite_colis','rations',
-                   'fournisseur','tx_tva','dernier_achat']
-
-    def validate_nom(self, value):
-        if StArticle.objects.filter(nom=value).exists():
-            raise serializers.ValidationError("Ce nom d'article existe déja")
-        return value
+        fields = ['id','nom','nom_court','magasin','rayon','qte_stock','prix_moyen',
+                  'unite_stock','colis_par','unite_colis','rations','fournisseur',
+                  'tx_tva','dernier_achat']
 
     def validate_nom_court(self,value):
-        objects = StArticle.objects.filter(nom__icontains=value)
+        objects = StArticle.objects.filter(nom_court__startswith=value)
+
+        # Teste les imbrications de noms
         if objects.exists():
             first = str(objects.first())
             raise serializers.ValidationError(
-                'Le nom court %s est contenu dans %s, différentiez les mieux' % (value, first))
+                'Le nom court %s est contenu dans %s, différentiez-les mieux' % (value, first))
+
+        # Teste les noms trop courts qui vont bloquer les futures saisies
+        if not value or len(value) < 3:
+            raise serializers.ValidationError('Longueur: 3c requis, sinon ambiguités possibles')
         return value
 
-# Réponse différentiée selon nature de reqiête
+    def validate(self,data):
+        # le test du model passe avant mais distingue les casses
+        key = 'nom_court'
+        objects = StArticle.objects
+        initial_value = self.initial_data[key]
+        if data[key] == initial_value:
+            # nom inchangé, aucun risque de doublon
+            return data
+        # le nom à changé, le nouveau ne doit pas déjà exister
+        kwd = {key: data[key],}
+        if objects.filter(**kwd).exists():
+            mess = "%s %s existe pas de doublons possible" % (key,data[key])
+            raise serializers.ValidationError(mess)
+        return data
+
+# Réponse différentiée selon nature de requête
 class StMouvementSerializer(ModelSerializer):
-    article = StArticleSerializer()
-    fournisseur = StFournisseurSerializer()
 
     class Meta:
         model = StMouvement
@@ -96,7 +118,6 @@ class StMouvementSerializer(ModelSerializer):
         if data['origine'] == 'achat'and (not data['fournisseur'] or len(data['fournisseur']) < 3):
             raise serializers.ValidationError("Les achats nécessitent un nom fournisseur")
         return data
-
 
 # Listes d'articles----------------------------
 class StFournisseur_articleSerializer(ModelSerializer):

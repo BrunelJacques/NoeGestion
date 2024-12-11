@@ -1,14 +1,15 @@
 import django.contrib.admin as admin
-from noegestion.models import *
-# Register your models here, ceux de l'appli qui seront gérés à la mano via admin.
+from .models import *
+# Register your models here, Ils seront gérés à la mano via admin.
 
-# Affichage de la table en liste
+# Affichage de la table en liste dans l'interface admin
 
 class StMouvementAdmin(admin.ModelAdmin):
-    model = StMouvement
-    list_display = ["jour","sens","cle_origine","article","nom_article","nbcolis","qtemouvement",
-                    "prixunit","service","nbrations","transfert",
+    list_display = ["id","jour","article","sens","cle_origine","nbcolis","qte_mouvement",
+                    "prixunit","service","nbrations","nom_article",
                     "cle_analytique","fournisseur"]
+    search_fields = ('jour',"article__nom","article__nom_court")
+    list_filter = ('origine','fournisseur','service','jour')
 
     def nom_article(self, obj):
         return obj.article.nom
@@ -16,42 +17,48 @@ class StMouvementAdmin(admin.ModelAdmin):
 
     def cle_origine(self, obj):
         return obj.origine
+    cle_origine.short_description = 'Origine'
 
     def cle_analytique(self, obj):
         return obj.analytique
-    cle_analytique.short_description = 'camp'
+    cle_analytique.short_description = 'Camp'
 
+    def qte_mouvement(self, obj):
+        return obj.qtemouvement
+    qte_mouvement.short_description = 'QteMvt'
 
 class StArticleAdmin(admin.ModelAdmin):
-    model = StArticle
-    list_display = ["nom","magasin_id","nom_rayon","nom_fournisseur","qte_stock"]
+
+    list_display = ["id","nom","nom_court","id_magasin","id_rayon","nom_fournisseur","qte_stock"]
+    search_fields = ['nom',"nom_court"]
+    list_filter = ['magasin','rayon','fournisseur']
 
     def nom_fournisseur(self, obj):
-        return obj.fournisseur.nom
+        if obj.fournisseur:
+            return obj.fournisseur.nom
     nom_fournisseur.short_description = 'Commande à'
 
-    def nom_magasin(self, obj):
-        return obj.magasin.nom
+    def id_magasin(self, obj):
+        return obj.magasin.id
+    id_magasin.short_description = "Magasin"
 
-    def nom_rayon(self, obj):
-        return obj.rayon.nom
-    nom_rayon.short_description = 'Rayon'
+    def id_rayon(self, obj):
+        return obj.rayon.id
+    id_rayon.short_description = 'Rayon'
 
 class StFournisseurAdmin(admin.ModelAdmin):
-    model = StFournisseur
-    list_display = ["nom"]
+    list_display = ["id","nom"]
+    search_fields = ['nom','id']
+
 
 class StRayonAdmin(admin.ModelAdmin):
-    model = StRayon
-    list_display = ["nom","position","id"]
+    list_display = ["id","nom","position"]
 
 class StMagasinAdmin(admin.ModelAdmin):
-    model = StMagasin
-    list_display = ["nom","position","id"]
+    list_display = ["id","nom","position"]
 
 class GeAnalytiqueAdmin(admin.ModelAdmin):
-    model = GeAnalytique
-    list_display = ["nom","abrege","axe","id"]
+    list_display = ["id","nom","abrege","axe"]
 
 
 # Connection model - liste d'affichage
