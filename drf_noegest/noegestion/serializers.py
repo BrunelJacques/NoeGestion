@@ -117,7 +117,7 @@ class StArticleSerializer(ModelSerializer):
         if data[key] == initial_value:
             # nom inchangé, aucun risque de doublon
             return data
-        # le nom à changé, le nouveau ne doit pas déjà exister
+        # le nom a changé, le nouveau ne doit pas déjà exister
         kwd = {key: data[key],}
         if objects.filter(**kwd).exists():
             mess = "%s %s existe pas de doublons possible" % (key,data[key])

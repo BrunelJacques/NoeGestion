@@ -54,6 +54,10 @@ class GeAnalytique(models.Model):
     def __str__(self):
         return f"{self.id}-{self.abrege}"
 
+    def save(self, *args,**kwargs):
+        self.saisie = timezone.now().date()  # Mettre à jour le champ saisie
+        super(StArticle,self).save(*args,**kwargs)
+
     class Meta:
         verbose_name = '(Gestion) analytique'
         ordering = ['id',]
@@ -105,6 +109,7 @@ class StArticle(models.Model):
     def save(self, *args,**kwargs):
         self.nom_court = self.nom_court.upper()
         self.nom = self.nom.upper()
+        self.saisie = timezone.now().date()  # Mettre à jour le champ saisie
         super(StArticle,self).save(*args,**kwargs)
 
     class Meta:
@@ -180,6 +185,10 @@ class StEffectif(models.Model):
         clients = self.midi_clients + self.soir_clients
         return f"{self.jour.strftime('%d/%m/%Y')}-{repas} {clients}"
 
+    def save(self, *args,**kwargs):
+        self.saisie = timezone.now().date()  # Mettre à jour le champ saisie
+        super(StEffectif,self).save(*args,**kwargs)
+
     class Meta:
         verbose_name = "(Nbre de repas) effectif"
         indexes = [models.Index(fields=["jour",]),]
@@ -207,6 +216,10 @@ class StInventaire(models.Model):
 
     def __str__(self):
         return "{:d/:m/:Y} {}".format(self.jour, self.article_nom)
+
+    def save(self, *args,**kwargs):
+        self.saisie = timezone.now().date()  # Mettre à jour le champ saisie
+        super(StInventaire,self).save(*args,**kwargs)
 
     class Meta:
         verbose_name = "(Etats de stock) inventaire"
