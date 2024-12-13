@@ -2,7 +2,7 @@ from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.response import Response
-from rest_framework import status
+#from rest_framework import status
 from .serializers import *
 
 # pour test d'accès direct à django
@@ -32,20 +32,20 @@ class GetRetrieveSerializer:
 # Views simples
 class GeAnalytiqueViewset(ModelViewSet):
     serializer_class = GeAnalytiqueSerializer
-    #permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self,  *args, **kwargs):
         axe = self.request.GET.get('axe', 'ACTIVITES')
         if self.action == 'list':
             obsolete = self.request.GET.get('obsolete', False)
             return GeAnalytique.objects.filter(axe=axe,obsolete=obsolete)
-        return GeAnalytique.objects.filter(axe=axe)
+        return GeAnalytique.objects.all()
 
 class StMagasinViewset(GetRetrieveSerializer, ModelViewSet):
 
     serializer_class = StMagasinSerializer
     retrieve_serializer_class = StMagasin_articleSerializer
-    #permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self, *args, **kwargs):
         return StMagasin.objects.all()
@@ -53,11 +53,10 @@ class StMagasinViewset(GetRetrieveSerializer, ModelViewSet):
 class StRayonViewset(GetRetrieveSerializer,ModelViewSet):
     serializer_class = StRayonSerializer
     retrieve_serializer_class = StRayon_articleSerializer
-    #permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self, *args, **kwargs):
         return StRayon.objects.all()
-
 
 class zzStFournisseurViewset(GetRetrieveSerializer,ModelViewSet):
 
@@ -71,6 +70,7 @@ class zzStFournisseurViewset(GetRetrieveSerializer,ModelViewSet):
 class StFournisseurViewset(ModelViewSet):
 
     serializer_class = StFournisseurSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self, *args, **kwargs):
         return StFournisseur.objects.all()
@@ -95,21 +95,42 @@ class StArticleViewset(ModelViewSet):
                    | StArticle.objects.filter(nom_court__istartswith=nom,                                                                                         obsolete=obsolete))
         else:
             ret = StArticle.objects.all()
-        return ret.order_by('nom')
+        return ret.order_by('id')
 
 # Retour différent selon nature requête
 class StMouvementViewset(ModelViewSet):
     serializer_class = StMouvementSerializer
-    #permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self,  *args, **kwargs):
         if self.action == 'retrieve':
+            return StMouvement.objects.all()
+        if self.action in ('update', 'partial_update'):
             return StMouvement.objects.all()
         else:
             origine = self.request.GET.get('origine', 'repas')
             jour = self.request.GET.get('jour','2022-09-17')
             return StMouvement.objects.filter(origine=origine,jour=jour)
 
+    def perform_create(self, serializer):
+        serializer.save(ordi=self.request.user.username)
+
+    def perform_update(self, serializer):
+        # alimente la trace de l'utisateur authentifié et du nom de son ordi
+        sep = " > "
+        username = self.request.user.username
+        if len(username) == 0:
+            username = "NoToken"
+        if 'ordi' in serializer.validated_data:
+            ordisent = serializer.validated_data['ordi']
+        else:
+            ordisent = "Ordi inconnu"
+        if len(username+ordisent)>29:
+            # racourcissemnent des libellés à 32 au total
+            sep = ">"
+            username = username[:min(12,len(username))]
+            ordisent = ordisent[:31-len(username)]
+        serializer.save(ordi=f"{username}{sep}{ordisent}")
 
 # Liste complete avec articles actifs ---------------------
 class StFournisseur_articleViewset(ReadOnlyModelViewSet):

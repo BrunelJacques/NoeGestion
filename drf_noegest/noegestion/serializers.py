@@ -1,9 +1,29 @@
 
 from rest_framework.serializers import ModelSerializer
-from rest_framework import serializers
+import rest_framework.serializers as serializers
 
 from noegestion.models import *
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
+NBCAR_COURT = 3
+
+def MotImbrique(instance,objects):
+    # teste les noms imbriqués pouvant porter à confusion, recherche les débuts communs
+    cible = None
+    if objects.exists():
+        for obj in objects:
+            if instance and instance.id == obj.id:
+                continue  # c'est un update, obj est celui de l'instance
+            cible = obj
+    return cible
+
+def MotTropCourt(value,nbcar=NBCAR_COURT):
+    # Teste les noms trop courts qui vont bloquer les futures saisies
+    ok = False
+    if not value or len(value) < nbcar:
+        ok = True
+    return ok
+
 
 # https://stackoverflow.com/questions/54544978/customizing-jwt-response-from-django-rest-framework-simplejwt
 # permet de récupérer l'id user et ses groupes pour le front end
@@ -29,7 +49,7 @@ class GeAnalytiqueSerializer(ModelSerializer):
     class Meta:
         model = GeAnalytique
         fields = [
-            "id", "nom", "abrege","params", "obsolete"]
+            "id", "nom", "abrege","params","axe", "obsolete"]
 
 class StMagasinSerializer(ModelSerializer):
 
@@ -50,20 +70,18 @@ class StFournisseurSerializer(ModelSerializer):
         fields = '__all__'
 
     def validate_nom(self, value):
-        # Check if this is an update action, and skip if it is
-        if self.instance:
-            if self.instance.nom == value:
-                return value
+        # Test noms imbriqués pouvant porter à confusion, recherche les débuts communs
         objects = StFournisseur.objects.filter(nom__startswith=value)
+        cible = MotImbrique(self.instance,objects)
+        if cible:
+            mess = "Le nom %s est contenu dans %s, complétez!"%(value,cible)
+            raise serializers.ValidationError(mess)
 
-        # teste les noms imbriqués pouvant porter à confusion
-        if objects.exists():
-            first = str(objects.first())
-            raise serializers.ValidationError('Le nom %s est contenu dans %s'%(value,first))
+        # Test noms trop courts qui vont bloquer les futures saisies
+        if MotTropCourt(value):
+            mess = "Longueur: %dc requis, sinon ambiguités possibles"%NBCAR_COURT
+            raise serializers.ValidationError(mess)
 
-        # Teste les noms trop courts qui vont bloquer les futures saisies
-        if not value or len(value) < 3:
-            raise serializers.ValidationError('Longueur: 3c requis, sinon ambiguités possibles')
         return value
 
 class StArticleSerializer(ModelSerializer):
@@ -75,17 +93,20 @@ class StArticleSerializer(ModelSerializer):
                   'tx_tva','dernier_achat']
 
     def validate_nom_court(self,value):
-        objects = StArticle.objects.filter(nom_court__startswith=value)
 
-        # Teste les imbrications de noms
-        if objects.exists():
-            first = str(objects.first())
-            raise serializers.ValidationError(
-                'Le nom court %s est contenu dans %s, différentiez-les mieux' % (value, first))
+        # le changement peut se heurter à un autre article.nom_court
+        objects = StArticle.objects.filter(nom_court__startswith=value)
+        cible = MotImbrique(self.instance,objects)
+        if cible:
+            mess = "L'article %s contient déjà le nom court %s, " % (cible,value)
+            mess += "différentiez-les mieux"
+            raise serializers.ValidationError(mess)
 
         # Teste les noms trop courts qui vont bloquer les futures saisies
-        if not value or len(value) < 3:
-            raise serializers.ValidationError('Longueur: 3c requis, sinon ambiguités possibles')
+        nbcar = 4
+        if MotTropCourt(value,nbcar):
+            mess = "Longueur: %dc requis pour %s, sinon ambiguités possibles"%(nbcar,value)
+            raise serializers.ValidationError(mess)
         return value
 
     def validate(self,data):
@@ -111,12 +132,23 @@ class StMouvementSerializer(ModelSerializer):
         fields = [
             "id","jour","sens","origine","article","nbcolis",
             "qtemouvement","prixunit","service","nbrations",
-            "analytique","fournisseur","ordi","saisie","transfert"
+            "analytique","fournisseur","ordi","saisie","ordi","transfert"
         ]
 
     def validate(self, data):
-        if data['origine'] == 'achat'and (not data['fournisseur'] or len(data['fournisseur']) < 3):
-            raise serializers.ValidationError("Les achats nécessitent un nom fournisseur")
+        ok = True
+        if 'origine' in data and data['origine'] == 'achat':
+            if (not 'fournisseur' in data) or  not data['fournisseur']:
+                ok = False
+        elif not 'origine' in data:
+            if self.instance.origine == 'achat':
+                if (not 'fournisseur' in data) or  not data['fournisseur']:
+                    ok = False
+
+        if not ok:
+            mess = "Les achats nécessitent un nom de fournisseur"
+            raise serializers.ValidationError(mess)
+
         return data
 
 # Listes d'articles----------------------------
