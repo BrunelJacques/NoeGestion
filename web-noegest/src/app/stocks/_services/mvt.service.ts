@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, tap, catchError, map, of } from 'rxjs';
 
-import { Mouvement } from '../_models/mouvement';
+import { DataResponse, Mouvement } from '../_models/mouvement';
 import { HandleError } from 'src/app/general/_helpers/error.interceptor';
 
 import { Constantes } from 'src/app/constantes';
@@ -70,14 +70,14 @@ export class MvtService {
     );
   }
 
-  getSorties(urlparams:string): Observable<Mouvement[]>{
+  getSorties(urlparams:string): Observable<DataResponse>{
     const url = this.cst.STMOUVEMENT_URL+urlparams;
-    return this.http.get<Mouvement[]>(url)
+    return this.http.get<DataResponse>(url)
       .pipe(
-        tap(x => x.length ?
-          this.handleError.log(`found ${x.length} mvts`) :
+        tap(x => x.count ?
+          this.handleError.log(`found ${x.count} mvts`) :
           this.handleError.log(`no mvts`)),
-        catchError(this.handleError.handleError<Mouvement[]>('getSorties',))
+        catchError(this.handleError.handleError<DataResponse>('getSorties',))
       );
   }
 

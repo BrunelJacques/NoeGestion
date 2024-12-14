@@ -108,7 +108,7 @@ class StMouvementViewset(ModelViewSet):
         if self.action in ('update', 'partial_update'):
             return StMouvement.objects.all()
         else:
-            origine = self.request.GET.get('origine', 'repas')
+            origine = self.request.GET.get('origine', 'achat')
             jour = self.request.GET.get('jour','2022-09-17')
             return StMouvement.objects.filter(origine=origine,jour=jour)
 

@@ -1,4 +1,4 @@
-from rest_framework import routers
+import rest_framework.routers as routers
 import  django.contrib.admin as admin
 from django.urls.conf import path,include
 
@@ -31,6 +31,6 @@ urlpatterns = [
     path('api-auth/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/', include(router.urls)),
     path('api-auth/', include('rest_framework.urls')),
-    path('admin/', admin.site.urls),
+    path('admin-noegest/', admin.site.urls),
     #path('',admin.site.urls)
 ]

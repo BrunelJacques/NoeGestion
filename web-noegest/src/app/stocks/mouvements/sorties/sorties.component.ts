@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subject, Subscription, takeUntil } from 'rxjs';
-import { Mouvement } from '../../_models/mouvement';
+import { DataResponse, Mouvement } from '../../_models/mouvement';
 import { MvtService } from '../../_services/mvt.service';
 import { ParamsService } from '../../_services/params.service'
 import { Params } from '../../_models/params';
@@ -65,7 +65,8 @@ export class SortiesComponent implements OnInit, OnDestroy {
   }
   mvtsFilter = (mvt: Mouvement) => {
     let ret = true
-    // filtre sur le date
+    // filtre sur la date
+    console.log('ici le filtre',mvt.jour)
     if (mvt.jour != this.datePipe.transform(this.params.jour,'yyyy-MM-dd')) {
       ret = false
     }
@@ -96,10 +97,17 @@ export class SortiesComponent implements OnInit, OnDestroy {
 
     this.sortiesSubscrib = this.mvtService.getSorties(this.urlparams)
       .subscribe( 
-        data => {
+        (data: DataResponse) => {
           if (data) {
-            const i = data.length
-            this.sorties = data.filter(this.mvtsFilter)
+            const i = data.count
+            console.log(data,i)
+            //this.sorties = data.filter(this.mvtsFilter)
+            this.sorties = data.results
+            .filter((mvt:Mouvement, index: number) => {
+              if (index > this.nblignesmax)
+              { return false }
+              {return true}
+            });
             const j = this.sorties.length
             if ((j == 0) && (i > 0)) {
               this.alertService.error(`Modifiez les filtres:  ${i} lignes présentes`)
@@ -108,7 +116,7 @@ export class SortiesComponent implements OnInit, OnDestroy {
             }
           }
         }
-      )
+      );
   }
 
   getParams(): void {

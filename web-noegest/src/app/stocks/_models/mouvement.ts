@@ -32,7 +32,7 @@ export const MVT0: Mouvement =  {
     saisie: "",
 }
 
-export interface DataMvts {
+export interface DataResponse {
     count: number;
-    results: Mouvement[]
+    results: Mouvement[];
 }
