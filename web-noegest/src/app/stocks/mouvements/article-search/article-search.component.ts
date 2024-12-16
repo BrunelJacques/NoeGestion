@@ -1,6 +1,6 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Observable, Subject, map, take } from 'rxjs';
-import { ArticleNom } from '../../_models/article';
+import { Observable, Subject, Subscription, map, take } from 'rxjs';
+import { ArticleNom, ArtsResponse } from '../../_models/article';
 import { ActivatedRoute } from '@angular/router';
 import { Article } from '../../_models/article';
 import { ArticleService } from '../../_services/article.service';
@@ -16,9 +16,8 @@ export class ArticleSearchComponent implements OnInit {
   @Input() article!: Article| undefined;
   @Output() retour:EventEmitter<Article> = new EventEmitter();
 
-  articleNom$!: Observable<ArticleNom[]>;
+  articleNom$!: Subscription;
 
-  private searchTerms = new Subject<string>();
   searchBox!: ElementRef
   items!: string[]
   articles!: ArticleNom[]
@@ -29,22 +28,23 @@ export class ArticleSearchComponent implements OnInit {
     private route: ActivatedRoute,
   ) {}
 
-  search(term:string): void {
-    this.searchTerms.next(term)
-  }
 
   ngOnInit(): void {
+    this.getArticles();
+  }
+
+  getArticles(): void {
     // appel du début du fichier des articles via resolver articles
     this.articleNom$ = this.route.data.pipe(
-      map(data => data['articlesNom'])
-    )
-    this.articleNom$.subscribe((articles) => {
-      this.items = articles.map((article) => article.nom );
-      this.articles = articles
-    });
-    let initArticle = ""
-    if (this.article) { initArticle = this.article.nom }
-    this.kwds = {items:this.items, selectedItem:initArticle, width: "300px"}
+      map(data => data['articlesNom']))
+    .subscribe(
+      (data: ArtsResponse) => {
+        if (data) {
+          const i = data.count
+          this.articles = data.results
+        }
+      }
+    );
   }
 
   onArticle(nomArticle: string): void {

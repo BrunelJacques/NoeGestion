@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subject, Subscription, takeUntil } from 'rxjs';
-import { DataResponse, Mouvement } from '../../_models/mouvement';
+import { MvtsResponse, Mouvement } from '../../_models/mouvement';
 import { MvtService } from '../../_services/mvt.service';
 import { ParamsService } from '../../_services/params.service'
 import { Params } from '../../_models/params';
@@ -66,7 +66,6 @@ export class SortiesComponent implements OnInit, OnDestroy {
   mvtsFilter = (mvt: Mouvement) => {
     let ret = true
     // filtre sur la date
-    console.log('ici le filtre',mvt.jour)
     if (mvt.jour != this.datePipe.transform(this.params.jour,'yyyy-MM-dd')) {
       ret = false
     }
@@ -96,27 +95,20 @@ export class SortiesComponent implements OnInit, OnDestroy {
     this.urlparams = `/?origine=${this.params.origine}&jour=${jour}`
 
     this.sortiesSubscrib = this.mvtService.getSorties(this.urlparams)
-      .subscribe( 
-        (data: DataResponse) => {
-          if (data) {
-            const i = data.count
-            console.log(data,i)
-            //this.sorties = data.filter(this.mvtsFilter)
-            this.sorties = data.results
-            .filter((mvt:Mouvement, index: number) => {
-              if (index > this.nblignesmax)
-              { return false }
-              {return true}
-            });
-            const j = this.sorties.length
-            if ((j == 0) && (i > 0)) {
-              this.alertService.error(`Modifiez les filtres:  ${i} lignes présentes`)
-            } else if (j == 0) {
-              this.alertService.error(`Aucune ligne connue au ${jourFr}`)
-            }
+    .subscribe(
+      (data: MvtsResponse) => {
+        if (data) {
+          const i = data.count
+          this.sorties = data.results.filter(this.mvtsFilter)
+          const j = this.sorties.length
+          if ((j == 0) && (i > 0)) {
+            this.alertService.error(`Modifiez les filtres:  ${i} lignes présentes`)
+          } else if (j == 0) {
+            this.alertService.error(`Aucune ligne connue au ${jourFr}`)
           }
         }
-      );
+      }
+    );
   }
 
   getParams(): void {

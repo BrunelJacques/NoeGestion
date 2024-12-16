@@ -126,14 +126,19 @@ class StArticleSerializer(ModelSerializer):
 
 # Réponse différentiée selon nature de requête
 class StMouvementSerializer(ModelSerializer):
+    article = StArticleSerializer()
+    #article_nom_court = serializers.SerializerMethodField()
 
     class Meta:
         model = StMouvement
         fields = [
-            "id","jour","sens","origine","article","nbcolis",
-            "qtemouvement","prixunit","service","nbrations",
+            "id","jour","sens","origine","article",
+            "nbcolis","qtemouvement","prixunit","service","nbrations",
             "analytique","fournisseur","ordi","saisie","ordi","transfert"
         ]
+
+    #def get_article_nom_court(self, obj):
+    #    return obj.article.nom_court
 
     def validate(self, data):
         ok = True

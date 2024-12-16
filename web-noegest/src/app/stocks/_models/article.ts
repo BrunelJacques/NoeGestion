@@ -22,3 +22,8 @@ export interface ArticleNom {
   id: number;
   nom: string;
 }
+
+export interface ArtsResponse {
+  count: number;
+  results: ArticleNom[];
+}
