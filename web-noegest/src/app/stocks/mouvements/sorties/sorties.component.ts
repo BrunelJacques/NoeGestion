@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subject, Subscription, takeUntil } from 'rxjs';
-import { MvtsResponse, Mouvement } from '../../_models/mouvement';
+import { MvtsRetour, Mouvement } from '../../_models/mouvement';
 import { MvtService } from '../../_services/mvt.service';
 import { ParamsService } from '../../_services/params.service'
 import { Params } from '../../_models/params';
@@ -96,7 +96,7 @@ export class SortiesComponent implements OnInit, OnDestroy {
 
     this.sortiesSubscrib = this.mvtService.getSorties(this.urlparams)
     .subscribe(
-      (data: MvtsResponse) => {
+      (data: MvtsRetour) => {
         if (data) {
           const i = data.count
           this.sorties = data.results.filter(this.mvtsFilter)

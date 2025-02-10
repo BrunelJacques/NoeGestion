@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, tap, catchError, map, of } from 'rxjs';
 
-import { MvtsResponse, Mouvement } from '../_models/mouvement';
+import { MvtsRetour, Mouvement } from '../_models/mouvement';
 import { HandleError } from 'src/app/general/_helpers/error.interceptor';
 
 import { Constantes } from 'src/app/constantes';
@@ -18,16 +18,16 @@ export class MvtService {
     private handleError: HandleError,
   ) {}
 
-  getMvt(id: string): Observable<MvtsResponse> {
+  getMvt(id: string): Observable<MvtsRetour> {
     const url = `${this.cst.STMOUVEMENT_URL}/?id=${id}`;
     console.log(url);
-    return this.http.get<MvtsResponse>(url)
+    return this.http.get<MvtsRetour>(url)
       .pipe(
         tap(x => x.count ?
           this.handleError.log(`fetched mvt id=${id}`) :
           this.handleError.log(`No mvt found for id=${id}`)
         ),
-        catchError(this.handleError.handleError<MvtsResponse>(`getMvt id=${id}`))
+        catchError(this.handleError.handleError<MvtsRetour>(`getMvt id=${id}`))
       );
   }
  
@@ -51,15 +51,15 @@ export class MvtService {
     );
   }
 
-  getSorties(urlparams:string): Observable<MvtsResponse>{
+  getSorties(urlparams:string): Observable<MvtsRetour>{
     const url = this.cst.STMOUVEMENT_URL+urlparams;
     console.log(url)
-    return this.http.get<MvtsResponse>(url)
+    return this.http.get<MvtsRetour>(url)
       .pipe(
         tap(x => x.count ?
           this.handleError.log(`found ${x.count} mvts`) :
           this.handleError.log(`no mvts`)),
-        catchError(this.handleError.handleError<MvtsResponse>('getSorties',))
+        catchError(this.handleError.handleError<MvtsRetour>('getSorties',))
       );
   }
 

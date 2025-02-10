@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subject, Subscription, takeUntil } from 'rxjs';
-import { Mouvement, MVT0, MvtsResponse } from '../../_models/mouvement';
+import { Mouvement, MVT0, MvtsRetour } from '../../_models/mouvement';
 import { DatePipe } from '@angular/common';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MvtService } from '../../_services/mvt.service';
@@ -166,7 +166,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
 this.mvtService.getMvt(id)
   .pipe(takeUntil(this.destroy$))
   .subscribe({
-    next: (mvts: MvtsResponse) => {
+    next: (mvts: MvtsRetour) => {
       const mvt = mvts.results[0] || { ...MVT0 };
       if (!this.mvt && mvt === MVT0 && this.params.jour) {
         const jj = this.datePipe.transform(this.params.jour, 'yyyy-MM-dd');

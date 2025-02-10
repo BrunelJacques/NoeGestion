@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject, catchError, of, tap } from 'rxjs';
+import { BehaviorSubject, catchError } from 'rxjs';
 import { FonctionsPerso } from '../../shared/fonctions-perso';
 import { DatePipe } from '@angular/common';
 
 import { Params,  PARAMS0, Camp, Fournisseur, Rayon, Magasin } from '../_models/params';
+import { CampsRetour } from '../_models/params';
 import { Constantes } from 'src/app/constantes';
 import { Mouvement } from '../_models/mouvement';
 import { HandleError } from 'src/app/general/_helpers/error.interceptor';
@@ -112,21 +113,18 @@ export class ParamsService {
 
   getCamps(){
     const url = this.constantes.GEANALYTIQUE_URL+"?axe=ACTIVITES&obsolete=False"
-    this.http.get<[]>(url)
+    this.http.get<CampsRetour>(url)
       .pipe(
-        catchError(this.handleError.handleError<Camp[]>('getHttp',[])),
+        catchError(this.handleError.handleError<CampsRetour>('getHttp', { count: 0, results: [] }))
       )
       .subscribe(
         (data) => {
-          console.log(data)
-          this.campsSubj$.next(data)
+          this.campsSubj$.next(data.results)
           console.log(this.campsSubj$)
         }
       );
     }
   
-
-
 
   getFournisseurs() {
     if (this.fournisseurs.length == 0) {

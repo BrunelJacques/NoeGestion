@@ -32,7 +32,7 @@ class GetRetrieveSerializer:
 # Views simples
 class GeAnalytiqueViewset(ModelViewSet):
     serializer_class = GeAnalytiqueSerializer
-    permission_classes = [IsAuthenticated]
+    #permission_classes = [IsAuthenticated]
 
     def get_queryset(self,  *args, **kwargs):
         axe = self.request.GET.get('axe', 'ACTIVITES')
