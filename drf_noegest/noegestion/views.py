@@ -38,8 +38,11 @@ class GeAnalytiqueViewset(ModelViewSet):
         axe = self.request.GET.get('axe', 'ACTIVITES')
         if self.action == 'list':
             obsolete = self.request.GET.get('obsolete', False)
-            return GeAnalytique.objects.filter(axe=axe,obsolete=obsolete)
-        return GeAnalytique.objects.all()
+            ret = GeAnalytique.objects.filter(axe=axe,obsolete=obsolete)
+        else:
+            ret = GeAnalytique.objects.all()
+        print("GeAnalytiqueViewset", type(axe), axe, len(ret), ret)
+        return ret
 
 class StMagasinViewset(GetRetrieveSerializer, ModelViewSet):
 
@@ -57,15 +60,6 @@ class StRayonViewset(GetRetrieveSerializer,ModelViewSet):
 
     def get_queryset(self, *args, **kwargs):
         return StRayon.objects.all()
-
-class zzStFournisseurViewset(GetRetrieveSerializer,ModelViewSet):
-
-    serializer_class = StFournisseurSerializer
-    retrieve_serializer_class = StFournisseur_articleSerializer
-    permission_classes = [IsAuthenticated]
-
-    def get_queryset(self, *args, **kwargs):
-        return StFournisseur.objects.all()
 
 class StFournisseurViewset(ModelViewSet):
 
@@ -95,6 +89,9 @@ class StArticleViewset(ModelViewSet):
                    | StArticle.objects.filter(nom_court__istartswith=nom,                                                                                         obsolete=obsolete))
         else:
             ret = StArticle.objects.all()
+
+        print("StArticleViewset", id, type(id),nom, len(ret), ret)
+
         return ret.order_by('id')
 
 # Retour différent selon nature requête
@@ -108,9 +105,16 @@ class StMouvementViewset(ModelViewSet):
         if self.action in ('update', 'partial_update'):
             return StMouvement.objects.all()
         else:
-            origine = self.request.GET.get('origine', 'achat')
-            jour = self.request.GET.get('jour','2022-09-17')
-            return StMouvement.objects.filter(origine=origine,jour=jour)
+            origine = self.request.GET.get('origine', '*')
+            jour = self.request.GET.get('jour','1999-12-31')
+            id = self.request.GET.get('id','0')
+            if origine != "*":
+                ret = StMouvement.objects.filter(origine=origine,jour=jour)
+            elif id != '0':
+                ret = StMouvement.objects.filter(id=id)
+            else:
+                ret = None
+            return ret
 
     def perform_create(self, serializer):
         serializer.save(ordi=self.request.user.username)
@@ -138,7 +142,6 @@ class StFournisseur_articleViewset(ReadOnlyModelViewSet):
     serializer_class = StFournisseur_articleSerializer
     def get_queryset(self, *args, **kwargs):
         return StFournisseur.objects.all()
-
 
 class StArticleNomViewset(ReadOnlyModelViewSet):
     serializer_class = StArticleNomSerializer

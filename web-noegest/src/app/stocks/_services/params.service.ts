@@ -118,11 +118,16 @@ export class ParamsService {
       )
       .subscribe(
         (data) => {
+          console.log(data)
           this.campsSubj$.next(data)
+          console.log(this.campsSubj$)
         }
       );
     }
   
+
+
+
   getFournisseurs() {
     if (this.fournisseurs.length == 0) {
       const url = this.constantes.STFOURNISSEUR_URL

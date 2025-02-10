@@ -48,6 +48,9 @@ export class AutocompleteComponent implements OnInit {
   }
 
   _filter(value: string): string[] {
+    if ((value == '') || !this.kwds.items) {
+      return this.kwds.items
+    } 
     const filterValue = value.toLowerCase();
     return this.kwds.items.filter(item => item.toLowerCase().includes(filterValue));
   }

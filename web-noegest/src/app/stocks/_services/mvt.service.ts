@@ -18,38 +18,19 @@ export class MvtService {
     private handleError: HandleError,
   ) {}
 
-   /** GET mvt by id, http renvoie un tableau avec un seul item */
-  getMvtOld(id: string): Observable<Mouvement> {
-    this.url = this.cst.STMOUVEMENT_URL+"/?id="+id;
-    return this.http.get<Mouvement[]>(this.url)
+  getMvt(id: string): Observable<MvtsResponse> {
+    const url = `${this.cst.STMOUVEMENT_URL}/?id=${id}`;
+    console.log(url);
+    return this.http.get<MvtsResponse>(url)
       .pipe(
-        tap(x => x.length ?
+        tap(x => x.count ?
           this.handleError.log(`fetched mvt id=${id}`) :
-          this.handleError.handleError<Mouvement[]>(`getMvt id=${id}`) ),
-        catchError(this.handleError.handleError<Mouvement[]>(`getMvt id=${id}`)),
-        map(mvts => mvts[0])
+          this.handleError.log(`No mvt found for id=${id}`)
+        ),
+        catchError(this.handleError.handleError<MvtsResponse>(`getMvt id=${id}`))
       );
   }
-
-  /** GET mvt by id, http returns a single item as an array */
-  getMvt(id: string): Observable<Mouvement | null> {
-    const params = new HttpParams().set('id', id); // Use HttpParams for URL parameters
-    const url = this.cst.STMOUVEMENT_URL; // Keep URL clean and readable
-    console.log(url)
-    return this.http.get<Mouvement[]>(url, { params }).pipe(
-      map((mvts) => (mvts.length > 0 ? mvts[0] : null)), // Safely map to the first item or null
-      tap((mvt) =>
-        mvt
-          ? this.handleError.log(`Fetched mvt id=${id}`)
-          : this.handleError.log(`No mvt found for id=${id}`)
-      ),
-      catchError((error) => {
-        this.handleError.handleError<Mouvement[]>(`getMvt id=${id}`)(error);
-        return of(null); // Return null or any fallback value on error
-      })
-    );
-  }
-  
+ 
   /** PUT mvt by id, http updates an existing item */
   putMvt(id: string, updatedMvt: Mouvement): Observable<Mouvement | null> {
     const params = new HttpParams().set('id', id); // Use HttpParams for URL parameters
@@ -72,6 +53,7 @@ export class MvtService {
 
   getSorties(urlparams:string): Observable<MvtsResponse>{
     const url = this.cst.STMOUVEMENT_URL+urlparams;
+    console.log(url)
     return this.http.get<MvtsResponse>(url)
       .pipe(
         tap(x => x.count ?
