@@ -5,11 +5,15 @@ import { FonctionsPerso } from '../../shared/fonctions-perso';
 import { DatePipe } from '@angular/common';
 
 import { Params,  PARAMS0, Camp, Fournisseur, Rayon, Magasin } from '../_models/params';
-import { CampsRetour } from '../_models/params';
 import { Constantes } from 'src/app/constantes';
 import { Mouvement } from '../_models/mouvement';
 import { HandleError } from 'src/app/general/_helpers/error.interceptor';
 import { FormGroup } from '@angular/forms';
+
+export interface CampsRetour {count: number; results: Camp[];}
+export interface FournisseursRetour {count: number; results: Fournisseur[];}
+export interface MagasinsRetour {count: number; results: Magasin[];}
+export interface RayonsRetour {count: number; results: Rayon[];}
 
 @Injectable({ providedIn: 'root'})
 
@@ -25,7 +29,7 @@ export class ParamsService {
 
   public mvts: Mouvement[] = [];
 
-  constructor(    
+  constructor(
     private constantes: Constantes,
     private http: HttpClient,
     private handleError: HandleError,
@@ -34,6 +38,7 @@ export class ParamsService {
     ){
       this.getStoredParams()
       this.getCamps()
+      this.initParamsOptions()
     }
 
 
@@ -42,7 +47,7 @@ export class ParamsService {
     this.getMagasins()
     this.getRayons()
   }
-  
+
   // stockage de l'info en local & affectation subject
   setParams(item: Params) {
     localStorage.setItem(this.key, JSON.stringify(item))
@@ -51,7 +56,7 @@ export class ParamsService {
 
   getStoredParams() {
     const key = localStorage.getItem(this.key)
-    if (key === null ) 
+    if (key === null )
     {return}
     else
     {  this.paramsSubj$.next(this.ajusteParams(JSON.parse(key))) }
@@ -73,7 +78,7 @@ export class ParamsService {
   }
 
   paramsToForm(params:Params,form:FormGroup){
-    if (!params.service || params.service < 0){ 
+    if (!params.service || params.service < 0){
       params.service = 0 }
     form.patchValue({
       'jour': this.datePipe.transform(params.jour, 'yyyy-MM-dd'),
@@ -124,31 +129,53 @@ export class ParamsService {
         }
       );
     }
-  
 
   getFournisseurs() {
     if (this.fournisseurs.length == 0) {
       const url = this.constantes.STFOURNISSEUR_URL
-      this.fournisseurs = this.getHttp(url)
+      this.http.get<FournisseursRetour>(url)
+      .pipe(
+        catchError(this.handleError.handleError<FournisseursRetour>('getHttp', { count: 0, results: [] }))
+      )
+      .subscribe(
+        (data) => {
+          this.fournisseurs = data.results
+          console.log("Fournisseurs: ",this.fournisseurs)
+        }
+      );
     }
-    return this.fournisseurs
   }
 
   getRayons() {
     if (this.rayons.length == 0) {
-      const url = this.constantes.STRAYON_URL
-      this.rayons = this.getHttp(url)
+      const url = this.constantes.STFOURNISSEUR_URL
+      this.http.get<RayonsRetour>(url)
+      .pipe(
+        catchError(this.handleError.handleError<RayonsRetour>('getHttp', { count: 0, results: [] }))
+      )
+      .subscribe(
+        (data) => {
+          this.rayons = data.results
+          console.log("Rayons: ",this.rayons)
+        }
+      );
     }
-    //return this.rayons
   }
 
   getMagasins() {
     if (this.magasins.length == 0) {
-      const url = this.constantes.STMAGASIN_URL
-      this.magasins = this.getHttp(url)
+      const url = this.constantes.STFOURNISSEUR_URL
+      this.http.get<MagasinsRetour>(url)
+      .pipe(
+        catchError(this.handleError.handleError<MagasinsRetour>('getHttp', { count: 0, results: [] }))
+      )
+      .subscribe(
+        (data) => {
+          this.magasins = data.results
+          console.log("Magasins: ",this.magasins)
+        }
+      );
     }
-    //return this.magasins
   }
-
 }
 

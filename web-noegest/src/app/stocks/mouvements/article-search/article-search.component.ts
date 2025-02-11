@@ -1,6 +1,6 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Observable, Subject, Subscription, map, take } from 'rxjs';
-import { ArticleNom, ArtsResponse } from '../../_models/article';
+import { Subscription, map, take } from 'rxjs';
+import { ArticleNom, ArtsResponse as ArtsRetour } from '../../_models/article';
 import { ActivatedRoute } from '@angular/router';
 import { Article } from '../../_models/article';
 import { ArticleService } from '../../_services/article.service';
@@ -19,9 +19,12 @@ export class ArticleSearchComponent implements OnInit {
   articleNom$!: Subscription;
 
   searchBox!: ElementRef
-  items!: string[]
   articles!: ArticleNom[]
-  kwds = {items:this.items, selectedItem:"", width: ""}
+  kwds = {
+    items:this.articles.map(x => x.nom), 
+    selectedItem:"", 
+    width: ""
+  }
 
   constructor(
     private articleService: ArticleService,
@@ -36,19 +39,21 @@ export class ArticleSearchComponent implements OnInit {
   getArticles(): void {
     // appel du début du fichier des articles via resolver articles
     this.articleNom$ = this.route.data.pipe(
-      map(data => data['articlesNom']))
+      map(data => data['articlesNom'])
+    )
     .subscribe(
-      (data: ArtsResponse) => {
+      (data: ArtsRetour) => {
         if (data) {
-          const i = data.count
           this.articles = data.results
+          console.log('ARticles:',this.articles)
         }
       }
     );
   }
 
   onArticle(nomArticle: string): void {
-    const ix = this.items.findIndex((item) => item === nomArticle)
+    console.log(nomArticle)
+    const ix = this.articles.findIndex((nomArticle) => nomArticle === nomArticle)
     const idArticle = this.articles[ix].id
     this.articleService.getArticle(idArticle).pipe(
       take(1)

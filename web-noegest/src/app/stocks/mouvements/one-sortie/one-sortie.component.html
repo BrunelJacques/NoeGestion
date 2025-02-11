@@ -40,7 +40,6 @@
   <div  class="col-sm-9 card mb-1 p-1">
     <form [formGroup]="fgMvt"
     class="form-group was-validated">
-
       <!-- appel du choix d'un article -->
       <app-article-search class="col-12" 
       *ngIf="mvt" [article]="mvt.article" (retour)="onArticle($event)">
@@ -60,13 +59,15 @@
             <select class="form-control my-1" 
             required
             *ngSwitchCase="'select'"
+            aria-label="{field.label}"
             type="field.type" 
             [formControlName]="field.label">
               <option *ngFor="let option of field.options" [value]="option">{{ option }}</option>
             </select>
             <input class="form-control my-1"
             *ngSwitchCase="'label'"
-            id="{{ field.label}}"
+            aria-label="{field.label}"
+            id="{field.label}"
             type="text"
             readonly
             >
@@ -77,6 +78,7 @@
             <input class="form-control my-1"
             required 
             *ngSwitchDefault 
+            aria-label="{field.label}"
             type="field.type" 
             [formControlName]="field.label" />
           </div>

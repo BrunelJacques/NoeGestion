@@ -48,7 +48,7 @@ class StMagasinViewset(GetRetrieveSerializer, ModelViewSet):
 
     serializer_class = StMagasinSerializer
     retrieve_serializer_class = StMagasin_articleSerializer
-    permission_classes = [IsAuthenticated]
+    #permission_classes = [IsAuthenticated]
 
     def get_queryset(self, *args, **kwargs):
         return StMagasin.objects.all()
@@ -56,7 +56,7 @@ class StMagasinViewset(GetRetrieveSerializer, ModelViewSet):
 class StRayonViewset(GetRetrieveSerializer,ModelViewSet):
     serializer_class = StRayonSerializer
     retrieve_serializer_class = StRayon_articleSerializer
-    permission_classes = [IsAuthenticated]
+    #permission_classes = [IsAuthenticated]
 
     def get_queryset(self, *args, **kwargs):
         return StRayon.objects.all()
@@ -64,7 +64,7 @@ class StRayonViewset(GetRetrieveSerializer,ModelViewSet):
 class StFournisseurViewset(ModelViewSet):
 
     serializer_class = StFournisseurSerializer
-    permission_classes = [IsAuthenticated]
+    #permission_classes = [IsAuthenticated]
 
     def get_queryset(self, *args, **kwargs):
         return StFournisseur.objects.all()

@@ -52,8 +52,3 @@ export interface FormField {
   visible?: boolean;
   options?: string[]; // For select fields
 }
-
-export interface CampsRetour {
-    count: number;
-    results: Camp[];
-}
