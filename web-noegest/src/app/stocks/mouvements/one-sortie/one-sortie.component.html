@@ -1,3 +1,4 @@
+
 <div class="row m-0 p-0">
   <!-- 1ere colonne reprenant les paramètres d'affichage-->
   <mat-card [formGroup]="fgPar" class="main-form col-sm-3 my-0 p-0 fond-saumon">
@@ -45,7 +46,7 @@
       *ngIf="mvt" [article]="mvt.article" (retour)="onArticle($event)">
       </app-article-search>      
       <app-article-search class="col-12" 
-      *ngIf="!mvt" [article]="" (retour)="onArticle($event)">
+      *ngIf="!mvt"  (retour)="onArticle($event)">
       </app-article-search>      
 
       <!-- gestion du mouvement -->

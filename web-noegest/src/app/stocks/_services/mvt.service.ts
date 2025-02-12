@@ -20,7 +20,7 @@ export class MvtService {
 
   getMvt(id: string): Observable<MvtsRetour> {
     const url = `${this.cst.STMOUVEMENT_URL}/?id=${id}`;
-    console.log(url);
+    
     return this.http.get<MvtsRetour>(url)
       .pipe(
         tap(x => x.count ?

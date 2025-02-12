@@ -1,9 +1,10 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Subscription, map, take } from 'rxjs';
-import { ArticleNom, ArtsResponse as ArtsRetour } from '../../_models/article';
+import { ArticleNom, ArtNomsRetour as ArtsRetour } from '../../_models/article';
 import { ActivatedRoute } from '@angular/router';
 import { Article } from '../../_models/article';
 import { ArticleService } from '../../_services/article.service';
+import { Kwds as Autocomplete } from '../../_models/params';
 
 @Component({
   selector: 'app-article-search',
@@ -13,18 +14,14 @@ import { ArticleService } from '../../_services/article.service';
 
 export class ArticleSearchComponent implements OnInit {
 
-  @Input() article!: Article| undefined;
+  @Input() article!: Article;
   @Output() retour:EventEmitter<Article> = new EventEmitter();
 
   articleNom$!: Subscription;
 
   searchBox!: ElementRef
   articles!: ArticleNom[]
-  kwds = {
-    items:this.articles.map(x => x.nom), 
-    selectedItem:"", 
-    width: ""
-  }
+  kwds: Autocomplete = { items: [], selectedItem: '', width: '' };
 
   constructor(
     private articleService: ArticleService,
@@ -34,9 +31,11 @@ export class ArticleSearchComponent implements OnInit {
 
   ngOnInit(): void {
     this.getArticles();
+    this.kwds.items = this.articles.map(x => x.nom)
+    if (this.article) { this.kwds.selectedItem = this.article.nom }
   }
 
-  getArticles(): void {
+  getArticles():void {
     // appel du début du fichier des articles via resolver articles
     this.articleNom$ = this.route.data.pipe(
       map(data => data['articlesNom'])
@@ -45,7 +44,6 @@ export class ArticleSearchComponent implements OnInit {
       (data: ArtsRetour) => {
         if (data) {
           this.articles = data.results
-          console.log('ARticles:',this.articles)
         }
       }
     );

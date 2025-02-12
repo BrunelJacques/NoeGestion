@@ -10,6 +10,7 @@ export const ArticlesResolver: ResolveFn<Article[]> = (
   articleService: ArticleService = inject(ArticleService) 
 ): Observable<Article[]> => articleService.getArticles()
 
+
 export const ArticlesNomResolver: ResolveFn<ArticleNom[]> = (
   _route: ActivatedRouteSnapshot,
   _state: RouterStateSnapshot,

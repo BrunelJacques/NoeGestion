@@ -52,3 +52,9 @@ export interface FormField {
   visible?: boolean;
   options?: string[]; // For select fields
 }
+
+export interface Kwds {    
+  items: string[], 
+  selectedItem: string, 
+  width: string
+}

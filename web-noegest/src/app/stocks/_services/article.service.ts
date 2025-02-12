@@ -4,7 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
-import { Article, ArticleNom } from '../_models/article';
+import { Article, ArticleNom ,ArtNomsRetour} from '../_models/article';
 import { HandleError } from 'src/app/general/_helpers/error.interceptor';
 import { Constantes } from 'src/app/constantes';
 
@@ -22,20 +22,6 @@ export class ArticleService {
     private http: HttpClient,
     private handleError: HandleError,
   ){}
-
-  /** GET article by id. Return `undefined` when id not found */
-  getArticleNo404(id: number): Observable<Article> {
-    const url = `${this.articlesUrl}/?id=${id}`;
-    return this.http.get<Article[]>(url)
-      .pipe(
-        map(articles => articles[0]), // returns a {0|1} element array
-        tap(h => {
-          const outcome = h ? 'fetched' : 'did not find';
-          this.handleError.log(`${outcome} article id=${id}`);
-        }),
-        catchError(this.handleError.handleError<Article>(`getArticle id=${id}`))
-      );
-  }
 
   /** GET article by id. Will 404 if id not found */
   getArticle(id: number): Observable<Article> {
@@ -67,7 +53,7 @@ export class ArticleService {
     return this.http.get<Article[]>(this.articlesUrl)
     .pipe(
       tap(x => x ?
-          this.handleError.log(`fetched ${x.length} items`):
+          this.handleError.log(`fetched getArticles ${x.length} items`):
           this.handleError.log(`no items fetched`)),
       catchError(this.handleError.handleError<Article[]>('getArticles', []))
       );
@@ -75,13 +61,14 @@ export class ArticleService {
 
   /** GET all articles' names from the server */
   getArticlesNom(): Observable<ArticleNom[]> {
-    return this.http.get<ArticleNom[]>(this.articlesNomUrl)
+    return this.http.get<ArtNomsRetour>(this.articlesNomUrl)
     .pipe(
-      tap(x => x ?
-          this.handleError.log(`fetched ${x.length} items`):
+      tap(x => x.results ?
+          this.handleError.log(`fetched getArticlesNom ${x.count} items`):
           this.handleError.log(`no items fetched`)),
-      catchError(this.handleError.handleError<ArticleNom[]>('getArticlesNom', []))
-      );
+      catchError(this.handleError.handleError<ArtNomsRetour>('getArticlesNom', { count: 0, results: [] })),
+      map(x=>x.results)
+    );
   }
 
 
