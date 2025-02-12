@@ -21,7 +21,7 @@ export class ParamsComponent implements OnInit, OnDestroy {
   params!: Params;
   camps!: Camp[];
   paramsForm!:FormGroup;
-  
+
   private destroy$!: Subject<boolean>;
 
   lstservice = Constantes.LSTSERVICE;
@@ -35,7 +35,7 @@ export class ParamsComponent implements OnInit, OnDestroy {
   loading = true;
   submitted = false;
 
-  
+
   constructor(
     private paramsService: ParamsService,
     private formBuilder: FormBuilder,
@@ -52,9 +52,9 @@ export class ParamsComponent implements OnInit, OnDestroy {
       .subscribe(() => this.onSubmit());
     this.seeyouService.clicksQuit$
       .pipe( takeUntil(this.destroy$) )
-      .subscribe(() => { this.onQuit() });    
+      .subscribe(() => { this.onQuit() });
   }
-  
+
   ngOnInit(): void {
     this.parentName = this.seeyouService.getParentName()
     this.initForm()
@@ -92,11 +92,11 @@ export class ParamsComponent implements OnInit, OnDestroy {
     if (origine.endsWith("camp"))
     { (this.paramsForm).get("camp")?.enable()
       this.getCamps()
-    } 
+    }
     else {this.paramsForm.get("camp")?.disable()}
 
     if (origine.endsWith("repas"))
-    { this.paramsForm.get("service")?.enable()} 
+    { this.paramsForm.get("service")?.enable()}
     else {
       this.paramsForm.patchValue({"service":""})
       this.paramsForm.get("service")?.disable()
@@ -107,9 +107,9 @@ export class ParamsComponent implements OnInit, OnDestroy {
     this.submitted = true;
     // reset alerts on submit
     this.alertService.clear();
-    // stop here if form is invalid    
-    if (this.paramsForm.invalid) { 
-      return; 
+    // stop here if form is invalid
+    if (this.paramsForm.invalid) {
+      return;
     }
     this.loading = true,
     this.paramsService.formToParams(this.paramsForm,this.params),
@@ -117,22 +117,22 @@ export class ParamsComponent implements OnInit, OnDestroy {
     this.paramsService.setParams(this.params)
     this.onQuit()
   }
-  
+
   getCamps(): void {
     this.paramsService.campsSubj$
       .subscribe({
         next: (data:Camp[]) => {
           this.camps = data;
-        },        
+        },
         error: (e) => {
           if (e != 'Camps Not Found') {
             console.error(e)
           }
         }
       });
-      
+
     }
-  
+
   getParams(): void {
     this.loading = true;
     this.paramsService.paramsSubj$
@@ -143,7 +143,7 @@ export class ParamsComponent implements OnInit, OnDestroy {
           this.lstorigine = this.lstorigine_sorties
           this.loading = false
           this.majOrigine(this.params.origine)
-        },        
+        },
         error: (e) => {
           if (e != 'Not Found') {
             console.error(e)
