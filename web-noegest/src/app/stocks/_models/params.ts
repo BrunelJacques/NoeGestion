@@ -53,7 +53,7 @@ export interface FormField {
   options?: string[]; // For select fields
 }
 
-export interface Kwds {    
+export interface Autocomplete {    
   items: string[], 
   selectedItem: string, 
   width: string

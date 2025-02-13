@@ -9,7 +9,7 @@ import { AlertService, SeeyouService } from 'src/app/general/_services';
 import { Constantes } from 'src/app/constantes';
 import { ActivatedRoute } from '@angular/router';
 import { FonctionsPerso } from 'src/app/shared/fonctions-perso';
-import { Article } from '../../_models/article';
+import { Article, ArticleNom } from '../../_models/article';
 import { ParamsService } from '../../_services/params.service';
 
 @Component({
@@ -33,6 +33,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
   lstService = Constantes.LSTSERVICE;
   lstService_libelle = this.lstService.map((x) => x.libelle)
   submitted = false;
+  articlesNom!: ArticleNom[]
 
   fieldsMvt: FormField[] = [
     { label: 'Jour', type: 'text'},
@@ -188,6 +189,14 @@ export class OneSortieComponent implements OnInit, OnDestroy {
         }) // fin subscribe
       ; // fin getMvt
     }
+
+    // articlesNom
+    this.route.data
+      .subscribe(x => {
+        this.articlesNom = x['articlesNom']
+      })
+    console.log('one-sortie.articlesNom:',this.articlesNom)
+
   } // fin de initSubscriptions
 
   ngOnDestroy(): void {

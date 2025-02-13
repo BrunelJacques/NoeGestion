@@ -1,4 +1,4 @@
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable} from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Observable, of } from 'rxjs';
@@ -76,18 +76,6 @@ export class ArticleService {
           this.handleError.log(`get ArticlesNom no items fetched`)),
       catchError(this.handleError.handleError<ArtNomsRetour>('getArticlesNom', { count: 0, results: [] })),
       map(x=>x.results),
-    );
-  }
-
-  
-  newGetArticlesNom(): Observable<ArtNomsRetour> {
-    return this.http.get<ArtNomsRetour>(this.articlesNomUrl)
-    .pipe(
-      tap(x => x.results ?
-          this.handleError.log(`fetched newGetArticlesNom ${x.count} items`):
-          this.handleError.log(`newGetArticlesNomno items fetched`)),
-      catchError(this.handleError.handleError<ArtNomsRetour>('getArticlesNom', { count: 0, results: [] })),
-
     );
   }
 
