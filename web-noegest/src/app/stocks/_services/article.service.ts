@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Observable, of } from 'rxjs';
@@ -7,6 +7,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { Article, ArticleNom ,ArtNomsRetour} from '../_models/article';
 import { HandleError } from 'src/app/general/_helpers/error.interceptor';
 import { Constantes } from 'src/app/constantes';
+import { ActivatedRoute } from '@angular/router';
 
 @Injectable({providedIn: 'root'})
 export class ArticleService {
@@ -16,12 +17,18 @@ export class ArticleService {
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };
-  
+  articlesNom$!: Observable<ArticleNom[]>;
+    
   constructor(
     private cst: Constantes,
     private http: HttpClient,
     private handleError: HandleError,
-  ){}
+    private activatedRoute: ActivatedRoute,
+  ){
+    this.articlesNom$ = this.activatedRoute.data
+    .pipe(map(data => data['']))
+    console.log('article.service articleNom$', this.articlesNom$)
+  }
 
   /** GET article by id. Will 404 if id not found */
   getArticle(id: number): Observable<Article> {
@@ -59,15 +66,28 @@ export class ArticleService {
       );
   }
 
-  /** GET all articles' names from the server */
+
+  // appelé par le resolver de route
   getArticlesNom(): Observable<ArticleNom[]> {
     return this.http.get<ArtNomsRetour>(this.articlesNomUrl)
     .pipe(
       tap(x => x.results ?
           this.handleError.log(`fetched getArticlesNom ${x.count} items`):
-          this.handleError.log(`no items fetched`)),
+          this.handleError.log(`get ArticlesNom no items fetched`)),
       catchError(this.handleError.handleError<ArtNomsRetour>('getArticlesNom', { count: 0, results: [] })),
-      map(x=>x.results)
+      map(x=>x.results),
+    );
+  }
+
+  
+  newGetArticlesNom(): Observable<ArtNomsRetour> {
+    return this.http.get<ArtNomsRetour>(this.articlesNomUrl)
+    .pipe(
+      tap(x => x.results ?
+          this.handleError.log(`fetched newGetArticlesNom ${x.count} items`):
+          this.handleError.log(`newGetArticlesNomno items fetched`)),
+      catchError(this.handleError.handleError<ArtNomsRetour>('getArticlesNom', { count: 0, results: [] })),
+
     );
   }
 

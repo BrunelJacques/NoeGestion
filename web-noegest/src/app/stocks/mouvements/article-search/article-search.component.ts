@@ -17,7 +17,7 @@ export class ArticleSearchComponent implements OnInit {
   @Input() article!: Article;
   @Output() retour:EventEmitter<Article> = new EventEmitter();
 
-  articleNom$!: Subscription;
+  articlesNom$!: Subscription;
 
   searchBox!: ElementRef
   articles!: ArticleNom[]
@@ -30,14 +30,14 @@ export class ArticleSearchComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.getArticles();
-    this.kwds.items = this.articles.map(x => x.nom)
+    this.getArticlesNom();
+    if (this.articles){ this.kwds.items = this.articles.map(x => x.nom)}
     if (this.article) { this.kwds.selectedItem = this.article.nom }
   }
 
-  getArticles():void {
-    // appel du début du fichier des articles via resolver articles
-    this.articleNom$ = this.route.data.pipe(
+  getArticlesNom():void {
+    // appel du fichier des articles via resolver articles
+    this.articlesNom$ = this.route.data.pipe(
       map(data => data['articlesNom'])
     )
     .subscribe(
