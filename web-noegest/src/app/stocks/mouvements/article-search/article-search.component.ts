@@ -61,9 +61,9 @@ export class ArticleSearchComponent implements OnInit {
 
         //this.filteredItems = new Observable(observer => observer.next(this._filter(term)));
       });
-        }
-      )
-  }
+    }
+      
+  
 
 }
 
