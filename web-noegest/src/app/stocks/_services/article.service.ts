@@ -4,7 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
-import { Article, ArticleNom ,ArtNomsRetour} from '../_models/article';
+import { Article, ArticleNom ,ArtsNomRetour} from '../_models/article';
 import { HandleError } from 'src/app/general/_helpers/error.interceptor';
 import { Constantes } from 'src/app/constantes';
 import { ActivatedRoute } from '@angular/router';
@@ -66,19 +66,41 @@ export class ArticleService {
       );
   }
 
-
-  // appelé par le resolver de route
+  // appelé par resolver route, avant ouverture de  one-sortie, mis dans datax['articlesNom']
   getArticlesNom(): Observable<ArticleNom[]> {
-    return this.http.get<ArtNomsRetour>(this.articlesNomUrl)
+    console.log(this.articlesNomUrl)
+    return this.http.get<ArtsNomRetour>(this.articlesNomUrl)
     .pipe(
       tap(x => x.results ?
           this.handleError.log(`fetched getArticlesNom ${x.count} items`):
           this.handleError.log(`get ArticlesNom no items fetched`)),
-      catchError(this.handleError.handleError<ArtNomsRetour>('getArticlesNom', { count: 0, results: [] })),
+      catchError(this.handleError.handleError<ArtsNomRetour>('getArticlesNom', { count: 0, results: [] })),
       map(x=>x.results),
     );
   }
 
+  /* GET articles whose nom contains search term */
+  zzzzsearchArticlesNom(term: string) : Observable<ArticleNom[]> {
+    const url = this.articlesNomUrl + '?nom=' + term;
+    if (!term.trim()) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const url = this.articlesNomUrl;
+    }
+    return this.http.get<ArtsNomRetour>(url)
+    .pipe(
+      tap(x => x.results ?
+        this.handleError.log(`fetched getArticlesNom ${x.count} items`) :
+        this.handleError.log(`get ArticlesNom no items fetched`)),
+      catchError(this.handleError.handleError<ArtsNomRetour>('getArticlesNom', { count: 0, results: [] })),
+      //map(x => x.results.map(article => article.nom))
+      map(x => x.results)
+    );
+  }
+  searchArticlesNom(term: string) {
+    const url = this.articlesNomUrl + '?nom=' + term;
+    return this.http.get<ArtsNomRetour>(url)
+      .subscribe(ret => ret.results.map(art => art.nom));
+  }
 
   //////// Save methods //////////
 

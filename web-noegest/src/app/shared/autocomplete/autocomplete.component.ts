@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Observable, map, startWith } from 'rxjs';
+import { Observable, startWith } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, MatAutocompleteDefaultOptions, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
@@ -25,26 +25,32 @@ export class AutocompleteComponent implements OnInit {
                   width?: string
   } = {
         items:["un","deux","trois"],
+        selectedItem:"qsd",
         width:"254px"
   };
   @Output() retour: EventEmitter<string>  = new EventEmitter()
 
   myControl = new FormControl();
-  filteredItems: Observable<string[]>;
+  filteredItems$ :Observable<string[]> = new Observable(observer => observer.next(this.kwds.items))  ;
   font: unknown;
-
-  constructor( ) {
-    this.filteredItems = this.myControl.valueChanges
-    .pipe(
-      startWith(''),
-      map(value => this._filter(value))
-    );
-  }
 
   ngOnInit(): void {
     if (this.kwds.selectedItem) { 
       this.myControl.setValue(this.kwds.selectedItem); 
     }
+    this.myControl.valueChanges
+      .pipe(
+        startWith(''),
+      )
+      .subscribe(value => {
+        const filtered = this._filter(value);
+        if (filtered.length === 0 && value.trim()) {
+          console.log('autocomplete item not found: ',value)
+          this.retour.emit(value.trim());
+        } else {
+          this.filteredItems$ = new Observable(observer => observer.next(filtered));
+        }
+      });   
   }
 
   _filter(value: string): string[] {

@@ -43,10 +43,10 @@
     class="form-group was-validated">
       <!-- appel du choix d'un article -->
       <app-article-search class="col-12" 
-      *ngIf="mvt" 
-      [article]="mvt.article"
-      [articlesNom]="articlesNom" 
-      (retour)="onArticle($event)">
+        *ngIf="mvt" 
+        [article]="mvt.article"
+        [articlesNom]="articlesNom" 
+        (retour)="onArticle($event)">
       </app-article-search>      
       <app-article-search class="col-12" 
       *ngIf="!mvt"  (retour)="onArticle($event)">

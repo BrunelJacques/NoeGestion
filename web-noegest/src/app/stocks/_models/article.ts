@@ -23,7 +23,7 @@ export interface ArticleNom {
   nom: string;
 }
 
-export interface ArtNomsRetour {
+export interface ArtsNomRetour {
   count: number;
   results: ArticleNom[];
 }
