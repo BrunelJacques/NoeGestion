@@ -10,7 +10,7 @@ import { EffectifsComponent } from './effectifs/effectifs.component';
 import { InventaireComponent } from './inventaire/inventaire.component';
 import { PrixJourneeComponent } from './prix-journee/prix-journee.component';
 import { ParamsComponent } from './params/params.component';
-import { ArticlesNomResolver } from './_resolvers/articles.resolvers';
+import { CampsResolver } from './_resolvers/camps.resolvers';
 
 const routes: Routes = [
     {
@@ -23,7 +23,7 @@ const routes: Routes = [
             { path: 'prixjournees', component: PrixJourneeComponent, canActivate: [AuthGuard] },
             { path: 'params', component: ParamsComponent },
             { path: 'oneentree/:id', component: OneEntreeComponent, canActivate: [AuthGuard] },
-            { path: 'onesortie/:id', component: OneSortieComponent, resolve: { articlesNom: ArticlesNomResolver}, },
+            { path: 'onesortie/:id', component: OneSortieComponent, resolve: { camps: CampsResolver}, }
         ]
     }
 ];

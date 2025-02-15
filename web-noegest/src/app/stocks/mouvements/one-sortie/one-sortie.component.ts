@@ -9,7 +9,7 @@ import { AlertService, SeeyouService } from 'src/app/general/_services';
 import { Constantes } from 'src/app/constantes';
 import { ActivatedRoute } from '@angular/router';
 import { FonctionsPerso } from 'src/app/shared/fonctions-perso';
-import { Article, ArticleNom } from '../../_models/article';
+import { Article } from '../../_models/article';
 import { ParamsService } from '../../_services/params.service';
 
 @Component({
@@ -27,13 +27,13 @@ export class OneSortieComponent implements OnInit, OnDestroy {
   id!: string;
   mvt!: Mouvement;
   camps!: Camp[];
+  camps2!: Camp[];
   fgMvt!: FormGroup;
   fgPar!: FormGroup;
 
   lstService = Constantes.LSTSERVICE;
   lstService_libelle = this.lstService.map((x) => x.libelle)
   submitted = false;
-  articlesNom!: ArticleNom[]
 
   fieldsMvt: FormField[] = [
     { label: 'Jour', type: 'text'},
@@ -130,20 +130,6 @@ export class OneSortieComponent implements OnInit, OnDestroy {
       this.onQuit();
     });
 
-    // getCamps
-    this.paramsService.campsSubj$
-      .pipe( takeUntil(this.destroy$) )
-      .subscribe({
-          next: (data:Camp[]) => {
-            this.camps = data;
-          },        
-          error: (e) => {
-            if (e != 'Camps Not Found') {
-              console.error(e)
-            }
-          }
-        });
-          
     // getParams
     this.paramsSubscrib = this.paramsService.paramsSubj$
       .pipe(takeUntil(this.destroy$))
@@ -190,14 +176,31 @@ export class OneSortieComponent implements OnInit, OnDestroy {
       ; // fin getMvt
     }
 
-    // articlesNom
+    // route data est alimenté par le resolver url avant ouverure
     this.route.data
       .subscribe(x => {
-        this.articlesNom = x['articlesNom']
+        this.camps = x['camps']
       })
-    console.log('one-sortie.articlesNom:',this.articlesNom)
-
+    console.log('one-sortie.camps:',this.camps)
+          
   } // fin de initSubscriptions
+
+  // équivalent route this.camps mais après ouverture 
+  demo_getCamps() {
+    this.paramsService.campsSubj$
+    .pipe( takeUntil(this.destroy$) )
+    .subscribe({
+      next: (data:Camp[]) => {
+        this.camps2 = data;
+      },        
+      error: (e) => {
+        if (e != 'Camps Not Found') {
+          console.error(e)
+        }
+      }
+    });
+
+  }
 
   ngOnDestroy(): void {
     this.destroy$.next(true)

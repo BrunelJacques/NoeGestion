@@ -1,3 +1,4 @@
+import { Observable } from "rxjs";
 
 export const  PARAMS0: Params= {
   id: 0,
@@ -54,7 +55,7 @@ export interface FormField {
 }
 
 export interface Autocomplete {    
-  items: string[], 
+  items$: Observable<string[]>, 
   selectedItem: string, 
   width: string
 }

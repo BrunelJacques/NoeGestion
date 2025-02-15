@@ -80,7 +80,7 @@ export class ArticleService {
   }
 
   /* GET articles whose nom contains search term */
-  zzzzsearchArticlesNom(term: string) : Observable<ArticleNom[]> {
+  searchArticlesNom(term: string) : Observable<ArticleNom[]> {
     const url = this.articlesNomUrl + '?nom=' + term;
     if (!term.trim()) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -96,7 +96,9 @@ export class ArticleService {
       map(x => x.results)
     );
   }
-  searchArticlesNom(term: string) {
+
+  // proposition Copilot
+  zzzsearchArticlesNom(term: string) {
     const url = this.articlesNomUrl + '?nom=' + term;
     return this.http.get<ArtsNomRetour>(url)
       .subscribe(ret => ret.results.map(art => art.nom));

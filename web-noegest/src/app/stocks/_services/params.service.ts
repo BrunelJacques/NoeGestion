@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, catchError } from 'rxjs';
+import { BehaviorSubject, catchError, map, tap } from 'rxjs';
 import { FonctionsPerso } from '../../shared/fonctions-perso';
 import { DatePipe } from '@angular/common';
 
@@ -37,7 +37,7 @@ export class ParamsService {
     private fp: FonctionsPerso,
     ){
       this.getStoredParams()
-      this.getCamps()
+      this.getCampsSubj()
       this.initParamsOptions()
     }
 
@@ -116,7 +116,7 @@ export class ParamsService {
     return []
   }
 
-  getCamps(){
+  getCampsSubj(){
     const url = this.constantes.GEANALYTIQUE_URL+"?axe=ACTIVITES&obsolete=False"
     this.http.get<CampsRetour>(url)
       .pipe(
@@ -130,7 +130,22 @@ export class ParamsService {
       );
     }
 
-  getFournisseurs() {
+  // appelé par resolver route, avant ouverture de one-sortie, mis dans datax['camps']
+  getCamps(){
+    const url = this.constantes.GEANALYTIQUE_URL+"?axe=ACTIVITES&obsolete=False"
+    return this.http.get<CampsRetour>(url)
+      .pipe(
+        tap(x => x.results ?
+            this.handleError.log(`fetched getArticlesNom ${x.count} items`):
+            this.handleError.log(`get ArticlesNom no items fetched`)),
+        catchError(this.handleError.handleError<CampsRetour>(
+          'getCamps',{ count: 0, results: [] }
+        )),
+        map(x=>x.results),
+      )
+    }
+
+      getFournisseurs() {
     if (this.fournisseurs.length == 0) {
       const url = this.constantes.STFOURNISSEUR_URL
       this.http.get<FournisseursRetour>(url)

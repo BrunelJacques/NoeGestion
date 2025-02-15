@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Observable, startWith } from 'rxjs';
+import { map, Observable, of, startWith } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, MatAutocompleteDefaultOptions, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { Autocomplete } from 'src/app/stocks/_models/params';
 
 @Component({
   selector: 'app-autocomplete',
@@ -19,49 +20,42 @@ import { MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, MatAutocompleteDefaultOptions, MatAut
 })
 
 export class AutocompleteComponent implements OnInit {
-  @Input() kwds: {
-                  items: string[]; 
-                  selectedItem?: string;
-                  width?: string
-  } = {
-        items:["un","deux","trois"],
-        selectedItem:"qsd",
+  @Input() autocomplete: Autocomplete = {
+        items$:of(["un","deux","trois"]),
+        selectedItem:"deux",
         width:"254px"
   };
   @Output() retour: EventEmitter<string>  = new EventEmitter()
 
   myControl = new FormControl();
-  filteredItems$ :Observable<string[]> = new Observable(observer => observer.next(this.kwds.items))  ;
+  filteredItems$ :Observable<string[]> = this.autocomplete.items$;
   font: unknown;
-
   ngOnInit(): void {
-    if (this.kwds.selectedItem) { 
-      this.myControl.setValue(this.kwds.selectedItem); 
+    if (this.autocomplete.selectedItem) {
+      this.myControl.setValue(this.autocomplete.selectedItem);
     }
-    this.myControl.valueChanges
-      .pipe(
-        startWith(''),
-      )
-      .subscribe(value => {
-        const filtered = this._filter(value);
-        if (filtered.length === 0 && value.trim()) {
-          console.log('autocomplete item not found: ',value)
-          this.retour.emit(value.trim());
-        } else {
-          this.filteredItems$ = new Observable(observer => observer.next(filtered));
-        }
-      });   
+
+    this.filteredItems$ = this.myControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value))
+    );
   }
 
-  _filter(value: string): string[] {
-    if ((value == '') || !this.kwds.items) {
-      return this.kwds.items
-    } 
+  private _filter(value: string): string[] {
+    if (!value || !this.autocomplete.items$) {
+      return [];
+    }
     const filterValue = value.toLowerCase();
-    return this.kwds.items.filter(item => item.toLowerCase().includes(filterValue));
+    let filteredItems: string[] = [];
+
+    this.autocomplete.items$.subscribe(items => {
+      filteredItems = items.filter(item => item.toLowerCase().includes(filterValue));
+    });
+
+    return filteredItems;
   }
 
   onSelection(event: MatAutocompleteSelectedEvent): void {
-    this.retour.emit(event.option.value)
+    this.retour.emit(event.option.value);
   }
 }
