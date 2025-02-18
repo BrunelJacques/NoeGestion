@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { map, Observable, of, startWith } from 'rxjs';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { map, Observable, of, startWith, Subject, Subscription, switchMap, takeUntil } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, MatAutocompleteDefaultOptions, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { Autocomplete } from 'src/app/stocks/_models/params';
@@ -11,17 +11,17 @@ import { Autocomplete } from 'src/app/stocks/_models/params';
   providers: [
     {
       provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS,
-      useValue: { 
+      useValue: {
         autoActiveFirstOption: true,
-        // false pour 'startsWith', true pour 'contains' 
+        // false pour 'startsWith', true pour 'contains'
         disableRipple: false, } as MatAutocompleteDefaultOptions
     }
   ]
 })
 
-export class AutocompleteComponent implements OnInit {
+export class AutocompleteComponent implements OnInit, OnDestroy {
   @Input() autocomplete: Autocomplete = {
-        items:(["un","deux","trois"]),
+        items$:of(["default","value","of autocomplete.items$"]),
         selectedItem:"deux",
         width:"254px"
   };
@@ -30,29 +30,43 @@ export class AutocompleteComponent implements OnInit {
   myControl = new FormControl();
   filteredItems$ :Observable<string[]> = this.autocomplete.items$;
   font: unknown;
+  private destroy$ = new Subject<void>();
+  
+
   ngOnInit(): void {
-    if (this.autocomplete.selectedItem) {
-      this.myControl.setValue(this.autocomplete.selectedItem);
+    if (this.autocomplete.selectedItem ) {
+      this.myControl.setValue(this.autocomplete.selectedItem)
     }
 
+    // Set up the filteredItems$ Observable to filter items based on input value
     this.filteredItems$ = this.myControl.valueChanges.pipe(
       startWith(''),
-      map(value => this._filter(value))
+      switchMap(value => this._filter(value))
     );
+
+    this.autocomplete.items$
+      .pipe( takeUntil(this.destroy$))
+      .subscribe(items => {
+        console.log('autocomplete.ts init: ', items);
+      })
   }
 
-  private _filter(value: string): string[] {
-    if (!value || !this.autocomplete.items) {
-      return [];
+  ngOnDestroy(): void {
+    // Emit a value to signal unsubscription
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  private _filter(value: string): Observable<string[]> {
+    if (!value || !this.autocomplete.items$) {
+      return this.autocomplete.items$;
     }
     const filterValue = value.toLowerCase();
-    let filteredItems: string[] = [];
 
-    this.autocomplete.items.subscribe(items => {
-      filteredItems = items.filter(item => item.toLowerCase().includes(filterValue));
-    });
-
-    return filteredItems;
+    // Return a new Observable that emits the filtered items
+    return this.autocomplete.items$.pipe(
+      map(items => items.filter(item => item.toLowerCase().includes(filterValue)))
+    );
   }
 
   onSelection(event: MatAutocompleteSelectedEvent): void {

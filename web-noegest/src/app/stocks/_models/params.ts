@@ -54,8 +54,8 @@ export interface FormField {
   options?: string[]; // For select fields
 }
 
-export interface Autocomplete {    
-  items: string[], 
-  selectedItem: string, 
+export interface Autocomplete {
+  items$: Observable<string[]>,
+  selectedItem: string,
   width: string
 }
