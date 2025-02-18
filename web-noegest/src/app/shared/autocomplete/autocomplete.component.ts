@@ -21,7 +21,7 @@ import { Autocomplete } from 'src/app/stocks/_models/params';
 
 export class AutocompleteComponent implements OnInit {
   @Input() autocomplete: Autocomplete = {
-        items$:of(["un","deux","trois"]),
+        items:(["un","deux","trois"]),
         selectedItem:"deux",
         width:"254px"
   };
@@ -42,13 +42,13 @@ export class AutocompleteComponent implements OnInit {
   }
 
   private _filter(value: string): string[] {
-    if (!value || !this.autocomplete.items$) {
+    if (!value || !this.autocomplete.items) {
       return [];
     }
     const filterValue = value.toLowerCase();
     let filteredItems: string[] = [];
 
-    this.autocomplete.items$.subscribe(items => {
+    this.autocomplete.items.subscribe(items => {
       filteredItems = items.filter(item => item.toLowerCase().includes(filterValue));
     });
 

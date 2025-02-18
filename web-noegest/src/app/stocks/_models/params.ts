@@ -55,7 +55,7 @@ export interface FormField {
 }
 
 export interface Autocomplete {    
-  items$: Observable<string[]>, 
+  items: string[], 
   selectedItem: string, 
   width: string
 }
