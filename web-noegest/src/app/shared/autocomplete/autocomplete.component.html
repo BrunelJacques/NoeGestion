@@ -6,7 +6,7 @@
   [formControl]="myControl" 
   [matAutocomplete]="auto"
   >
-  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelection($event)">
+  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelected($event)">
     <mat-option *ngFor="let item of filteredItems$ | async" [value]="item">
       {{item}}
     </mat-option>

@@ -1,5 +1,5 @@
 import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { map,  of, Subject, takeUntil } from 'rxjs';
+import { BehaviorSubject, map,  of, Subject, takeUntil } from 'rxjs';
 import { Article } from '../../_models/article';
 import { ArticleService } from '../../_services/article.service';
 import { Autocomplete } from '../../_models/params';
@@ -16,7 +16,7 @@ export class ArticleSearchComponent implements OnInit, OnDestroy {
   @Output() retour:EventEmitter<Article> = new EventEmitter();
 
   searchBox!: ElementRef
-  autocomplete: Autocomplete = { items$: of(['quatre','cinq','six']), selectedItem: 'cinq', width: '' };
+  autocomplete: Autocomplete = { items$: new BehaviorSubject<string[]>(['un', 'deux']), selectedItem: '', width: '' };
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -40,25 +40,23 @@ export class ArticleSearchComponent implements OnInit, OnDestroy {
       .pipe( takeUntil(this.destroy$))
       .subscribe(items => {
         itemsArray = items;
-        console.log('Items array:', itemsArray)
       })
     const ix = itemsArray.indexOf(item)
     console.log('index article: ', ix)
-    this.searchArticlesNom(item)
+    this.searchNoms(item)
   }
 
-  searchArticlesNom(term: string) {
+
+  searchNoms(term: string): void {
+    console.log('lets find nomsArticles:', term);
     this.articleService.searchArticlesNom(term)
-    .pipe(
-      takeUntil(this.destroy$),
-      map(results => results.map(article => article.nom))
-    )
-    .subscribe(
-      items => {
-        const itemsArrayConstant: string[] = items.flat(); // flat() to flatten the nested array if necessary
-        console.log('Items array constant:', itemsArrayConstant)
-      }
-    )
+      .pipe(
+        takeUntil(this.destroy$),
+        map(results => results.map(article => article.nom))
+      )
+      .subscribe(items => {
+        (this.autocomplete.items$ as BehaviorSubject<string[]>).next(items);
+      });
   }
 
 }

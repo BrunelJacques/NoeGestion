@@ -1,2 +1,5 @@
-<app-autocomplete [autocomplete]="autocomplete" (retour)="onArticle($event)">
+<app-autocomplete [autocomplete]="autocomplete"
+  (selected)="onArticle($event)"
+  (modified) = "onArticle($event)"
+>
 </app-autocomplete>

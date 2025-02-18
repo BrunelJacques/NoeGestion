@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { map, Observable, of, startWith, Subject, Subscription, switchMap, takeUntil } from 'rxjs';
+import { BehaviorSubject, map, Observable, startWith, Subject, switchMap, takeUntil } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, MatAutocompleteDefaultOptions, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { Autocomplete } from 'src/app/stocks/_models/params';
@@ -13,25 +13,25 @@ import { Autocomplete } from 'src/app/stocks/_models/params';
       provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS,
       useValue: {
         autoActiveFirstOption: true,
-        // false pour 'startsWith', true pour 'contains'
-        disableRipple: false, } as MatAutocompleteDefaultOptions
+        disableRipple: false // false for 'startsWith', true for 'contains'
+      } as MatAutocompleteDefaultOptions
     }
   ]
 })
 
 export class AutocompleteComponent implements OnInit, OnDestroy {
   @Input() autocomplete: Autocomplete = {
-        items$:of(["default","value","of autocomplete.items$"]),
-        selectedItem:"deux",
-        width:"254px"
+    items$: new BehaviorSubject<string[]>(['un', 'deux', 'trois']),
+    selectedItem: 'deux',
+    width: '254px'
   };
-  @Output() retour: EventEmitter<string>  = new EventEmitter()
+  @Output() selected: EventEmitter<string> = new EventEmitter();
+  @Output() modified: EventEmitter<string> = new EventEmitter();
 
   myControl = new FormControl();
   filteredItems$ :Observable<string[]> = this.autocomplete.items$;
   font: unknown;
   private destroy$ = new Subject<void>();
-  
 
   ngOnInit(): void {
     if (this.autocomplete.selectedItem ) {
@@ -41,18 +41,19 @@ export class AutocompleteComponent implements OnInit, OnDestroy {
     // Set up the filteredItems$ Observable to filter items based on input value
     this.filteredItems$ = this.myControl.valueChanges.pipe(
       startWith(''),
-      switchMap(value => this._filter(value))
+      switchMap(value => {
+          this.modified.emit(value); // Emit the modified text
+        return this._filter(value);
+      }),
+      takeUntil(this.destroy$)
     );
 
-    this.autocomplete.items$
-      .pipe( takeUntil(this.destroy$))
-      .subscribe(items => {
-        console.log('autocomplete.ts init: ', items);
-      })
+    this.autocomplete.items$.subscribe(items => {
+      console.log('autocomplete.ts init: ', items);
+    });
   }
 
   ngOnDestroy(): void {
-    // Emit a value to signal unsubscription
     this.destroy$.next();
     this.destroy$.complete();
   }
@@ -69,7 +70,12 @@ export class AutocompleteComponent implements OnInit, OnDestroy {
     );
   }
 
-  onSelection(event: MatAutocompleteSelectedEvent): void {
-    this.retour.emit(event.option.value);
+  onSelected(event: MatAutocompleteSelectedEvent): void {
+    this.selected.emit(event.option.value);
   }
+
+  onModified(event: MatAutocompleteSelectedEvent): void {
+    this.modified.emit(event.option.value);
+  }
+
 }
