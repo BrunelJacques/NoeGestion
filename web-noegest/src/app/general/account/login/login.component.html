@@ -3,35 +3,38 @@
     <form class="form-group" [formGroup]="form" (ngSubmit)="onSubmit()">
         <div class="form-group">
             <label class="form-label" for="email">Identifiant</label>
-            <input type="text" 
+            <input type="text"
             formControlName="email"
-            class="form-control" 
+            class="form-control"
             id="email"
-            autocomplete="username" 
+            autocomplete="username"
             [ngClass]="{ 'is-invalid': submitted && f['email'].errors }" />
-            <div *ngIf=" f['email'].errors?.['required'] && form.controls['email'].touched" class="invalid-feedback">
+            <div *ngIf=" f['email'].errors?.
+            ['required'] && form.controls['email']
+            .touched"
+            class="invalid-feedback">
                 <div  class="error">Identifiant à saisir</div>
             </div>
         </div>
         <div class="form-group">
             <label class="form-label" for="password">Mot de passe</label>
-            <input type="password" 
-            formControlName="password" 
-            class="form-control" 
+            <input type="password"
+            formControlName="password"
+            class="form-control"
             id="password"
             autocomplete="current-password"
             [ngClass]="{ 'is-invalid': submitted && f['password'].errors }" />
             <div *ngIf="f['password'].errors?.['required'] && form.controls['password'].touched" class="invalid-feedback">
                 <div *ngIf="f['password'].errors?.['required']">Mot de passe à saisir</div>
             </div>
-        </div>   
-        
+        </div>
+
         <div class="form-group">
-            <button mat-flat-button color="primary" [disabled]="loading" class="w110px m-3">
+            <button mat-flat-button type="submit" color="primary" [disabled]="loading" class="w110px m-3">
                 <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                 Envoi<mat-icon>send</mat-icon>
             </button>
-            <button mat-flat-button class="fond-soutenu m-3 ">
+            <button mat-flat-button type="button" class="fond-soutenu m-3 ">
                 <a routerLink="../register" >Compte<mat-icon>person</mat-icon></a>
             </button>
         </div>

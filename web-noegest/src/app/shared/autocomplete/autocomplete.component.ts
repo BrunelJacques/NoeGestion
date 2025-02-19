@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { BehaviorSubject, map, Observable, startWith, Subject, switchMap, takeUntil } from 'rxjs';
-import { FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, MatAutocompleteDefaultOptions, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { Autocomplete } from 'src/app/stocks/_models/params';
 
@@ -28,25 +28,31 @@ export class AutocompleteComponent implements OnInit, OnDestroy {
   @Output() selected: EventEmitter<string> = new EventEmitter();
   @Output() modified: EventEmitter<string> = new EventEmitter();
 
-  myControl = new FormControl();
+  formGroup!: FormGroup;
   filteredItems$ :Observable<string[]> = this.autocomplete.items$;
   private destroy$ = new Subject<void>();
 
+  constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
+    // Initialize form group with required validator
+    this.formGroup = this.fb.group({
+      myControl: ['', Validators.required]
+    });
+
     if (this.autocomplete.selectedItem ) {
-      this.myControl.setValue(this.autocomplete.selectedItem)
+      this.formGroup.get('myControl')?.setValue(this.autocomplete.selectedItem);
     }
 
     // Set up the filteredItems$ Observable to filter items based on input value
-    this.filteredItems$ = this.myControl.valueChanges.pipe(
+    this.filteredItems$ = this.formGroup.get('myControl')?.valueChanges?.pipe(
       startWith(''),
       switchMap(value => {
-          this.modified.emit(value); // Emit the modified text
+        this.modified.emit(value); // Emit the modified text
         return this._filter(value);
       }),
       takeUntil(this.destroy$)
-    );
+    ) || new Observable<string[]>(observer => observer.next([]));
 
     // useful for debug, but verbose
     this.autocomplete.items$.subscribe(items => {

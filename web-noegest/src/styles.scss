@@ -318,6 +318,7 @@ td {
 }
 
 .right { 
+  display: flex;
   text-align: right!important;
   justify-content: right;
   justify-items: right;
@@ -325,8 +326,14 @@ td {
   align-items: end;
 }
 .left { text-align: left!important; }
-.start { justify-content: start !important;}
-.end   { justify-content: end   !important;}
+
+.start { 
+  display: flex;
+  justify-content: start !important;}
+
+.end   { 
+  display: flex;
+  justify-content: end   !important;}
 
 .no-newline { display: inline-block; }
 

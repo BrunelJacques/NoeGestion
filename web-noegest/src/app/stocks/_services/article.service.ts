@@ -84,7 +84,6 @@ export class ArticleService {
     const url = this.articlesNomUrl + '?nom=' + term;
     if (!term.trim()) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const url = this.articlesNomUrl;
     }
     return this.http.get<ArtsNomRetour>(url)
     .pipe(
@@ -97,12 +96,6 @@ export class ArticleService {
     );
   }
 
-  // proposition Copilot
-  zzzsearchArticlesNom(term: string) {
-    const url = this.articlesNomUrl + '?nom=' + term;
-    return this.http.get<ArtsNomRetour>(url)
-      .subscribe(ret => ret.results.map(art => art.nom));
-  }
 
   //////// Save methods //////////
 

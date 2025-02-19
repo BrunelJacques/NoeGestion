@@ -1,6 +1,6 @@
 import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { BehaviorSubject, map,  of, Subject, takeUntil } from 'rxjs';
-import { Article } from '../../_models/article';
+import { BehaviorSubject, map,  of, Subject, takeUntil, tap } from 'rxjs';
+import { Article, ArticleNom } from '../../_models/article';
 import { ArticleService } from '../../_services/article.service';
 import { Autocomplete } from '../../_models/params';
 
@@ -18,6 +18,7 @@ export class ArticleSearchComponent implements OnInit, OnDestroy {
   searchBox!: ElementRef
   autocomplete: Autocomplete = { items$: new BehaviorSubject<string[]>(['un', 'deux']), selectedItem: '', width: '' };
   private destroy$ = new Subject<void>();
+  private nomsArray : ArticleNom[] = []
 
   constructor(
     private articleService: ArticleService,
@@ -36,27 +37,35 @@ export class ArticleSearchComponent implements OnInit, OnDestroy {
   }
 
   onSelected(item: string) {
-    console.log('selected: ',item)
+    const ix = this.getIndexItem(item)
+    console.log('selected: ', ix, item)
+    if (ix >= 0) {
+      this.articleService.getArticle(2)
+    }
   }
 
   onModified(item: string): void {
+    const ix = this.getIndexItem(item)
+    console.log('Modified: ', ix, item)
+    this.searchNoms(item)
+  }
+
+  getIndexItem(item: string) {
     let itemsArray: string[] = []
     this.autocomplete.items$
       .pipe( takeUntil(this.destroy$))
       .subscribe(items => {
         itemsArray = items;
       })
-    const ix = itemsArray.indexOf(item)
-    console.log('Modified: ', ix, item)
-    this.searchNoms(item)
+    return itemsArray.indexOf(item)
   }
 
-
+  // appelle un lot de noms d'articles contenant 'term'
   searchNoms(term: string): void {
-    //console.log('lets find nomsArticles:', term);
     this.articleService.searchArticlesNom(term)
       .pipe(
         takeUntil(this.destroy$),
+        tap(results => this.nomsArray = results),
         map(results => results.map(article => article.nom))
       )
       .subscribe(items => {
