@@ -25,7 +25,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
   params!: Params;
 
   id!: string;
-  mvt!: Mouvement;
+  mvt = MVT0;
   camps!: Camp[];
   camps2!: Camp[];
   fgMvt!: FormGroup;
@@ -182,17 +182,17 @@ export class OneSortieComponent implements OnInit, OnDestroy {
         this.camps = x['camps']
       })
     console.log('one-sortie.camps:',this.camps)
-          
+
   } // fin de initSubscriptions
 
-  // équivalent route this.camps mais après ouverture 
+  // équivalent route this.camps mais après ouverture
   demo_getCamps() {
     this.paramsService.campsSubj$
     .pipe( takeUntil(this.destroy$) )
     .subscribe({
       next: (data:Camp[]) => {
         this.camps2 = data;
-      },        
+      },
       error: (e) => {
         if (e != 'Camps Not Found') {
           console.error(e)

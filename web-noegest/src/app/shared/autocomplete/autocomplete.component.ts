@@ -30,8 +30,8 @@ export class AutocompleteComponent implements OnInit, OnDestroy {
 
   myControl = new FormControl();
   filteredItems$ :Observable<string[]> = this.autocomplete.items$;
-  font: unknown;
   private destroy$ = new Subject<void>();
+
 
   ngOnInit(): void {
     if (this.autocomplete.selectedItem ) {
@@ -48,6 +48,7 @@ export class AutocompleteComponent implements OnInit, OnDestroy {
       takeUntil(this.destroy$)
     );
 
+    // useful for debug, but verbose
     this.autocomplete.items$.subscribe(items => {
       console.log('autocomplete.ts init: ', items);
     });

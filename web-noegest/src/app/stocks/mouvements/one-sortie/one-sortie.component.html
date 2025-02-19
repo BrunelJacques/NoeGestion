@@ -20,11 +20,11 @@
         class="form-control col-7 col-sm-12">
       </div>
     </div>
-    <div class="form-row">  
+    <div class="form-row">
       <div *ngIf="(fPar['origine'].value === 'camp')">
         <label class="col-3 col-sm-12" for="camp">Camp: {{params.camp}} </label>
-        <select id="camp" name="camp" 
-          formControlName="camp" 
+        <select id="camp" name="camp"
+          formControlName="camp"
           class="form-control col-7 col-sm-12" aria-label="camp"
           >
           <option [ngValue]="fPar['camp']" disabled>Choisir un camp</option>
@@ -32,7 +32,7 @@
             [ngValue]="camp.id">
             {{camp['nom']}}
           </option>
-        </select> 
+        </select>
       </div>
     </div>
   </mat-card>
@@ -42,14 +42,10 @@
     <form [formGroup]="fgMvt"
     class="form-group was-validated">
       <!-- appel du choix d'un article -->
-      <app-article-search class="col-12" 
-        *ngIf="mvt" 
+      <app-article-search class="col-12"
         [article]="mvt.article"
         (retour)="onArticle($event)">
-      </app-article-search>      
-      <app-article-search class="col-12" 
-      *ngIf="!mvt"  (retour)="onArticle($event)">
-      </app-article-search>      
+      </app-article-search>
 
       <!-- gestion du mouvement -->
       <div>
@@ -59,11 +55,11 @@
             <label for="{{ field.label}}">{{ field.label }}</label>
           </div>
           <div class="col-8" [ngSwitch]="field.type">
-            <select class="form-control my-1" 
+            <select class="form-control my-1"
             required
             *ngSwitchCase="'select'"
             aria-label="{field.label}"
-            type="field.type" 
+            type="field.type"
             [formControlName]="field.label">
               <option *ngFor="let option of field.options" [value]="option">{{ option }}</option>
             </select>
@@ -79,10 +75,10 @@
               </div>
             </div>
             <input class="form-control my-1"
-            required 
-            *ngSwitchDefault 
+            required
+            *ngSwitchDefault
             aria-label="{field.label}"
-            type="field.type" 
+            type="field.type"
             [formControlName]="field.label" />
           </div>
 

@@ -24,6 +24,7 @@ export class ArticleSearchComponent implements OnInit, OnDestroy {
     ) {}
 
   ngOnInit(): void {
+    // pour affichage de la valeur initiale
     if (this.article) {
       this.autocomplete.selectedItem = this.article.nom
     }
@@ -34,7 +35,11 @@ export class ArticleSearchComponent implements OnInit, OnDestroy {
     this.destroy$.complete()
   }
 
-  onArticle(item: string): void {
+  onSelected(item: string) {
+    console.log('selected: ',item)
+  }
+
+  onModified(item: string): void {
     let itemsArray: string[] = []
     this.autocomplete.items$
       .pipe( takeUntil(this.destroy$))
@@ -42,13 +47,13 @@ export class ArticleSearchComponent implements OnInit, OnDestroy {
         itemsArray = items;
       })
     const ix = itemsArray.indexOf(item)
-    console.log('index article: ', ix)
+    console.log('Modified: ', ix, item)
     this.searchNoms(item)
   }
 
 
   searchNoms(term: string): void {
-    console.log('lets find nomsArticles:', term);
+    //console.log('lets find nomsArticles:', term);
     this.articleService.searchArticlesNom(term)
       .pipe(
         takeUntil(this.destroy$),

@@ -1,14 +1,18 @@
 <mat-form-field>
   <input 
-  type="text" 
-  placeholder="Saisir le début..." 
-  matInput
-  [formControl]="myControl" 
-  [matAutocomplete]="auto"
-  >
-  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelected($event)">
-    <mat-option *ngFor="let item of filteredItems$ | async" [value]="item">
+    type="text" 
+    placeholder="Saisir le début..." 
+    matInput
+    [formControl]="myControl" 
+    [matAutocomplete]="auto">
+  <mat-autocomplete 
+    autoActiveFirstOption
+    #auto="matAutocomplete" (optionSelected)="onSelected($event)">
+    <mat-option 
+        *ngFor="let item of filteredItems$ | async" 
+        [value]="item">
       {{item}}
     </mat-option>
   </mat-autocomplete>
 </mat-form-field>
+
