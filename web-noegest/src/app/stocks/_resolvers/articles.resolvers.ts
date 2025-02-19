@@ -9,4 +9,4 @@ export const ArticlesNomResolver: ResolveFn<ArticleNom[]> = (
   _route: ActivatedRouteSnapshot,
   _state: RouterStateSnapshot,
   articleService: ArticleService = inject(ArticleService) 
-): Observable<ArticleNom[]> => articleService.getArticlesNom()
+): Observable<ArticleNom[]> => articleService.searchArticlesNom('')

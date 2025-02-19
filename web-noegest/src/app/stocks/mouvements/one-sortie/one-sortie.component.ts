@@ -25,7 +25,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
   params!: Params;
 
   id!: string;
-  mvt = MVT0;
+  mvt!: Mouvement;
   camps!: Camp[];
   camps2!: Camp[];
   fgMvt!: FormGroup;
@@ -70,6 +70,11 @@ export class OneSortieComponent implements OnInit, OnDestroy {
     if (id) {this.id = id}
     this.initSubscriptions(this.id)
     this.initForm()
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next(true)
+    this.destroy$.complete();
   }
 
   initForm() {
@@ -119,13 +124,13 @@ export class OneSortieComponent implements OnInit, OnDestroy {
 
     // gestion des navigation et retours
     this.seeyouService.clicksOk$
-      .pipe( takeUntil(this.destroy$) )
+      .pipe( takeUntil(this.destroy$))
       .subscribe(() => {
       this.onSubmit();
       });
 
     this.seeyouService.clicksQuit$
-      .pipe( takeUntil(this.destroy$) )
+      .pipe( takeUntil(this.destroy$))
       .subscribe(() => {
       this.onQuit();
     });
@@ -200,10 +205,6 @@ export class OneSortieComponent implements OnInit, OnDestroy {
       }
     });
 
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next(true)
   }
 
   onQuit(): void {

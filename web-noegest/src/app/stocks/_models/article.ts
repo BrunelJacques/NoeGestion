@@ -27,3 +27,9 @@ export interface ArtsNomRetour {
   count: number;
   results: ArticleNom[];
 }
+
+export interface ArtsRetour {
+  count: number;
+  results: Article;
+}
+

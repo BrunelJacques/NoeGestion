@@ -4,7 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
-import { Article, ArticleNom ,ArtsNomRetour} from '../_models/article';
+import { Article, ArticleNom ,ArtsNomRetour, ArtsRetour} from '../_models/article';
 import { HandleError } from 'src/app/general/_helpers/error.interceptor';
 import { Constantes } from 'src/app/constantes';
 import { ActivatedRoute } from '@angular/router';
@@ -33,9 +33,14 @@ export class ArticleService {
   /** GET article by id. Will 404 if id not found */
   getArticle(id: number): Observable<Article> {
     const url = `${this.articlesUrl}/${id}`;
-    return this.http.get<Article>(url).pipe(
-      tap(() => this.handleError.log(`fetched article id=${id}`)),
-      catchError(this.handleError.handleError<Article>(`getArticle id=${id}`))
+    console.log('appel url',url)
+    return this.http.get<Article>(url)
+    .pipe(
+      tap(x => x ?
+        this.handleError.log(`fetched article id=${id}`):
+        this.handleError.log(`Pas d'article id = "${id}"`)
+      ),
+      catchError(this.handleError.handleError<Article>(`getArticle id=${id}`)),
     );
   }
 
@@ -55,47 +60,18 @@ export class ArticleService {
     );
   }
 
-  /** GET all articles from the server */
-  getArticles(): Observable<Article[]> {
-    return this.http.get<Article[]>(this.articlesUrl)
-    .pipe(
-      tap(x => x ?
-          this.handleError.log(`fetched getArticles ${x.length} items`):
-          this.handleError.log(`no items fetched`)),
-      catchError(this.handleError.handleError<Article[]>('getArticles', []))
-      );
-  }
-
-  // appelé par resolver route, avant ouverture de  one-sortie, mis dans datax['articlesNom']
-  getArticlesNom(): Observable<ArticleNom[]> {
-    console.log(this.articlesNomUrl)
-    return this.http.get<ArtsNomRetour>(this.articlesNomUrl)
-    .pipe(
-      tap(x => x.results ?
-          this.handleError.log(`fetched getArticlesNom ${x.count} items`):
-          this.handleError.log(`get ArticlesNom no items fetched`)),
-      catchError(this.handleError.handleError<ArtsNomRetour>('getArticlesNom', { count: 0, results: [] })),
-      map(x=>x.results),
-    );
-  }
-
   /* GET articles whose nom contains search term */
   searchArticlesNom(term: string) : Observable<ArticleNom[]> {
     const url = this.articlesNomUrl + '?nom=' + term;
-    if (!term.trim()) {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    }
     return this.http.get<ArtsNomRetour>(url)
     .pipe(
       tap(x => x.results ?
         this.handleError.log(`fetched getArticlesNom ${x.count} items`) :
         this.handleError.log(`get ArticlesNom no items fetched`)),
       catchError(this.handleError.handleError<ArtsNomRetour>('getArticlesNom', { count: 0, results: [] })),
-      //map(x => x.results.map(article => article.nom))
       map(x => x.results)
     );
   }
-
 
   //////// Save methods //////////
 

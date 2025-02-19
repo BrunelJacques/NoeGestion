@@ -18,7 +18,7 @@ export class ArticleSearchComponent implements OnInit, OnDestroy {
   searchBox!: ElementRef
   autocomplete: Autocomplete = { items$: new BehaviorSubject<string[]>(['un', 'deux']), selectedItem: '', width: '' };
   private destroy$ = new Subject<void>();
-  private nomsArray : ArticleNom[] = []
+  private articlesNoms : ArticleNom[] = []
 
   constructor(
     private articleService: ArticleService,
@@ -36,26 +36,18 @@ export class ArticleSearchComponent implements OnInit, OnDestroy {
     this.destroy$.complete()
   }
 
-  onSelected(item: string) {
-    const ix = this.getIndexItem(item)
-    console.log('selected: ', ix, item)
-    if (ix >= 0) {
-      this.articleService.getArticle(2)
-    }
-  }
-
   onModified(item: string): void {
     const ix = this.getIndexItem(item)
     console.log('Modified: ', ix, item)
     this.searchNoms(item)
   }
 
-  getIndexItem(item: string) {
-    let itemsArray: string[] = []
+  getIndexItem<T>(item: T) {
+    let itemsArray: T[] = []
     this.autocomplete.items$
       .pipe( takeUntil(this.destroy$))
       .subscribe(items => {
-        itemsArray = items;
+        itemsArray = items as T[];
       })
     return itemsArray.indexOf(item)
   }
@@ -65,12 +57,27 @@ export class ArticleSearchComponent implements OnInit, OnDestroy {
     this.articleService.searchArticlesNom(term)
       .pipe(
         takeUntil(this.destroy$),
-        tap(results => this.nomsArray = results),
+        tap(results => this.articlesNoms = results),
         map(results => results.map(article => article.nom))
       )
       .subscribe(items => {
         (this.autocomplete.items$ as BehaviorSubject<string[]>).next(items);
       });
+  }
+
+  onSelected(item: string) {
+    const ix = this.getIndexItem(item)
+    const id = this.articlesNoms[ix].id
+    console.log('selected: ', id, item, this.article.nom)
+    if (ix >= 0) {
+      this.articleService.getArticle(id)
+      .pipe(
+        map(x => {
+          this.retour.emit( x ),
+          console.log('emit: ', this.article.nom)
+        })
+      )
+    }
   }
 
 }
