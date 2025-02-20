@@ -1,5 +1,5 @@
 import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { BehaviorSubject, map,  of, Subject, takeUntil, tap } from 'rxjs';
+import { BehaviorSubject, map,   Subject, takeUntil, tap } from 'rxjs';
 import { Article, ArticleNom } from '../../_models/article';
 import { ArticleService } from '../../_services/article.service';
 import { Autocomplete } from '../../_models/params';
@@ -26,9 +26,11 @@ export class ArticleSearchComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     // pour affichage de la valeur initiale
-    if (this.article) {
-      this.autocomplete.selectedItem = this.article.nom
+
+    if (!this.article) {
+      this.articleService.searchArticles('*')
     }
+    this.autocomplete.selectedItem = this.article.nom
   }
 
   ngOnDestroy(): void {

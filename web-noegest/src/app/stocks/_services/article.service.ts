@@ -4,7 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
-import { Article, ArticleNom ,ArtsNomRetour} from '../_models/article';
+import { Article, ArticleNom ,ArtsNomRetour, ArtsRetour} from '../_models/article';
 import { HandleError } from 'src/app/general/_helpers/error.interceptor';
 import { Constantes } from 'src/app/constantes';
 import { ActivatedRoute } from '@angular/router';
@@ -45,19 +45,21 @@ export class ArticleService {
   }
 
   /* GET articles whose nom contains search term */
-  searchArticles(term: string) {
-    const url = this.articlesUrl + '?nom=' + term 
+  searchArticles(term: string) : Observable<Article[]>{
+    const url = this.articlesUrl + "?nom=" + term  
+    console.log('searchArticles url',url)
     if (!term.trim()) {
       // if not search term, return empty article array.
       return of([]);
     }
-    return this.http.get<Article[]>(url)
+    return this.http.get<ArtsRetour>(url)
     .pipe(
       tap(x => x ?
-         this.handleError.log(`Trouvés ${x.length} articles matching "${term}"`) :
+         this.handleError.log(`Trouvés ${x.count} articles matching "${term}"`) :
          this.handleError.log(`Pas d'articles matching "${term}"`)),
-      catchError(this.handleError.handleError<Article[]>('article',[]))
-    );
+      catchError(this.handleError.handleError<ArtsRetour>('article',{ count: 0, results: [] })),
+      map(x => x.results)
+    )
   }
 
   /* GET articles whose nom contains search term */

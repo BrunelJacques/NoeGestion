@@ -30,6 +30,6 @@ export interface ArtsNomRetour {
 
 export interface ArtsRetour {
   count: number;
-  results: Article;
+  results: Article[];
 }
 
