@@ -4,7 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
-import { Article, ArticleNom ,ArtsNomRetour, ArtsRetour} from '../_models/article';
+import { Article, ArticleNom ,ArtsNomRetour} from '../_models/article';
 import { HandleError } from 'src/app/general/_helpers/error.interceptor';
 import { Constantes } from 'src/app/constantes';
 import { ActivatedRoute } from '@angular/router';
