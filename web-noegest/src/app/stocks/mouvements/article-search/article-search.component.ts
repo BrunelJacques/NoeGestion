@@ -22,15 +22,18 @@ export class ArticleSearchComponent implements OnInit, OnDestroy {
 
   constructor(
     private articleService: ArticleService,
-    ) {}
+    ) {    if (!this.article) {
+      this.articleService.searchArticles('*')
+      .subscribe()
+    }}
 
   ngOnInit(): void {
     // pour affichage de la valeur initiale
-
     if (!this.article) {
       this.articleService.searchArticles('*')
+    } else {
+      this.autocomplete.selectedItem = this.article.nom
     }
-    this.autocomplete.selectedItem = this.article.nom
   }
 
   ngOnDestroy(): void {
@@ -70,15 +73,17 @@ export class ArticleSearchComponent implements OnInit, OnDestroy {
   onSelected(item: string) {
     const ix = this.getIndexItem(item)
     const id = this.articlesNoms[ix].id
-    console.log('selected: ', id, item, this.article.nom)
+    console.log('selected: ', id, item, this.article)
     if (ix >= 0) {
       this.articleService.getArticle(id)
       .pipe(
+        takeUntil(this.destroy$),
+        tap(x => this.article = x),
         map(x => {
-          this.retour.emit( x ),
-          console.log('emit: ', this.article.nom)
+          console.log('emit: ', this.article),
+          this.retour.emit(x)
         })
-      )
+      ).subscribe()
     }
   }
 

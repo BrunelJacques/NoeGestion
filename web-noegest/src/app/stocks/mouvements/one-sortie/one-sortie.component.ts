@@ -225,7 +225,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
   }
 
   onArticle(retour: Article): void {
-    console.log('event article: ',retour)
+    console.log('one-sortie onArticle: ',retour)
   }
 
   save(): void {

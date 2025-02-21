@@ -43,8 +43,9 @@
     class="form-group was-validated">
       <!-- appel du choix d'un article -->
       <app-article-search class="col-12"
-        [article]="mvt.article"
-        (retour)="onArticle($event)">
+      *ngIf="mvt"
+      [article]="mvt.article"
+      (retour)="onArticle($event)">
       </app-article-search>
 
       <!-- gestion du mouvement -->
