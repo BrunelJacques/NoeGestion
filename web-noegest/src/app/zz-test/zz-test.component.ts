@@ -1,48 +1,137 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { BehaviorSubject, map, Observable, tap } from 'rxjs';
-import { Article, ArtsRetour } from '../stocks/_models/article';
-import { Autocomplete } from '../stocks/_models/params';
-import { HttpClient } from '@angular/common/http';
-import { Constantes } from '../constantes';
+/* eslint-disable @typescript-eslint/ban-types */
+import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { Observable, map } from 'rxjs';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { confirmEqualValidator } from '../shared/_validators/confirm-equal.validator';
+import { User } from '../general/_models';
+import { passwordValidator } from '../shared/_validators/valid.validator';
+import { tabooValidator } from '../shared/_validators/valid.validator';
 
 @Component({
   selector: 'app-zz-test',
   templateUrl: './zz-test.component.html',
   styleUrls: ['./zz-test.component.scss']
 })
+export class ZzTestComponent implements OnInit, AfterViewInit {
 
-export class ZzTestComponent implements OnInit{
+  @Input() userValue!: User;
 
-  @Input() article!: Article;
-  @Output() retour: EventEmitter<Article> = new EventEmitter();
+  mainForm!: FormGroup
+  personalInfoForm!: FormGroup;
+  usernameCtrl!: FormControl;
 
-  private articlesUrl = this.cst.STARTICLE_URL
-  private articles!: Article[]
-  autocomplete: Autocomplete = { items$: new BehaviorSubject<string[]>(['un', 'deux']), selectedItem: '', width: '' };
+  emailCtrl!: FormControl;
+  confirmEmailCtrl!: FormControl;
+  emailForm!: FormGroup;
+  showEmailError$!: Observable<Boolean>;
 
-  constructor(
-    private cst: Constantes,
-    private http: HttpClient,
-  ) {}
+  passwordCtrl!: FormControl
+  confirmPasswordCtrl!: FormControl
+  loginInfoForm!: FormGroup;
+  showPasswordError$!: Observable<Boolean>;
+
+  passwordError!: string;
+
+  constructor (
+    private formBuilder: FormBuilder) {}
+
 
   ngOnInit(): void {
-    this.searchArticles('a')
-      .pipe(
-        tap(x => console.log('retour searchArticles', x)),
-        map(x => this.articles = x)
+    this.initFormControls();
+    this.initMainForm()
+    this.initObservables()
+  }
+
+  private initMainForm(): void {
+    this.mainForm = this.formBuilder.group({
+      personalInfo: this.personalInfoForm,
+      email: this.emailForm,
+      loginInfo: this.loginInfoForm,
+    })
+  }
+
+  private initFormControls(): void {
+    this.personalInfoForm = this.formBuilder.group({
+      firstName: [''],
+      lastName: ["", Validators.required]
+    }),
+
+    this.emailCtrl = this.formBuilder.control('');
+    this.confirmEmailCtrl = this.formBuilder.control('');
+   
+    this.emailForm = this.formBuilder.group({
+      email: this.emailCtrl,
+      confirm: this.confirmEmailCtrl
+    }, {
+      validators: [confirmEqualValidator('email', 'confirm')],
+      // updateOn détermine la fréquence de l'action, blur c'est quand on sort du groupe
+      updateOn: 'blur'
+    });
+    
+    this.passwordCtrl = this.formBuilder.control('');
+    this.confirmPasswordCtrl = this.formBuilder.control('');
+    this.usernameCtrl = this.formBuilder.control('', Validators.required)
+    
+    this.loginInfoForm = this.formBuilder.group({
+      password: this.passwordCtrl,
+      confirmPassword: this.confirmPasswordCtrl,
+    }, {
+      validators: [confirmEqualValidator('password', 'confirmPassword')],
+      updateOn: 'blur'
+    });
+  }
+
+  ngAfterViewInit(): void {
+    console.log("ngAfterViewInit zztest")
+  }
+
+  initObservables() {
+    this.setEmailValidators()
+    this.setPasswordValidators()
+    
+    this.showEmailError$ =  this.emailForm.statusChanges.pipe(
+      map(status => status === 'INVALID' && 
+        this.emailCtrl.value && 
+        this.confirmEmailCtrl.value
       )
-      .subscribe(); // This will execute the Observable
-    console.log('init articles:', this.articles)
+    );
+
+    this.showPasswordError$ = this.loginInfoForm.statusChanges.pipe(
+      map(status => status === 'INVALID' && 
+        this.passwordCtrl.value && 
+        this.confirmPasswordCtrl.value
+      )
+    );
   }
 
-  searchArticles(term: string): Observable<Article[]> {
-    const url = this.articlesUrl + "?nom=" + term
-    console.log('appel http get url', url)
-    return this.http.get<ArtsRetour>(url)
-      .pipe(
-        tap(x => console.log('search tap:', x)),
-        map(x => x.results)
-      );
+
+  private setEmailValidators(): void {
+    this.emailCtrl.addValidators([
+        tabooValidator('provisoire'),
+        Validators.required,
+        Validators.email]);
+    this.confirmEmailCtrl.addValidators([
+        Validators.required,
+        Validators.email
+    ]);
   }
 
+  private setPasswordValidators(): void {
+    this.passwordCtrl.addValidators([
+        passwordValidator(),
+        Validators.required,
+        ]);
+  }
+
+  getFormControlErrorText(ctrl: AbstractControl) {
+    if (ctrl.hasError('required')) {
+      return 'Ce champ est obligatoire'
+    } else {return "Saisie non valide"}
+  }
+
+  onRetour(param: unknown) {
+    console.log(param)
+  }
 }
+  
+  

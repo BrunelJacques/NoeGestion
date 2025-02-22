@@ -226,6 +226,31 @@ export class OneSortieComponent implements OnInit, OnDestroy {
 
   onArticle(retour: Article): void {
     console.log('one-sortie onArticle: ',retour)
+    /* Call geArticle
+    if (id !='0') {
+      this.articleServices.getMvt(id)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: (mvts: MvtsRetour) => {
+            const mvt = mvts.results[0] || { ...MVT0 };
+            if (!this.mvt && mvt === MVT0 && this.params.jour) {
+              const jj = this.datePipe.transform(this.params.jour, 'yyyy-MM-dd');
+              const origine = this.params.origine;
+              if (jj) {
+                mvt.jour = jj;
+                mvt.origine = origine;
+              }
+            }
+            this.mvt = mvt;
+            this.setValuesMvt(mvt);
+          },
+          error: (e) => {
+            if (e !== 'Not Found') {
+              console.error('one-sortie.getMvt', e);
+            }
+          }
+        }) // fin subscribe
+      ; // fin getMvt*/
   }
 
   save(): void {

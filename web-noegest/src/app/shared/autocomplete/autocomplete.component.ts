@@ -56,7 +56,7 @@ export class AutocompleteComponent implements OnInit, OnDestroy {
 
     // useful for debug, but verbose
     this.autocomplete.items$.subscribe(items => {
-      console.log('autocomplete.ts init: ', items);
+      console.log('autocomplete.ts init nb et first: ', items.length,items[0]);
     });
   }
 

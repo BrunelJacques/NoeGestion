@@ -150,7 +150,7 @@ class StArticleNomViewset(ReadOnlyModelViewSet):
         nom = self.request.GET.get('nom', '').strip()
         obsolete = self.request.GET.get('obsolete', False)
         if len(nom) > 0:
-            ret = StArticle.objects.filter(nom__istartswith=nom,obsolete=obsolete)
+            ret = StArticle.objects.filter(nom__contains=nom,obsolete=obsolete)
         else:
             ret = StArticle.objects.all()
         return ret.order_by('nom')
