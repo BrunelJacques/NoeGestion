@@ -41,7 +41,6 @@ class GeAnalytiqueViewset(ModelViewSet):
             ret = GeAnalytique.objects.filter(axe=axe,obsolete=obsolete)
         else:
             ret = GeAnalytique.objects.all()
-        print("GeAnalytiqueViewset", type(axe), axe, len(ret), ret)
         return ret
 
 class StMagasinViewset(GetRetrieveSerializer, ModelViewSet):
@@ -81,7 +80,6 @@ class StArticleViewset(ModelViewSet):
             ret = StArticle.objects.all()
         elif id:
             ret = StArticle.objects.filter(id=id)
-            print("id ",self.action)
         elif len(nom) > 0:
             obsolete = self.request.GET.get('obsolete',False)
             ret = (StArticle.objects.filter(nom__istartswith=nom,
@@ -89,8 +87,6 @@ class StArticleViewset(ModelViewSet):
                    | StArticle.objects.filter(nom_court__istartswith=nom,                                                                                         obsolete=obsolete))
         else:
             ret = StArticle.objects.all()
-
-        print("StArticleViewset", id, type(id),nom, len(ret), ret)
 
         return ret.order_by('id')
 

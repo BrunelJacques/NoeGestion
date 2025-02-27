@@ -2,7 +2,7 @@ import { Article, ARTICLE0 } from './article';
 
 export interface Mouvement {
     id: number;
-    jour: string;
+    jour: Date;
     sens: number;
     origine: string;
     article: Article;
@@ -14,13 +14,13 @@ export interface Mouvement {
     analytique: number;
     fournisseur?: string;
     ordi: string;
-    saisie: string;
+    saisie: Date;
     transfert?: Date;
 }
 
 export const MVT0: Mouvement =  {
     id: 0,
-    jour: "",
+    jour: new Date(2000,1,1),
     sens: -1,
     origine: "",
     article: ARTICLE0,
@@ -29,7 +29,7 @@ export const MVT0: Mouvement =  {
     service: 0,
     analytique: 0,
     ordi: "",
-    saisie: "",
+    saisie: new Date(2000,1,1),
 }
 
 export interface MvtsRetour {

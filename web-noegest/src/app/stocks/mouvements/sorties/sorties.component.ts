@@ -66,7 +66,9 @@ export class SortiesComponent implements OnInit, OnDestroy {
   mvtsFilter = (mvt: Mouvement) => {
     let ret = true
     // filtre sur la date
-    if (mvt.jour != this.datePipe.transform(this.params.jour,'yyyy-MM-dd')) {
+    const dte = this.fp.compareDates
+
+    if (!(dte(mvt.jour,this.params.jour))) {
       ret = false
     }
     // filtre sur le type d'origine du mouvement
@@ -86,6 +88,7 @@ export class SortiesComponent implements OnInit, OnDestroy {
       ){
       ret = false
     }
+    console.log('test ',ret)
     return ret
   }
 

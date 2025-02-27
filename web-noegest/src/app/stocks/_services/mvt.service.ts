@@ -6,16 +6,23 @@ import { MvtsRetour, Mouvement } from '../_models/mouvement';
 import { HandleError } from 'src/app/general/_helpers/error.interceptor';
 
 import { Constantes } from 'src/app/constantes';
+import { FormGroup } from '@angular/forms';
+import { FonctionsPerso } from 'src/app/shared/fonctions-perso';
+import { DatePipe } from '@angular/common';
 
 @Injectable({ providedIn: 'root'})
 export class MvtService {
   mvts: Mouvement[] = []
   url: string | undefined
+  lstService = Constantes.LSTSERVICE;
+  lstService_libelle = this.lstService.map((x) => x.libelle)
 
   constructor(
     private cst: Constantes,
     private http: HttpClient,
     private handleError: HandleError,
+    private fxPerso: FonctionsPerso,
+    private datePipe: DatePipe,
   ) {}
 
   getMvt(id: string): Observable<MvtsRetour> {
@@ -61,6 +68,38 @@ export class MvtService {
           this.handleError.log(`no mvts`)),
         catchError(this.handleError.handleError<MvtsRetour>('getSorties',))
       );
+  }
+
+  mvtToForm(mvt:Mouvement,form:FormGroup){
+    let nbrations = mvt.qtemouvement    
+    if (mvt.nbrations) {nbrations = mvt.nbrations}
+
+    const fx = this.fxPerso
+    const coutRation = fx.round(fx.quotient(mvt.prixunit, mvt.nbrations))
+    const artQteStock = mvt.article.qte_stock ?? 0
+    const qteStock =artQteStock + mvt.qtemouvement
+
+    form.patchValue({
+      'Jour': this.datePipe.transform(mvt.jour, 'dd/MM/yyyy'),
+      'Vers': mvt.origine,
+      'Service': this.lstService_libelle[mvt.service],
+      'PrixUnit': this.fxPerso.round(mvt.prixunit,2),
+      'Qte': mvt.qtemouvement * mvt.sens,
+      'TotRations': Math.abs(nbrations),
+      'CoutRation': Math.abs(coutRation),
+      'QteStock': qteStock
+    })
+    form.get('CoutRation')?.disable()
+    form.get('QteStock')?.disable()
+  }
+
+  formToMvt(form:FormGroup, mvt:Mouvement):void {
+    mvt.jour = new Date(form.value.Jour),
+    mvt.origine = form.value.Vers,
+    mvt.service = this.lstService_libelle.indexOf(form.value.Service),
+    mvt.prixunit = form.value.PrixUnit
+    mvt.qtemouvement = form.value.Qte
+    //mvt.nbrations = form.TotRations
   }
 
 

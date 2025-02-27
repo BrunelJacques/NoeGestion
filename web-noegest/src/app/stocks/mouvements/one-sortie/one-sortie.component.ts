@@ -36,7 +36,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
   submitted = false;
 
   fieldsMvt: FormField[] = [
-    { label: 'Jour', type: 'text'},
+    { label: 'Jour', type: 'date'},
     { label: 'Vers', type: 'text'},
     { label: 'Service', type: 'select',
       options: this.lstService_libelle },
@@ -94,6 +94,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
       this.fgMvt.get(field.label)?.setValidators([Validators.required,])
     });
   }
+
   setValuesPar(params:Params) {
     this.fgPar.patchValue({
       'Jour': this.datePipe.transform(params.jour, 'yyyy-MM-dd'),
@@ -103,20 +104,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
   }
 
   setValuesMvt(mvt:Mouvement) {
-    const totRations =  mvt.sens * this.fxPerso.produit(mvt.nbrations,mvt.qtemouvement)
-    const coutRation = this.fxPerso.round( this.fxPerso.quotient(mvt.prixunit, mvt.nbrations))
-    this.fgMvt.patchValue({
-      'Jour': this.datePipe.transform(mvt.jour, 'dd/MM/yyyy'),
-      'Vers': mvt.origine,
-      'Service': this.lstService_libelle[mvt.service],
-      'PrixUnit': this.fxPerso.round(mvt.prixunit,2),
-      'Qte': mvt.qtemouvement * mvt.sens,
-      'TotRations': totRations,
-      'CoutRation': coutRation,
-      'QteStock': mvt.article.qte_stock
-    })
-    this.fgMvt.get('CoutRation')?.disable()
-    this.fgMvt.get('QteStock')?.disable()
+    this.mvtService.mvtToForm(mvt,this.fgMvt)
   }
 
   initSubscriptions(id:string): void {
@@ -154,6 +142,9 @@ export class OneSortieComponent implements OnInit, OnDestroy {
         }
     });
 
+    this.f['Qte'].valueChanges.subscribe(() => this.onFormChanged());
+    this.f['PrixUnit'].valueChanges.subscribe(() => this.onFormChanged());
+     
     // Call getMvt
     if (id !='0') {
       this.mvtService.getMvt(id)
@@ -162,7 +153,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
           next: (mvts: MvtsRetour) => {
             const mvt = mvts.results[0] || { ...MVT0 };
             if (!this.mvt && mvt === MVT0 && this.params.jour) {
-              const jj = this.datePipe.transform(this.params.jour, 'yyyy-MM-dd');
+              const jj = this.params.jour;
               const origine = this.params.origine;
               if (jj) {
                 mvt.jour = jj;
@@ -187,6 +178,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
         this.camps = x['camps']
       })
     console.log('one-sortie.camps:',this.camps)
+
 
   } // fin de initSubscriptions
 
@@ -224,33 +216,19 @@ export class OneSortieComponent implements OnInit, OnDestroy {
     this.onQuit()
   }
 
-  onArticle(retour: Article): void {
-    console.log('one-sortie onArticle: ',retour)
-    /* Call geArticle
-    if (id !='0') {
-      this.articleServices.getMvt(id)
-        .pipe(takeUntil(this.destroy$))
-        .subscribe({
-          next: (mvts: MvtsRetour) => {
-            const mvt = mvts.results[0] || { ...MVT0 };
-            if (!this.mvt && mvt === MVT0 && this.params.jour) {
-              const jj = this.datePipe.transform(this.params.jour, 'yyyy-MM-dd');
-              const origine = this.params.origine;
-              if (jj) {
-                mvt.jour = jj;
-                mvt.origine = origine;
-              }
-            }
-            this.mvt = mvt;
-            this.setValuesMvt(mvt);
-          },
-          error: (e) => {
-            if (e !== 'Not Found') {
-              console.error('one-sortie.getMvt', e);
-            }
-          }
-        }) // fin subscribe
-      ; // fin getMvt*/
+  onArticle(article: Article): void {
+    if (article != this.mvt.article) {
+      console.log('one-sortie onArticle change: ',article)
+      this.mvt.article = article
+      this.mvt.nbrations =  this.fxPerso.produit(article.rations,this.mvt.qtemouvement)
+      this.setValuesMvt(this.mvt)  
+    }
+  }
+
+  onFormChanged(){
+    this.mvt.qtemouvement = this.fgMvt.get('Qte')?.value;
+    this.mvt.qtemouvement = this.fgMvt.get('Qte')?.value;
+
   }
 
   save(): void {

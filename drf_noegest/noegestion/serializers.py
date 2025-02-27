@@ -43,6 +43,19 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         data['isActive'] = self.user.is_active
         return data
 
+# permet de ne pas transposer en string les DecimalFields 'coerce_to_string' = False
+class BaseModelSerializer(serializers.ModelSerializer):
+
+    def build_standard_field(self, field_name, model_field):
+        field_class, field_kwargs = super().build_standard_field(field_name, model_field)
+        if isinstance(model_field, models.DecimalField):
+            field_kwargs['coerce_to_string'] = False
+        return field_class, field_kwargs
+
+    def build_relational_field(self, field_name, relation_info):
+        field_class, field_kwargs = super().build_relational_field(field_name, relation_info)
+        return field_class, field_kwargs
+
 # Sérializers simples -----------------
 
 class GeAnalytiqueSerializer(ModelSerializer):
@@ -84,10 +97,11 @@ class StFournisseurSerializer(ModelSerializer):
 
         return value
 
-class StArticleSerializer(ModelSerializer):
+class StArticleSerializer(BaseModelSerializer):
 
     class Meta:
         model = StArticle
+
         fields = ['id','nom','nom_court','magasin','rayon','qte_stock','prix_moyen',
                   'unite_stock','colis_par','unite_colis','rations','fournisseur',
                   'tx_tva','dernier_achat']
@@ -125,7 +139,7 @@ class StArticleSerializer(ModelSerializer):
         return data
 
 # Réponse différentiée selon nature de requête
-class StMouvementSerializer(ModelSerializer):
+class StMouvementSerializer(BaseModelSerializer):
     article = StArticleSerializer()
     #article_nom_court = serializers.SerializerMethodField()
 

@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { DatePipe } from "@angular/common";
-import { isNumber } from '@ng-bootstrap/ng-bootstrap/util/util';
 
 
 @Injectable({ providedIn: 'root' })
@@ -17,7 +16,6 @@ export class FonctionsPerso{
   hoursDelta(date1: Date, date2: Date): number {
     return Math.floor(((date2.getTime()) - (date1.getTime())) / 1000 / 60 / 60)
   }
-
   deepCopy<T>(source: T): T {
     return Array.isArray(source)
     ? source.map(item => this.deepCopy(item))
@@ -57,11 +55,26 @@ export class FonctionsPerso{
         return nombre.toFixed(nbDecimales)
       } else {return " "}
   }
-  round(nombre?:unknown,nbDecimales?:number){
+  stringToNum(input: string|undefined): number {
+    const convertedNumber = Number(input);
+    return isNaN(convertedNumber) ? 0 : convertedNumber;
+  }
+  round(nombre?:unknown,nbDecimales?:number): number{
     if (!nbDecimales) {nbDecimales = 2}
     if (typeof nombre == 'number') {
       const puissance10 = Math.pow(10, nbDecimales)
       return Math.round(nombre * puissance10) / puissance10
-    } else return nombre
+    } else return 0
+  }
+  dateIsoToDate(date: string): Date {
+    const dte = new Date(date) 
+    return new Date(dte.getFullYear(), dte.getMonth(), dte.getDate());
+  }
+  compareDates(date1: Date, date2: Date): boolean {
+    const dt2 = date2
+    const dt1 = date1
+    return dt1.getFullYear() === dt2.getFullYear() &&
+           dt1.getMonth() === dt2.getMonth() &&
+           dt1.getDate() === dt2.getDate();
   }
 }
