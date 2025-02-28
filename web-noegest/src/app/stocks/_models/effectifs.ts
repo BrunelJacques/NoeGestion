@@ -1,6 +1,6 @@
 export interface Effectifs {
   id: number;
-  jour: Date;
+  jour:string;
   analytique: number;
   midiclients: number;
   midiservice: number;
@@ -9,5 +9,5 @@ export interface Effectifs {
   prevuclients: number;
   prevuservice: number;
   ordi: string;
-  datesaisie: Date;
+  datesaisie: string;
 }

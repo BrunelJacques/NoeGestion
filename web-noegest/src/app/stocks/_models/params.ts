@@ -2,24 +2,24 @@ import { BehaviorSubject } from "rxjs";
 
 export const  PARAMS0: Params= {
   id: 0,
-  jour: new Date(2022,8,17),//valeur pour démo, provisoire
+  jour: '2022-08-17',//valeur pour démo, provisoire
   origine: "repas",
   service: 0,
   camp: "00",
   fournisseur: "",
   tva: "en TTC",
-  modif: new Date()
+  modif: new Date().toISOString() // today
 }
 
 export interface Params {
   id: number;
-  jour: Date;
+  jour: string;
   origine: string;
   service: number;
   camp: string;
   fournisseur: string;
   tva: string;
-  modif: Date
+  modif: string
 }
 
 export interface Camp {

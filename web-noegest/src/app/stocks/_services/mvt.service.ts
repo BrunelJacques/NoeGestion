@@ -94,7 +94,7 @@ export class MvtService {
   }
 
   formToMvt(form:FormGroup, mvt:Mouvement):void {
-    mvt.jour = new Date(form.value.Jour),
+    mvt.jour = new Date(form.value.Jour).toISOString(),
     mvt.origine = form.value.Vers,
     mvt.service = this.lstService_libelle.indexOf(form.value.Service),
     mvt.prixunit = form.value.PrixUnit

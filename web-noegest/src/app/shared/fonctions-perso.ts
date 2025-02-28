@@ -30,15 +30,6 @@ export class FonctionsPerso{
           }, Object.create(Object.getPrototypeOf(source)))
     : source as T;
   }
-  dateAnsiToFr(dateString: string| undefined ):string|null {
-    if (typeof dateString === 'string') {
-      const date = new Date(Date.parse(dateString))
-      const datePipe = new DatePipe('fr-FR')
-      return datePipe.transform(date,'dd/MM/yyyy')
-    } else {
-      return null
-    }
-  }
   produit(facteur1: unknown, facteur2: unknown): number{
     const fact1 = typeof facteur1 === "number" ? facteur1 : 1;
     const fact2 = typeof facteur2 == 'number' ? facteur2 : 1; 
@@ -66,9 +57,22 @@ export class FonctionsPerso{
       return Math.round(nombre * puissance10) / puissance10
     } else return 0
   }
+  dateIsoToFr(dateString: string| undefined ):string|null {
+    if (typeof dateString === 'string') {
+      const date = new Date(Date.parse(dateString))
+      return date.toLocaleDateString("fr-FR")
+      //const datePipe = new DatePipe('fr-FR')
+      //return datePipe.transform(date,'dd/MM/yyyy')
+    } else {
+      return null
+    }
+  }
   dateIsoToDate(date: string): Date {
     const dte = new Date(date) 
     return new Date(dte.getFullYear(), dte.getMonth(), dte.getDate());
+  }
+  dateToIso(date:Date):string {
+    return date.toISOString()
   }
   compareDates(date1: Date, date2: Date): boolean {
     const dt2 = date2

@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -109,7 +111,7 @@ class StMouvementViewset(ModelViewSet):
             elif id != '0':
                 ret = StMouvement.objects.filter(id=id)
             else:
-                ret = None
+                ret = StMouvement.objects.filter(jour='2022-08-17')
             return ret
 
     def perform_create(self, serializer):

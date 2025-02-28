@@ -139,7 +139,7 @@ class StArticleSerializer(BaseModelSerializer):
         return data
 
 # Réponse différentiée selon nature de requête
-class StMouvementSerializer(BaseModelSerializer):
+class StMouvementSerializer(ModelSerializer):
     article = StArticleSerializer()
     #article_nom_court = serializers.SerializerMethodField()
 

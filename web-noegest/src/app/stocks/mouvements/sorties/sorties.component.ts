@@ -31,7 +31,7 @@ export class SortiesComponent implements OnInit, OnDestroy {
 
   lstorigine_codes = Constantes.LSTORIGINE_SORTIES.map((x: { code: unknown })=>x.code) ;
   lstservice = Constantes.LSTSERVICE
-  ansiToFr = this.fp.dateAnsiToFr
+  ansiToFr = this.fp.dateIsoToFr
 
   constructor(
     private paramsService: ParamsService,
@@ -65,10 +65,10 @@ export class SortiesComponent implements OnInit, OnDestroy {
   }
   mvtsFilter = (mvt: Mouvement) => {
     let ret = true
-    // filtre sur la date
-    const dte = this.fp.compareDates
 
-    if (!(dte(mvt.jour,this.params.jour))) {
+    // filtre sur la date
+
+    if (mvt.jour != this.params.jour) {
       ret = false
     }
     // filtre sur le type d'origine du mouvement

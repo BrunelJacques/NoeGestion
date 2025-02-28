@@ -113,7 +113,7 @@ export class ParamsComponent implements OnInit, OnDestroy {
     }
     this.loading = true,
     this.paramsService.formToParams(this.paramsForm,this.params),
-    this.params.modif = new Date(),
+    this.params.modif = new Date().toISOString(),
     this.paramsService.setParams(this.params)
     this.onQuit()
   }

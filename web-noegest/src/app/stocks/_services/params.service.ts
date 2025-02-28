@@ -93,7 +93,7 @@ export class ParamsService {
   formToParams(form:{value:Params}, params:Params):void {
     if (form.value.origine != 'camp') {
       form.value.camp = '00'}
-    params.jour = new Date(form.value.jour),
+    params.jour = new Date(form.value.jour).toISOString(),
     params.origine = form.value.origine,
     params.camp = form.value.camp,
     params.service = this.lstservice_code.indexOf(form.value.service),
