@@ -70,6 +70,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
     if (id) {this.id = id}
     this.initSubscriptions(this.id)
     this.initForm()
+    this.initSubscriptForm()
   }
 
   ngOnDestroy(): void {
@@ -142,9 +143,6 @@ export class OneSortieComponent implements OnInit, OnDestroy {
         }
     });
 
-    this.f['Qte'].valueChanges.subscribe(() => this.onFormChanged());
-    this.f['PrixUnit'].valueChanges.subscribe(() => this.onFormChanged());
-     
     // Call getMvt
     if (id !='0') {
       this.mvtService.getMvt(id)
@@ -182,6 +180,11 @@ export class OneSortieComponent implements OnInit, OnDestroy {
 
   } // fin de initSubscriptions
 
+  initSubscriptForm() : void {
+    this.f['Qte'].valueChanges.subscribe(() => this.onFormChanged());
+    this.f['PrixUnit'].valueChanges.subscribe(() => this.onFormChanged());
+     
+  }
   // équivalent route this.camps mais après ouverture
   demo_getCamps() {
     this.paramsService.campsSubj$
@@ -221,6 +224,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
       console.log('one-sortie onArticle change: ',article)
       this.mvt.article = article
       this.mvt.nbrations =  this.fxPerso.produit(article.rations,this.mvt.qtemouvement)
+      this.mvt.prixunit = article.prix_moyen ? article.prix_moyen : 0.0
       this.setValuesMvt(this.mvt)  
     }
   }

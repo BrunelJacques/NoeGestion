@@ -88,7 +88,6 @@ export class SortiesComponent implements OnInit, OnDestroy {
       ){
       ret = false
     }
-    console.log('test ',ret)
     return ret
   }
 

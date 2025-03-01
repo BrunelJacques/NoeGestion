@@ -72,7 +72,7 @@ export class FonctionsPerso{
     return new Date(dte.getFullYear(), dte.getMonth(), dte.getDate());
   }
   dateToIso(date:Date):string {
-    return date.toISOString()
+      return date.toISOString()
   }
   compareDates(date1: Date, date2: Date): boolean {
     const dt2 = date2

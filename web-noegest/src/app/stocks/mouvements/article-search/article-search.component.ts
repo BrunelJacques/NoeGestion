@@ -59,6 +59,9 @@ export class ArticleSearchComponent implements OnInit, OnDestroy {
 
   // appelle un lot de noms d'articles contenant 'term'
   searchNoms(term: string): void {
+    if (term == '') {
+      term = this.article.nom.slice(0,3)
+    }
     this.articleService.searchArticlesNom(term)
       .pipe(
         takeUntil(this.destroy$),
