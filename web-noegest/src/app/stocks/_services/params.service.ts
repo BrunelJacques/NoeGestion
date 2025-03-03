@@ -18,11 +18,13 @@ export interface RayonsRetour {count: number; results: Rayon[];}
 @Injectable({ providedIn: 'root'})
 
 export class ParamsService {
-  lstservice = Constantes.LSTSERVICE;
-  lstservice_code = this.lstservice.map((x) => x.id)
+  lstService = Constantes.LSTSERVICE;
+  lstService_code = this.lstService.map((x) => x.id)
+  lstCamps!: []
+
   public paramsSubj$= new BehaviorSubject<Params>(PARAMS0);
-  public campsSubj$= new BehaviorSubject<Camp[]>([]);
-  private key = "stParams";
+  camps!:Camp[]
+  key = "stParams";
   public fournisseurs: Fournisseur[] = [];
   public rayons: Rayon[] = [] ;
   public magasins: Magasin[] = [];
@@ -37,7 +39,7 @@ export class ParamsService {
     private fp: FonctionsPerso,
     ){
       this.getStoredParams()
-      this.getCampsSubj()
+      this.setCamps()
       this.initParamsOptions()
     }
 
@@ -85,7 +87,7 @@ export class ParamsService {
       'origine': params.origine,
       'camp': params.camp,
       'tva': params.tva,
-      'service': this.lstservice[params.service].code,
+      'service': this.lstService[params.service].code,
       'fournisseur': params.fournisseur,
     })
   }
@@ -96,7 +98,7 @@ export class ParamsService {
     params.jour = new Date(form.value.jour).toISOString().slice(0,10),
     params.origine = form.value.origine,
     params.camp = form.value.camp,
-    params.service = this.lstservice_code.indexOf(form.value.service),
+    params.service = this.lstService_code.indexOf(form.value.service),
     params.fournisseur = form.value.fournisseur,
     params.tva = form.value.tva
   }
@@ -116,21 +118,17 @@ export class ParamsService {
     return []
   }
 
-  getCampsSubj(){
-    const url = this.constantes.GEANALYTIQUE_URL+"?axe=ACTIVITES&obsolete=False"
-    this.http.get<CampsRetour>(url)
-      .pipe(
-        catchError(this.handleError.handleError<CampsRetour>('getHttp', { count: 0, results: [] }))
-      )
+  setCamps(){
+    this.getCamps()
       .subscribe(
         (data) => {
-          this.campsSubj$.next(data.results)
-          console.log(this.campsSubj$)
-        }
+          this.camps = data
+          console.log('paramsService.camps: ',data)
+        },
       );
     }
 
-  // appelé par resolver route, avant ouverture de one-sortie, mis dans datax['camps']
+  // call by resolver route, before opening one-sortie, set in datax['camps']
   getCamps(){
     const url = this.constantes.GEANALYTIQUE_URL+"?axe=ACTIVITES&obsolete=False"
     return this.http.get<CampsRetour>(url)
@@ -145,7 +143,7 @@ export class ParamsService {
       )
     }
 
-      getFournisseurs() {
+  getFournisseurs() {
     if (this.fournisseurs.length == 0) {
       const url = this.constantes.STFOURNISSEUR_URL
       this.http.get<FournisseursRetour>(url)

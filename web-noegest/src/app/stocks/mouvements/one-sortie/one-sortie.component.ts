@@ -6,7 +6,6 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MvtService } from '../../_services/mvt.service';
 import { Camp, FormField, Params } from '../../_models/params';
 import { AlertService, SeeyouService } from 'src/app/general/_services';
-import { Constantes } from 'src/app/constantes';
 import { ActivatedRoute } from '@angular/router';
 import { FonctionsPerso } from 'src/app/shared/fonctions-perso';
 import { Article } from '../../_models/article';
@@ -27,25 +26,12 @@ export class OneSortieComponent implements OnInit, OnDestroy {
   id!: string;
   mvt!: Mouvement;
   camps!: Camp[];
-  camps2!: Camp[];
+  lstCamps_lib!:string[]
   fgMvt!: FormGroup;
   fgPar!: FormGroup;
-
-  lstService = Constantes.LSTSERVICE;
-  lstService_libelle = this.lstService.map((x) => x.libelle)
+  fieldsMvt: FormField[] = []
   submitted = false;
-
-  fieldsMvt: FormField[] = [
-    { label: 'Jour', type: 'date'},
-    { label: 'Vers', type: 'text'},
-    { label: 'Service', type: 'select',
-      options: this.lstService_libelle },
-    { label: 'PrixUnit', type: 'number'},
-    { label: 'Qte', type: 'number' },
-    { label: 'TotRations', type: 'number' },
-    { label: 'CoutRation', type: 'number' },
-    { label: 'QteStock', type: 'number' },
-  ];
+  showCamp = false
 
   constructor(
     private seeyouService: SeeyouService,
@@ -79,6 +65,21 @@ export class OneSortieComponent implements OnInit, OnDestroy {
   }
 
   initForm() {
+    this.fieldsMvt= [
+      { label: 'Jour', type: 'date'},
+      { label: 'Vers', type: 'select',
+          options: this.mvtService.lstOrigine_lib},
+      { label: 'Camp', type: 'select',
+          options: this.lstCamps_lib},
+      { label: 'Service', type: 'select',
+          options: this.mvtService.lstService_libelle },
+      { label: 'PrixUnit', type: 'number'},
+      { label: 'Qte', type: 'number' },
+      { label: 'TotRations', type: 'number' },
+      { label: 'CoutRation', type: 'number' },
+      { label: 'QteStock', type: 'number' },
+    ];
+
     // form Filtres actifs (params)
     this.fgPar = this.fbPar.group({
       jour: this.datePipe.transform(this.params.jour, 'yyyy-MM-dd'),
@@ -94,14 +95,6 @@ export class OneSortieComponent implements OnInit, OnDestroy {
       this.fgMvt.addControl(field.label,this.fbMvt.control(field.value));
       this.fgMvt.get(field.label)?.setValidators([Validators.required,])
     });
-  }
-
-  setValuesPar(params:Params) {
-    this.fgPar.patchValue({
-      'Jour': this.datePipe.transform(params.jour, 'yyyy-MM-dd'),
-      'origine': params.origine,
-      'camp': this.params.camp,
-    })
   }
 
   setValuesMvt(mvt:Mouvement) {
@@ -131,9 +124,6 @@ export class OneSortieComponent implements OnInit, OnDestroy {
         next: (data: Params) => {
           if ( data ) {
             this.params = data;
-            if (data && this.fgPar) {
-              this.setValuesPar(data)
-            }
           }
         },
         error: (e: string) => {
@@ -174,32 +164,15 @@ export class OneSortieComponent implements OnInit, OnDestroy {
     this.route.data
       .subscribe(x => {
         this.camps = x['camps']
+        this.lstCamps_lib = this.camps.map(x => x.nom)
       })
     console.log('one-sortie.camps:',this.camps)
-
-
   } // fin de initSubscriptions
 
   initSubscriptForm() : void {
     this.f['Qte'].valueChanges.subscribe(() => this.onFormChanged());
     this.f['PrixUnit'].valueChanges.subscribe(() => this.onFormChanged());
      
-  }
-  // équivalent route this.camps mais après ouverture
-  demo_getCamps() {
-    this.paramsService.campsSubj$
-    .pipe( takeUntil(this.destroy$) )
-    .subscribe({
-      next: (data:Camp[]) => {
-        this.camps2 = data;
-      },
-      error: (e) => {
-        if (e != 'Camps Not Found') {
-          console.error(e)
-        }
-      }
-    });
-
   }
 
   onQuit(): void {
@@ -231,8 +204,6 @@ export class OneSortieComponent implements OnInit, OnDestroy {
 
   onFormChanged(){
     this.mvt.qtemouvement = this.fgMvt.get('Qte')?.value;
-    this.mvt.qtemouvement = this.fgMvt.get('Qte')?.value;
-
   }
 
   save(): void {

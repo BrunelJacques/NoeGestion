@@ -31,7 +31,6 @@ export class SortiesComponent implements OnInit, OnDestroy {
 
   lstorigine_codes = Constantes.LSTORIGINE_SORTIES.map((x: { code: unknown })=>x.code) ;
   lstservice = Constantes.LSTSERVICE
-  ansiToFr = this.fp.dateIsoToFr
 
   constructor(
     private paramsService: ParamsService,
@@ -39,7 +38,7 @@ export class SortiesComponent implements OnInit, OnDestroy {
     private datePipe: DatePipe,
     private seeyouService:SeeyouService,
     private alertService: AlertService,
-    private fp: FonctionsPerso,
+    public fp: FonctionsPerso,
     ) {this.initSubscriptions()}
 
   initSubscriptions() {

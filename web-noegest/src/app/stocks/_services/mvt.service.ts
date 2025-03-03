@@ -14,8 +14,11 @@ import { DatePipe } from '@angular/common';
 export class MvtService {
   mvts: Mouvement[] = []
   url: string | undefined
-  lstService = Constantes.LSTSERVICE;
-  lstService_libelle = this.lstService.map((x) => x.libelle)
+  
+  lstOrigine = Constantes.LSTORIGINE_SORTIES;
+  lstOrigine_cod = this.lstOrigine.map((x)=>x.code);
+  lstOrigine_lib = this.lstOrigine.map((x)=>x.libelle);
+  lstService_libelle = Constantes.LSTSERVICE.map((x) => x.libelle)
 
   constructor(
     private cst: Constantes,
@@ -81,7 +84,8 @@ export class MvtService {
 
     form.patchValue({
       'Jour': this.datePipe.transform(mvt.jour, 'dd/MM/yyyy'),
-      'Vers': mvt.origine,
+      'Vers': this.lstOrigine_lib[this.lstOrigine_cod.indexOf(mvt.origine)],
+      //'Camp': this.lstCamps_lib[this.lstCamps_cod.indexOf(mvt.analytique)],
       'Service': this.lstService_libelle[mvt.service],
       'PrixUnit': this.fxPerso.round(mvt.prixunit,2),
       'Qte': mvt.qtemouvement * mvt.sens,

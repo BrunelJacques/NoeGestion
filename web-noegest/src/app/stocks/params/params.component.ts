@@ -119,19 +119,8 @@ export class ParamsComponent implements OnInit, OnDestroy {
   }
 
   getCamps(): void {
-    this.paramsService.campsSubj$
-      .subscribe({
-        next: (data:Camp[]) => {
-          this.camps = data;
-        },
-        error: (e) => {
-          if (e != 'Camps Not Found') {
-            console.error(e)
-          }
-        }
-      });
-
-    }
+    this.camps = this.paramsService.camps 
+  }
 
   getParams(): void {
     this.loading = true;

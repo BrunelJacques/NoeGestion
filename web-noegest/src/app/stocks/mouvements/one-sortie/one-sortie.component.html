@@ -49,42 +49,42 @@
       </app-article-search>
 
       <!-- gestion du mouvement -->
-      <div>
-        <div class="row"
-        *ngFor="let field of fieldsMvt">
+      <ng-container *ngFor="let field of fieldsMvt">
+        <div class="row" *ngIf="showCamp || field.label !== 'Camp'">
           <div class="col-4 ">
-            <label for="{{ field.label}}">{{ field.label }}</label>
+            <label for="{{ field.label }}">{{ field.label }}</label>
           </div>
           <div class="col-8" [ngSwitch]="field.type">
             <select class="form-control my-1"
-            required
-            *ngSwitchCase="'select'"
-            aria-label="{field.label}"
-            type="field.type"
-            [formControlName]="field.label">
+                    required
+                    *ngSwitchCase="'select'"
+                    aria-label="{field.label}"
+                    type="field.type"
+                    [formControlName]="field.label">
               <option *ngFor="let option of field.options" [value]="option">{{ option }}</option>
             </select>
             <input class="form-control my-1"
-            *ngSwitchCase="'label'"
-            aria-label="{field.label}"
-            id="{field.label}"
-            type="text"
-            readonly
-            >
-            <div *ngIf="submitted && f['{{ field.label }}'].errors" class="invalid-feedback" id="{{ field.label}}">
-              <div *ngIf="f['{{ field.label }}'].errors['required']">Choisissez une valeur'
+                   *ngSwitchCase="'label'"
+                   aria-label="{field.label}"
+                   id="{field.label}"
+                   type="text"
+                   readonly>
+            <div *ngIf="submitted && f['{{ field.label }}'].errors" 
+                 class="invalid-feedback" 
+                 id="{{ field.label }}">
+              <div *ngIf="f['{{ field.label }}'].errors['required']">
+                Choisissez une valeur
               </div>
             </div>
             <input class="form-control my-1"
-            required
-            *ngSwitchDefault
-            aria-label="{field.label}"
-            type="field.type"
-            [formControlName]="field.label" />
+                   required
+                   *ngSwitchDefault
+                   aria-label="{field.label}"
+                   type="field.type"
+                   [formControlName]="field.label" />
           </div>
-
         </div>
-      </div>
+      </ng-container>
     </form>
   </div>
 </div>

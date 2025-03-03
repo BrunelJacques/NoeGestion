@@ -44,7 +44,7 @@
         </td>
         <td routerLink="/stocks/onesortie/{{mvt.id}}"> {{mvt.article.qte_stock| number : '1.0-2'}} </td>
         <td class= "small10 date"  routerLink="/stocks/onesortie/{{mvt.id}}"> 
-          {{ansiToFr(mvt.article.dernier_achat)}} 
+          {{fp.dateIsoToFr(mvt.article.dernier_achat)}} 
         </td>
       </tr>
     </tbody>
