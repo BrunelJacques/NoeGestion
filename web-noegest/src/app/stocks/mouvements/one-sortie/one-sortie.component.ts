@@ -32,6 +32,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
   fieldsMvt: FormField[] = []
   submitted = false;
   showCamp = false
+  showService = true
 
   constructor(
     private seeyouService: SeeyouService,
@@ -68,7 +69,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
     this.fieldsMvt= [
       { label: 'Jour', type: 'date'},
       { label: 'Vers', type: 'select',
-          options: this.mvtService.lstOrigine_lib},
+          options: this.mvtService.lstOrigine_lib.slice(0,-1)},
       { label: 'Camp', type: 'select',
           options: this.lstCamps_lib},
       { label: 'Service', type: 'select',
@@ -172,7 +173,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
   initSubscriptForm() : void {
     this.f['Qte'].valueChanges.subscribe(() => this.onFormChanged());
     this.f['PrixUnit'].valueChanges.subscribe(() => this.onFormChanged());
-     
+    this.f['Vers'].valueChanges.subscribe(() => this.onFormChanged());     
   }
 
   onQuit(): void {
@@ -204,6 +205,12 @@ export class OneSortieComponent implements OnInit, OnDestroy {
 
   onFormChanged(){
     this.mvt.qtemouvement = this.fgMvt.get('Qte')?.value;
+    const vers = this.fgMvt.get('Vers')?.value;
+    if (vers == 'Camp Extérieur') { this.showCamp = true
+    } else {this.showCamp = false}
+    if (vers == 'Repas en cuisine') { this.showService = true
+    } else {this.showService = false}
+    console.log('showService: ',vers ,this.showService)
   }
 
   save(): void {

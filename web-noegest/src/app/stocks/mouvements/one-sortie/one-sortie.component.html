@@ -50,7 +50,8 @@
 
       <!-- gestion du mouvement -->
       <ng-container *ngFor="let field of fieldsMvt">
-        <div class="row" *ngIf="showCamp || field.label !== 'Camp'">
+        <div class="row" *ngIf="!((!showCamp && field.label === 'Camp')
+                                  || (!showService && field.label === 'Service'))">
           <div class="col-4 ">
             <label for="{{ field.label }}">{{ field.label }}</label>
           </div>
