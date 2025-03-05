@@ -16,20 +16,38 @@ export class FonctionsPerso{
   hoursDelta(date1: Date, date2: Date): number {
     return Math.floor(((date2.getTime()) - (date1.getTime())) / 1000 / 60 / 60)
   }
-  deepCopy<T>(source: T): T {
-    return Array.isArray(source)
-    ? source.map(item => this.deepCopy(item))
-    : source instanceof Date
-    ? new Date(source.getTime())
-    : source && typeof source === 'object'
-          ? Object.getOwnPropertyNames(source).reduce((o, prop) => {
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-              Object.defineProperty(o, prop, Object.getOwnPropertyDescriptor(source, prop)!);
-              o[prop] = this.deepCopy((source as { [key: string]: unknown })[prop]);
-              return o;
-          }, Object.create(Object.getPrototypeOf(source)))
-    : source as T;
+  deepCopy<T>(obj: T): T {
+    if (obj === null || typeof obj !== 'object') {
+      return obj as T;
+    }
+    return Array.isArray(obj)
+    ? obj.map(item => this.deepCopy(item))
+    : obj instanceof Date
+      ? new Date(obj.getTime())
+      : Object.getOwnPropertyNames(obj)
+        .reduce((o, prop) => {
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            Object.defineProperty(o, prop, Object.getOwnPropertyDescriptor(obj, prop)!);
+            o[prop] = this.deepCopy((obj as { [key: string]: unknown })[prop]);
+            return o;
+        }, 
+        Object.create(Object.getPrototypeOf(obj)))
   }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  deepEqual(obj1: any, obj2: any): boolean {
+    if (obj1 === obj2) return true;
+    if (typeof obj1 !== 'object' || typeof obj2 !== 'object' || obj1 == null || obj2 == null) return false;
+
+    const keys1 = Object.keys(obj1);
+    const keys2 = Object.keys(obj2);
+
+    if (keys1.length !== keys2.length) return false;
+
+    for (const key of keys1) {
+        if (!keys2.includes(key) || !this.deepEqual(obj1[key], obj2[key])) return false;
+    }
+    return true;
+}
   produit(facteur1: unknown, facteur2: unknown): number{
     const fact1 = typeof facteur1 === "number" ? facteur1 : 1;
     const fact2 = typeof facteur2 == 'number' ? facteur2 : 1; 

@@ -24,7 +24,7 @@ export class MvtService {
     private cst: Constantes,
     private http: HttpClient,
     private handleError: HandleError,
-    private fxPerso: FonctionsPerso,
+    private fp: FonctionsPerso,
     private datePipe: DatePipe,
   ) {}
 
@@ -73,38 +73,42 @@ export class MvtService {
       );
   }
 
-  mvtToForm(mvt:Mouvement,form:FormGroup){
-    let nbrations = mvt.qtemouvement    
+  calculeMvt(mvt:Mouvement) {
+    let nbrations = mvt.article.rations ?? 1
+    nbrations *= mvt.qtemouvement    
     if (mvt.nbrations) {nbrations = mvt.nbrations}
+    mvt.article.qte_stock ? (mvt.article.qte_stock  += mvt.qtemouvement) : 0
+    mvt.nbrations =  Math.abs(nbrations)
+  }
 
-    const fx = this.fxPerso
-    const coutRation = fx.round(fx.quotient(mvt.prixunit, mvt.nbrations))
-    const artQteStock = mvt.article.qte_stock ?? 0
-    const qteStock =artQteStock + mvt.qtemouvement
-
+  mvtToForm(mvt:Mouvement,form:FormGroup){
+    console.log('mvtToForm', mvt.sens, mvt.qtemouvement)
+    const fp = this.fp
     form.patchValue({
       'Jour': this.datePipe.transform(mvt.jour, 'dd/MM/yyyy'),
       'Vers': this.lstOrigine_lib[this.lstOrigine_cod.indexOf(mvt.origine)],
       //'Camp': this.lstCamps_lib[this.lstCamps_cod.indexOf(mvt.analytique)],
       'Service': this.lstService_libelle[mvt.service],
-      'PrixUnit': this.fxPerso.round(mvt.prixunit,2),
+      'PrixUnit': fp.round(mvt.prixunit,2),
       'Qte': mvt.qtemouvement * mvt.sens,
-      'TotRations': Math.abs(nbrations),
-      'CoutRation': Math.abs(coutRation),
-      'QteStock': qteStock
+      'TotRations': mvt.nbrations,
+      'CoutRation': fp.round(fp.quotient(mvt.prixunit, mvt.nbrations)),
+      'QteStock': mvt.article.qte_stock
     })
     form.get('CoutRation')?.disable()
     form.get('QteStock')?.disable()
   }
 
-  formToMvt(form:FormGroup, mvt:Mouvement):void {
-    mvt.jour = new Date(form.value.Jour).toISOString(),
-    mvt.origine = form.value.Vers,
-    mvt.service = this.lstService_libelle.indexOf(form.value.Service),
-    mvt.prixunit = form.value.PrixUnit
-    mvt.qtemouvement = form.value.Qte
-    //mvt.nbrations = form.TotRations
-  }
 
+  retroQteStock(mvt:Mouvement) :Mouvement {
+    // retirer la variation de stock induite par le mouvement avant sa modif
+    const idMvt = mvt.id ?? 0
+    if (idMvt > 0) {
+      let qteStock = mvt.article.qte_stock ?? 0
+      qteStock -= mvt.qtemouvement
+      mvt.article.qte_stock = qteStock
+    }
+    return mvt
+  }
 
 }

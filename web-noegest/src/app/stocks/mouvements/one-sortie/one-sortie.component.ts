@@ -25,6 +25,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
 
   id!: string;
   mvt!: Mouvement;
+  mvtOld!: Mouvement;
   camps!: Camp[];
   lstCamps_lib!:string[]
   fgMvt!: FormGroup;
@@ -37,20 +38,20 @@ export class OneSortieComponent implements OnInit, OnDestroy {
   constructor(
     private seeyouService: SeeyouService,
     private paramsService: ParamsService,
+    private mvtService: MvtService,
+    private fp: FonctionsPerso,
     private fbMvt:FormBuilder,
     private fbPar:FormBuilder,
     private alertService: AlertService,
     private datePipe: DatePipe,
     private route: ActivatedRoute,
-    private mvtService: MvtService,
-    private fxPerso: FonctionsPerso,
     ) {}
 
   // convenience getter for easy access to form fieldsMvt
   get f() { return this.fgMvt.controls; }
   get fPar() { return this.fgPar.controls; }
 
-  isNull = this.fxPerso.isNull
+  isNull = this.fp.isNull
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id')
@@ -96,10 +97,6 @@ export class OneSortieComponent implements OnInit, OnDestroy {
       this.fgMvt.addControl(field.label,this.fbMvt.control(field.value));
       this.fgMvt.get(field.label)?.setValidators([Validators.required,])
     });
-  }
-
-  setValuesMvt(mvt:Mouvement) {
-    this.mvtService.mvtToForm(mvt,this.fgMvt)
   }
 
   initSubscriptions(id:string): void {
@@ -149,8 +146,10 @@ export class OneSortieComponent implements OnInit, OnDestroy {
                 mvt.origine = origine;
               }
             }
-            this.mvt = mvt;
-            this.setValuesMvt(mvt);
+            this.mvt = this.mvtService.retroQteStock(mvt)
+            this.mvtService.mvtToForm(this.mvt,this.fgMvt)
+            this.mvtOld = this.fp.deepCopy(this.mvt)
+
           },
           error: (e) => {
             if (e !== 'Not Found') {
@@ -175,6 +174,32 @@ export class OneSortieComponent implements OnInit, OnDestroy {
     this.f['PrixUnit'].valueChanges.subscribe(() => this.onFormChanged());
     this.f['Vers'].valueChanges.subscribe(() => this.onFormChanged());     
   }
+  onFormChanged(){
+    const mvtold = this.mvtOld ? this.mvtOld : this.fp.deepCopy(this.mvt)
+    const mvt = this.fp.deepCopy(this.mvt)
+    // tests the treatment
+    if (!this.fp.deepEqual(mvtold, mvt)) {
+      console.log('mvt.article.qte_stock0',this.mvt.article.qte_stock,mvtold)
+      this.mvt.qtemouvement = this.fgMvt.get('Qte')?.value * mvtold?.sens
+      const deltaqte = this.mvt.qtemouvement - mvtold.qtemouvement
+      // when a new value of qtemouvement is entered
+      if (deltaqte !== 0) {
+        //ajust others values of mvt
+        this.mvtService.calculeMvt(this.mvt)
+        console.log('mvt.article.qte_stock1',deltaqte, this.mvt.article.qte_stock,mvtold,this.mvt)
+        }
+      // save the modifications
+      this.mvtOld = this.fp.deepCopy(this.mvt)
+      //  refreshes the form displayed  
+      this.mvtService.mvtToForm(this.mvt,this.fgMvt)
+    }
+    // enable controls
+    const vers = this.fgMvt.get('Vers')?.value;
+    if (vers == 'Camp Extérieur') { this.showCamp = true
+    } else {this.showCamp = false}
+    if (vers == 'Repas en cuisine') { this.showService = true
+    } else {this.showService = false}
+  }
 
   onQuit(): void {
     this.seeyouService.goBack()
@@ -194,23 +219,17 @@ export class OneSortieComponent implements OnInit, OnDestroy {
   }
 
   onArticle(article: Article): void {
+    // l'appel d'article a été fait par article-search
     if (article != this.mvt.article) {
-      console.log('one-sortie onArticle change: ',article)
       this.mvt.article = article
-      this.mvt.nbrations =  this.fxPerso.produit(article.rations,this.mvt.qtemouvement)
-      this.mvt.prixunit = article.prix_moyen ? article.prix_moyen : 0.0
-      this.setValuesMvt(this.mvt)  
+      // enlève la quantité du mouvement du stock si modif
+      this.mvt = this.mvtService.retroQteStock(this.mvt);
+      this.mvt.nbrations =  this.fp.produit(article.rations,this.mvt.qtemouvement);
+      this.mvt.prixunit = article.prix_moyen ? article.prix_moyen : 0.0;
+      this.mvtService.mvtToForm(this.mvt,this.fgMvt);
+      this.mvtOld = this.fp.deepCopy(this.mvt)
+      console.log('one-sortie onArticle change: ',this.mvt,article)
     }
-  }
-
-  onFormChanged(){
-    this.mvt.qtemouvement = this.fgMvt.get('Qte')?.value;
-    const vers = this.fgMvt.get('Vers')?.value;
-    if (vers == 'Camp Extérieur') { this.showCamp = true
-    } else {this.showCamp = false}
-    if (vers == 'Repas en cuisine') { this.showService = true
-    } else {this.showService = false}
-    console.log('showService: ',vers ,this.showService)
   }
 
   save(): void {
