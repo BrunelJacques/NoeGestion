@@ -14,7 +14,7 @@ import { DatePipe } from '@angular/common';
 export class MvtService {
   mvts: Mouvement[] = []
   url: string | undefined
-  
+
   lstOrigine = Constantes.LSTORIGINE_SORTIES;
   lstOrigine_cod = this.lstOrigine.map((x)=>x.code);
   lstOrigine_lib = this.lstOrigine.map((x)=>x.libelle);
@@ -30,7 +30,7 @@ export class MvtService {
 
   getMvt(id: string): Observable<MvtsRetour> {
     const url = `${this.cst.STMOUVEMENT_URL}/?id=${id}`;
-    
+
     return this.http.get<MvtsRetour>(url)
       .pipe(
         tap(x => x.count ?
@@ -40,7 +40,7 @@ export class MvtService {
         catchError(this.handleError.handleError<MvtsRetour>(`getMvt id=${id}`))
       );
   }
- 
+
   /** PUT mvt by id, http updates an existing item */
   putMvt(id: string, updatedMvt: Mouvement): Observable<Mouvement | null> {
     const params = new HttpParams().set('id', id); // Use HttpParams for URL parameters
@@ -73,17 +73,18 @@ export class MvtService {
       );
   }
 
-  calculeMvt(mvt:Mouvement) {
+  async calculeMvt(mvt:Mouvement): Promise<void> {
     let nbrations = mvt.article.rations ?? 1
-    nbrations *= mvt.qtemouvement    
+    nbrations *= mvt.qtemouvement
     if (mvt.nbrations) {nbrations = mvt.nbrations}
     mvt.article.qte_stock ? (mvt.article.qte_stock  += mvt.qtemouvement) : 0
     mvt.nbrations =  Math.abs(nbrations)
   }
 
-  mvtToForm(mvt:Mouvement,form:FormGroup){
-    console.log('mvtToForm', mvt.sens, mvt.qtemouvement)
+  async mvtToForm(mvt:Mouvement,form:FormGroup): Promise<void> {
+    console.log('mvtToForm', mvt)
     const fp = this.fp
+    
     form.patchValue({
       'Jour': this.datePipe.transform(mvt.jour, 'dd/MM/yyyy'),
       'Vers': this.lstOrigine_lib[this.lstOrigine_cod.indexOf(mvt.origine)],
@@ -99,6 +100,15 @@ export class MvtService {
     form.get('QteStock')?.disable()
   }
 
+  async formToMvt(form:FormGroup, mvt:Mouvement): Promise<void>  {
+    console.log('formToMvt',mvt.jour,form.value.Jour)
+    mvt.jour = new Date(form.value.Jour).toISOString(),
+    mvt.origine = form.value.Vers,
+    mvt.service = this.lstService_libelle.indexOf(form.value.Service),
+    mvt.prixunit = form.value.PrixUnit
+    mvt.qtemouvement = form.value.Qte * mvt.sens
+    mvt.nbrations = form.value.TotRations
+  }
 
   retroQteStock(mvt:Mouvement) :Mouvement {
     // retirer la variation de stock induite par le mouvement avant sa modif

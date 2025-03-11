@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subject, Subscription, takeUntil } from 'rxjs';
+import { concatMap, Subject, Subscription, takeUntil } from 'rxjs';
 import { Mouvement, MVT0, MvtsRetour } from '../../_models/mouvement';
 import { DatePipe } from '@angular/common';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -19,10 +19,10 @@ import { ParamsService } from '../../_services/params.service';
 
 export class OneSortieComponent implements OnInit, OnDestroy {
 
-  private destroy$!: Subject<boolean>;
-  paramsSubscrib!:Subscription;
-  params!: Params;
+  private destroy$!: Subject<boolean>;  
+  private formChangesSubject = new Subject<void>();
 
+  params!: Params;
   id!: string;
   mvt!: Mouvement;
   mvtOld!: Mouvement;
@@ -30,7 +30,8 @@ export class OneSortieComponent implements OnInit, OnDestroy {
   lstCamps_lib!:string[]
   fgMvt!: FormGroup;
   fgPar!: FormGroup;
-  fieldsMvt: FormField[] = []
+  fieldsForm: FormField[] = [];
+  valuesForm: {[key: string]: unknown } = {};
   submitted = false;
   showCamp = false
   showService = true
@@ -47,7 +48,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     ) {}
 
-  // convenience getter for easy access to form fieldsMvt
+  // convenience getter for easy access to form fieldsForm
   get f() { return this.fgMvt.controls; }
   get fPar() { return this.fgPar.controls; }
 
@@ -67,7 +68,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
   }
 
   initForm() {
-    this.fieldsMvt= [
+    this.fieldsForm= [
       { label: 'Jour', type: 'date'},
       { label: 'Vers', type: 'select',
           options: this.mvtService.lstOrigine_lib.slice(0,-1)},
@@ -81,6 +82,10 @@ export class OneSortieComponent implements OnInit, OnDestroy {
       { label: 'CoutRation', type: 'number' },
       { label: 'QteStock', type: 'number' },
     ];
+  
+    for (const field of this.fieldsForm) {
+        this.valuesForm[field.label] = field.value;
+    }
 
     // form Filtres actifs (params)
     this.fgPar = this.fbPar.group({
@@ -93,7 +98,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
 
     // form de saisie de l'enregistrement
     this.fgMvt = this.fbMvt.group({});
-    this.fieldsMvt.forEach(field => {
+    this.fieldsForm.forEach(field => {
       this.fgMvt.addControl(field.label,this.fbMvt.control(field.value));
       this.fgMvt.get(field.label)?.setValidators([Validators.required,])
     });
@@ -116,7 +121,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
     });
 
     // getParams
-    this.paramsSubscrib = this.paramsService.paramsSubj$
+    this.paramsService.paramsSubj$
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (data: Params) => {
@@ -170,36 +175,36 @@ export class OneSortieComponent implements OnInit, OnDestroy {
   } // fin de initSubscriptions
 
   initSubscriptForm() : void {
-    this.f['Qte'].valueChanges.subscribe(() => this.onFormChanged());
-    this.f['PrixUnit'].valueChanges.subscribe(() => this.onFormChanged());
-    this.f['Vers'].valueChanges.subscribe(() => this.onFormChanged());     
+    this.f['Qte'].valueChanges.subscribe(() => this.formChangesSubject.next());
+    this.f['PrixUnit'].valueChanges.subscribe(() =>this.formChangesSubject.next());
+    this.f['Vers'].valueChanges.subscribe(() => this.formChangesSubject.next());
+    this.formChangesSubject
+        .pipe(concatMap(() => this.onFormChanged()))
+        .subscribe();
   }
-  onFormChanged(){
-    const mvtold = this.mvtOld ? this.mvtOld : this.fp.deepCopy(this.mvt)
-    const mvt = this.fp.deepCopy(this.mvt)
-    // tests the treatment
+
+  async onFormChanged(): Promise<void> {
+    console.log('onFormChanged 1', this.mvt==MVT0,this.mvt)
+    this.mvtService.formToMvt(this.fgMvt,this.mvt)
+    console.log('onFormChanged 2', this.mvt)
+    const mvtold = this.mvtOld ? this.mvtOld : this.fp.deepCopy(this.mvt);
+    const mvt = this.fp.deepCopy(this.mvt);
+    console.log('onFormChanged compare',mvtold,mvt)
     if (!this.fp.deepEqual(mvtold, mvt)) {
-      console.log('mvt.article.qte_stock0',this.mvt.article.qte_stock,mvtold)
-      this.mvt.qtemouvement = this.fgMvt.get('Qte')?.value * mvtold?.sens
-      const deltaqte = this.mvt.qtemouvement - mvtold.qtemouvement
-      // when a new value of qtemouvement is entered
-      if (deltaqte !== 0) {
-        //ajust others values of mvt
-        this.mvtService.calculeMvt(this.mvt)
-        console.log('mvt.article.qte_stock1',deltaqte, this.mvt.article.qte_stock,mvtold,this.mvt)
+        console.log('mvt.article.qte_stock0', this.mvt.article.qte_stock, mvtold);
+        this.mvt.qtemouvement = this.fgMvt.get('Qte')?.value * mvtold?.sens;
+        const deltaqte = this.mvt.qtemouvement - mvtold.qtemouvement;
+        
+        if (deltaqte !== 0) {
+            await this.mvtService.calculeMvt(this.mvt);
+            console.log('mvt.article.qte_stock1', deltaqte, this.mvt.article.qte_stock, mvtold, this.mvt);
         }
-      // save the modifications
-      this.mvtOld = this.fp.deepCopy(this.mvt)
-      //  refreshes the form displayed  
-      this.mvtService.mvtToForm(this.mvt,this.fgMvt)
+        
+        this.mvtOld = this.fp.deepCopy(this.mvt);
+        await this.mvtService.mvtToForm(this.mvt, this.fgMvt);
     }
-    // enable controls
-    const vers = this.fgMvt.get('Vers')?.value;
-    if (vers == 'Camp Extérieur') { this.showCamp = true
-    } else {this.showCamp = false}
-    if (vers == 'Repas en cuisine') { this.showService = true
-    } else {this.showService = false}
-  }
+}
+
 
   onQuit(): void {
     this.seeyouService.goBack()
