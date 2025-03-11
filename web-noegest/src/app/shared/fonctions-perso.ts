@@ -1,6 +1,4 @@
 import { Injectable } from '@angular/core';
-import { DatePipe } from "@angular/common";
-
 
 @Injectable({ providedIn: 'root' })
 
@@ -76,15 +74,19 @@ export class FonctionsPerso{
       return Math.round(nombre * puissance10) / puissance10
     } else return 0
   }
-  dateIsoToFr(dateString: string| undefined ):string|null {
+  dateIsoToFr(dateString: string| undefined ):string {
     if (typeof dateString === 'string') {
       const date = new Date(Date.parse(dateString))
       return date.toLocaleDateString("fr-FR")
       //const datePipe = new DatePipe('fr-FR')
       //return datePipe.transform(date,'dd/MM/yyyy')
-    } else {
-      return null
-    }
+    } else {return ''}
+  }
+  dateFrToIso(dateString: string| undefined ):string {
+    if (typeof dateString === 'string') {
+      const [day, month, year] = dateString.split('/');
+      return `${year}-${month}-${day}`;
+    } else {return ''}
   }
   dateIsoToDate(date: string): Date {
     const dte = new Date(date) 

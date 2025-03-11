@@ -73,7 +73,7 @@ export class MvtService {
       );
   }
 
-  async calculeMvt(mvt:Mouvement): Promise<void> {
+  calculeMvt(mvt:Mouvement): void {
     let nbrations = mvt.article.rations ?? 1
     nbrations *= mvt.qtemouvement
     if (mvt.nbrations) {nbrations = mvt.nbrations}
@@ -81,8 +81,8 @@ export class MvtService {
     mvt.nbrations =  Math.abs(nbrations)
   }
 
-  async mvtToForm(mvt:Mouvement,form:FormGroup): Promise<void> {
-    console.log('mvtToForm', mvt)
+  mvtToForm(mvt:Mouvement,form:FormGroup): boolean {
+    console.log('mvtToForm', mvt,form.value.Jour)
     const fp = this.fp
     
     form.patchValue({
@@ -98,11 +98,13 @@ export class MvtService {
     })
     form.get('CoutRation')?.disable()
     form.get('QteStock')?.disable()
+    console.log('mvtToForm fin form.jour', form.value.Jour)
+    return true
   }
 
-  async formToMvt(form:FormGroup, mvt:Mouvement): Promise<void>  {
-    console.log('formToMvt',mvt.jour,form.value.Jour)
-    mvt.jour = new Date(form.value.Jour).toISOString(),
+  formToMvt(form:FormGroup, mvt:Mouvement): void  {
+    if (!mvt) return
+    mvt.jour = this.fp.dateFrToIso(form.value.Jour),
     mvt.origine = form.value.Vers,
     mvt.service = this.lstService_libelle.indexOf(form.value.Service),
     mvt.prixunit = form.value.PrixUnit

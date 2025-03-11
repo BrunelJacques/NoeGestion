@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { concatMap, Subject, Subscription, takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { Mouvement, MVT0, MvtsRetour } from '../../_models/mouvement';
 import { DatePipe } from '@angular/common';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -10,6 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 import { FonctionsPerso } from 'src/app/shared/fonctions-perso';
 import { Article } from '../../_models/article';
 import { ParamsService } from '../../_services/params.service';
+import { Constantes } from 'src/app/constantes';
 
 @Component({
   selector: 'app-one-sortie',
@@ -21,6 +22,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
 
   private destroy$!: Subject<boolean>;  
   private formChangesSubject = new Subject<void>();
+  private formInitialized = false;
 
   params!: Params;
   id!: string;
@@ -35,6 +37,11 @@ export class OneSortieComponent implements OnInit, OnDestroy {
   submitted = false;
   showCamp = false
   showService = true
+  lstOrigine = Constantes.LSTORIGINE_SORTIES;
+  lstOrigine_cod = this.lstOrigine.map((x)=>x.code);
+  lstOrigine_lib = this.lstOrigine.map((x)=>x.libelle);
+  lstService_libelle = Constantes.LSTSERVICE.map((x) => x.libelle)
+
 
   constructor(
     private seeyouService: SeeyouService,
@@ -60,6 +67,9 @@ export class OneSortieComponent implements OnInit, OnDestroy {
     this.initSubscriptions(this.id)
     this.initForm()
     this.initSubscriptForm()
+    console.log('fin ngOnInit',this.mvt)
+    this.mvtService.formToMvt(this.fgMvt,this.mvt)
+    console.log('fin ngOnInit mvt de form',this.mvt)
   }
 
   ngOnDestroy(): void {
@@ -67,7 +77,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  initForm() {
+  initForm(): void {
     this.fieldsForm= [
       { label: 'Jour', type: 'date'},
       { label: 'Vers', type: 'select',
@@ -102,9 +112,11 @@ export class OneSortieComponent implements OnInit, OnDestroy {
       this.fgMvt.addControl(field.label,this.fbMvt.control(field.value));
       this.fgMvt.get(field.label)?.setValidators([Validators.required,])
     });
+    console.log('fin initForm')
   }
 
   initSubscriptions(id:string): void {
+    console.log('start subscriptions')
     this.destroy$ = new Subject<boolean>()
 
     // gestion des navigation et retours
@@ -152,9 +164,8 @@ export class OneSortieComponent implements OnInit, OnDestroy {
               }
             }
             this.mvt = this.mvtService.retroQteStock(mvt)
-            this.mvtService.mvtToForm(this.mvt,this.fgMvt)
+            this.formInitialized = this.mvtService.mvtToForm(this.mvt,this.fgMvt)
             this.mvtOld = this.fp.deepCopy(this.mvt)
-
           },
           error: (e) => {
             if (e !== 'Not Found') {
@@ -171,40 +182,42 @@ export class OneSortieComponent implements OnInit, OnDestroy {
         this.camps = x['camps']
         this.lstCamps_lib = this.camps.map(x => x.nom)
       })
-    console.log('one-sortie.camps:',this.camps)
+  console.log('fin subscriptions', this.mvt)
   } // fin de initSubscriptions
 
-  initSubscriptForm() : void {
-    this.f['Qte'].valueChanges.subscribe(() => this.formChangesSubject.next());
-    this.f['PrixUnit'].valueChanges.subscribe(() =>this.formChangesSubject.next());
-    this.f['Vers'].valueChanges.subscribe(() => this.formChangesSubject.next());
-    this.formChangesSubject
-        .pipe(concatMap(() => this.onFormChanged()))
-        .subscribe();
+  initSubscriptForm(): void {
+    console.log('start subscriptionForm');
+    this.fgMvt.controls['Qte'].valueChanges.subscribe(() => this.onFormChanged());
+    this.fgMvt.controls['PrixUnit'].valueChanges.subscribe(() => this.onFormChanged());
+    this.fgMvt.controls['Vers'].valueChanges.subscribe(() => this.onFormChanged());
+        
+    console.log('fin subscriptionForm');
   }
 
-  async onFormChanged(): Promise<void> {
-    console.log('onFormChanged 1', this.mvt==MVT0,this.mvt)
-    this.mvtService.formToMvt(this.fgMvt,this.mvt)
-    console.log('onFormChanged 2', this.mvt)
+  onFormChanged() {
+    console.log('onFormChanged 0', this.formInitialized)
+    if (!this.formInitialized) return // Wait until the form is loaded
+    this.formInitialized = false
+    console.log('onFormChanged 1', this.mvt === MVT0, this.mvt);
+    this.mvtService.formToMvt(this.fgMvt, this.mvt);
+    console.log('onFormChanged 2', this.mvt);
     const mvtold = this.mvtOld ? this.mvtOld : this.fp.deepCopy(this.mvt);
     const mvt = this.fp.deepCopy(this.mvt);
-    console.log('onFormChanged compare',mvtold,mvt)
+    console.log('onFormChanged compare', mvtold, mvt);
     if (!this.fp.deepEqual(mvtold, mvt)) {
         console.log('mvt.article.qte_stock0', this.mvt.article.qte_stock, mvtold);
         this.mvt.qtemouvement = this.fgMvt.get('Qte')?.value * mvtold?.sens;
         const deltaqte = this.mvt.qtemouvement - mvtold.qtemouvement;
         
         if (deltaqte !== 0) {
-            await this.mvtService.calculeMvt(this.mvt);
+            this.mvtService.calculeMvt(this.mvt);
             console.log('mvt.article.qte_stock1', deltaqte, this.mvt.article.qte_stock, mvtold, this.mvt);
         }
         
         this.mvtOld = this.fp.deepCopy(this.mvt);
-        await this.mvtService.mvtToForm(this.mvt, this.fgMvt);
+        this.formInitialized = this.mvtService.mvtToForm(this.mvt, this.fgMvt);
     }
-}
-
+  }
 
   onQuit(): void {
     this.seeyouService.goBack()
@@ -231,7 +244,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
       this.mvt = this.mvtService.retroQteStock(this.mvt);
       this.mvt.nbrations =  this.fp.produit(article.rations,this.mvt.qtemouvement);
       this.mvt.prixunit = article.prix_moyen ? article.prix_moyen : 0.0;
-      this.mvtService.mvtToForm(this.mvt,this.fgMvt);
+      this.formInitialized =  this.mvtService.mvtToForm(this.mvt,this.fgMvt);
       this.mvtOld = this.fp.deepCopy(this.mvt)
       console.log('one-sortie onArticle change: ',this.mvt,article)
     }
