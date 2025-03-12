@@ -5,8 +5,8 @@ from .models import *
 # Affichage de la table en liste dans l'interface admin
 
 class StMouvementAdmin(admin.ModelAdmin):
-    list_display = ["id","jour","article","sens","cle_origine","nbcolis","qte_mouvement",
-                    "prixunit","service","nbrations","nom_article",
+    list_display = ["id","jour","article","sens","cle_origine","nb_colis","qte_mouvement",
+                    "prix_unit","service","nb_rations","nom_article",
                     "cle_analytique","fournisseur"]
     search_fields = ('jour',"article__nom","article__nom_court")
     list_filter = ('origine','fournisseur','service','jour')
@@ -24,7 +24,7 @@ class StMouvementAdmin(admin.ModelAdmin):
     cle_analytique.short_description = 'Camp'
 
     def qte_mouvement(self, obj):
-        return obj.qtemouvement
+        return obj.qte_mouvement
     qte_mouvement.short_description = 'QteMvt'
 
 class StArticleAdmin(admin.ModelAdmin):

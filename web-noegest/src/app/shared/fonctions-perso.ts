@@ -37,16 +37,16 @@ export class FonctionsPerso{
 
     const keys1 = Object.keys(obj1);
     const keys2 = Object.keys(obj2);
-
-    if (keys1.length !== keys2.length) return false;
-
+    let ret = true
+    if (keys1.length !== keys2.length)  ret = false 
     for (const key of keys1) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        if (!keys2.includes(key) || !this.deepEqual((obj1 as any)[key], (obj2 as any)[key])) 
-          return false;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      if (!keys2.includes(key) || !this.deepEqual((obj1 as any)[key], (obj2 as any)[key])) {
+        ret = false;
+      }
     }
-    return true;
-}
+    return ret;
+  }
   produit(facteur1: unknown, facteur2: unknown): number{
     const fact1 = typeof facteur1 === "number" ? facteur1 : 1;
     const fact2 = typeof facteur2 == 'number' ? facteur2 : 1; 

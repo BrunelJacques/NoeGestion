@@ -133,15 +133,15 @@ class StMouvement(models.Model):
                                     related_name='+',
                                     help_text="Le fournisseur habituel de l'article est proposé en mouvement"
                                     )
-    nbcolis = models.DecimalField(max_digits=6, decimal_places=0,
+    nb_colis = models.DecimalField(max_digits=6, decimal_places=0,
                                   null=True, blank=True,
                                   help_text="Pour les achats, nombre d'unité de vente")
-    qtemouvement = models.DecimalField(max_digits=8, decimal_places=2,
+    qte_mouvement = models.DecimalField(max_digits=8, decimal_places=2,
                                        help_text="Nombre d'unités en mouvement")
-    prixunit = models.DecimalField(max_digits=10, null=True, blank=True, decimal_places=4)
+    prix_unit = models.DecimalField(max_digits=10, null=True, blank=True, decimal_places=4)
     service = models.IntegerField(default=0, choices=xconst.SERVICE_CHOICES,
                                   help_text="Service repas concerné")
-    nbrations = models.DecimalField(max_digits=8, decimal_places=4,
+    nb_rations = models.DecimalField(max_digits=8, decimal_places=4,
                                     null=True, blank=True,
                                     help_text="Nbre de ration par unité Mouvement")
     transfert = models.DateField(null=True,blank=True,

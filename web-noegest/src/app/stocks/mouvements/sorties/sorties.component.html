@@ -26,12 +26,12 @@
         </td>
         <td class= "py-0 fs-7"> {{mvt.article.nom}} </td>
         <td class= "py-0" routerLink="/stocks/onesortie/{{mvt.id}}"> 
-          {{mvt.qtemouvement * -1 | number : '1.0-2'}} <span class="small12">{{mvt.article.unite_stock}}</span> 
+          {{mvt.qte_mouvement * -1 | number : '1.0-2'}} <span class="small12">{{mvt.article.unite_stock}}</span> 
         </td>
-        <td routerLink="/stocks/onesortie/{{mvt.id}}"> {{mvt.qtemouvement * -1 * mvt.prixunit | number : '1.2-2'}} </td>
+        <td routerLink="/stocks/onesortie/{{mvt.id}}"> {{mvt.qte_mouvement * -1 * mvt.prix_unit | number : '1.2-2'}} </td>
         <td routerLink="/stocks/onesortie/{{mvt.id}}"> {{mvt.service}} </td>
         <td class= "d-none d-sm-table-cell small12 left"  routerLink="/stocks/onesortie/{{mvt.id}}"> 
-          {{mvt.nbrations | number : '1.0-2'}} 
+          {{mvt.nb_rations | number : '1.0-2'}} 
         </td>
         <td class= "d-none d-sm-table-cell"  routerLink="/stocks/onesortie/{{mvt.id}}"> 
           {{mvt.article.prix_moyen| number : '1.0-2'}} 
