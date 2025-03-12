@@ -80,7 +80,7 @@ export class MvtService {
     mvt.prix_unit = mvt.article.prix_moyen ? mvt.article.prix_moyen : 0.0;
   }
 
-  async mvtToForm(mvt:Mouvement,form:FormGroup): Promise<boolean> {
+  mvtToForm(mvt:Mouvement,form:FormGroup): boolean {
     console.log('mvtToForm deb',mvt.article.qte_stock,mvt.qte_mouvement)
     const fp = this.fp
     
@@ -98,7 +98,7 @@ export class MvtService {
     return true
   }
 
-  async formToMvt(form:FormGroup, mvt:Mouvement): Promise<boolean>  {
+  formToMvt(form:FormGroup, mvt:Mouvement): boolean  {
     if (!mvt) return true
     console.log('formToMvt deb',mvt.article.qte_stock,mvt.qte_mouvement)
     mvt.jour = this.fp.dateFrToIso(form.get('Jour')?.value),

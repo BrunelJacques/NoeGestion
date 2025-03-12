@@ -149,7 +149,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
       this.mvtService.getMvt(id)
         .pipe(takeUntil(this.destroy$))
         .subscribe({
-          next: async (mvts: MvtsRetour) => {
+          next: (mvts: MvtsRetour) => {
             const mvt = mvts.results[0] || { ...MVT0 };
             if (!this.mvt && mvt === MVT0 && this.params.jour) {
               const jj = this.params.jour;
@@ -162,7 +162,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
             this.mvtCalled = this.fp.deepCopy(mvt)
             this.mvt = mvt
             this.formLoaded = false
-            this.formLoaded = await this.mvtService.mvtToForm(this.mvt,this.fgMvt)
+            this.formLoaded = this.mvtService.mvtToForm(this.mvt,this.fgMvt)
             this.mvtOld = this.fp.deepCopy(this.mvt)
           },
           error: (e) => {
@@ -183,19 +183,18 @@ export class OneSortieComponent implements OnInit, OnDestroy {
 
   initSubscriptForm(): void {
     this.fgMvt.controls['Qte'].valueChanges.subscribe({
-      next: async () => await this.onFormChanged()
+      next: () => this.onFormChanged()
     });
-    //this.fgMvt.controls['PrixUnit'].valueChanges.subscribe(async () => await this.onFormChanged());
-    //this.fgMvt.controls['Vers'].valueChanges.subscribe(() => this.onFormChanged());        
+    this.fgMvt.controls['PrixUnit'].valueChanges.subscribe(() => this.onFormChanged());
+    this.fgMvt.controls['Vers'].valueChanges.subscribe(() => this.onFormChanged());        
   }
 
-  async onFormChanged(): Promise<void> {
+  onFormChanged(): void {
     if (!this.formLoaded) return // Wait until the form is loaded
     this.formLoaded = false
-    this.formLoaded = await this.mvtService.formToMvt(this.fgMvt, this.mvt);
+    this.formLoaded = this.mvtService.formToMvt(this.fgMvt, this.mvt);
     const _mvt =  this.fp.deepCopy(this.mvt)
     const _mvtold = this.mvtOld ? this.mvtOld : this.fp.deepCopy(_mvt);
-
     if (!this.fp.deepEqual(_mvtold, _mvt)) {
       if (this.mvt.origine == 'camp') {
         this.showCamp = true;
@@ -213,7 +212,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
       }
       this.mvtOld = this.fp.deepCopy(this.mvt);
       this.formLoaded = false
-      this.formLoaded = await this.mvtService.mvtToForm(this.mvt, this.fgMvt);
+      this.formLoaded = this.mvtService.mvtToForm(this.mvt, this.fgMvt);
     }
   }
 
@@ -234,7 +233,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
     this.onQuit()
   }
 
-  async onArticle(article: Article): Promise<void> {
+  onArticle(article: Article): void {
     // l'appel d'article a été fait par article-search
     this.mvt.article = article
     if (article.id != this.mvtCalled.article.id) {      
@@ -247,7 +246,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
     }
     this.mvtService.calculeMvt(this.mvt)
     this.formLoaded = false;
-    this.formLoaded =  await this.mvtService.mvtToForm(this.mvt,this.fgMvt);
+    this.formLoaded =  this.mvtService.mvtToForm(this.mvt,this.fgMvt);
   }
 
   save(): void {
