@@ -92,8 +92,11 @@ export class FonctionsPerso{
     const dte = new Date(date) 
     return new Date(dte.getFullYear(), dte.getMonth(), dte.getDate());
   }
-  dateToIso(date:Date):string {
-      return date.toISOString()
+  dateToIso(date:Date|string):string {
+    if (typeof date == 'string') {
+      return  new Date(Date.parse(date)).toISOString().slice(0,10);
+    }
+    return date.toISOString()
   }
   compareDates(date1: Date, date2: Date): boolean {
     const dt2 = date2

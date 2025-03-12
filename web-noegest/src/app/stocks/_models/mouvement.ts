@@ -11,7 +11,7 @@ export interface Mouvement {
     prixunit: number;
     service: number;
     nbrations?: number;
-    analytique: number;
+    analytique: string;
     fournisseur?: string;
     ordi: string;
     saisie: string;
@@ -22,13 +22,13 @@ export const MVT0: Mouvement =  {
     id: 0,
     jour: (new Date(2000,1,1)).toISOString(),
     sens: -1,
-    origine: "",
+    origine: '',
     article: ARTICLE0,
     qtemouvement: 1,
     prixunit: 1,
     service: 0,
-    analytique: 0,
-    ordi: "",
+    analytique: '00',
+    ordi: '',
     saisie: (new Date(2000,1,1)).toISOString(),
 }
 

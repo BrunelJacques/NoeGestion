@@ -22,7 +22,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
 
   private destroy$!: Subject<boolean>;  
   private formChangesSubject = new Subject<void>();
-  private formInitialized = false;
+  private formLoaded = false;
 
   params!: Params;
   id!: string;
@@ -41,7 +41,6 @@ export class OneSortieComponent implements OnInit, OnDestroy {
   lstOrigine_cod = this.lstOrigine.map((x)=>x.code);
   lstOrigine_lib = this.lstOrigine.map((x)=>x.libelle);
   lstService_libelle = Constantes.LSTSERVICE.map((x) => x.libelle)
-
 
   constructor(
     private seeyouService: SeeyouService,
@@ -67,9 +66,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
     this.initSubscriptions(this.id)
     this.initForm()
     this.initSubscriptForm()
-    console.log('fin ngOnInit',this.mvt)
     this.mvtService.formToMvt(this.fgMvt,this.mvt)
-    console.log('fin ngOnInit mvt de form',this.mvt)
   }
 
   ngOnDestroy(): void {
@@ -112,11 +109,9 @@ export class OneSortieComponent implements OnInit, OnDestroy {
       this.fgMvt.addControl(field.label,this.fbMvt.control(field.value));
       this.fgMvt.get(field.label)?.setValidators([Validators.required,])
     });
-    console.log('fin initForm')
   }
 
   initSubscriptions(id:string): void {
-    console.log('start subscriptions')
     this.destroy$ = new Subject<boolean>()
 
     // gestion des navigation et retours
@@ -164,7 +159,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
               }
             }
             this.mvt = this.mvtService.retroQteStock(mvt)
-            this.formInitialized = this.mvtService.mvtToForm(this.mvt,this.fgMvt)
+            this.formLoaded = this.mvtService.mvtToForm(this.mvt,this.fgMvt)
             this.mvtOld = this.fp.deepCopy(this.mvt)
           },
           error: (e) => {
@@ -182,40 +177,40 @@ export class OneSortieComponent implements OnInit, OnDestroy {
         this.camps = x['camps']
         this.lstCamps_lib = this.camps.map(x => x.nom)
       })
-  console.log('fin subscriptions', this.mvt)
   } // fin de initSubscriptions
 
   initSubscriptForm(): void {
-    console.log('start subscriptionForm');
     this.fgMvt.controls['Qte'].valueChanges.subscribe(() => this.onFormChanged());
     this.fgMvt.controls['PrixUnit'].valueChanges.subscribe(() => this.onFormChanged());
-    this.fgMvt.controls['Vers'].valueChanges.subscribe(() => this.onFormChanged());
-        
-    console.log('fin subscriptionForm');
+    this.fgMvt.controls['Vers'].valueChanges.subscribe(() => this.onFormChanged());        
   }
 
-  onFormChanged() {
-    console.log('onFormChanged 0', this.formInitialized)
-    if (!this.formInitialized) return // Wait until the form is loaded
-    this.formInitialized = false
-    console.log('onFormChanged 1', this.mvt === MVT0, this.mvt);
-    this.mvtService.formToMvt(this.fgMvt, this.mvt);
-    console.log('onFormChanged 2', this.mvt);
-    const mvtold = this.mvtOld ? this.mvtOld : this.fp.deepCopy(this.mvt);
-    const mvt = this.fp.deepCopy(this.mvt);
-    console.log('onFormChanged compare', mvtold, mvt);
-    if (!this.fp.deepEqual(mvtold, mvt)) {
-        console.log('mvt.article.qte_stock0', this.mvt.article.qte_stock, mvtold);
-        this.mvt.qtemouvement = this.fgMvt.get('Qte')?.value * mvtold?.sens;
-        const deltaqte = this.mvt.qtemouvement - mvtold.qtemouvement;
+  async onFormChanged(): Promise<void> {
+    console.log('onFormChanged', this.formLoaded)
+    if (!this.formLoaded) return // Wait until the form is loaded
+    this.formLoaded = false
+    await this.mvtService.formToMvt(this.fgMvt, this.mvt);
+    console.log('onFormChanged deepcopy',this.mvt.qtemouvement )
+    const _mvt =  this.fp.deepCopy(this.mvt)
+    const _mvtold = this.mvtOld ? this.mvtOld : _mvt;
+    if (!this.fp.deepEqual(_mvtold, _mvt)) {
+        //this.mvt.qtemouvement = this.fgMvt.get('Qte')?.value * _mvtold?.sens;
+
+        if (this.mvt.origine == 'camp') {
+            this.showCamp = true;
+            if (!this.mvt.analytique) {
+              this.mvt.analytique = this.params.camp
+            }
+        }
         
+        const deltaqte = this.mvt.qtemouvement - _mvtold.qtemouvement;
+        console.log('onFormChanged deltaqte',deltaqte,this.mvt.qtemouvement)
         if (deltaqte !== 0) {
             this.mvtService.calculeMvt(this.mvt);
-            console.log('mvt.article.qte_stock1', deltaqte, this.mvt.article.qte_stock, mvtold, this.mvt);
         }
         
         this.mvtOld = this.fp.deepCopy(this.mvt);
-        this.formInitialized = this.mvtService.mvtToForm(this.mvt, this.fgMvt);
+        this.formLoaded = this.mvtService.mvtToForm(this.mvt, this.fgMvt);
     }
   }
 
@@ -244,7 +239,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
       this.mvt = this.mvtService.retroQteStock(this.mvt);
       this.mvt.nbrations =  this.fp.produit(article.rations,this.mvt.qtemouvement);
       this.mvt.prixunit = article.prix_moyen ? article.prix_moyen : 0.0;
-      this.formInitialized =  this.mvtService.mvtToForm(this.mvt,this.fgMvt);
+      this.formLoaded =  this.mvtService.mvtToForm(this.mvt,this.fgMvt);
       this.mvtOld = this.fp.deepCopy(this.mvt)
       console.log('one-sortie onArticle change: ',this.mvt,article)
     }

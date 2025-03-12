@@ -77,12 +77,13 @@ export class MvtService {
     let nbrations = mvt.article.rations ?? 1
     nbrations *= mvt.qtemouvement
     if (mvt.nbrations) {nbrations = mvt.nbrations}
-    mvt.article.qte_stock ? (mvt.article.qte_stock  += mvt.qtemouvement) : 0
     mvt.nbrations =  Math.abs(nbrations)
+
+    // afficher le stock après mouvement
+    mvt.article.qte_stock ? (mvt.article.qte_stock += mvt.qtemouvement) : 0
   }
 
   mvtToForm(mvt:Mouvement,form:FormGroup): boolean {
-    console.log('mvtToForm', mvt,form.value.Jour)
     const fp = this.fp
     
     form.patchValue({
@@ -98,23 +99,27 @@ export class MvtService {
     })
     form.get('CoutRation')?.disable()
     form.get('QteStock')?.disable()
-    console.log('mvtToForm fin form.jour', form.value.Jour)
     return true
   }
 
-  formToMvt(form:FormGroup, mvt:Mouvement): void  {
+  async formToMvt(form:FormGroup, mvt:Mouvement): Promise<void>  {
     if (!mvt) return
-    mvt.jour = this.fp.dateFrToIso(form.value.Jour),
-    mvt.origine = form.value.Vers,
-    mvt.service = this.lstService_libelle.indexOf(form.value.Service),
-    mvt.prixunit = form.value.PrixUnit
-    mvt.qtemouvement = form.value.Qte * mvt.sens
-    mvt.nbrations = form.value.TotRations
+    const qteOld = mvt.qtemouvement
+    mvt.jour = this.fp.dateFrToIso(form.get('Jour')?.value),
+    mvt.origine = form.get('Vers')?.value,
+    mvt.origine = this.lstOrigine_cod[this.lstOrigine_lib.indexOf(form.get('Vers')?.value)]
+    mvt.service = this.lstService_libelle.indexOf(form.get('Service')?.value),
+    mvt.prixunit = form.get('PrixUnit')?.value
+    mvt.qtemouvement = form.get('Qte')?.value * mvt.sens
+    mvt.nbrations = form.get('TotRations')?.value
+    // remettre le stock à son niveau avant mouvement
+    mvt.article.qte_stock ? (mvt.article.qte_stock  -= qteOld) : 0
   }
 
   retroQteStock(mvt:Mouvement) :Mouvement {
-    // retirer la variation de stock induite par le mouvement avant sa modif
+    // stock dans mvt avant le mouvement, sera affiché après mouvement
     const idMvt = mvt.id ?? 0
+    // ignoré si nouveau mvt non encore pris en compte
     if (idMvt > 0) {
       let qteStock = mvt.article.qte_stock ?? 0
       qteStock -= mvt.qtemouvement
@@ -122,5 +127,4 @@ export class MvtService {
     }
     return mvt
   }
-
 }
