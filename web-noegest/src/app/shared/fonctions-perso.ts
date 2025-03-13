@@ -72,7 +72,7 @@ export class FonctionsPerso{
     if (typeof nombre == 'number') {
       const puissance10 = Math.pow(10, nbDecimales)
       return Math.round(nombre * puissance10) / puissance10
-    } else return 0
+    } else return 0.0
   }
   dateIsoToFr(dateString: string| undefined ):string {
     if (typeof dateString === 'string') {

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { Mouvement, MVT0, MvtsRetour } from '../../_models/mouvement';
 import { DatePipe } from '@angular/common';
@@ -22,25 +22,21 @@ export class OneSortieComponent implements OnInit, OnDestroy {
 
   private destroy$!: Subject<boolean>;  
   private formLoaded = false;
-
+  private valuesForm: {[key: string]: unknown } = {};
+  private mvtCalled!: Mouvement;
+  private mvtOld!: Mouvement;
+  
   params!: Params;
   id!: string;
   mvt!: Mouvement;
-  mvtCalled!: Mouvement;
-  mvtOld!: Mouvement;
   camps!: Camp[];
-  lstCamps_lib!:string[]
   fgMvt!: FormGroup;
   fgPar!: FormGroup;
   fieldsForm: FormField[] = [];
-  valuesForm: {[key: string]: unknown } = {};
+  
   submitted = false;
   showCamp = false
   showService = true
-  lstOrigine = Constantes.LSTORIGINE_SORTIES;
-  lstOrigine_cod = this.lstOrigine.map((x)=>x.code);
-  lstOrigine_lib = this.lstOrigine.map((x)=>x.libelle);
-  lstService_libelle = Constantes.LSTSERVICE.map((x) => x.libelle)
 
   constructor(
     private seeyouService: SeeyouService,
@@ -51,7 +47,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
     private fbPar:FormBuilder,
     private alertService: AlertService,
     private datePipe: DatePipe,
-    private route: ActivatedRoute,
+    @Inject(ActivatedRoute) private route: ActivatedRoute,
     ) {}
 
   // convenience getter for easy access to form fieldsForm
@@ -164,16 +160,14 @@ export class OneSortieComponent implements OnInit, OnDestroy {
     this.route.data
       .subscribe(x => {
         this.camps = x['camps']
-        this.lstCamps_lib = this.camps.map(x => x.nom)
       })
   } // fin de initSubscriptions
 
   initSubscriptForm(): void {
-    this.fgMvt.controls['Qte'].valueChanges.subscribe({
-      next: () => this.onFormChanged()
-    });
-    this.fgMvt.controls['PrixUnit'].valueChanges.subscribe(() => this.onFormChanged());
-    this.fgMvt.controls['Vers'].valueChanges.subscribe(() => this.onFormChanged());        
+    Object.keys(this.fgMvt.controls).forEach((controlName) => {
+      this.fgMvt.controls[controlName].valueChanges.subscribe(() => this.onFormChanged());
+    });  
+    //this.fgMvt.controls['Vers'].valueChanges.subscribe(() => this.onFormChanged());        
   }
 
   onFormChanged(): void {
@@ -181,7 +175,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
     this.formLoaded = false
     this.formLoaded = this.mvtService.formToMvt(this.fgMvt, this.mvt);
     const _mvt =  this.fp.deepCopy(this.mvt)
-    const _mvtold = this.mvtOld ? this.mvtOld : this.fp.deepCopy(_mvt);
+    const _mvtold = this.mvtOld ?? this.fp.deepCopy(_mvt);
     if (!this.fp.deepEqual(_mvtold, _mvt)) {
       if (this.mvt.origine == 'camp') {
         this.showCamp = true;
@@ -195,8 +189,8 @@ export class OneSortieComponent implements OnInit, OnDestroy {
       const deltaqte = _mvt.qte_mouvement - _mvtold.qte_mouvement;
       if (deltaqte !== 0) {
         this.mvt.article.qte_stock? this.mvt.article.qte_stock += deltaqte : 0
-        this.mvtService.calculeMvt(this.mvt);
       }
+      this.mvtService.calculeMvt(this.mvt);
       this.mvtOld = this.fp.deepCopy(this.mvt);
       this.formLoaded = false
       this.formLoaded = this.mvtService.mvtToForm(this.mvt, this.fgMvt);

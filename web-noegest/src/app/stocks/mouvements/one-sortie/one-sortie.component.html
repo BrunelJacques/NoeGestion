@@ -87,8 +87,9 @@
                    required
                    *ngSwitchCase="'number'"
                    aria-label="{field.label}"
-                   type = "number"
-                   [formControlName]="field.label" />
+                   [type] = "field.type"
+                   [formControlName]="field.label"
+                   step="any" />
             <input class="form-control my-1"
                    required
                    *ngSwitchDefault
