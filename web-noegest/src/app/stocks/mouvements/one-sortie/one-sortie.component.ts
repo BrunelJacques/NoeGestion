@@ -74,20 +74,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
   }
 
   initForm(): void {
-    this.fieldsForm= [
-      { label: 'Jour', type: 'date'},
-      { label: 'Vers', type: 'select',
-          options: this.mvtService.lstOrigine_lib.slice(0,-1)},
-      { label: 'Camp', type: 'select',
-          options: this.lstCamps_lib},
-      { label: 'Service', type: 'select',
-          options: this.mvtService.lstService_libelle },
-      { label: 'PrixUnit', type: 'number'},
-      { label: 'Qte', type: 'number' },
-      { label: 'TotRations', type: 'number' },
-      { label: 'CoutRation', type: 'number' },
-      { label: 'QteStock', type: 'number' },
-    ];
+    this.fieldsForm = this.mvtService.getFieldsForm();
   
     for (const field of this.fieldsForm) {
         this.valuesForm[field.label] = field.value;

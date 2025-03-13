@@ -78,10 +78,22 @@
               </div>
             </div>
             <input class="form-control my-1"
+                  required
+                  *ngSwitchCase="'date'"
+                  aria-label="{field.label}"
+                  [type]= "'date'"
+                  [formControlName]="field.label" />
+            <input class="form-control my-1"
+                   required
+                   *ngSwitchCase="'number'"
+                   aria-label="{field.label}"
+                   type = "number"
+                   [formControlName]="field.label" />
+            <input class="form-control my-1"
                    required
                    *ngSwitchDefault
                    aria-label="{field.label}"
-                   type="field.type"
+                   [type]="field.type"
                    [formControlName]="field.label" />
           </div>
         </div>

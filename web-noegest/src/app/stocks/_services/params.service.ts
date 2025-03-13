@@ -20,7 +20,6 @@ export interface RayonsRetour {count: number; results: Rayon[];}
 export class ParamsService {
   lstService = Constantes.LSTSERVICE;
   lstService_code = this.lstService.map((x) => x.id)
-  lstCamps!: []
 
   public paramsSubj$= new BehaviorSubject<Params>(PARAMS0);
   camps!:Camp[]

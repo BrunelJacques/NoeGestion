@@ -9,6 +9,8 @@ import { Constantes } from 'src/app/constantes';
 import { FormGroup } from '@angular/forms';
 import { FonctionsPerso } from 'src/app/shared/fonctions-perso';
 import { DatePipe } from '@angular/common';
+import { ParamsService } from './params.service';
+import { coerceStringArray } from '@angular/cdk/coercion';
 
 @Injectable({ providedIn: 'root'})
 export class MvtService {
@@ -19,6 +21,8 @@ export class MvtService {
   lstOrigine_cod = this.lstOrigine.map((x)=>x.code);
   lstOrigine_lib = this.lstOrigine.map((x)=>x.libelle);
   lstService_libelle = Constantes.LSTSERVICE.map((x) => x.libelle)
+  lstCamps_lib!:string[]
+  lstCamps_cod!:string[]
 
   constructor(
     private cst: Constantes,
@@ -26,7 +30,13 @@ export class MvtService {
     private handleError: HandleError,
     private fp: FonctionsPerso,
     private datePipe: DatePipe,
+    private paramsService: ParamsService,
   ) {}
+
+  getCamps(): void {
+    this.lstCamps_lib = this.paramsService.camps.map(x => x.nom)
+    this.lstCamps_cod = this.paramsService.camps.map(x => x.id)
+  }
 
   getMvt(id: string): Observable<MvtsRetour> {
     const url = `${this.cst.STMOUVEMENT_URL}/?id=${id}`;
@@ -61,6 +71,23 @@ export class MvtService {
     );
   }
 
+  getFieldsForm() {
+    return [
+      { label: 'Jour', type: 'date'},
+      { label: 'Vers', type: 'select',
+          options: this.lstOrigine_lib.slice(0,-1)},
+      { label: 'Camp', type: 'select',
+          options: this.lstCamps_lib},
+      { label: 'Service', type: 'select',
+          options: this.lstService_libelle },
+      { label: 'PrixUnit', type: 'number'},
+      { label: 'Qte', type: 'number' },
+      { label: 'TotRations', type: 'number' },
+      { label: 'CoutRation', type: 'number' },
+      { label: 'QteStock', type: 'number' },
+    ]
+  }
+
   getSorties(urlparams:string): Observable<MvtsRetour>{
     const url = this.cst.STMOUVEMENT_URL+urlparams;
     console.log(url)
@@ -83,11 +110,12 @@ export class MvtService {
   mvtToForm(mvt:Mouvement,form:FormGroup): boolean {
     console.log('mvtToForm deb',mvt.article.qte_stock,mvt.qte_mouvement)
     const fp = this.fp
+    if (!this.lstCamps_lib) this.getCamps()
     
     form.patchValue({
-      'Jour': this.datePipe.transform(mvt.jour, 'dd/MM/yyyy'),
+      'Jour': this.datePipe.transform(mvt.jour,'yyyy-MM-dd'),
       'Vers': this.lstOrigine_lib[this.lstOrigine_cod.indexOf(mvt.origine)],
-      //'Camp': this.lstCamps_lib[this.lstCamps_cod.indexOf(mvt.analytique)],
+      'Camp': this.lstCamps_lib[this.lstCamps_cod.indexOf(mvt.analytique)],
       'Service': this.lstService_libelle[mvt.service],
       'PrixUnit': fp.round(mvt.prix_unit,2),
       'Qte': mvt.qte_mouvement * mvt.sens,
@@ -108,6 +136,7 @@ export class MvtService {
     mvt.prix_unit = form.get('PrixUnit')?.value
     mvt.qte_mouvement = form.get('Qte')?.value * mvt.sens
     mvt.nb_rations = form.get('TotRations')?.value
+    console.log('formToMvt',form.get('PrixUnit')?.value,mvt.prix_unit)
     return true
   }
 }

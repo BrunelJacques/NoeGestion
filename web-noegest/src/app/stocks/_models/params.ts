@@ -23,7 +23,7 @@ export interface Params {
 }
 
 export interface Camp {
-  id: 0;
+  id: string;
   nom: string;
   abrege: string;
   params: unknown;
