@@ -319,21 +319,22 @@ td {
 
 .right { 
   display: flex;
-  text-align: right!important;
-  justify-content: right;
-  justify-items: right;
-  align-content: end;
-  align-items: end;
+  text-align: right !important;
+  justify-content: flex-end; 
+  justify-items: flex-end;
+  align-content: flex-end;
+  align-items: flex-end;
 }
+
 .left { text-align: left!important; }
 
 .start { 
   display: flex;
-  justify-content: start !important;}
+  justify-content: flex-start !important;}
 
 .end   { 
   display: flex;
-  justify-content: end   !important;}
+  justify-content: flex-end   !important;}
 
 .no-newline { display: inline-block; }
 
