@@ -1,18 +1,17 @@
+import { DatePipe } from '@angular/common';
+import { FormGroup } from '@angular/forms';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, tap, catchError, map, of } from 'rxjs';
 
 import { MvtsRetour, Mouvement } from '../_models/mouvement';
 import { HandleError } from 'src/app/general/_helpers/error.interceptor';
-
 import { Constantes } from 'src/app/constantes';
-import { FormGroup } from '@angular/forms';
 import { FonctionsPerso } from 'src/app/shared/fonctions-perso';
-import { DatePipe } from '@angular/common';
 import { ParamsService } from './params.service';
-import { coerceStringArray } from '@angular/cdk/coercion';
 
 @Injectable({ providedIn: 'root'})
+
 export class MvtService {
   mvts: Mouvement[] = []
   url: string | undefined
@@ -100,43 +99,70 @@ export class MvtService {
       );
   }
 
-  calculeMvt(mvt:Mouvement): void {
-    console.log('calculeMvt deb',mvt.article.qte_stock,mvt.qte_mouvement)
-    const rations = mvt.article.rations ?? 1
-    mvt.nb_rations =  this.fp.produit(rations, Math.abs(mvt.qte_mouvement));
-    mvt.prix_unit = mvt.article.prix_moyen ? mvt.article.prix_moyen : 0.0;
+  calcMvtAvant(mvt:Mouvement): void {
+    if (Math.floor((mvt.rations??1) - (mvt.article.rations??1)) == 0) {
+      mvt.rations = undefined;
+    }
+    if (mvt.prix_unit == 0){
+      (mvt.prix_unit = mvt.article.prix_moyen ?? 0.0)
+    }
+    console.log('calcMvtAv',mvt.rations,mvt.prix_unit)
   }
 
+  calcMvtAfter(old:Mouvement,mvt:Mouvement,totRations:number): void {
+    console.log('calcMvtAfter_deb',mvt.rations,mvt.prix_unit)
+    const deltaqte = mvt.qte_mouvement - old.qte_mouvement;
+    if (deltaqte !== 0) {
+      mvt.article.qte_stock? mvt.article.qte_stock += deltaqte : 0
+
+      totRations *= this.fp.quotient(mvt.qte_mouvement,old.qte_mouvement)
+      console.log('delta, totration',deltaqte,totRations)
+    }
+    const rations = this.fp.quotient(totRations,mvt.qte_mouvement*mvt.sens)
+    mvt.rations = ((old.qte_mouvement * mvt.qte_mouvement)!= 0) ? rations : mvt.rations 
+    if ((mvt.qte_mouvement != 0)
+      && Math.floor((mvt.qte_mouvement * mvt.sens) - totRations) == 0) {
+      mvt.rations = undefined;
+    }
+    console.log('calcMvtAfter_fin',mvt.rations,mvt.prix_unit)
+  }
+  
   mvtToForm(mvt:Mouvement,form:FormGroup): boolean {
-    console.log('mvtToForm deb',mvt.article.qte_stock,mvt.qte_mouvement)
-    const fp = this.fp
     if (!this.lstCamps_lib) this.getCamps()
-    
+
+    const fp = this.fp
+    const prixTot = mvt.prix_unit * mvt.qte_mouvement * mvt.sens
+    let rations = mvt.article.rations ?? 1
+    rations = mvt.rations ?? rations
+    const totRations = rations * mvt.qte_mouvement * mvt.sens
+
     form.patchValue({
       'Jour': this.datePipe.transform(mvt.jour,'yyyy-MM-dd'),
       'Vers': this.lstOrigine_lib[this.lstOrigine_cod.indexOf(mvt.origine)],
       'Camp': this.lstCamps_lib[this.lstCamps_cod.indexOf(mvt.analytique)],
       'Service': this.lstService_libelle[mvt.service],
-      'PrixUnit': fp.round(mvt.prix_unit,2),
+      'PrixUnit': fp.round(mvt.prix_unit,4),
       'Qte': mvt.qte_mouvement * mvt.sens,
-      'TotRations': mvt.nb_rations,
-      'CoutRation': fp.round(fp.quotient(mvt.prix_unit, mvt.nb_rations)),
+      'TotRations': totRations,
+      'CoutRation': fp.round(fp.quotient(prixTot, totRations)),
       'QteStock': mvt.article.qte_stock
     })
+    console.log('mvtToForm',mvt.rations,mvt.prix_unit)
     return true
   }
 
   formToMvt(form:FormGroup, mvt:Mouvement): boolean  {
     if (!mvt) return true
-    console.log('formToMvt deb',mvt.article.qte_stock,mvt.qte_mouvement)
+    const old = this.fp.deepCopy(mvt)
     mvt.jour = this.fp.dateFrToIso(form.get('Jour')?.value),
     mvt.origine = form.get('Vers')?.value,
     mvt.origine = this.lstOrigine_cod[this.lstOrigine_lib.indexOf(form.get('Vers')?.value)]
     mvt.service = this.lstService_libelle.indexOf(form.get('Service')?.value),
-    mvt.prix_unit = form.get('PrixUnit')?.value
+    mvt.prix_unit = Number(form.get('PrixUnit')?.value)
     mvt.qte_mouvement = form.get('Qte')?.value * mvt.sens
-    mvt.nb_rations = form.get('TotRations')?.value
-    console.log('formToMvt',form.get('PrixUnit')?.value,mvt.prix_unit)
+    const totRations = form.get('TotRations')?.value
+    console.log('formToMvt',mvt.rations,mvt.prix_unit)
+    this.calcMvtAfter(old,mvt,totRations)
     return true
   }
 }

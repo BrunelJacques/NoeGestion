@@ -144,9 +144,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
             }
             this.mvtCalled = this.fp.deepCopy(mvt)
             this.mvt = mvt
-            this.formLoaded = false
-            this.formLoaded = this.mvtService.mvtToForm(this.mvt,this.fgMvt)
-            this.mvtOld = this.fp.deepCopy(this.mvt)
+            this.displayForm()
           },
           error: (e) => {
             if (e !== 'Not Found') {
@@ -170,6 +168,12 @@ export class OneSortieComponent implements OnInit, OnDestroy {
     //this.fgMvt.controls['Vers'].valueChanges.subscribe(() => this.onFormChanged());        
   }
 
+  displayForm(): void {
+    this.mvtService.calcMvtAvant(this.mvt);
+    this.formLoaded = false;
+    this.formLoaded = this.mvtService.mvtToForm(this.mvt, this.fgMvt);
+    this.mvtOld = this.fp.deepCopy(this.mvt)
+  }
   onFormChanged(): void {
     if (!this.formLoaded) return // Wait until the form is loaded
     this.formLoaded = false
@@ -185,15 +189,8 @@ export class OneSortieComponent implements OnInit, OnDestroy {
       } else {
         this.showCamp = false
         this.showService = true
-      }       
-      const deltaqte = _mvt.qte_mouvement - _mvtold.qte_mouvement;
-      if (deltaqte !== 0) {
-        this.mvt.article.qte_stock? this.mvt.article.qte_stock += deltaqte : 0
-      }
-      this.mvtService.calculeMvt(this.mvt);
-      this.mvtOld = this.fp.deepCopy(this.mvt);
-      this.formLoaded = false
-      this.formLoaded = this.mvtService.mvtToForm(this.mvt, this.fgMvt);
+      } 
+      this.displayForm()
     }
   }
 
@@ -216,18 +213,33 @@ export class OneSortieComponent implements OnInit, OnDestroy {
 
   onArticle(article: Article): void {
     // l'appel d'article a été fait par article-search
+    const byeCalled = (this.mvtOld.article.id == this.mvtCalled.article.id)
+    const helloCalled = (article.id == this.mvtCalled.article.id)
     this.mvt.article = article
-    if (article.id != this.mvtCalled.article.id) {      
+    if (article.id != this.mvtCalled.article.id) {   
+      if (byeCalled) { // conserve les modifs non validées de l'ancien mouvement
+        this.mvtCalled.rations = this.mvt.rations
+        this.mvtCalled.qte_mouvement = this.mvt.qte_mouvement
+        this.mvtCalled.prix_unit = this.mvt.prix_unit
+        this.mvtCalled.article.qte_stock = 0
+      }         
       // enlève la quantité du mouvement dans le nouveau stock article
       this.mvt.article.qte_stock? this.mvt.article.qte_stock += this.mvt.qte_mouvement : 0
+      this.mvt.rations = this.mvt.article.rations
+      this.mvt.prix_unit = 0
+
     } else {
       // corrige de la différence de qte si on retrouve l'article initial
       const qtemvt = this.mvtCalled.qte_mouvement - this.mvt.qte_mouvement
       this.mvt.article.qte_stock? this.mvt.article.qte_stock -= qtemvt : 0
+      if (helloCalled) { // remet les éléments modiiés de l'article initial 
+        this.mvt.rations = this.mvtCalled.rations
+        this.mvt.qte_mouvement = this.mvtCalled.qte_mouvement
+        this.mvt.prix_unit = this.mvtCalled.prix_unit
+        this.mvt.article.qte_stock = this.mvtCalled.article.qte_stock
+      }
     }
-    this.mvtService.calculeMvt(this.mvt)
-    this.formLoaded = false;
-    this.formLoaded =  this.mvtService.mvtToForm(this.mvt,this.fgMvt);
+    this.displayForm()
   }
 
   save(): void {

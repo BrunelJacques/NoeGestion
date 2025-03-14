@@ -52,16 +52,26 @@ export class FonctionsPerso{
     const fact2 = typeof facteur2 == 'number' ? facteur2 : 1; 
     return fact1 * fact2
   }  
-  quotient(dividende:unknown, diviseur:unknown): number{
-    const div1 = typeof dividende == 'number' ? dividende : 1
-    const div2 = (typeof diviseur == 'number' && diviseur != 0) ? diviseur : 1
-    return div1 / div2
+
+  quotient(dividend: unknown, diviser: unknown): number {
+    const numDividend: number =
+      typeof dividend === "number" 
+        ? dividend 
+        : (typeof dividend === "string" ? +dividend : 0);
+  
+    const numDiviser: number =
+      typeof diviser === "number" 
+        ? diviser 
+        : typeof diviser === "string" ? +diviser : 1;
+        
+    return numDiviser === 0 ? 0 : numDividend / numDiviser; // Avoid division by zero
   }
+  
   numToString(nombre:number|undefined,nbDecimales?:number): string {
     if (!nbDecimales) {nbDecimales = 2}
     if (typeof(nombre) === 'number') {
         return nombre.toFixed(nbDecimales)
-      } else {return " "}
+      } else {return ""}
   }
   stringToNum(input: string|undefined): number {
     const convertedNumber = Number(input);
@@ -78,8 +88,6 @@ export class FonctionsPerso{
     if (typeof dateString === 'string') {
       const date = new Date(Date.parse(dateString))
       return date.toLocaleDateString("fr-FR")
-      //const datePipe = new DatePipe('fr-FR')
-      //return datePipe.transform(date,'dd/MM/yyyy')
     } else {return ''}
   }
   dateFrToIso(dateString: string| undefined ):string {

@@ -141,7 +141,7 @@ class StMouvement(models.Model):
     prix_unit = models.DecimalField(max_digits=10, null=True, blank=True, decimal_places=4)
     service = models.IntegerField(default=0, choices=xconst.SERVICE_CHOICES,
                                   help_text="Service repas concerné")
-    nb_rations = models.DecimalField(max_digits=8, decimal_places=4,
+    rations = models.DecimalField(max_digits=8, decimal_places=4,
                                     null=True, blank=True,
                                     help_text="Nbre de ration par unité Mouvement")
     transfert = models.DateField(null=True,blank=True,

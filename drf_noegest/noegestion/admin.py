@@ -6,7 +6,7 @@ from .models import *
 
 class StMouvementAdmin(admin.ModelAdmin):
     list_display = ["id","jour","article","sens","cle_origine","nb_colis","qte_mouvement",
-                    "prix_unit","service","nb_rations","nom_article",
+                    "prix_unit","service","rations","nom_article",
                     "cle_analytique","fournisseur"]
     search_fields = ('jour',"article__nom","article__nom_court")
     list_filter = ('origine','fournisseur','service','jour')

@@ -147,7 +147,7 @@ class StMouvementSerializer(BaseModelSerializer):
         model = StMouvement
         fields = [
             "id","jour","sens","origine","article",
-            "nb_colis","qte_mouvement","prix_unit","service","nb_rations",
+            "nb_colis","qte_mouvement","prix_unit","service","rations",
             "analytique","fournisseur","ordi","saisie","ordi","transfert"
         ]
 

@@ -10,7 +10,7 @@ export interface Mouvement {
     qte_mouvement: number;
     prix_unit: number;
     service: number;
-    nb_rations?: number;
+    rations?: number;
     analytique: string;
     fournisseur?: string;
     ordi: string;
