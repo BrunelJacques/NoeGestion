@@ -27,7 +27,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
   private mvtOld!: Mouvement;
   
   params!: Params;
-  id!: string;
+  id!: string|null;
   mvt!: Mouvement;
   camps!: Camp[];
   fgMvt!: FormGroup;
@@ -57,9 +57,9 @@ export class OneSortieComponent implements OnInit, OnDestroy {
   isNull = this.fp.isNull
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id')
-    if (id) {this.id = id}
-    this.initSubscriptions(this.id)
+    const id :string|null  = this.route.snapshot.paramMap.get('id')?? null
+    this.id = id
+    this.initSubscriptions(id)
     this.initForm()
     this.initSubscriptForm()
   }
@@ -95,7 +95,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
     this.fgMvt.get('QteStock')?.disable()
   }
 
-  initSubscriptions(id:string): void {
+  initSubscriptions(id:string|null): void {
     this.destroy$ = new Subject<boolean>()
 
     // gestion des navigation et retours
@@ -128,7 +128,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
     });
 
     // Call getMvt
-    if (id !='0') {
+    if (id) {
       this.mvtService.getMvt(id)
         .pipe(takeUntil(this.destroy$))
         .subscribe({
@@ -174,6 +174,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
     this.formLoaded = this.mvtService.mvtToForm(this.mvt, this.fgMvt);
     this.mvtOld = this.fp.deepCopy(this.mvt)
   }
+
   onFormChanged(): void {
     if (!this.formLoaded) return // Wait until the form is loaded
     this.formLoaded = false
@@ -181,17 +182,49 @@ export class OneSortieComponent implements OnInit, OnDestroy {
     const _mvt =  this.fp.deepCopy(this.mvt)
     const _mvtold = this.mvtOld ?? this.fp.deepCopy(_mvt);
     if (!this.fp.deepEqual(_mvtold, _mvt)) {
+      // une saisie a modifié mvt, mise à jour de présentation
       if (this.mvt.origine == 'camp') {
         this.showCamp = true;
         this.showService = false
-        if (!this.mvt.analytique) { this.mvt.analytique = this.params.camp
+        this.mvt.analytique ?? this.params.camp //si null, affecte une valeur par défaut
         }
       } else {
-        this.showCamp = false
+        this.showCamp = false,
         this.showService = true
       } 
       this.displayForm()
+  }
+  
+  onArticle(article: Article): void {
+    // l'appel d'article a été fait par article-search
+    const byeCalled = (this.mvtOld.article.id == this.mvtCalled.article.id)
+    const helloCalled = (article.id == this.mvtCalled.article.id)
+    this.mvt.article = article
+    if (article.id != this.mvtCalled.article.id) {           
+      // enlève la quantité du mouvement dans le nouveau stock article
+      this.mvt.article.qte_stock = this.mvt.article.qte_stock? this.mvt.article.qte_stock += this.mvt.qte_mouvement : 0
+      if (byeCalled) { 
+        // conserve les modifs non validées de l'ancien mouvement
+        this.mvtCalled.rations = this.mvt.rations
+        this.mvtCalled.qte_mouvement = this.mvt.qte_mouvement
+        this.mvtCalled.prix_unit = this.mvt.prix_unit
+        this.mvtCalled.article.qte_stock = this.mvt.article.qte_stock
+      }
+      // actualisation liée à un nouvel article pour ce mouvement
+      this.mvt.rations = this.mvt.article.rations // reprendra la répartition par défaut
+      this.mvt.prix_unit = 0 
+    } else {
+      // corrige de la différence de qte si on retrouve l'article initial
+      const qtemvt = this.mvtCalled.qte_mouvement - this.mvt.qte_mouvement
+      this.mvt.article.qte_stock? this.mvt.article.qte_stock -= qtemvt : 0
+      if (helloCalled) { // remet les éléments modiiés de l'article initial 
+        this.mvt.rations = this.mvtCalled.rations
+        this.mvt.qte_mouvement = this.mvtCalled.qte_mouvement
+        this.mvt.prix_unit = this.mvtCalled.prix_unit
+        this.mvt.article.qte_stock = this.mvtCalled.article.qte_stock
+      }
     }
+    this.displayForm()
   }
 
   onQuit(): void {
@@ -211,42 +244,10 @@ export class OneSortieComponent implements OnInit, OnDestroy {
     this.onQuit()
   }
 
-  onArticle(article: Article): void {
-    // l'appel d'article a été fait par article-search
-    const byeCalled = (this.mvtOld.article.id == this.mvtCalled.article.id)
-    const helloCalled = (article.id == this.mvtCalled.article.id)
-    this.mvt.article = article
-    if (article.id != this.mvtCalled.article.id) {   
-      if (byeCalled) { // conserve les modifs non validées de l'ancien mouvement
-        this.mvtCalled.rations = this.mvt.rations
-        this.mvtCalled.qte_mouvement = this.mvt.qte_mouvement
-        this.mvtCalled.prix_unit = this.mvt.prix_unit
-        this.mvtCalled.article.qte_stock = 0
-      }         
-      // enlève la quantité du mouvement dans le nouveau stock article
-      this.mvt.article.qte_stock? this.mvt.article.qte_stock += this.mvt.qte_mouvement : 0
-      this.mvt.rations = this.mvt.article.rations
-      this.mvt.prix_unit = 0
-
-    } else {
-      // corrige de la différence de qte si on retrouve l'article initial
-      const qtemvt = this.mvtCalled.qte_mouvement - this.mvt.qte_mouvement
-      this.mvt.article.qte_stock? this.mvt.article.qte_stock -= qtemvt : 0
-      if (helloCalled) { // remet les éléments modiiés de l'article initial 
-        this.mvt.rations = this.mvtCalled.rations
-        this.mvt.qte_mouvement = this.mvtCalled.qte_mouvement
-        this.mvt.prix_unit = this.mvtCalled.prix_unit
-        this.mvt.article.qte_stock = this.mvtCalled.article.qte_stock
-      }
-    }
-    this.displayForm()
-  }
-
   save(): void {
     if (this.id ) {
-      const updatedMvt:Mouvement = this.mvt
       //this.mvtService.putMvt(this.id.toString())
-      this.mvtService.putMvt(this.id, updatedMvt).subscribe({
+      this.mvtService.putMvt(this.id, this.mvt).subscribe({
         next: (updated) => {
           if (updated) {
             console.log('Movement updated successfully', updated);
@@ -259,3 +260,4 @@ export class OneSortieComponent implements OnInit, OnDestroy {
     }
   }
 }
+
