@@ -10,7 +10,6 @@ import { ActivatedRoute } from '@angular/router';
 import { FonctionsPerso } from 'src/app/shared/fonctions-perso';
 import { Article } from '../../_models/article';
 import { ParamsService } from '../../_services/params.service';
-import { Constantes } from 'src/app/constantes';
 
 @Component({
   selector: 'app-one-sortie',
@@ -173,8 +172,20 @@ export class OneSortieComponent implements OnInit, OnDestroy {
     this.formLoaded = false;
     this.formLoaded = this.mvtService.mvtToForm(this.mvt, this.fgMvt);
     this.mvtOld = this.fp.deepCopy(this.mvt)
+    this.ajustShows()
   }
 
+  ajustShows(): void {
+    if (this.mvt.origine == 'camp') {
+      this.showCamp = true;
+      this.showService = false
+      this.mvt.analytique ?? this.params.camp //si null, affecte une valeur par défaut
+      } else {
+      this.showCamp = false,
+      this.showService = true
+    }
+  }
+  
   onFormChanged(): void {
     if (!this.formLoaded) return // Wait until the form is loaded
     this.formLoaded = false
@@ -183,16 +194,8 @@ export class OneSortieComponent implements OnInit, OnDestroy {
     const _mvtold = this.mvtOld ?? this.fp.deepCopy(_mvt);
     if (!this.fp.deepEqual(_mvtold, _mvt)) {
       // une saisie a modifié mvt, mise à jour de présentation
-      if (this.mvt.origine == 'camp') {
-        this.showCamp = true;
-        this.showService = false
-        this.mvt.analytique ?? this.params.camp //si null, affecte une valeur par défaut
-        }
-      } else {
-        this.showCamp = false,
-        this.showService = true
-      } 
       this.displayForm()
+    } 
   }
   
   onArticle(article: Article): void {

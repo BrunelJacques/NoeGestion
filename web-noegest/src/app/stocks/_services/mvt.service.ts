@@ -19,7 +19,7 @@ export class MvtService {
   lstOrigine = Constantes.LSTORIGINE_SORTIES;
   lstOrigine_cod = this.lstOrigine.map((x)=>x.code);
   lstOrigine_lib = this.lstOrigine.map((x)=>x.libelle);
-  lstService_libelle = Constantes.LSTSERVICE.map((x) => x.libelle)
+  lstService_lib = Constantes.LSTSERVICE.map((x) => x.libelle)
   lstCamps_lib!:string[]
   lstCamps_cod!:string[]
 
@@ -33,7 +33,7 @@ export class MvtService {
   ) {}
 
   getCamps(): void {
-    this.lstCamps_lib = this.paramsService.camps.map(x => x.nom)
+    this.lstCamps_lib = this.paramsService.camps.map(x => this.fp.capitalize(x.nom))
     this.lstCamps_cod = this.paramsService.camps.map(x => x.id)
   }
 
@@ -71,6 +71,7 @@ export class MvtService {
   }
 
   getFieldsForm() {
+    if (!this.lstCamps_lib) this.getCamps()
     return [
       { label: 'Jour', type: 'date'},
       { label: 'Vers', type: 'select',
@@ -78,7 +79,7 @@ export class MvtService {
       { label: 'Camp', type: 'select',
           options: this.lstCamps_lib},
       { label: 'Service', type: 'select',
-          options: this.lstService_libelle },
+          options: this.lstService_lib },
       { label: 'PrixUnit', type: 'number'},
       { label: 'Qte', type: 'number' },
       { label: 'TotRations', type: 'number' },
@@ -126,7 +127,7 @@ export class MvtService {
     }
     console.log('calcMvtAfter_fin',mvt.rations,mvt.prix_unit)
   }
-  
+
   mvtToForm(mvt:Mouvement,form:FormGroup): boolean {
     if (!this.lstCamps_lib) this.getCamps()
 
@@ -140,7 +141,7 @@ export class MvtService {
       'Jour': this.datePipe.transform(mvt.jour,'yyyy-MM-dd'),
       'Vers': this.lstOrigine_lib[this.lstOrigine_cod.indexOf(mvt.origine)],
       'Camp': this.lstCamps_lib[this.lstCamps_cod.indexOf(mvt.analytique)],
-      'Service': this.lstService_libelle[mvt.service],
+      'Service': this.lstService_lib[mvt.service],
       'PrixUnit': fp.round(mvt.prix_unit,4),
       'Qte': mvt.qte_mouvement * mvt.sens,
       'TotRations': totRations,
@@ -157,7 +158,7 @@ export class MvtService {
     mvt.jour = this.fp.dateFrToIso(form.get('Jour')?.value),
     mvt.origine = form.get('Vers')?.value,
     mvt.origine = this.lstOrigine_cod[this.lstOrigine_lib.indexOf(form.get('Vers')?.value)]
-    mvt.service = this.lstService_libelle.indexOf(form.get('Service')?.value),
+    mvt.service = this.lstService_lib.indexOf(form.get('Service')?.value),
     mvt.prix_unit = Number(form.get('PrixUnit')?.value)
     mvt.qte_mouvement = form.get('Qte')?.value * mvt.sens
     const totRations = form.get('TotRations')?.value

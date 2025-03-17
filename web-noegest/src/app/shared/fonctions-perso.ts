@@ -18,18 +18,22 @@ export class FonctionsPerso{
     if (obj === null || typeof obj !== 'object') {
       return obj as T;
     }
-    return Array.isArray(obj)
-    ? obj.map(item => this.deepCopy(item))
-    : obj instanceof Date
-      ? new Date(obj.getTime())
-      : Object.getOwnPropertyNames(obj)
-        .reduce((o, prop) => {
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            Object.defineProperty(o, prop, Object.getOwnPropertyDescriptor(obj, prop)!);
-            o[prop] = this.deepCopy((obj as { [key: string]: unknown })[prop]);
-            return o;
+    if (obj instanceof Date) {
+      return new Date(obj.getTime()) as T;
+    }
+    if (Array.isArray(obj)) {
+      return obj.map(item => this.deepCopy(item)) as unknown as T;
+    }
+    return Object
+      .getOwnPropertyNames(obj)
+      .reduce((o, prop) => {
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          Object.defineProperty(o, prop, Object.getOwnPropertyDescriptor(obj, prop)!);
+          o[prop as keyof T] = this.deepCopy((obj as { [key: string]: unknown })[prop]) as T[keyof T];
+          return o;
         }, 
-        Object.create(Object.getPrototypeOf(obj)))
+      Object.create(Object.getPrototypeOf(obj))
+      );
   }
   deepEqual(obj1: unknown, obj2: unknown): boolean {
     if (obj1 === obj2) return true;
@@ -52,7 +56,6 @@ export class FonctionsPerso{
     const fact2 = typeof facteur2 == 'number' ? facteur2 : 1; 
     return fact1 * fact2
   }  
-
   quotient(dividend: unknown, diviser: unknown): number {
     const numDividend: number =
       typeof dividend === "number" 
@@ -66,7 +69,6 @@ export class FonctionsPerso{
         
     return numDiviser === 0 ? 0 : numDividend / numDiviser; // Avoid division by zero
   }
-  
   numToString(nombre:number|undefined,nbDecimales?:number): string {
     if (!nbDecimales) {nbDecimales = 2}
     if (typeof(nombre) === 'number') {
@@ -76,6 +78,12 @@ export class FonctionsPerso{
   stringToNum(input: string|undefined): number {
     const convertedNumber = Number(input);
     return isNaN(convertedNumber) ? 0 : convertedNumber;
+  }
+  capitalize(input: string): string {
+    return input
+      .split(' ') // Split the string into an array of words
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()) // Capitalize the first letter of each word
+      .join(' '); // Join the words back into a single string
   }
   round(nombre?:unknown,nbDecimales?:number): number{
     if (!nbDecimales) {nbDecimales = 2}

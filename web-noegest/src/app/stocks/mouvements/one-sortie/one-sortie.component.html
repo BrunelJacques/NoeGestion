@@ -41,21 +41,20 @@
   <div  class="col-sm-9 card mb-1 p-1">
     <form [formGroup]="fgMvt"
     class="form-group was-validated">
+
       <!-- appel du choix d'un article -->
-      <app-article-search class="col-12"
+      <app-article-search class="form-row"
       *ngIf="mvt"
       [article]="mvt.article"
       (retour)="onArticle($event)">
       </app-article-search>
 
-      <!-- gestion du mouvement -->
+      <!-- gestion du mouvement -->      
       <ng-container *ngFor="let field of fieldsForm">
-        <div class="row" *ngIf="!((!showCamp && field.label === 'Camp')
-                                  || (!showService && field.label === 'Service'))">
-          <div class="col-4 ">
-            <label for="{{ field.label }}">{{ field.label }}</label>
-          </div>
-          <div class="col-8" [ngSwitch]="field.type">
+        <div class="form-row" *ngIf="!((!showCamp && field.label === 'Camp')
+        ||(!showService && field.label === 'Service'))">
+          <label for="{{ field.label }}">{{ field.label }}</label>
+          <div [ngSwitch]="field.type">
             <select class="form-control my-1"
                     required
                     *ngSwitchCase="'select'"

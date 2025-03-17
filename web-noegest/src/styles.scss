@@ -96,19 +96,11 @@ input, select {
 
 label { 
   margin: 7px 5px 2px 5px; 
-  //flex-grow: 100;
-  //text-align-last: center ;
 }
 
 .form-label {
   min-width: 100px;
   text-align: end;
-}
-
-.full-width {
-  width: 100%!important;
-  margin-left: 2%;
-  margin-right: 2%;
 }
 
 .app-container {
@@ -233,6 +225,12 @@ label {
   box-shadow: 0px 0px 15px white;
 }
 
+.form-col {
+  display: flex;
+  flex-flow: column;
+  margin: 0;
+}
+
 
 .form-row {
   display: flex;
@@ -244,22 +242,11 @@ label {
 }
 
 .form-group {
-   margin: 0.5rem 0.3rem;
    display: flex;
    flex-flow: row wrap;
-   width: 100%;
    justify-content: space-evenly;
-
-}
-
-zzrow {
-  --bs-gutter-x: 1.5rem;
-  --bs-gutter-y: 0;
-  display: flex;
-  flex-wrap: wrap;
-  margin-top: calc(-1 * var(--bs-gutter-y));
-  margin-right: calc(-0.5 * var(--bs-gutter-x));
-  margin-left: calc(-0.5 * var(--bs-gutter-x));
+   margin: 0.5rem 0.3rem;
+   width: 100%;
 }
 
 .form-control {
@@ -277,6 +264,7 @@ zzrow {
   border-bottom-left-radius: 0;
   border-color: var(--texte-sombre) !important;
 }
+
 
 .table>:not(caption)>*>* {
   color: var(--texte-sombre);
