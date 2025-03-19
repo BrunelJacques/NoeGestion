@@ -21,7 +21,7 @@
   --texte-clair:  cornflowerblue;
   --texte-sombre:  #09238D;
   --texte-link: #0d6efd;
-  --max-width-field: 200px;
+  --max-width-field: 150px;
   --mdc-filled-button-label-text-color:#09238D;
 }
 
@@ -51,7 +51,7 @@
 .texte-clair {color: var(--texte-clair)!important}
 .texte-sombre {color: var(--texte-sombre)!important}
 .link {
-  color: var(--texte-link)!important;
+  color: var(--texte-link);
   text-decoration: underline;
 }
 .white {color: white}
@@ -60,15 +60,15 @@
 .ombre { box-shadow: 0 9px 6px -6px  #999;}
 
 .mw-field {
-  margin-left: 2% !important;
-  margin-right: 2% !important;
+  margin-left: 2% ;
+  margin-right: 2% ;
   max-width: var(--max-width-field);}
 
 body {
   max-width: 1000px;
   background-color: var(--fond-ecran);
   font-weight: 400;
-  color: var(--texte-sombre)!important;
+  color: var(--texte-sombre);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   font-size: 14px;
   line-height: 1.1;
@@ -98,71 +98,56 @@ label {
   margin: 7px 5px 2px 5px; 
 }
 
-.form-label {
-  min-width: 100px;
-  text-align: end;
-}
-
 .app-container {
   min-height: 350px;
   overflow: hidden;
 }
 
-.card-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  max-width: 650px;
-  margin-left: auto;
-  margin-right: auto;
-
-}
-
-.card-container .card:not(:last-child) {
-  display: flex;    
-  flex-direction: row;
-  margin-right: 0;
-}
-
-.card-container .card:not(.highlight-card) {
-  cursor: pointer;
-}
-
-.card-container .card:not(.highlight-card):hover {
-  box-shadow: 0 9px 6px -6px #999;
-  /*box-shadow: 0 4px 17px rgba(0, 0, 0, 0.35);*/
-
-}
-
-.card-container .card:not(.highlight-card):hover .material-icons path {
-  fill: rgb(105, 103, 103);
-}
-
 .card {
-  flex-flow: row wrap;
-  align-content: start;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  align-content: normal;
   justify-content: center;
+  box-sizing: content-box;
   background-color: var(--fond-blanc);
   color: var(--texte-sombre);
   margin-top: 10px;
 }
 
-.card-header {
-  flex-direction: column;
+.card {
+  border-radius: 4px;
+  border: 1px solid #eee;
+  height: 40px;
+  width: 200px;
+  margin: 0 8px 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.2s ease-in-out;
+  line-height: 24px;
+}
+.card-container .card:not(:last-child) {
+  margin-right: 0;
 }
 
-.card-body {
-  padding: 4px;
-}
 .card.card-small {
-  max-width: 280px;
-  /*flex: 5 200px;*/
-  margin: 5px;
+  height: 16px;
+  width: 168px;
 }
+
+
+.card-container .card:not(.highlight-card):hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 17px rgba(0, 0, 0, 0.35);
+}
+
 
 .card.highlight-card {
-  background-color: var(--fond-soutenu);
-  color: white;
+  background-color: var(--fond-rose);
+  color: var(--texte-sombre);
   font-weight: 600;
   border: none;
   width: auto;
@@ -194,23 +179,16 @@ label {
   height: 100%;
 }
 
-
-.w100px {
-  display: flex;
-  flex-flow: row nowrap;
-  width: 100px;
+.w20px { width: 20px;}
+.w40px { width: 40px;}
+.w60px { width: 60px;}
+.w80px { width: 80px;}
+.w100px { 
+  width: 100px; 
+  max-width: 100px;
 }
-
-.w110px {
-  display: flex;
-  flex-flow: row nowrap;
-  width: 110px;
-}
-.w130px {
-  display: flex;
-  flex-flow: row nowrap;
-  width: 130px;
-}
+.w120px { width: 120px;}
+.w130px { width: 130px;}
 
 .btn {
   margin-top: 5px;
@@ -225,31 +203,37 @@ label {
   box-shadow: 0px 0px 15px white;
 }
 
-.form-col {
-  display: flex;
-  flex-flow: column;
-  margin: 0;
+.form-grp {
+   display: flex;
+   flex-flow: column wrap;
+   margin: 0.5rem 0.3rem;
+   width: 100%;
+   gap: 4%;
 }
 
+.form-col {
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: flex-start;
+  margin:  0.5rem 0.3rem;
+  width: 100%;
+}
 
 .form-row {
   display: flex;
   flex-flow: row wrap;
-  justify-content: space-evenly;
-  align-items: center;
-  margin: 0;
-  gap: 10px 4px;
+  justify-content: center;
+  margin:  0.5rem 0.3rem;
+  width: 100%;
+  // Exception for labels within form-row
+  label {
+    color: blue;
+    margin-right: 8px;
+    text-align: end;
+  }
 }
 
-.form-group {
-   display: flex;
-   flex-flow: row wrap;
-   justify-content: space-evenly;
-   margin: 0.5rem 0.3rem;
-   width: 100%;
-}
-
-.form-control {
+.form-ctrl {
   margin-left: 2%;
   margin-right: 2%;
   font-size: 1.05rem;
@@ -262,7 +246,7 @@ label {
   border-top-right-radius: var(--mdc-filled-text-field-container-shape);
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
-  border-color: var(--texte-sombre) !important;
+  border-color: var(--texte-sombre) ;
 }
 
 
@@ -272,7 +256,7 @@ label {
 }
 
 td {
-  padding: 0.2rem!important;
+  padding: 0.2rem;
   vertical-align: middle;
 }
 .spacer { flex: 1; }
@@ -297,8 +281,8 @@ td {
   font-size: 10px;
 }
 
-.center { 
-  text-align: center!important;
+.centrer { 
+  text-align: center;
   justify-content: space-evenly;
   justify-items: center;
   align-content: space-evenly;
@@ -307,22 +291,22 @@ td {
 
 .right { 
   display: flex;
-  text-align: right !important;
+  text-align: right;
   justify-content: flex-end; 
   justify-items: flex-end;
   align-content: flex-end;
   align-items: flex-end;
 }
 
-.left { text-align: left!important; }
+.left { text-align: left; }
 
 .start { 
   display: flex;
-  justify-content: flex-start !important;}
+  justify-content: flex-start;}
 
 .end   { 
   display: flex;
-  justify-content: flex-end   !important;}
+  justify-content: flex-end;}
 
 .no-newline { display: inline-block; }
 
@@ -341,44 +325,31 @@ mat-form-field {
   width: 100%;
 }
 
-.form-field { /* Utilisable avec label ou subtitle pour harmoniser avec formfield */
-  margin-left: 2% !important;
-  margin-right: 2% !important ;
-  max-width: var(--max-width-field);
-  background-color: var(--fond-saisie);
-
-}
-
 
 mat-form-field .mat-mdc-form-field-infix {
   min-height: 33px; /* hauteur de la partie grisée - adjust the height as needed */
-  padding: 0 !important;
+  padding: 0;
   // ce top se cumule avec le suivant et permet d'écarter les deux noms du field avec ou sans contenu
-  top: 8px !important;
+  top: 8px;
 }
-
-// Nom du field qui monte lors de l'imput
-//mat-form-field .mat-mdc-text-field-wrapper .mat-mdc-form-field-flex  {
-//top: 13px !important;
-//}
 
 .mat-mdc-form-field-input-control {
   position: absolute;
-  top: 3px !important;
+  top: 3px;
 }
 
 .mdc-floating-label {
-  margin: 0px!important;
-  top: 12px !important;
+  margin: 0px;
+  top: 12px;
 }
 
 mat-form-field .mdc-text-field {
-  //top: 5px !important;
+  //top: 5px ;
   padding: 0  8px;
 }
 
 .mat-mdc-form-field-focus-overlay {
-  background-color: var(--fond-saisie) !important;
+  background-color: var(--fond-saisie) ;
 }
 
 .mat-mdc-icon-button.mat-mdc-button-base {
@@ -391,7 +362,7 @@ mat-form-field .mdc-text-field {
 // custom position mat-flat-button
 .mat-mdc-button .mat-mdc-button-touch-target, .mat-mdc-unelevated-button .mat-mdc-button-touch-target, .mat-mdc-raised-button .mat-mdc-button-touch-target, .mat-mdc-outlined-button .mat-mdc-button-touch-target {
   position: absolute;
-  top: 20px !important;
+  top: 20px ;
   height: 20px;
   left: 0;
   right: 0;
@@ -399,8 +370,8 @@ mat-form-field .mdc-text-field {
 
 // custom affichage d'erreurs formfield
 .mat-mdc-form-field-subscript-wrapper, .mat-mdc-form-field-bottom-align::before {
-  line-height: 13px !important;
-  height: 13px !important;
+  line-height: 13px ;
+  height: 13px ;
   vertical-align: text-bottom;
 }
 
@@ -413,14 +384,14 @@ mat-card-title {
   justify-content: space-evenly;
   width:100%;
   background-color: var(--fond-titre);
-  color: var(--texte-sombre) !important;
+  color: var(--texte-sombre) ;
 }
 
 mat-card-subtitle {
   display: flex;
   justify-content: space-evenly;
   width:100%;
-  color: var(--texte-sombre) !important;
+  color: var(--texte-sombre) ;
 }
 
 mat-card {
