@@ -77,7 +77,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
 
     // form Filtres actifs (params)
     this.fgPar = this.fbPar.group({
-      jour: this.datePipe.transform(this.params.jour, 'yyyy-MM-dd'),
+      jour: this.datePipe.transform(this.params.jour, 'dd/MM/yyyy'),
       origine:this.params.origine,
       camp:this.params.camp,
     });

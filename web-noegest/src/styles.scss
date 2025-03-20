@@ -39,11 +39,11 @@
   color: white;
   background-color:  var(--fond-sombre) !important;
 }
-.fond-primary { 
+.fond-primary {
   background-color: var(--fond-primary)!important;
   color:white
 }
-.fond-primary-clair { 
+.fond-primary-clair {
   background-color: var(--fond-primary-clair)!important;
   color: var(--texte-sombre);
 }
@@ -73,7 +73,7 @@ body {
   font-size: 14px;
   line-height: 1.1;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;    
+  -moz-osx-font-smoothing: grayscale;
   margin: 0;
 }
 
@@ -85,7 +85,7 @@ main {
   width: 100%;
 }
 
-input, select { 
+input, select {
   margin-left: 2%;
   margin-right: 2%;
   max-width: var(--max-width-field);
@@ -94,8 +94,8 @@ input, select {
   background-color: var(--fond-saisie);
 }
 
-label { 
-  margin: 7px 5px 2px 5px; 
+label {
+  margin: 7px 5px 2px 5px;
 }
 
 .app-container {
@@ -103,51 +103,61 @@ label {
   overflow: hidden;
 }
 
-.card {
+.card-container {
   display: flex;
-  flex-flow: row nowrap;
-  align-items: center;
-  align-content: normal;
+  flex-wrap: wrap;
   justify-content: center;
-  box-sizing: content-box;
+  max-width: 650px;
+  margin-left: auto;
+  margin-right: auto;
+
+}
+
+.card-container .card:not(:last-child) {
+  display: flex;
+  flex-direction: row;
+  margin-right: 0;
+}
+
+.card-container .card:not(.highlight-card) {
+  cursor: pointer;
+}
+
+.card-container .card:not(.highlight-card):hover {
+  box-shadow: 0 9px 6px -6px #999;
+  /*box-shadow: 0 4px 17px rgba(0, 0, 0, 0.35);*/
+
+}
+
+.card-container .card:not(.highlight-card):hover .material-icons path {
+  fill: rgb(105, 103, 103);
+}
+
+.card {
+  flex-flow: row wrap;
+  align-content: start;
+  justify-content: center;
   background-color: var(--fond-blanc);
   color: var(--texte-sombre);
   margin-top: 10px;
 }
 
-.card {
-  border-radius: 4px;
-  border: 1px solid #eee;
-  height: 40px;
-  width: 200px;
-  margin: 0 8px 16px;
-  padding: 16px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  transition: all 0.2s ease-in-out;
-  line-height: 24px;
-}
-.card-container .card:not(:last-child) {
-  margin-right: 0;
+.card-header {
+  flex-direction: column;
 }
 
+.card-body {
+  padding: 4px;
+}
 .card.card-small {
-  height: 16px;
-  width: 168px;
+  max-width: 280px;
+  /*flex: 5 200px;*/
+  margin: 5px;
 }
-
-
-.card-container .card:not(.highlight-card):hover {
-  transform: translateY(-3px);
-  box-shadow: 0 4px 17px rgba(0, 0, 0, 0.35);
-}
-
 
 .card.highlight-card {
-  background-color: var(--fond-rose);
-  color: var(--texte-sombre);
+  background-color: var(--fond-soutenu);
+  color: white;
   font-weight: 600;
   border: none;
   width: auto;
@@ -183,8 +193,8 @@ label {
 .w40px { width: 40px;}
 .w60px { width: 60px;}
 .w80px { width: 80px;}
-.w100px { 
-  width: 100px; 
+.w100px {
+  width: 100px;
   max-width: 100px;
 }
 .w120px { width: 120px;}
@@ -281,7 +291,7 @@ td {
   font-size: 10px;
 }
 
-.centrer { 
+.centrer {
   text-align: center;
   justify-content: space-evenly;
   justify-items: center;
@@ -289,10 +299,10 @@ td {
   align-items: center;
 }
 
-.right { 
+.right {
   display: flex;
   text-align: right;
-  justify-content: flex-end; 
+  justify-content: flex-end;
   justify-items: flex-end;
   align-content: flex-end;
   align-items: flex-end;
@@ -300,11 +310,11 @@ td {
 
 .left { text-align: left; }
 
-.start { 
+.start {
   display: flex;
   justify-content: flex-start;}
 
-.end   { 
+.end   {
   display: flex;
   justify-content: flex-end;}
 
@@ -313,7 +323,7 @@ td {
 .no-secable { white-space: nowrap; }
 
 .bi {
-  font-size: 1rem; 
+  font-size: 1rem;
 }
 
 // openClassRoom pour material

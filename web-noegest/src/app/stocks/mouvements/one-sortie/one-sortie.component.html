@@ -3,24 +3,24 @@
   <!-- 1ere colonne reprenant les paramètres d'affichage-->
   <mat-card [formGroup]="fgPar" class="col-sm-3 my-0 p-0 fond-saumon">
     <mat-card-title class="fs-6">Filtres actifs </mat-card-title>
-    <div class="">
-      <div class="form-col">
-        <label class="w40px" for='jourPar'>Jour:</label>
-        <input class="form-ctrl my-1 w100px"
-        type= "date" id="jourPar" name="jourPar"
+    <div class="form-row evenly">
+      <div class="filtre">
+        <label for='jourPar'>Jour:</label>
+        <input class="form-ctrl"
+        type= "text" id="jourPar" name="jourPar"
         formControlName="jour"
         readonly>
       </div>
-      <div class="form-col">
-        <label class="w40px" for='versPar'>Vers:</label>
-        <input class="form-ctrl my-1  w100px"
+      <div class="filtre">
+        <label for='versPar'>Vers:</label>
+        <input class="form-ctrl"
         type= "text" id="versPar" name="versPar"
         formControlName="origine"
         readonly>
       </div>
-      <div class="form-col" *ngIf="(fPar['origine'].value === 'camp')">
-        <label class="w40px" for="camp">Camp:</label>
-        <input class="form-ctrl my-1 w100px" 
+      <div class="filtre" *ngIf="(fPar['origine'].value === 'camp')">
+        <label for="camp">Camp:</label>
+        <input class="form-ctrl" 
         id="camp" name="camp"
         formControlName="camp"
         aria-label="camp"
