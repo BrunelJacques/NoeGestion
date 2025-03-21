@@ -2,7 +2,7 @@
   <mat-card-title>Connexion</mat-card-title>
     <form class="form-grp" [formGroup]="form" (ngSubmit)="onSubmit()">
         <div class="form-row ">
-            <label class="w100px mx-0" for="email">Identifiant</label>
+            <label class="w100px" for="email">Identifiant:</label>
             <input class="form-ctrl w100px" 
             type="text"
             formControlName="email"
@@ -17,7 +17,7 @@
             </div>
         </div>
         <div class="form-row">
-            <label class="w100px mx-0" for="password">Mot de passe</label>
+            <label class="w100px" for="password">Mot de passe:</label>
             <input class="form-ctrl w100px"
             type="password"
             formControlName="password"

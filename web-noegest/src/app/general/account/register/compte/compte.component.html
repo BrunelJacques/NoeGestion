@@ -6,7 +6,7 @@ class=" m-1"
     <div class="form-row">
       <mat-form-field class="custom">
         <mat-label>Prénom</mat-label>
-        <input class="" type="text" matInput formControlName="firstName">
+        <input type="text" matInput formControlName="firstName">
         <mat-error> Saisie incorrecte </mat-error>
       </mat-form-field>
       <mat-form-field appearance="fill">
@@ -19,7 +19,7 @@ class=" m-1"
 
 <mat-card class="m-1" [formGroup]="emailForm" >
     <div class="form-row">
-      <mat-card-subtitle  class="mw-field fs-6">Vous joindre?</mat-card-subtitle>
+      <div  class="texte-gris mx-2 mt-3 fs-6">Vous joindre?</div>
       <mat-form-field >
         <mat-label>Téléphone</mat-label>
         <input type="text" matInput formControlName="phone">
@@ -29,7 +29,7 @@ class=" m-1"
     <div class="form-row">
       <mat-form-field >
         <mat-label>Adresse mail</mat-label>
-        <input class="" type="text" matInput formControlName="email">
+        <input type="text" matInput formControlName="email">
         <mat-error> {{getFormControlErrorText(emailCtrl)}} </mat-error>
       </mat-form-field>
       <mat-form-field >
@@ -45,7 +45,7 @@ class=" m-1"
 <mat-card class="m-1" [formGroup]="loginInfoForm" >
 
   <div class="form-row">
-    <mat-card-subtitle  class="mw-field fs-6">Connexion :</mat-card-subtitle>
+    <div  class="texte-gris mx-2  mt-3 fs-6">Connexion :</div>
     <mat-form-field >
       <mat-label>Identifiant</mat-label>
       <input type="text" matInput formControlName="username">
