@@ -13,7 +13,7 @@ import { AlertService, SeeyouService } from 'src/app/general/_services';
 @Component({
   selector: 'app-sorties',
   templateUrl: './sorties.component.html',
-  styleUrls: ['./sorties.component.css']
+  styleUrls: ['./sorties.component.scss']
 })
 
 

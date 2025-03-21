@@ -86,8 +86,9 @@ main {
 }
 
 input, select {
-  margin-left: 2%;
-  margin-right: 2%;
+  margin-left: 1%;
+  margin-right: 1%;
+  padding: 0px;
   max-width: var(--max-width-field);
   min-height: 1.55rem;
   font-size: 1.05rem;
@@ -189,16 +190,16 @@ label {
   height: 100%;
 }
 
-.w20px { width: 20px;}
-.w40px { width: 40px;}
-.w60px { width: 60px;}
-.w80px { width: 80px;}
-.w100px {
-  width: 100px;
-  max-width: 100px;
-}
-.w120px { width: 120px;}
-.w130px { width: 130px;}
+.w20px { width: 20px; max-width: 20px;}
+.w40px { width: 40px; max-width: 40px;}
+.w60px { width: 60px; max-width: 60px;}
+.w80px { width: 80px; max-width: 80px;}
+.w100px { width: 100px; max-width: 100px;}
+.w120px { width: 120px; max-width: 120px;}
+.w140px { width: 140px; max-width: 140px;}
+.w160px { width: 160px; max-width: 160px;}
+.w180px { width: 180px; max-width: 180px;}
+.w200px { width: 200px; max-width: 200px;}
 
 .btn {
   margin-top: 5px;
@@ -244,10 +245,10 @@ label {
 }
 
 .form-ctrl {
-  margin-left: 2%;
-  margin-right: 2%;
+  margin-left: 0;
+  margin-right: 0;
   font-size: 1.05rem;
-  padding: 1px 6px ;
+  padding: 1px 3px ;
   line-height: 1;
   background-color: var(--fond-saisie);
   --mdc-filled-text-field-container-shape: 5px;
@@ -317,6 +318,13 @@ td {
 .end   {
   display: flex;
   justify-content: flex-end;}
+
+.evenly {
+  justify-content: space-evenly;
+}
+.form-row.evenly {
+  margin: 0;
+}
 
 .no-newline { display: inline-block; }
 
