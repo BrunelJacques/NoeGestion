@@ -1,4 +1,14 @@
 
+.test {
+  all: unset;
+  height: 200px;
+}
+
+.corps {
+  display: flex;
+  flex-flow: column wrap;
+}
+
 .item {
   border-radius: 20px;
   color: #ffffff;
@@ -6,7 +16,6 @@
   font-size: 1em;
   padding: 0.5em 0.6em;
   margin: 10px 5px;
-  text-transform: uppercase;
 }
 
 .item-1 {
