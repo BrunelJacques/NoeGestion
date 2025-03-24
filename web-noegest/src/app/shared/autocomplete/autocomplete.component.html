@@ -1,8 +1,8 @@
-<form class="start" [formGroup]="formGroup" >
+<form class="form-row" [formGroup]="formGroup" >
   <label for="saisie">Article</label>
   <mat-form-field>
     <input
-    id="saisie"
+      id="saisie"
       type="text" 
       [placeholder]="formGroup.controls['myControl'].touched ? '' : 'Saisir le début...'"
       matInput

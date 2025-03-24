@@ -89,6 +89,7 @@ input, select {
   max-width: var(--max-width-field);
   min-height: 1.55rem;
   font-size: 1.05rem;
+  color: var(--texte-gris);
   background-color: var(--fond-saisie);
 }
 
@@ -230,9 +231,9 @@ label {
   width: 100%;
   justify-content: unset;
   margin:  0 0.3rem 0.5rem 0.3rem;
-  // Exception for labels within form-row
+  // Exception for form-row
   label {
-    flex: 0 35%; 
+    flex: 0 1 35%; 
     color: var(--texte-gris);
     margin-right: 8px;
     text-align: end;
@@ -241,11 +242,10 @@ label {
     display: flex;
     flex: 3 3 max-content;
     max-width: unset;
-    color: var(--texte-gris);
   }
   select {
-    max-width: unset;
-    color: var(--texte-gris);
+    display: flex;
+    flex: 3 3 max-content;
     max-width: unset;
   }
   span {

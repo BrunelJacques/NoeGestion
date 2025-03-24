@@ -35,6 +35,7 @@
 
 #Jour{
   color: red;
-  flex-basis: 1 2 95px;
+  display: flex;
+  flex: 0 92px;
   max-width: unset;
 }

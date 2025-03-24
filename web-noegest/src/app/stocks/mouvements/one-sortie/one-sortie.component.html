@@ -35,7 +35,7 @@
     class="form-grp was-validated">
 
       <!-- appel du choix d'un article -->
-      <app-article-search class="form-row"
+      <app-article-search
       *ngIf="mvt"
       [article]="mvt.article"
       (retour)="onArticle($event)">
@@ -43,33 +43,30 @@
 
       <!-- gestion du mouvement -->      
       <ng-container *ngFor="let field of fieldsForm">
-        <div class="form-row" *ngIf="!((!showCamp && field.label === 'Camp')
-        ||(!showService && field.label === 'Service'))">
-          <label class="w80px" for="{{ field.label }}">{{ field.label }}</label>
-          <div [ngSwitch]="field.type">
+        <div class="form-row"
+        *ngIf="!((!showCamp&&field.label==='Camp')||(!showService&&field.label==='Service'))">
+          <label class="" for="{{ field.label }}">{{ field.label }}</label>
+          <span
+          [ngSwitch]="field.type">
+            <!-- type select -->
             <select class="form-ctrl my-1"
                     required
                     *ngSwitchCase="'select'"
                     [attr.aria-label]="field.label"
-                    id="sel-{{field.label}}"
+                    id="{{field.label}}"
                     type="field.type"
                     [formControlName]="field.label">
               <option *ngFor="let option of field.options" [value]="option">{{ option }}</option>
             </select>
+            <!-- type label-->
             <input class="form-ctrl my-1"
                    *ngSwitchCase="'label'"
-                   aria-label="{field.label}"
-                   id="lbl-{{field.label}}"
+                   [attr.aria-label]="field.label"
+                   id="{{field.label}}"
                    type="text"
+                   [formControlName]="field.label"
                    readonly>
-            <div *ngIf="submitted && f['{{ field.label }}'].errors" 
-                 class="invalid-feedback" 
-                 [attr.aria-label]="field.label"
-                 id="err-{{ field.label }}">
-              <div *ngIf="f['{{ field.label }}'].errors['required']">
-                Choisissez une valeur
-              </div>
-            </div>
+            <!-- type date -->
             <input class="form-ctrl my-1"
                   required
                   *ngSwitchCase="'date'"
@@ -77,14 +74,16 @@
                   id="{{field.label}}"
                   [type]= "'date'"
                   [formControlName]="field.label" />
+            <!-- type number -->
             <input class="form-ctrl my-1"
                    required
                    *ngSwitchCase="'number'"
                    [attr.aria-label]="field.label"
-                   id="nb-{{field.label}}"
+                   id="{{field.label}}"
                    [type] = "field.type"
                    [formControlName]="field.label"
                    step="any" />
+            <!-- default type-->
             <input class="form-ctrl my-1"
                    required
                    *ngSwitchDefault
@@ -92,7 +91,16 @@
                    id="{{field.label}}"
                    [type]="field.type"
                    [formControlName]="field.label" />
-          </div>
+          </span>
+          <div *ngIf="submitted && f['{{ field.label }}'].errors" 
+          class="invalid-feedback" 
+          [attr.aria-label]="field.label"
+          id="err-{{ field.label }}">
+            <div *ngIf="f['{{ field.label }}'].errors['required']">
+              Choisissez une valeur
+            </div>
+            </div>
+          <span>/</span>
         </div>
       </ng-container>
     </form>
