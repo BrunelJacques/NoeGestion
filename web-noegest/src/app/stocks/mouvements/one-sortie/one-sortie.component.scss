@@ -23,15 +23,18 @@
     max-width:55px;
     margin: 4px 0;
     font-size: 12px; 
+    
   }
 }
 
-.form-ctrl {
-  margin-left: 0;
-  margin-right: 0;
-}
 
 #jourPar {
   width: 75%;
   max-width:95px;
+}
+
+#Jour{
+  color: red;
+  flex-basis: 1 2 95px;
+  max-width: unset;
 }

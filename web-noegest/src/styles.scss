@@ -227,17 +227,30 @@ label {
 .form-row {
   display: flex;
   flex-flow: row wrap;
-  justify-content: center;
-  margin:  0 0.3rem 0.5rem 0.3rem;
   width: 100%;
+  justify-content: unset;
+  margin:  0 0.3rem 0.5rem 0.3rem;
   // Exception for labels within form-row
   label {
+    flex: 0 35%; 
     color: var(--texte-gris);
     margin-right: 8px;
     text-align: end;
   }
-  select input {
+  input {
+    display: flex;
+    flex: 3 3 max-content;
+    max-width: unset;
     color: var(--texte-gris);
+  }
+  select {
+    max-width: unset;
+    color: var(--texte-gris);
+    max-width: unset;
+  }
+  span {
+    display: flex;
+    flex: 1
   }
 }
 
@@ -256,7 +269,6 @@ label {
   border-bottom-left-radius: 0;
   border-color: var(--texte-sombre) ;
 }
-
 
 .table>:not(caption)>*>* {
   color: var(--texte-sombre);

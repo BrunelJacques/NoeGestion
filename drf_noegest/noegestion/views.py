@@ -11,6 +11,8 @@ from .serializers import *
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
+PERMISSION = []
+#PERMISSION = [IsAuthenticated]
 # via décorateur de base Django
 @login_required
 def home(request):
@@ -34,7 +36,7 @@ class GetRetrieveSerializer:
 # Views simples
 class GeAnalytiqueViewset(ModelViewSet):
     serializer_class = GeAnalytiqueSerializer
-    #permission_classes = [IsAuthenticated]
+    permission_classes = PERMISSION
 
     def get_queryset(self,  *args, **kwargs):
         axe = self.request.GET.get('axe', 'ACTIVITES')
@@ -49,7 +51,7 @@ class StMagasinViewset(GetRetrieveSerializer, ModelViewSet):
 
     serializer_class = StMagasinSerializer
     retrieve_serializer_class = StMagasin_articleSerializer
-    #permission_classes = [IsAuthenticated]
+    permission_classes = PERMISSION
 
     def get_queryset(self, *args, **kwargs):
         return StMagasin.objects.all()
@@ -57,7 +59,7 @@ class StMagasinViewset(GetRetrieveSerializer, ModelViewSet):
 class StRayonViewset(GetRetrieveSerializer,ModelViewSet):
     serializer_class = StRayonSerializer
     retrieve_serializer_class = StRayon_articleSerializer
-    #permission_classes = [IsAuthenticated]
+    permission_classes = PERMISSION
 
     def get_queryset(self, *args, **kwargs):
         return StRayon.objects.all()
@@ -65,14 +67,14 @@ class StRayonViewset(GetRetrieveSerializer,ModelViewSet):
 class StFournisseurViewset(ModelViewSet):
 
     serializer_class = StFournisseurSerializer
-    #permission_classes = [IsAuthenticated]
+    permission_classes = PERMISSION
 
     def get_queryset(self, *args, **kwargs):
         return StFournisseur.objects.all()
 
 class StArticleViewset(ModelViewSet):
     serializer_class = StArticleSerializer
-    #permission_classes = [IsAuthenticated]
+    permission_classes = PERMISSION
 
     def get_queryset(self, *args, **kwargs):
         id = self.request.GET.get('id',None)
@@ -95,7 +97,7 @@ class StArticleViewset(ModelViewSet):
 # Retour différent selon nature requête
 class StMouvementViewset(ModelViewSet):
     serializer_class = StMouvementSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = PERMISSION
 
     def get_queryset(self,  *args, **kwargs):
         if self.action == 'retrieve':

@@ -50,7 +50,8 @@
             <select class="form-ctrl my-1"
                     required
                     *ngSwitchCase="'select'"
-                    aria-label="{field.label}"
+                    [attr.aria-label]="field.label"
+                    id="sel-{{field.label}}"
                     type="field.type"
                     [formControlName]="field.label">
               <option *ngFor="let option of field.options" [value]="option">{{ option }}</option>
@@ -58,12 +59,13 @@
             <input class="form-ctrl my-1"
                    *ngSwitchCase="'label'"
                    aria-label="{field.label}"
-                   id="{field.label}"
+                   id="lbl-{{field.label}}"
                    type="text"
                    readonly>
             <div *ngIf="submitted && f['{{ field.label }}'].errors" 
                  class="invalid-feedback" 
-                 id="{{ field.label }}">
+                 [attr.aria-label]="field.label"
+                 id="err-{{ field.label }}">
               <div *ngIf="f['{{ field.label }}'].errors['required']">
                 Choisissez une valeur
               </div>
@@ -71,20 +73,23 @@
             <input class="form-ctrl my-1"
                   required
                   *ngSwitchCase="'date'"
-                  aria-label="{field.label}"
+                  [attr.aria-label]="field.label"
+                  id="{{field.label}}"
                   [type]= "'date'"
                   [formControlName]="field.label" />
             <input class="form-ctrl my-1"
                    required
                    *ngSwitchCase="'number'"
-                   aria-label="{field.label}"
+                   [attr.aria-label]="field.label"
+                   id="nb-{{field.label}}"
                    [type] = "field.type"
                    [formControlName]="field.label"
                    step="any" />
             <input class="form-ctrl my-1"
                    required
                    *ngSwitchDefault
-                   aria-label="{field.label}"
+                   [attr.aria-label]="field.label"
+                   id="{{field.label}}"
                    [type]="field.type"
                    [formControlName]="field.label" />
           </div>

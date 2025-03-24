@@ -1,4 +1,4 @@
-
+/*
 .test {
   all: unset;
   height: 200px;
@@ -11,34 +11,28 @@
 
 label {
   all: unset;
-
-}
-
-.row {
-  display: flex;
-  align-items: center;    /* Vertical alignment */
-  margin-bottom: 10px;    /* Optional spacing between rows */
-}
-
-.row label {
-  flex: 0 0 33.33%;       /* Fixed width: one-third of the row's width */
-  text-align: right;      /* Right-align the label text */
-  padding-right: 10px;    /* Add a small gap between label and input */
-}
-
-.row input {
-  flex: 1;                /* Take up the remaining space */
 }
 
 .form-row {
-  all: unset;
   display: flex;
   flex-flow: row wrap;
-  justify-content: center;
+  justify-content: unset; // incompatible avec flex
+  align-items: center;  // Vertical alignment 
   margin:  0 0.3rem 0.5rem 0.3rem;
-  width: 100%;
+  width: 80%;
 }
 
+.form-row label {
+  flex: 0 1 33.33%;   // Fixed width: one-third of the row's width
+  text-align: right;   // Right-align the label text
+  padding-right: 10px; // Add a small gap between label and input
+}
+
+.form-row input {
+  flex: 1;             // 1: Take up the remaining space
+  max-width: unset;    // width fix incompatible avec ligne au dessue
+}
+*/
 .item {
   border-radius: 20px;
   color: #ffffff;
