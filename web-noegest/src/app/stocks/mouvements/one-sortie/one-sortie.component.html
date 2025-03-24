@@ -46,8 +46,7 @@
         <div class="form-row"
         *ngIf="!((!showCamp&&field.label==='Camp')||(!showService&&field.label==='Service'))">
           <label class="" for="{{ field.label }}">{{ field.label }}</label>
-          <span
-          [ngSwitch]="field.type">
+          <div class="start" [ngSwitch]="field.type">
             <!-- type select -->
             <select class="form-ctrl my-1"
                     required
@@ -91,7 +90,7 @@
                    id="{{field.label}}"
                    [type]="field.type"
                    [formControlName]="field.label" />
-          </span>
+          </div>
           <div *ngIf="submitted && f['{{ field.label }}'].errors" 
           class="invalid-feedback" 
           [attr.aria-label]="field.label"
@@ -99,8 +98,8 @@
             <div *ngIf="f['{{ field.label }}'].errors['required']">
               Choisissez une valeur
             </div>
-            </div>
-          <span>/</span>
+          </div>
+          <span></span>
         </div>
       </ng-container>
     </form>

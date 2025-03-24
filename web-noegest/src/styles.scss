@@ -133,8 +133,8 @@ label {
 }
 
 .card {
-  flex-flow: row wrap;
-  align-content: start;
+  flex: 1;
+  align-content: flex-start;
   justify-content: center;
 }
 
@@ -210,47 +210,58 @@ label {
 }
 
 .form-grp {
-   display: flex;
-   flex-flow: column wrap;
-   margin: 0.5rem 0.3rem;
-   width: 100%;
-   gap: 4%;
-}
-
-.form-col {
   display: flex;
   flex-flow: column wrap;
-  justify-content: flex-start;
-  margin:  0.5rem 0.3rem;
+  margin: 0.5rem 0.3rem;
   width: 100%;
+  gap: 4%;
 }
 
 .form-row {
   display: flex;
-  flex-flow: row wrap;
+  flex-wrap: wrap;
   width: 100%;
-  justify-content: unset;
-  margin:  0 0.3rem 0.5rem 0.3rem;
-  // Exception for form-row
+  align-items: center; // Ensure proper alignment
+  justify-content: center;
+  margin: 0 0.3rem 0.5rem 0.3rem;
   label {
-    flex: 0 1 35%; 
+    flex: 1 1 auto; // Allow the label to shrink first
+    max-width: 30%; // Set a max-width so it shrinks first
+    width:  30%;
     color: var(--texte-gris);
     margin-right: 8px;
     text-align: end;
+    white-space: wrap; // Prevents label from wrapping internally
   }
   input {
     display: flex;
-    flex: 3 3 max-content;
+    flex: 9 9 auto; // Inputs should shrink less aggressively than labels
+    min-width: 0; // Allows input to shrink properly
     max-width: unset;
   }
   select {
     display: flex;
-    flex: 3 3 max-content;
+    flex: 9 9 auto; // Inputs should shrink less aggressively than labels
+    min-width: 0; // Allows input to shrink properly
     max-width: unset;
   }
   span {
     display: flex;
-    flex: 1
+    flex: 1 5 auto;
+    min-width: 0;
+    max-width: 20%; // Set a max-width so it shrinks first
+    width:  20%;;
+  }
+  button {
+    span {
+      display: block;
+      max-width: unset;
+      align-items: center;
+      align-content: center;
+    }
+    a {
+      display: flex;
+    }
   }
 }
 

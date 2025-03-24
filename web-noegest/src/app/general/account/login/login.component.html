@@ -3,7 +3,7 @@
     <form class="form-grp" [formGroup]="form" (ngSubmit)="onSubmit()">
         <div class="form-row ">
             <label class="w100px" for="email">Identifiant:</label>
-            <input class="form-ctrl w100px" 
+            <input class="form-ctrl w100px"
             type="text"
             formControlName="email"
             id="email"
@@ -15,6 +15,7 @@
             class="invalid-feedback">
                 <div  class="error">Identifiant à saisir</div>
             </div>
+            <span></span>
         </div>
         <div class="form-row">
             <label class="w100px" for="password">Mot de passe:</label>
@@ -27,15 +28,27 @@
             <div *ngIf="f['password'].errors?.['required'] && form.controls['password'].touched" class="invalid-feedback">
                 <div *ngIf="f['password'].errors?.['required']">Mot de passe à saisir</div>
             </div>
+            <span></span>
         </div>
 
         <div class="form-row">
-            <button mat-flat-button type="submit" color="primary" [disabled]="loading" class="w120px m-3">
+            <button mat-flat-button
+            class="w120px m-3" 
+            type="submit" 
+            color="primary" 
+            [disabled]="loading">
                 <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-                Envoi<mat-icon>send</mat-icon>
+                Envoi
+                <mat-icon>send</mat-icon>
             </button>
-            <button mat-flat-button type="button" class="fond-soutenu m-3 ">
-                <a routerLink="../register" >Compte<mat-icon>person</mat-icon></a>
+            <button mat-flat-button
+            class="fond-soutenu m-3 w120px"
+            type="button">
+                <a
+                routerLink="../register" >
+                Compte
+                <mat-icon>person</mat-icon>
+                </a>
             </button>
         </div>
     </form>
