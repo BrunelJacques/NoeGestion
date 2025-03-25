@@ -1,36 +1,35 @@
-<!-- test saisie complétée avec select-->
-<app-autocomplete  (retour)="onRetour($event)"></app-autocomplete>
-
 <!-- test material angular -->
-<mat-card [formGroup]="mainForm">
+ <div>simple div</div>
+<mat-card-title> <h1>Ceci est mat-card-title</h1></mat-card-title>
+<mat-card class="" [formGroup]="mainForm">
   <mat-card-subtitle>Email</mat-card-subtitle>
-  <mat-card class="" [formGroup]="emailForm" >
-    <div class="">
-      <mat-form-field appearance="fill">
-        <mat-label>Adresse mail</mat-label>
-        <input
-        class=""
-        type="text"
-        aria-label="Adresse mail"
-        matInput formControlName="email">
-        <mat-error> {{getFormControlErrorText(emailCtrl)}} </mat-error>
-      </mat-form-field>
-      <mat-form-field appearance="fill">
-        <mat-label>Confirmer votre adresse mail</mat-label>
-        <input type="text"
-        aria-label="confirm mail"
-        matInput formControlName="confirm">
-        <mat-error> {{getFormControlErrorText(confirmEmailCtrl)}} </mat-error>
-      </mat-form-field>
-    </div>
+  <mat-card-content class="" [formGroup]="emailForm" >
+    <mat-form-field appearance="fill">
+      <mat-label>Adresse mail</mat-label>
+      <input
+      class=""
+      type="text"
+      aria-label="Adresse mail"
+      matInput
+      formControlName="email">
+      <mat-error> {{getFormControlErrorText(emailCtrl)}} </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Confirmer votre adresse mail</mat-label>
+      <input type="text"
+      aria-label="confirm"
+      matInput
+      formControlName="confirm"> <!--pbconfirm-->
+      <mat-error> {{getFormControlErrorText(confirmEmailCtrl)}} </mat-error>
+    </mat-form-field>
     <small class="error-text" *ngIf="showEmailError$ | async">Les deux adresses ne correspondent pas</small>
     <div> TEST {{showEmailError$| async}}</div>
-  </mat-card>
+  </mat-card-content>
 
-  <mat-card class="m-1" [formGroup]="loginInfoForm" >
+  <mat-card class="m-3" [formGroup]="loginInfoForm" >
     <mat-card-subtitle>mot de passe</mat-card-subtitle>
-    <div class="form-row">
-      <mat-form-field >
+    <mat-card-content>
+    <mat-form-field >
         <mat-label>Mot de passe</mat-label>
         <input type="password"
         aria-label="password"
@@ -40,38 +39,39 @@
       <mat-form-field >
         <mat-label>Confirm. mot de passe</mat-label>
         <input type="password"
-        aria-label="confirm password"
+        aria-label="confirm_password"
         matInput formControlName="confirmPassword">
         <mat-error> {{getFormControlErrorText(confirmPasswordCtrl)}} </mat-error>
       </mat-form-field>
-    </div>
     <small class="error-text" *ngIf="showPasswordError$ | async">Mots de passe différents</small>
+  </mat-card-content>
   </mat-card>
 </mat-card>
 
+
 <!-- test éléments basiques -->
-<div class="test"> 
+<div class="test">
   <div class="w-100">
     <div class="form-row">
       <label for="item-1">Item un</label>
-      <input class="form-ctrl" 
-      type="text" 
-      aria-label="item-1" 
+      <input class="form-ctrl"
+      type="text"
+      aria-label="item-1"
       id="item-1">
     </div>
     <div class="form-row">
       <label for="item-2">Item deuxième</label>
-      <input class="form-ctrl " 
-      type="text" 
-      aria-label="item-2" 
+      <input class="form-ctrl "
+      type="text"
+      aria-label="item-2"
       id="item-2">
     </div>
     <div class="form-row">
       <label for="item-3">It 3</label>
       <div class="card">
-        <input class="form-ctrl " 
-        type="text" 
-        aria-label="item-3" 
+        <input class="form-ctrl "
+        type="text"
+        aria-label="item-3"
         id="item-3">
       </div>
       <span></span>
@@ -92,7 +92,7 @@
      fxLayoutAlign="center"
      fxLayoutGap="10px"
      fxLayoutGap.xs="0"
->   
+>
 <div>
   <div class="item item-1">
     Item 1bis fxLayout is a directive used to define the layout of the HTML elements. i.e., it decides the flow of children elements within a flexbox container
@@ -109,5 +109,92 @@
   </div>
 </div>
 
+
+<div class="mb-3 form-check">
+      <input type="checkbox" class="form-check-input" id="exampleCheck1">
+      <label class="form-check-label" for="exampleCheck1">Check me out</label>
+</div>
+<button type="submit" class="btn btn-primary">Submit</button>
+
+<mat-card class="">
+  <mat-card-title >Titre</mat-card-title>
+  <div class="row m-1">
+    <div class="col-12 col-sm-4 p-0">
+      <mat-card-subtitle>1.1 sous-titre</mat-card-subtitle>
+      <div class="form-row">
+        <div class="fond-saumon">ma colonne 1.1</div>
+        <div>ma colonne 1.2</div>
+      </div>
+      </div>
+    <div class="col-12 col-sm-8">
+      <div class="row">
+        <div>ma colonne 2.1</div>
+        <div class="fond-box">ma colonne 2.2</div>
+      </div>
+    </div>
+  </div>
+</mat-card>
+
+
+<div class="">
+  <div>Titre2</div>
+  <mat-card-subtitle>
+    <span>matcardtitle</span>
+  </mat-card-subtitle>
+</div>
+<div class="row m-1">
+  <div class="col-12 col-sm-4 p-0 fond-titre">
+      <mat-card-subtitle class="fond-titre">1.1 sous-titre</mat-card-subtitle>
+
+      <mat-form-field appearance="fill" class="p-0">
+        <mat-label>Ma date</mat-label>
+        <input type="date" matInput [formControl]="myDateCtrl">
+        <mat-error> {{getFormControlErrorText(myDateCtrl)}} </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Mon_Texte</mat-label>
+        <input type="text" matInput [formControl]="emailCtrl">
+        <mat-error>{{getFormControlErrorText(myDateCtrl)}} </mat-error>
+      </mat-form-field>
+
+      <mat-card-subtitle>1.2 sous-titre</mat-card-subtitle>
+      <mat-form-field appearance="fill">
+        <mat-label>Ma date</mat-label>
+        <input type="date" matInput [formControl]="myDateCtrl">
+        <mat-error> {{getFormControlErrorText(myDateCtrl)}} </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Mon Texte</mat-label>
+        <input type="text" matInput [formControl]="emailCtrl">
+        <mat-error>{{getFormControlErrorText(myDateCtrl)}} </mat-error>
+      </mat-form-field>
+  </div>
+  <div class="col-12 col-sm-8">
+      <mat-card-subtitle>Mon deuxième sous-titre</mat-card-subtitle>
+        <mat-form-field appearance="fill">
+          <mat-label>
+            ceci est mon label
+          </mat-label>
+          <input type="text" matInput [formControl]="emailCtrl">
+
+          <mat-error>Ce champ est nécessaire </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>
+            ceci est mon label2
+          </mat-label>
+          <input type="date" matInput [formControl]="myDateCtrl">
+
+          <mat-error>Ce champ est nécessaire </mat-error>
+        </mat-form-field>
+  </div>
+</div>
+
+
+<!-- test saisie complétée avec select-->
+ <div>Test autocomplete</div>
+<app-autocomplete  (retour)="onRetour($event)"></app-autocomplete>
 
 

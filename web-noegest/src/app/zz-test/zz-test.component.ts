@@ -46,11 +46,21 @@ export class ZzTestComponent implements OnInit, AfterViewInit {
     this.mainForm = this.formBuilder.group({
       personalInfo: this.personalInfoForm,
       email: this.emailForm,
+      confirm: this.emailForm,
       loginInfo: this.loginInfoForm,
     })
   }
 
   private initFormControls(): void {
+//------------------------------------
+    this.myTxtCtrl = this.formBuilder.control('invite',Validators.required)
+    this.myDateCtrl = this.formBuilder.control('',Validators.required)
+    this.mainForm = this.formBuilder.group({
+      myTxt: this.myTxtCtrl,
+      myDate: this.myDateCtrl
+    })
+//------------------------------------
+
     this.personalInfoForm = this.formBuilder.group({
       firstName: [''],
       lastName: ["", Validators.required]
@@ -132,6 +142,11 @@ export class ZzTestComponent implements OnInit, AfterViewInit {
   onRetour(param: unknown) {
     console.log(param)
   }
+//---------------------------------
+myTxtCtrl!: FormControl;
+myDateCtrl!: FormControl;
+
+//---------------------------------
 }
   
   
