@@ -27,424 +27,162 @@
   background-color: #073443;
 }
 
-/*-------- ci dessous les tests ----------
+//-------- ci dessous les tests ---------- --*/
 .test {
   all: unset;
-}--*/
+}
 
-/* style.scss 2024-02 */
-/* You can add global styles to this file, and also import other style files */
-/* Use a media query to add a break point at xxxpx: */
-@media screen and (max-width: 800px) {
-  .main {
-      width: 100%; /* The width is 100%, when the viewport is small */
+
+/* Personnalisation d'input custom */
+.custom-input-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  label {
+    position: absolute;
+    top: 40%;
+    left: calc(50% - 70px);
+    transform: translateY(-100%);
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.6);
+    transition: 0.2s ease all;
+    pointer-events: none;
+  }  
+}
+
+.custom-input:focus + label,
+.custom-input:not(:placeholder-shown) + label {
+  top: 12px;
+  font-size: 11px;
+  color: #3f51b5;
+}
+
+.custom-input {
+  height: 36px;
+  padding: 8px 0 0 10px ;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  outline: none;
+  width: 100%; 
+}
+
+.custom-input:focus {
+  border-color: #3f51b5;
+}
+
+// ajout pour ctrl géré en form-row
+@media (max-width: 250px) {
+  .form-row {
+    flex-direction: column;
+    align-items: flex-start !important;
+    label {
+      width: 100%;
+      text-align: left;
+      justify-content: flex-start;
+    }
+    input {
+      width: 100% !important;
+    }
   }
 }
-/* couleurs html choisies via libreoffice*/
-:root {
-  --fond-soutenu: #c5c5ff;
-  --fond-titre: #e8e8e8;
-  --fond-ecran: whitesmoke;
-  --fond-blanc: #ffffff;
-  --fond-sombre: #3f729b;
-  --fond-saumon: navajowhite;
-  --fond-saisie: rgb(232, 240, 254);
-  --mdc-filled-text-field-container-color:rgb(232, 240, 254);
-  --fond-rose: mistyrose;
-  --fond-primary: #673ab7;
-  --fond-primary-clair: #c5c5ff;
-  --texte-clair:  cornflowerblue;
-  --texte-sombre:  #09238D;
-  --texte-link: #0d6efd;
-  --max-width-field: 200px;
-  --mdc-filled-button-label-text-color:#09238D;
-}
-
-.fond-ecran { background-color: var(--fond-ecran) !important;}
-.fond-saisie { background-color: var(--fond-saisie) !important;}
-.fond-box { background-color: var(--fond-blanc) !important;}
-.fond-titre { background-color: var(--fond-titre) !important;}
-.fond-soutenu {
-  background-color: var(--fond-soutenu) !important;
-  color: vat(--texte-sombre)
-}
-.fond-saumon { background-color: var(--fond-saumon)!important;}
-.fond-rose {background-color: var(--fond-rose)!important;}
-.fond-sombre {
-  color: white;
-  background-color:  var(--fond-sombre) !important;
-}
-.fond-primary { 
-  background-color: var(--fond-primary)!important;
-  color:white
-}
-.fond-primary-clair { 
-  background-color: var(--fond-primary-clair)!important;
-  color: var(--texte-sombre);
-}
-
-.texte-clair {color: var(--texte-clair)!important}
-.texte-sombre {color: var(--texte-sombre)!important}
-.link {
-  color: var(--texte-link)!important;
-  text-decoration: underline;
-}
-.white {color: white}
-.whitesmoke {color: whitesmoke}
-
-.ombre { box-shadow: 0 9px 6px -6px  #999;}
-
-.mw-field {
-  margin-left: 2% !important;
-  margin-right: 2% !important;
-  max-width: var(--max-width-field);}
-
-body {
-  max-width: 1000px;
-  background-color: var(--fond-ecran);
-  font-weight: 400;
-  color: var(--texte-sombre)!important;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-  font-size: 14px;
-  line-height: 1.1;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;    
-  margin: 0;
-}
-
-html, body { height: 100%; }
-
-main {
-  margin: 10px 0 0 0;
-  padding: 4px;
-  width: 100%;
-}
-
-input, select { 
-  margin-left: 2%;
-  margin-right: 2%;
-  max-width: var(--max-width-field);
-  min-height: 1.55rem;
-  font-size: 1.05rem;
-  background-color: var(--fond-saisie);
-}
-
-label { 
-  margin: 7px 5px 2px 5px; 
-  //flex-grow: 100;
-  //text-align-last: center ;
-}
-
-.form-label {
-  min-width: 100px;
-  text-align: end;
-}
-
-.full-width {
-  width: 100%!important;
-  margin-left: 2%;
-  margin-right: 2%;
-}
-
-.app-container {
-  min-height: 350px;
-  overflow: hidden;
-}
-
-.card-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  max-width: 650px;
-  margin-left: auto;
-  margin-right: auto;
-
-}
-
-.card-container .card:not(:last-child) {
-  display: flex;    
-  flex-direction: row;
-  margin-right: 0;
-}
-
-.card-container .card:not(.highlight-card) {
-  cursor: pointer;
-}
-
-.card-container .card:not(.highlight-card):hover {
-  box-shadow: 0 9px 6px -6px #999;
-  /*box-shadow: 0 4px 17px rgba(0, 0, 0, 0.35);*/
-
-}
-
-.card-container .card:not(.highlight-card):hover .material-icons path {
-  fill: rgb(105, 103, 103);
-}
-
-.card {
-  flex-flow: row wrap;
-  align-content: start;
-  justify-content: center;
-  background-color: var(--fond-blanc);
-  color: var(--texte-sombre);
-  margin-top: 10px;
-}
-
-.card-header {
-  flex-direction: column;
-}
-
-.card-body {
-  padding: 4px;
-}
-.card.card-small {
-  max-width: 280px;
-  /*flex: 5 200px;*/
-  margin: 5px;
-}
-
-.card.highlight-card {
-  background-color: var(--fond-soutenu);
-  color: white;
-  font-weight: 600;
-  border: none;
-  width: auto;
-  min-width: 30%;
-  position: relative;
-}
-
-.card.card.highlight-card span {
-  margin-left: 60px;
-}
-
-.short {
-  max-width: 170px;
-}
-
-.bloc-expand {
-  display: block;
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  bottom: 0;
-}
-
-.expand {  /* pour un div dans un container à position relative*/
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-
-
-.w100px {
-  display: flex;
-  flex-flow: row nowrap;
-  width: 100px;
-}
-
-.w110px {
-  display: flex;
-  flex-flow: row nowrap;
-  width: 110px;
-}
-.w130px {
-  display: flex;
-  flex-flow: row nowrap;
-  width: 130px;
-}
-
-.btn {
-  margin-top: 5px;
-  min-width: 30px;
-  border-width: 1px;
-  border-color: var(--texte-link);
-}
-
-.btn:focus  {
-  border-width: 2px;
-  border-color: whitesmoke;
-  box-shadow: 0px 0px 15px white;
-}
-
 
 .form-row {
   display: flex;
-  flex-flow: row wrap;
-  justify-content: space-evenly;
   align-items: center;
-  margin: 0;
-  gap: 10px 4px;
+  width: 100%;
 }
 
-.form-group {
-   margin: 0.5rem 0.3rem;
-   display: flex;
-   flex-flow: row wrap;
-   width: 100%;
-   justify-content: space-evenly;
-
+// Label Styling 
+.form-label {
+  width: 30%;
+  justify-content: end;
+  align-items: center;
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.7);
+  white-space: nowrap; // Prevent label from wrapping 
 }
 
-zzrow {
-  --bs-gutter-x: 1.5rem;
-  --bs-gutter-y: 0;
-  display: flex;
-  flex-wrap: wrap;
-  margin-top: calc(-1 * var(--bs-gutter-y));
-  margin-right: calc(-0.5 * var(--bs-gutter-x));
-  margin-left: calc(-0.5 * var(--bs-gutter-x));
+// Input Styling 
+.form-input {
+  width: 40%;
+  height: 36px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s ease-in-out;
 }
 
-.form-control {
-  margin-left: 2%;
-  margin-right: 2%;
-  font-size: 1.05rem;
-  padding: 1px 6px ;
-  line-height: 1;
-  background-color: var(--fond-saisie);
-  --mdc-filled-text-field-container-shape: 5px;
-  border-width: 0 0 1px 0;
-  border-top-left-radius: var(--mdc-filled-text-field-container-shape);
-  border-top-right-radius: var(--mdc-filled-text-field-container-shape);
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
-  border-color: var(--texte-sombre) !important;
+// Focus Effect 
+.form-input:focus {
+  border-color: #3f51b5;
+  box-shadow: 0 0 4px rgba(63, 81, 181, 0.3);
 }
 
-.table>:not(caption)>*>* {
-  color: var(--texte-sombre);
-  text-align: right;
-}
-
-td {
-  padding: 0.2rem!important;
-  vertical-align: middle;
-}
-.spacer { flex: 1; }
-
-.justified {
-  display: flex;
-  justify-content: space-between;
-}
-.left-span { order: 1; }
-
-.middle-span { order: 2; }
-
-.right-span { order: 3; }
-
-.small12 {
-  font-family: "Times new roman";
+// Error Message 
+.error-input {
   font-size: 12px;
+  color: red;
+  margin: 2px 0 6px 0;
+  margin-left: 0; // Align error message under input 
 }
 
-.small10 {
-  font-family: "Times new roman";
-  font-size: 10px;
-}
+/* personalisation  mat-form-field */
 
-.center { 
-  text-align: center!important;
-  justify-content: space-evenly;
-  justify-items: center;
-  align-content: space-evenly;
+::ng-deep mat-form-field {
+  height: 70px !important; // Set fixed height 
+  display: flex;
   align-items: center;
-}
-
-.right { 
-  text-align: right!important;
-  justify-content: right;
-  justify-items: right;
-  align-content: end;
-  align-items: end;
-}
-.left { text-align: left!important; }
-.start { justify-content: start !important;}
-.end   { justify-content: end   !important;}
-
-.no-newline { display: inline-block; }
-
-.no-secable { white-space: nowrap; }
-
-.bi {
-  font-size: 1rem; 
-}
-
-// openClassRoom pour material
-
-mat-form-field {
   margin-left: 2% ;
   margin-right: 2% ;
-  max-width: var(--max-width-field);
 }
 
-.form-field { /* Utilisable avec label ou subtitle pour harmoniser avec formfield */
-  margin-left: 2% !important;
-  margin-right: 2% !important ;
-  max-width: var(--max-width-field);
-  background-color: var(--fond-saisie);
-
+::ng-deep mat-form-field .mat-mdc-form-field-focus-overlay {
+  background-color: unset;
 }
 
-
-mat-form-field .mat-mdc-form-field-infix {
-  min-height: 33px; /* hauteur de la partie grisée - adjust the height as needed */
+// Ensure wrapper does not push input down 
+::ng-deep .mat-form-field-wrapper {
   padding: 0 !important;
-  // ce top se cumule avec le suivant et permet d'écarter les deux noms du field avec ou sans contenu
-  top: 8px !important;
-}
-
-
-
-
-// custom affichage d'erreurs formfield
-.mat-mdc-form-field-subscript-wrapper, .mat-mdc-form-field-bottom-align::before {
-  line-height: 13px !important;
-  height: 13px !important;
-  vertical-align: text-bottom;
-}
-
-.mat-radio-button ~ .mat-radio-button {
-  margin-left: 16px;
-}
-
-
-mat-card-subtitle {
+  height: 100% !important;
   display: flex;
-  justify-content: space-evenly;
-  width:100%;
-  color: var(--texte-sombre) !important;
+  align-items: center;
+  padding-bottom: 0px; // Reduce default bottom padding 
+  padding-top: 0px;
 }
 
-mat-card {
-  max-width: 650px
-}
-
-mat-card-actions {
-  text-align: center;
-}
-
-.main-form {
-  padding-bottom: 10px;
-  position: relative;
-}
-
-.loading {
-  position: absolute;
-  top: -10px;
-  bottom: -10px;
-  left: -10px;
-  right: -10px;
-  height: inherit;
-  z-index: 10;
-  backdrop-filter: blur(5px);
+// Keep input centered & visible 
+::ng-deep .mat-form-field-flex {
+  min-height: 56px !important;
+  height: 56px !important;
   display: flex;
-  justify-content: center;
   align-items: center;
 }
 
-.error-text {
-  color: red;
+// Ensure label does not overlap input 
+::ng-deep .mat-form-field-label {
+  top: 8px !important; // Adjust label start position 
+  transform: none !important; // Prevent unwanted floating 
+  font-size: 14px !important;
+  white-space: normal;
+}
+
+// Fix label floating behavior 
+::ng-deep .mat-form-field.mat-form-field-can-float.mat-form-field-should-float
+  .mat-form-field-label {
+  transform: translateY(-20px) scale(0.75) !important;
+}
+
+// Fix underline/ripple position 
+::ng-deep .mat-form-field-underline {
+  bottom: 0px !important;
+}
+
+::ng-deep .mat-form-field-ripple {
+  bottom: 0px !important;
+  height: 2px !important;
 }
 

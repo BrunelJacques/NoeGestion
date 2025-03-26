@@ -225,12 +225,13 @@ label {
   justify-content: center;
   margin: 0 0.3rem 0.5rem 0.3rem;
   label {
+    display: flex;
     flex: 1 1 auto; // Allow the label to shrink first
     max-width: 30%; // Set a max-width so it shrinks first
     width:  30%;
     color: var(--texte-gris);
     margin-right: 8px;
-    text-align: end;
+    justify-content: flex-end;
     white-space: wrap; // Prevents label from wrapping internally
   }
   input {
@@ -381,4 +382,61 @@ td {
 
 .error-text {
   color: red;
+}
+
+
+/* personalisation  mat-form-field */
+
+::ng-deep mat-form-field {
+  height: 70px !important; // Set fixed height 
+  display: flex;
+  align-items: center;
+  margin-left: 2% ;
+  margin-right: 2% ;
+}
+
+::ng-deep mat-form-field .mat-mdc-form-field-focus-overlay {
+  background-color: unset;
+}
+
+// Ensure wrapper does not push input down 
+::ng-deep .mat-form-field-wrapper {
+  padding: 0 !important;
+  height: 100% !important;
+  display: flex;
+  align-items: center;
+  padding-bottom: 0px; // Reduce default bottom padding 
+  padding-top: 0px;
+}
+
+// Keep input centered & visible 
+::ng-deep .mat-form-field-flex {
+  min-height: 56px !important;
+  height: 56px !important;
+  display: flex;
+  align-items: center;
+}
+
+// Ensure label does not overlap input 
+::ng-deep .mat-form-field-label {
+  top: 8px !important; // Adjust label start position 
+  transform: none !important; // Prevent unwanted floating 
+  font-size: 14px !important;
+  white-space: normal;
+}
+
+// Fix label floating behavior 
+::ng-deep .mat-form-field.mat-form-field-can-float.mat-form-field-should-float
+  .mat-form-field-label {
+  transform: translateY(-20px) scale(0.75) !important;
+}
+
+// Fix underline/ripple position 
+::ng-deep .mat-form-field-underline {
+  bottom: 0px !important;
+}
+
+::ng-deep .mat-form-field-ripple {
+  bottom: 0px !important;
+  height: 2px !important;
 }

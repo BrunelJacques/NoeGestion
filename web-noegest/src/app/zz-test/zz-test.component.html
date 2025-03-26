@@ -1,9 +1,28 @@
-<!-- test material angular -->
- <div>simple div</div>
-<mat-card-title> <h1>Ceci est mat-card-title</h1></mat-card-title>
-<mat-card class="" [formGroup]="mainForm">
-  <mat-card-subtitle>Email</mat-card-subtitle>
-  <mat-card-content class="" [formGroup]="emailForm" >
+<div class="custom-input-container centrer">
+  <div>
+    <input type="text" id="ffEmail" formControlName="confirm" class="custom-input" placeholder="">
+    <label for="ffEmail">clic here basic</label>
+  </div>
+  <div class="error-input">{{ getFormControlErrorText(confirmEmailCtrl) }}</div>
+</div>
+
+<div class="form-row">
+  <label  class="form-label"
+  for="confirmEmail">basic row mail</label>
+  <input class="form-input"
+  placeholder="Entrez email"
+  type="text" 
+  id="confirmEmail" 
+  formControlName="confirm">
+  <span></span>
+</div>
+<div class="error-input">{{ getFormControlErrorText(confirmEmailCtrl) }}</div>
+<div>----------- fin du basic test</div>
+
+<mat-card class="test" [formGroup]="mainForm"></mat-card>
+  <mat-card-title> <h1>Ceci est mat-card-title</h1></mat-card-title>
+  <mat-card-subtitle>Email en form-row basic</mat-card-subtitle>
+  <mat-card-content class="" [formGroup]="emailForm" >  
     <mat-form-field appearance="fill">
       <mat-label>Adresse mail</mat-label>
       <input
@@ -15,14 +34,16 @@
       <mat-error> {{getFormControlErrorText(emailCtrl)}} </mat-error>
     </mat-form-field>
     <mat-form-field appearance="fill">
-      <mat-label>Confirmer votre adresse mail</mat-label>
+      <mat-label>Confirmer le mail</mat-label>
       <input type="text"
       aria-label="confirm"
       matInput
       formControlName="confirm"> <!--pbconfirm-->
       <mat-error> {{getFormControlErrorText(confirmEmailCtrl)}} </mat-error>
     </mat-form-field>
+    <div>
     <small class="error-text" *ngIf="showEmailError$ | async">Les deux adresses ne correspondent pas</small>
+    </div>
     <div> TEST {{showEmailError$| async}}</div>
   </mat-card-content>
 
@@ -45,7 +66,6 @@
       </mat-form-field>
     <small class="error-text" *ngIf="showPasswordError$ | async">Mots de passe différents</small>
   </mat-card-content>
-  </mat-card>
 </mat-card>
 
 
