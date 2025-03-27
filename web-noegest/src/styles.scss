@@ -25,7 +25,7 @@
   --texte-sombre:  #09238D;
   --texte-gris: rgb(0,0,0,0.54);
   --texte-link: #0d6efd;
-  --max-width-field: 150px;
+  --max-width-field: 210px;
   --mdc-filled-button-label-text-color:#09238D;
 }
 
@@ -86,18 +86,37 @@ main {
 }
 
 input, select {
+  border: 2px solid #ccc;
+  border-radius: 6px;
+  transition: border-color 1.4s ease-in-out;
   margin-left: 1%;
   margin-right: 1%;
-  padding: 0px;
-  max-width: var(--max-width-field);
+  padding: 5px;
   min-height: 1.55rem;
   font-size: 1.05rem;
   color: var(--texte-gris);
   background-color: var(--fond-saisie);
 }
+// Focus Effect 
+input:focus-visible, select:focus-visible {
+  outline: rgb(0, 98, 128);
+  outline-width: 5px;
+  box-shadow: 0 0 10px rgba(63, 81, 181, 0.5);
+  background-color: whitesmoke;
+}
 
 label {
   margin: 7px 5px 2px 5px;
+}
+
+.row {
+  display: flex;
+  flex-flow: row wrap;
+  width: 100%;
+  mat-form-field {
+    margin: 0 0.3rem 0.5rem 0.3rem;
+    max-width: var(--max-width-field);
+  }
 }
 
 .app-container {
@@ -219,6 +238,21 @@ label {
   gap: 4%;
 }
 
+/*----- ctrl gérés en form-row -----*/
+@media (max-width: 250px) {
+  .form-row {
+    flex-direction: column;
+    align-items: flex-start !important;
+    label {
+      width: 100%;
+      text-align: left;
+      justify-content: flex-start;
+    }
+    input {
+      width: 100% !important;
+    }
+  }
+}
 .form-row {
   display: flex;
   flex-wrap: wrap;
@@ -234,20 +268,17 @@ label {
     color: var(--texte-gris);
     margin-right: 8px;
     justify-content: flex-end;
-    white-space: wrap; // Prevents label from wrapping internally
   }
   input {
     display: flex;
     flex: 9 9 auto; // Inputs should shrink less aggressively than labels
     min-width: 0; // Allows input to shrink properly
-    max-width: unset;
-  }
+    }
   select {
     display: flex;
     flex: 9 9 auto; // Inputs should shrink less aggressively than labels
     min-width: 0; // Allows input to shrink properly
-    max-width: unset;
-  }
+   }
   span {
     display: flex;
     flex: 1 5 auto;
@@ -283,6 +314,8 @@ label {
   border-bottom-left-radius: 0;
   border-color: var(--texte-sombre) ;
 }
+
+//----------- fin ctrl géré en form-row ----
 
 .table>:not(caption)>*>* {
   color: var(--texte-sombre);
@@ -363,7 +396,6 @@ td {
   font-size: 1rem;
 }
 
-
 .main-form {
   padding-bottom: 10px;
   position: relative;
@@ -393,11 +425,16 @@ mat-form-field {
   transform: translateY(-30px) !important;
   margin-left: 2% ;
   align-content: flex-start;
+  label {
+    width: 100%;
+    max-width: unset;
+  }
+  input {
+    font-size: 14px !important;
+    white-space: normal;
+  }
 }
-mat-form-field input {
-  font-size: 14px !important;
-  white-space: normal;
-}
+
 .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-text-field__input{
   //background-color: rgb(219, 119, 158) !important;
   position: relative;

@@ -1,7 +1,12 @@
+<input type="text">
 <div class="custom-input-container centrer"
 [formGroup]="emailForm">
   <div>
-    <input type="text" id="ffEmail" formControlName="confirm" class="custom-input" placeholder="">
+    <input  class="item-1 custom-input" 
+    type="text" 
+    id="ffEmail" 
+    formControlName="confirm" placeholder="">
+
     <label for="ffEmail">clic here basic</label>
   </div>
   <div class="error-message">{{ getFormControlErrorText(confirmEmailCtrl) }}</div>
@@ -9,9 +14,9 @@
 
 <div class="form-row"
 [formGroup]="emailForm">
-  <label  class="form-label"
+  <label  class=""
   for="confirmEmail">basic row mail</label>
-  <input class="form-input"
+  <input class=""
   placeholder="Entrez email"
   type="text" 
   id="confirmEmail" 
@@ -21,7 +26,7 @@
 </div>
 <div>----------- fin du basic test --------------</div>
 
-<mat-card class="test" [formGroup]="mainForm"></mat-card>
+<mat-card class="" [formGroup]="mainForm"></mat-card>
   <mat-card-title> <h1>Ceci est mat-card-title</h1></mat-card-title>
   <mat-card-subtitle>Email en Material angular</mat-card-subtitle>
   <mat-card-content class="" [formGroup]="emailForm" >  
@@ -70,7 +75,7 @@
 
 
 <!-- test éléments basiques -->
-<div class="test">
+<div class="">
   <div class="w-100">
     <div class="form-row">
       <label for="item-1">Item un</label>
@@ -105,7 +110,7 @@
     <input class="item item-4" aria-label="item-4 lbl" id="item-4">
   </div>
 
-<div>container enrichi par fx</div>
+<div class="mb-3">container enrichi par fx</div>
 <div class="container"
      fxLayout="row"
      fxLayout.xs="column"
@@ -114,7 +119,7 @@
      fxLayoutGap.xs="0"
 >
 <div>
-  <div class="item item-1">
+  <div class="item-1">
     Item 1bis fxLayout is a directive used to define the layout of the HTML elements. i.e., it decides the flow of children elements within a flexbox container
   </div>
   <div class="item item-2">
@@ -211,7 +216,6 @@
         </mat-form-field>
   </div>
 </div>
-
 
 <!-- test saisie complétée avec select-->
  <div>Test autocomplete</div>

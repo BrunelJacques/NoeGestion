@@ -7,7 +7,6 @@
     <mat-radio-button value="info">Info</mat-radio-button>
   </mat-radio-group>
 
-  
   <div *ngIf=" 'info' === (situationCtrl.value)">
     <app-info></app-info>
   </div>
@@ -15,7 +14,8 @@
     <app-compte  [user]="user" (valid)="onValid($event)"></app-compte>
   </div>
 
-  <mat-card-actions *ngIf=" 'info' !== (situationCtrl.value)">
+  <mat-card-actions *ngIf=" 'info' !== (situationCtrl.value)"
+  class="centrer">
     <button
     mat-flat-button color="primary" 
     type="submit"
