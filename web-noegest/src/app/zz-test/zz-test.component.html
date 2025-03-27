@@ -1,4 +1,5 @@
-<div class="custom-input-container centrer">
+<div class="custom-input-container centrer"
+[formGroup]="emailForm">
   <div>
     <input type="text" id="ffEmail" formControlName="confirm" class="custom-input" placeholder="">
     <label for="ffEmail">clic here basic</label>
@@ -6,7 +7,8 @@
   <div class="error-input">{{ getFormControlErrorText(confirmEmailCtrl) }}</div>
 </div>
 
-<div class="form-row">
+<div class="form-row"
+[formGroup]="emailForm">
   <label  class="form-label"
   for="confirmEmail">basic row mail</label>
   <input class="form-input"
@@ -41,31 +43,34 @@
       formControlName="confirm"> <!--pbconfirm-->
       <mat-error> {{getFormControlErrorText(confirmEmailCtrl)}} </mat-error>
     </mat-form-field>
-    <div>
-    <small class="error-text" *ngIf="showEmailError$ | async">Les deux adresses ne correspondent pas</small>
+    <div class="mt-2">-</div><!-- compense les positions décalées-->
+    <div *ngIf="showEmailError$ | async">
+      <small class="error-text" >Les deux adresses ne correspondent pas</small>
     </div>
     <div> TEST {{showEmailError$| async}}</div>
   </mat-card-content>
 
   <mat-card class="m-3" [formGroup]="loginInfoForm" >
-    <mat-card-subtitle>mot de passe</mat-card-subtitle>
+    <mat-card-subtitle>mots de passe</mat-card-subtitle>
     <mat-card-content>
-    <mat-form-field >
-        <mat-label>Mot de passe</mat-label>
-        <input type="password"
-        aria-label="password"
-        matInput formControlName="password">
-        <mat-error> {{getFormControlErrorText(passwordCtrl)}} </mat-error>
-      </mat-form-field>
-      <mat-form-field >
-        <mat-label>Confirm. mot de passe</mat-label>
-        <input type="password"
-        aria-label="confirm_password"
-        matInput formControlName="confirmPassword">
-        <mat-error> {{getFormControlErrorText(confirmPasswordCtrl)}} </mat-error>
-      </mat-form-field>
-    <small class="error-text" *ngIf="showPasswordError$ | async">Mots de passe différents</small>
-  </mat-card-content>
+      <div>
+        <mat-form-field >
+          <mat-label>Mot de passe</mat-label>
+          <input type="password"
+          aria-label="password"
+          matInput formControlName="password">
+          <mat-error> {{getFormControlErrorText(passwordCtrl)}} </mat-error>
+        </mat-form-field>
+        <mat-form-field >
+          <mat-label>Confirm. passe</mat-label>
+          <input type="password"
+          aria-label="confirm_password"
+          matInput formControlName="confirmPassword">
+          <mat-error> {{getFormControlErrorText(confirmPasswordCtrl)}} </mat-error>
+        </mat-form-field>
+      </div>
+      <small class="error-text" *ngIf="showPasswordError$ | async">Mots de passe différents</small>
+    </mat-card-content>
 </mat-card>
 
 

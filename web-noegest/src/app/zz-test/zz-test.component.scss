@@ -130,14 +130,15 @@
   margin-left: 0; // Align error message under input 
 }
 
-/* personalisation  mat-form-field */
+
+ /* personalisation  mat-form-field 
 
 ::ng-deep mat-form-field {
   height: 70px !important; // Set fixed height 
   display: flex;
   align-items: center;
   margin-left: 2% ;
-  margin-right: 2% ;
+ // margin-right: 2% ;
 }
 
 ::ng-deep mat-form-field .mat-mdc-form-field-focus-overlay {
@@ -186,3 +187,4 @@
   height: 2px !important;
 }
 
+ */

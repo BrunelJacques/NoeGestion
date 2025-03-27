@@ -45,8 +45,7 @@ export class ZzTestComponent implements OnInit, AfterViewInit {
   private initMainForm(): void {
     this.mainForm = this.formBuilder.group({
       personalInfo: this.personalInfoForm,
-      email: this.emailForm,
-      confirm: this.emailForm,
+      emailInfo: this.emailForm,
       loginInfo: this.loginInfoForm,
     })
   }

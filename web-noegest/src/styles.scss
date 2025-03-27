@@ -1,4 +1,7 @@
-   /* You can add global styles to this file, and also import other style files */
+
+
+
+/* You can add global styles to this file, and also import other style files */
 /* Use a media query to add a break point at xxxpx: */
 @media screen and (max-width: 800px) {
   .main {
@@ -384,59 +387,38 @@ td {
   color: red;
 }
 
-
 /* personalisation  mat-form-field */
-
-::ng-deep mat-form-field {
-  height: 70px !important; // Set fixed height 
-  display: flex;
-  align-items: center;
+mat-form-field {
+  height: 60px; // Set fixed height 
   margin-left: 2% ;
-  margin-right: 2% ;
 }
-
-::ng-deep mat-form-field .mat-mdc-form-field-focus-overlay {
-  background-color: unset;
-}
-
-// Ensure wrapper does not push input down 
-::ng-deep .mat-form-field-wrapper {
-  padding: 0 !important;
-  height: 100% !important;
-  display: flex;
-  align-items: center;
-  padding-bottom: 0px; // Reduce default bottom padding 
-  padding-top: 0px;
-}
-
-// Keep input centered & visible 
-::ng-deep .mat-form-field-flex {
-  min-height: 56px !important;
-  height: 56px !important;
-  display: flex;
-  align-items: center;
-}
-
-// Ensure label does not overlap input 
-::ng-deep .mat-form-field-label {
-  top: 8px !important; // Adjust label start position 
-  transform: none !important; // Prevent unwanted floating 
+mat-form-field input {
   font-size: 14px !important;
   white-space: normal;
 }
 
-// Fix label floating behavior 
-::ng-deep .mat-form-field.mat-form-field-can-float.mat-form-field-should-float
-  .mat-form-field-label {
-  transform: translateY(-20px) scale(0.75) !important;
+.mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-text-field__input{
+  //background-color: rgb(219, 119, 158) !important;
+  position: relative;
+  top: -2px;
+}
+.mat-mdc-text-field-wrapper:not(.mdc-text-field--outlined) .mat-mdc-form-field-infix {
+  padding-top: 14px;
+  //background-color: #a8dab5;
 }
 
-// Fix underline/ripple position 
-::ng-deep .mat-form-field-underline {
-  bottom: 0px !important;
+.mat-mdc-text-field-wrapper {
+  top: 37px !important; // Adjust start position 
 }
-
-::ng-deep .mat-form-field-ripple {
-  bottom: 0px !important;
-  height: 2px !important;
+.mat-mdc-form-field-flex  {
+  top: 36px !important;  
 }
+.mat-mdc-floating-label {
+  top: 14px  !important;
+  //background-color: red;
+}
+.mat-mdc-form-field-subscript-wrapper {
+  top:39px;
+  //background-color: yellow;
+}
+/* fin de personalisation  mat-form-field */
