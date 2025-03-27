@@ -39,7 +39,7 @@ class=" m-1"
       </mat-form-field>
 
     </div>
-    <small class="error-text" *ngIf="showEmailError$ | async">Adresses différentes</small>
+    <small class="error-message" *ngIf="showEmailError$ | async">Adresses différentes</small>
 </mat-card>
 
 <mat-card class="m-1" [formGroup]="loginInfoForm" >
@@ -65,7 +65,7 @@ class=" m-1"
       <mat-error> {{getFormControlErrorText(confirmPasswordCtrl)}} </mat-error>
     </mat-form-field>
   </div>
-  <small class="error-text" *ngIf="showPasswordError$ | async">Mots de passe différents</small>
+  <small class="error-message" *ngIf="showPasswordError$ | async">Mots de passe différents</small>
 
   <mat-card-actions>
     <button mat-flat-button color="primary"  

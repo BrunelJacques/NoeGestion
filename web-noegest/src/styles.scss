@@ -150,7 +150,6 @@ label {
 }
 .card.card-small {
   max-width: 280px;
-  /*flex: 5 200px;*/
   margin: 5px;
 }
 
@@ -383,20 +382,22 @@ td {
   align-items: center;
 }
 
-.error-text {
+.error-message {
   color: red;
+  font-size: 12px;
 }
 
-/* personalisation  mat-form-field */
+/*-------  personalisation  mat-form-field --------------*/
 mat-form-field {
   height: 60px; // Set fixed height 
+  transform: translateY(-30px) !important;
   margin-left: 2% ;
+  align-content: flex-start;
 }
 mat-form-field input {
   font-size: 14px !important;
   white-space: normal;
 }
-
 .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-text-field__input{
   //background-color: rgb(219, 119, 158) !important;
   position: relative;
@@ -406,7 +407,6 @@ mat-form-field input {
   padding-top: 14px;
   //background-color: #a8dab5;
 }
-
 .mat-mdc-text-field-wrapper {
   top: 37px !important; // Adjust start position 
 }
