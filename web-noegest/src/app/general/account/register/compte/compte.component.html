@@ -1,8 +1,8 @@
-<mat-card
+<div
 class=" m-1"
 [formGroup]="mainForm">
-  <mat-card class="m-1" [formGroup]="personalInfoForm" >
-    <mat-card-subtitle>Informations personnelles</mat-card-subtitle>
+  <mat-card class="m-1 texte-gris fs-6" [formGroup]="personalInfoForm" >
+    <div>Informations personnelles</div>
     <div class="row centrer">
       <mat-form-field class="custom">
         <mat-label>Prénom</mat-label>
@@ -19,7 +19,7 @@ class=" m-1"
 
 <mat-card class="m-1" [formGroup]="emailForm" >
     <div class="row centrer">
-      <div  class="texte-gris mx-2 mt-3 fs-6">Vous joindre?</div>
+      <div  class="texte-gris mx-2 mt-1 fs-6">Vous joindre?</div>
       <mat-form-field >
         <mat-label>Téléphone</mat-label>
         <input type="text" matInput formControlName="phone">
@@ -45,7 +45,7 @@ class=" m-1"
 <mat-card class="m-1" [formGroup]="loginInfoForm" >
 
   <div class="row centrer">
-    <div  class="texte-gris mx-2  mt-3 fs-6">Connexion :</div>
+    <div  class="texte-gris mx-2  mt-1 fs-6">Connexion :</div>
     <mat-form-field >
       <mat-label>Identifiant</mat-label>
       <input type="text" matInput formControlName="username">
@@ -66,9 +66,4 @@ class=" m-1"
     </mat-form-field>
   </div>
   <small class="error-message" *ngIf="showPasswordError$ | async">Mots de passe différents</small>
-
-  <mat-card-actions>
-    <button mat-flat-button color="primary"  
-    [disabled]="!mainForm.valid">status</button>
-  </mat-card-actions>
 </mat-card>

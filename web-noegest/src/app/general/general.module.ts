@@ -8,8 +8,7 @@ import { HeaderRoutingModule } from './header/header-routing.module';
 import { HeaderComponent } from './header/header.component';
 import { SubheaderComponent } from './subheader/subheader.component';
 import { SubheaderMvtsComponent } from '../stocks/mouvements/subheader-mvts/subheader-mvts.component';
-import { SubheaderBtnsComponent } from './subheader/subheader-btns/subheader-btns.component';
-
+import { SubheaderRegisterComponent } from './subheader/subheader-register/subheader-register.component';
 import { HighlightDirective } from '../shared/_directives/highlight.directive';
 
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -29,7 +28,7 @@ import { HandleError } from './_helpers/error.interceptor';
     HeaderComponent,
     SubheaderComponent,
     SubheaderMvtsComponent,
-    SubheaderBtnsComponent,
+    SubheaderRegisterComponent,
     HighlightDirective
   ],
   imports: [
@@ -44,7 +43,7 @@ import { HandleError } from './_helpers/error.interceptor';
     HeaderComponent,
     SubheaderComponent,
     SubheaderMvtsComponent,
-    SubheaderBtnsComponent,
+    SubheaderRegisterComponent,
     HighlightDirective,
     HttpClientModule,
   ],

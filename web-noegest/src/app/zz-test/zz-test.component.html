@@ -2,9 +2,9 @@
 <div class="custom-input-container centrer"
 [formGroup]="emailForm">
   <div>
-    <input  class="item-1 custom-input" 
-    type="text" 
-    id="ffEmail" 
+    <input  class="item-1 custom-input"
+    type="text"
+    id="ffEmail"
     formControlName="confirm" placeholder="">
 
     <label for="ffEmail">clic here basic</label>
@@ -18,8 +18,8 @@
   for="confirmEmail">basic row mail</label>
   <input class=""
   placeholder="Entrez email"
-  type="text" 
-  id="confirmEmail" 
+  type="text"
+  id="confirmEmail"
   formControlName="confirm">
   <span></span>
   <div class="error-message">{{ getFormControlErrorText(confirmEmailCtrl) }}</div>
@@ -29,7 +29,8 @@
 <mat-card class="" [formGroup]="mainForm"></mat-card>
   <mat-card-title> <h1>Ceci est mat-card-title</h1></mat-card-title>
   <mat-card-subtitle>Email en Material angular</mat-card-subtitle>
-  <mat-card-content class="" [formGroup]="emailForm" >  
+  <mat-card-content class="mt-2" 
+  [formGroup]="emailForm" >
     <mat-form-field appearance="fill">
       <mat-label>Adresse mail</mat-label>
       <input
@@ -54,7 +55,7 @@
 
   <mat-card class="m-3" [formGroup]="loginInfoForm" >
     <mat-card-subtitle>mots de passe</mat-card-subtitle>
-    <mat-card-content>
+    <mat-card-content class="test">
       <mat-form-field >
         <mat-label>Mot de passe</mat-label>
         <input type="password"

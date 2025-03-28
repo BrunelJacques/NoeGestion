@@ -56,7 +56,7 @@
 .texte-sombre {color: var(--texte-sombre)!important}
 .texte-gris   {color: var(--texte-gris)!important}
 .link {
-  color: var(--texte-link);
+  color: var(--texte-link) !important;
   text-decoration: underline;
 }
 .white {color: white}
@@ -119,6 +119,10 @@ label {
   }
 }
 
+.nowrap {
+  flex-wrap: nowrap;
+
+}
 .app-container {
   min-height: 350px;
   overflow: hidden;
@@ -160,10 +164,6 @@ label {
   justify-content: center;
 }
 
-.card-header {
-  flex-direction: column;
-}
-
 .card-body {
   padding: 4px;
 }
@@ -184,26 +184,6 @@ label {
 
 .card.card.highlight-card span {
   margin-left: 60px;
-}
-
-.short {
-  max-width: 170px;
-}
-
-.bloc-expand {
-  display: block;
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  bottom: 0;
-}
-
-.expand {  /* pour un div dans un container à position relative*/
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
 }
 
 .w20px { width: 20px; max-width: 20px;}
@@ -230,6 +210,20 @@ label {
   box-shadow: 0px 0px 15px white;
 }
 
+button {
+  a {
+    display: flex;
+    align-items: center;  
+  }
+  span {
+    display: block;
+    max-width: unset;
+    align-items: center;
+    align-content: center;
+  }
+}
+
+/*----- ctrl gérés en form-row -----*/
 .form-grp {
   display: flex;
   flex-flow: column wrap;
@@ -238,7 +232,6 @@ label {
   gap: 4%;
 }
 
-/*----- ctrl gérés en form-row -----*/
 @media (max-width: 250px) {
   .form-row {
     flex-direction: column;
@@ -286,19 +279,7 @@ label {
     max-width: 20%; // Set a max-width so it shrinks first
     width:  20%;;
   }
-  button {
-    span {
-      display: block;
-      max-width: unset;
-      align-items: center;
-      align-content: center;
-    }
-    a {
-      display: flex;
-    }
-  }
 }
-
 .form-ctrl {
   margin-left: 0;
   margin-right: 0;
@@ -314,7 +295,6 @@ label {
   border-bottom-left-radius: 0;
   border-color: var(--texte-sombre) ;
 }
-
 //----------- fin ctrl géré en form-row ----
 
 .table>:not(caption)>*>* {
@@ -348,38 +328,29 @@ td {
   font-size: 10px;
 }
 
-.centrer-block {
-  display: block;
-  margin: auto;
-  text-align: center;
-}
-
 .centrer {
   //margin: auto;
-  text-align: center;
-  justify-content: space-evenly;
+  text-align: center !important;
   align-content: center;
   align-items: center;
 }
 
-.right {
-  display: flex;
-  text-align: right;
+.right, .end {
+  text-align: right !important;
   justify-content: flex-end;
   justify-items: flex-end;
   align-content: flex-end;
   align-items: flex-end;
 }
 
-.left { text-align: left; }
+.left, .start {
+  text-align: start !important;
+  justify-content: flex-start;
+  justify-items: flex-end;
+  align-content: flex-end;
+  align-items: flex-end;
+}
 
-.start {
-  display: flex;
-  justify-content: flex-start;}
-
-.end   {
-  display: flex;
-  justify-content: flex-end;}
 
 .evenly {
   justify-content: space-evenly;
@@ -388,7 +359,11 @@ td {
   margin: 0;
 }
 
-.no-newline { display: inline-block; }
+.no-newline { 
+  display: inline-block;
+  white-space: unset;
+  width: 100%;
+ }
 
 .no-secable { white-space: nowrap; }
 
@@ -421,41 +396,78 @@ td {
 
 /*-------  personalisation  mat-form-field --------------*/
 mat-form-field {
-  height: 60px; // Set fixed height 
-  transform: translateY(-30px) !important;
-  margin-left: 2% ;
+  //height: 30px !important; // Set fixed height 
+  //transform: translateY(-0px) !important;
+  margin: 0 1% 0 2% !important;
   align-content: flex-start;
+  flex: row flex !important;
   label {
     width: 100%;
     max-width: unset;
+    
   }
   input {
-    font-size: 14px !important;
+    font-size: 14px ;
     white-space: normal;
+    //background-color: rgb(0, 98, 128, 0.5);
   }
 }
-
 .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-text-field__input{
-  //background-color: rgb(219, 119, 158) !important;
+  //background-color: rgb(219, 119, 158, 0.4) !important;
   position: relative;
-  top: -2px;
+  overflow: visible !important;
+  top: 5px;
 }
 .mat-mdc-text-field-wrapper:not(.mdc-text-field--outlined) .mat-mdc-form-field-infix {
-  padding-top: 14px;
-  //background-color: #a8dab5;
+  padding: 4px 0 0 0;
+  min-height: 36px;
+  //background-color: #9ecbce;
+  overflow: visible;
 }
 .mat-mdc-text-field-wrapper {
-  top: 37px !important; // Adjust start position 
+  top: 0px !important; // Adjust start position 
+  display: flex;
+  //background-color: greenyellow !important;
+  overflow: visible;
 }
 .mat-mdc-form-field-flex  {
-  top: 36px !important;  
+  top: 0px !important;  
 }
 .mat-mdc-floating-label {
-  top: 14px  !important;
-  //background-color: red;
+  top: 20px  !important;
+  margin: 0;
+  //background-color: rgb(112, 220, 20, 0);
+  z-index: 10;
 }
 .mat-mdc-form-field-subscript-wrapper {
-  top:39px;
+  display: flex;
+  align-content: center;
+  top:0px;
   //background-color: yellow;
+  overflow: visible;
+}
+.mat-mdc-form-field-focus-overlay {
+  top: 0px !important;
+  height: 0px;
+}
+mat-error {
+  max-height: 15px;
+}
+.mat-mdc-form-field-error {
+  max-height: 15px;
+  position: fixed;
+  top: -5px;
+}
+//.mat-mdc-form-field-error-wrapper {
+  //background-color: rgba(136, 43, 100, 0);
+//}
+.mdc-line-ripple {
+  position:relative;
+  top: 25px;
+  padding: 5px;
 }
 /* fin de personalisation  mat-form-field */
+
+mat-card-title {
+  font-family: var(--mat-card-title-text-font);
+}
