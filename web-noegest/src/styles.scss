@@ -197,6 +197,9 @@ label {
 .w180px { width: 180px; max-width: 180px;}
 .w200px { width: 200px; max-width: 200px;}
 
+.h100px {height: 100px; max-height: 100px;}
+.h300px {height: 300px; max-height: 300px;}
+
 .btn {
   margin-top: 5px;
   min-width: 30px;
@@ -332,8 +335,10 @@ td {
 .centrer {
   //margin: auto;
   text-align: center !important;
-  align-content: center;
-  align-items: center;
+  align-content: center !important;
+  align-items: center !important;
+  justify-content: center !important;
+  justify-items: center !important;
 }
 
 .right, .end {
@@ -361,10 +366,20 @@ td {
 }
 
 .no-newline { 
-  display: inline-block;
+  display: flex;
+  flex-flow: row wrap;
   white-space: unset;
   width: 100%;
+  justify-content: space-evenly;
  }
+
+ .box {
+  display: inline-flex;      /* Makes each box adjust to its content */
+  flex-flow: column wrap;
+  white-space: normal;       /* Prevents internal text from wrapping */
+  padding: 5px 10px;         /* Optional: Adds spacing inside boxes */
+  max-width: 50%;
+}
 
 .no-secable { white-space: nowrap; }
 

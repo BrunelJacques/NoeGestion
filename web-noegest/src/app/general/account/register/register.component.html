@@ -1,7 +1,10 @@
 ﻿<mat-card class="main-form">
-  <mat-card-subtitle class="fs-6">Votre situation Noegest?</mat-card-subtitle>
-  <div> choisissez votre situation Noegest</div>
-  <mat-radio-group [formControl]="situationCtrl">
+  <div class="no-newline">
+    <div class="box fs-5">Votre situation Noegest?</div>
+    <div class="box fs-6"> choisissez votre situation Noegest</div>
+  </div>
+  <mat-radio-group class="centrer mt-0"
+  [formControl]="situationCtrl">
     <mat-radio-button value="exist">Compte existant</mat-radio-button>
     <mat-radio-button value="new">Staff</mat-radio-button>
     <mat-radio-button value="info">Info</mat-radio-button>

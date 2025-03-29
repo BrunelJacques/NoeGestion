@@ -1,9 +1,9 @@
 <div
 class=" m-1"
 [formGroup]="mainForm">
-  <mat-card class="m-1 texte-gris fs-6" [formGroup]="personalInfoForm" >
-    <div>Informations personnelles</div>
+  <mat-card class="m-1" [formGroup]="personalInfoForm" >
     <div class="row centrer">
+      <div class="mx-2 mt-1 fs-6">Informations personnelles</div>
       <mat-form-field class="custom">
         <mat-label>Prénom</mat-label>
         <input type="text" matInput formControlName="firstName">
@@ -17,9 +17,11 @@ class=" m-1"
     </div>
   </mat-card>
 
-<mat-card class="m-1" [formGroup]="emailForm" >
+  <mat-card class="m-1" [formGroup]="emailForm" >
     <div class="row centrer">
-      <div  class="texte-gris mx-2 mt-1 fs-6">Vous joindre?</div>
+      <div  class="mx-2 mt-1 fs-6">
+        Vous joindre?
+      </div>
       <mat-form-field >
         <mat-label>Téléphone</mat-label>
         <input type="text" matInput formControlName="phone">
@@ -45,7 +47,7 @@ class=" m-1"
 <mat-card class="m-1" [formGroup]="loginInfoForm" >
 
   <div class="row centrer">
-    <div  class="texte-gris mx-2  mt-1 fs-6">Connexion :</div>
+    <div  class="mx-2  mt-1 fs-6">Connexion :</div>
     <mat-form-field >
       <mat-label>Identifiant</mat-label>
       <input type="text" matInput formControlName="username">
