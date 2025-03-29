@@ -1,0 +1,19 @@
+<mat-card class="card fond-ecran start m-0 px-1">
+  <!-- bouton de retour -->
+  <div class="row evenly m-1 mx-2">
+    <button mat-flat-button 
+    class="col-3 btn w100px small12 fond-soutenu link p-1 py-sm-2 m-1"
+    *ngIf = isBtnQuit
+    type="submit"
+    aria-label="Close"
+    (click)="onClickQuit()">
+      Abandon<mat-icon>reply</mat-icon>
+    </button>
+    <div class="col-2 mx-0 px-0 py-2 small10"> {{template}}</div>
+
+    <mat-card-title class="col-7 px-0 py-2 w160px">
+      Gestion Compte{{user.username}} 
+    </mat-card-title>
+
+  </div>
+</mat-card>
