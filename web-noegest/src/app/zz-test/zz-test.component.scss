@@ -5,6 +5,7 @@
   font-size: 1em;
   padding: 0.5em 0.6em;
   margin: 10px 5px;
+  max-width: 250px;
 }
 
 .item-1 {
@@ -77,45 +78,3 @@
   border-color: #3f51b5;
 }
 // fin de personnalisation d'input custom
-
-
-/*------- OK personalisation  mat-form-field --------------*/
-/* 
-mat-form-field {
-  height: 60px; // Set fixed height 
-  transform: translateY(-30px) !important;
-  margin-left: 2% ;
-  align-content: flex-start;
-  label {
-    width: 100%;
-    max-width: unset;
-  }
-  input {
-    font-size: 14px !important;
-    white-space: normal;
-  }
-}
-.mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-text-field__input{
-  //background-color: rgb(219, 119, 158) !important;
-  position: relative;
-  top: -2px;
-}
-.mat-mdc-text-field-wrapper:not(.mdc-text-field--outlined) .mat-mdc-form-field-infix {
-  padding-top: 14px;
-  //background-color: #a8dab5;
-}
-.mat-mdc-text-field-wrapper {
-  top: 37px !important; // Adjust start position 
-}
-.mat-mdc-form-field-flex  {
-  top: 36px !important;  
-}
-.mat-mdc-floating-label {
-  top: 14px  !important;
-  //background-color: red;
-}
-.mat-mdc-form-field-subscript-wrapper {
-  top:39px;
-  //background-color: yellow;
-}
-fin de personalisation  mat-form-field */
