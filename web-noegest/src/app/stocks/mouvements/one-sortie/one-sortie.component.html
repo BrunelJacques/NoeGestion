@@ -2,7 +2,7 @@
 <div class="row m-0 p-0">
   <!-- 1ere colonne reprenant les paramètres d'affichage-->
   <mat-card [formGroup]="fgPar" class="col-sm-3 my-0 p-0 fond-saumon">
-    <mat-card-title class="fs-6">Filtres actifs </mat-card-title>
+    <mat-card-title class="fs-6  mx-2">Filtres actifs </mat-card-title>
     <div class="form-row evenly">
       <div class="filtre">
         <label for='jourPar'>Jour:</label>
@@ -43,7 +43,7 @@
 
       <!-- gestion du mouvement -->      
       <ng-container *ngFor="let field of fieldsForm">
-        <div class="form-row"
+        <div class="form-row start"
         *ngIf="!((!showCamp&&field.label==='Camp')||(!showService&&field.label==='Service'))">
           <label class="" for="{{ field.label }}">{{ field.label }}</label>
           <div class="start" [ngSwitch]="field.type">

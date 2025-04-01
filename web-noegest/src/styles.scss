@@ -240,9 +240,9 @@ button {
     flex-direction: column;
     align-items: flex-start !important;
     label {
-      width: 100%;
-      text-align: left;
-      justify-content: flex-start;
+      max-width: 100% !important;
+      width: 100% !important;
+      justify-content: flex-start !important;
       word-break: break-word ;
     }
     input {
@@ -260,20 +260,18 @@ button {
   label {
     display: flex;
     flex: 1 1 auto; // Allow the label to shrink first
-    max-width: 30%; // Set a max-width so it shrinks first
-    width:  30%;
+    max-width: 20%; // Set a max-width so it shrinks first
+    width:  20%;
     color: var(--texte-gris);
     margin-right: 8px;
     justify-content: flex-end;
   }
   input {
     display: flex;
-    flex: 9 9 auto; // Inputs should shrink less aggressively than labels
     min-width: 0; // Allows input to shrink properly
     }
   select {
     display: flex;
-    flex: 9 9 auto; // Inputs should shrink less aggressively than labels
     min-width: 0; // Allows input to shrink properly
    }
   span {

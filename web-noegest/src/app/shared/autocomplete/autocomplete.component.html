@@ -1,7 +1,7 @@
-<form class="form-row" [formGroup]="formGroup" >
+<ng-container [formGroup]="formGroup">
+<div class="form-row start">
   <label for="saisie">Article</label>
-  <mat-form-field>
-    <input
+    <input class="form-ctrl my-1"
       id="saisie"
       type="text" 
       [placeholder]="formGroup.controls['myControl'].touched ? '' : 'Saisir le début...'"
@@ -23,5 +23,6 @@
     >
       Champ obligatoire !
     </div>
-  </mat-form-field>
-</form>
+    <span></span>
+</div>
+</ng-container>
