@@ -36,6 +36,7 @@
 
       <!-- appel du choix d'un article -->
       <app-article-search
+      class="w-100"
       *ngIf="mvt"
       [article]="mvt.article"
       (retour)="onArticle($event)">
