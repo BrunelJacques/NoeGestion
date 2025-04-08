@@ -230,7 +230,7 @@ button {
 .form-grp {
   display: flex;
   flex-flow: column wrap;
-  margin: 0.5rem 0.3rem;
+  margin: 0.3rem 1rem 0.5rem 0;
   width: 100%;
   gap: 4%;
 }
@@ -256,7 +256,7 @@ button {
   width: 100%;
   align-items: center; // Ensure proper alignment
   justify-content: center;
-  margin: 0 0.3rem 0.5rem 0.3rem;
+  margin: 0.5rem 0.3rem 0 0;
   label {
     display: flex;
     flex: 1 1 auto; // Allow the label to shrink first
@@ -264,6 +264,7 @@ button {
     width:  20%;
     color: var(--texte-gris);
     margin-right: 8px;
+    margin-bottom:8px;
     justify-content: flex-end;
   }
   input {

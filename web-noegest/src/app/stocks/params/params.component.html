@@ -1,8 +1,8 @@
-<mat-card class="m-1 mt-4">
+<mat-card class="mt-2 pt-2">
   <mat-card-title class="row ">
-    <h2>Filtres d'affichage</h2>      
+    <h2>Filtres d'affichage</h2>
   </mat-card-title>
-  <mat-content [formGroup]="paramsForm" 
+  <mat-content [formGroup]="paramsForm"
   class="form-grp"
   (ngSubmit)="onSubmit()">
     <div class="form-row start my-1"  >
@@ -19,10 +19,10 @@
         </div>
       </div>
     </div>
-    <div class="form-row start">  
+    <div class="form-row start">
       <label for="origine">Vers :</label>
       <select id="origine" name="origine"
-        class="form-ctrl"
+        class="form-ctrl my-2"
         (change)="onOrigineChange()"
         formControlName="origine"
         required aria-label="origine">
@@ -32,12 +32,11 @@
           {{origine['libelle']}}
         </option>
       </select>
-      <span></span>
     </div>
     <div class="form-row start" *ngIf="(f['origine'].value === 'camp')">
       <label for="camp">Camp:</label>
-      <select id="camp" name="camp" 
-        class="form-ctrl"
+      <select id="camp" name="camp"
+        class="form-ctrl my-1 "
         required aria-label="camp"
         [ngClass]="{ 'is-invalid': submitted && f['camp'].errors}">
         <option [ngValue]="" disabled>Choisir un camp</option>
@@ -45,7 +44,7 @@
           [ngValue]="camp.id">
           {{camp['nom']}}
         </option>
-      </select> 
+      </select>
       <div *ngIf="submitted && f['camp'].errors" class="invalid-feedback" id="camp">
         <div *ngIf="f['camp'].errors['required']">Choisissez un camp extérieur ou choisissez une autre destination</div>
       </div>
@@ -63,21 +62,21 @@
         </option>
       </select>
       <div *ngIf="submitted && f['service'].errors" class="invalid-feedback" id="service">
-        <div *ngIf="f['service'].errors['required']">Choisissez un service de repas ou 'pour tout'   
+        <div *ngIf="f['service'].errors['required']">Choisissez un service de repas ou 'pour tout'
         </div>
       </div>
     </div>
     <div class="form-row start" *ngIf="(parentName.endsWith('entrees'))">
       <label for="tva">Tva mtt:</label>
-      <select id="tva" name="tva" 
+      <select id="tva" name="tva"
         class="form-ctrl w200px"
         formControlName="tva">
         <option value="ttc">en TTC</option>
         <option value="ht">en HT</option>
       </select>
       <label for="fournisseur">Fournisseur :</label>
-      <select id="fournisseur" name="fournisseur" 
-        class="form-ctrl w200px" 
+      <select id="fournisseur" name="fournisseur"
+        class="form-ctrl w200px"
         formControlName="fournisseur"
         required aria-label="fournisseur">
         <option *ngFor="let fournisseur of fournisseurs"
