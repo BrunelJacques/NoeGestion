@@ -5,7 +5,7 @@
   <mat-content [formGroup]="paramsForm"
   class="form-grp"
   (ngSubmit)="onSubmit()">
-    <div class="form-row start my-1"  >
+    <div class="form-row start"  >
       <label for="jour">Date:</label>
       <input
         class="form-ctrl"
@@ -13,16 +13,15 @@
         formControlName="jour"
         min="2020-01-01" max="2050-12-31"
         [ngClass]="{ 'is-invalid': f['jour'].errors}">
-      <div *ngIf="f['jour'].errors" class="invalid-feedback">
-        <div *ngIf="f['jour'].errors">
+      <div *ngIf="f['jour'].errors" 
+      class="error-message">
           Choisissez une date ou abandonnez!
-        </div>
       </div>
     </div>
     <div class="form-row start">
       <label for="origine">Vers :</label>
       <select id="origine" name="origine"
-        class="form-ctrl my-2"
+        class="form-ctrl"
         (change)="onOrigineChange()"
         formControlName="origine"
         required aria-label="origine">
@@ -45,7 +44,7 @@
           {{camp['nom']}}
         </option>
       </select>
-      <div *ngIf="submitted && f['camp'].errors" class="invalid-feedback" id="camp">
+      <div *ngIf="submitted && f['camp'].errors" class="error-message" id="camp">
         <div *ngIf="f['camp'].errors['required']">Choisissez un camp extérieur ou choisissez une autre destination</div>
       </div>
     </div>
@@ -61,7 +60,7 @@
           {{service.libelle}}
         </option>
       </select>
-      <div *ngIf="submitted && f['service'].errors" class="invalid-feedback" id="service">
+      <div *ngIf="submitted && f['service'].errors" class="error-message" id="service">
         <div *ngIf="f['service'].errors['required']">Choisissez un service de repas ou 'pour tout'
         </div>
       </div>

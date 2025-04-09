@@ -80,11 +80,11 @@ export class MvtService {
           options: this.lstCamps_lib},
       { label: 'Service', type: 'select',
           options: this.lstService_lib },
-      { label: 'PrixUnit', type: 'number'},
+      { label: 'Prix Unit', type: 'number'},
       { label: 'Qte', type: 'number' },
-      { label: 'TotRations', type: 'number' },
-      { label: 'CoutRation', type: 'number' },
-      { label: 'QteStock', type: 'number' },
+      { label: 'Tot Rations', type: 'number' },
+      { label: 'Cout Ration', type: 'number' },
+      { label: 'Qte Stock', type: 'number' },
     ]
   }
 
@@ -142,11 +142,11 @@ export class MvtService {
       'Vers': this.lstOrigine_lib[this.lstOrigine_cod.indexOf(mvt.origine)],
       'Camp': this.lstCamps_lib[this.lstCamps_cod.indexOf(mvt.analytique)],
       'Service': this.lstService_lib[mvt.service],
-      'PrixUnit': fp.round(mvt.prix_unit,4),
+      'Prix Unit': fp.round(mvt.prix_unit,4),
       'Qte': mvt.qte_mouvement * mvt.sens,
-      'TotRations': totRations,
-      'CoutRation': fp.round(fp.quotient(prixTot, totRations)),
-      'QteStock': mvt.article.qte_stock
+      'Tot Rations': totRations,
+      'Cout Ration': fp.round(fp.quotient(prixTot, totRations)),
+      'Qte Stock': mvt.article.qte_stock
     })
     console.log('mvtToForm',mvt.rations,mvt.prix_unit)
     return true
@@ -159,9 +159,9 @@ export class MvtService {
     mvt.origine = form.get('Vers')?.value,
     mvt.origine = this.lstOrigine_cod[this.lstOrigine_lib.indexOf(form.get('Vers')?.value)]
     mvt.service = this.lstService_lib.indexOf(form.get('Service')?.value),
-    mvt.prix_unit = Number(form.get('PrixUnit')?.value)
+    mvt.prix_unit = Number(form.get('Prix Unit')?.value)
     mvt.qte_mouvement = form.get('Qte')?.value * mvt.sens
-    const totRations = form.get('TotRations')?.value
+    const totRations = form.get('Tot Rations')?.value
     console.log('formToMvt',mvt.rations,mvt.prix_unit)
     this.calcMvtAfter(old,mvt,totRations)
     return true

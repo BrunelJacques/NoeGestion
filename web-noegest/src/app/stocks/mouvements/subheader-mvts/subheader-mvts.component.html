@@ -2,6 +2,10 @@
   <!-- infos en cours -->
   <span class="fw-bold m-1"> {{lstModules[template]}}
   </span>
+  <div *ngIf="!isListe && !isToParams"
+  class="row mx-2">
+    Ajustez les paramètres puis:
+  </div>
   <span class="mat-body my-1" *ngIf="isListe">
     liste
     <span *ngIf="isToParams">pour {{params['origine']}} en cuisine</span>

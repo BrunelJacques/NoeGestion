@@ -1,10 +1,10 @@
-﻿<mat-card  class="centrer h300px m-4 " >
+﻿<mat-card  class="centrer h300px m-2 " >
     <mat-card-title class="m-3" >
         Connexion
     </mat-card-title>
     <form class="form-grp" [formGroup]="form" (ngSubmit)="onSubmit()">
         <div class="form-row ">
-            <label class="w100px" for="email">Identifiant:</label>
+            <label class="" for="email">Identifiant:</label>
             <input class="form-ctrl w120px"
             type="text"
             formControlName="email"
@@ -14,10 +14,9 @@
             <div *ngIf=" f['email'].errors?.
             ['required'] && form.controls['email']
             .touched"
-            class="invalid-feedback">
-                <div  class="error">Identifiant à saisir</div>
+            class="error-message">
+                Identifiant à saisir
             </div>
-            <span></span>
         </div>
         <div class="form-row">
             <label class="w100px" for="password">Mot de passe:</label>
@@ -27,10 +26,10 @@
             id="password"
             autocomplete="current-password"
             [ngClass]="{ 'is-invalid': submitted && f['password'].errors }" />
-            <div *ngIf="f['password'].errors?.['required'] && form.controls['password'].touched" class="invalid-feedback">
-                <div *ngIf="f['password'].errors?.['required']">Mot de passe à saisir</div>
+            <div *ngIf="f['password'].errors?.['required'] && form.controls['password'].touched" 
+            class="error-message">
+                Mot de passe à saisir
             </div>
-            <span></span>
         </div>
 
         <div class="">

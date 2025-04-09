@@ -32,7 +32,7 @@
   <!-- 2ème colonne données à saisir-->
   <div  class="col-sm-9 card mb-1 p-1">
     <form [formGroup]="fgMvt"
-    class="form-grp was-validated">
+    class="form-grp my-1">
 
       <!-- appel du choix d'un article -->
       <app-article-search
@@ -49,7 +49,7 @@
           <label class="" for="{{ field.label }}">{{ field.label }}</label>
           <div class="start" [ngSwitch]="field.type">
             <!-- type select -->
-            <select class="form-ctrl my-1"
+            <select class="form-ctrl"
                     required
                     *ngSwitchCase="'select'"
                     [attr.aria-label]="field.label"
@@ -59,7 +59,7 @@
               <option *ngFor="let option of field.options" [value]="option">{{ option }}</option>
             </select>
             <!-- type label-->
-            <input class="form-ctrl my-1"
+            <input class="form-ctrl"
                    *ngSwitchCase="'label'"
                    [attr.aria-label]="field.label"
                    id="{{field.label}}"
@@ -67,7 +67,7 @@
                    [formControlName]="field.label"
                    readonly>
             <!-- type date -->
-            <input class="form-ctrl my-1"
+            <input class="form-ctrl"
                   required
                   *ngSwitchCase="'date'"
                   [attr.aria-label]="field.label"
@@ -75,7 +75,7 @@
                   [type]= "'date'"
                   [formControlName]="field.label" />
             <!-- type number -->
-            <input class="form-ctrl my-1"
+            <input class="form-ctrl"
                    required
                    *ngSwitchCase="'number'"
                    [attr.aria-label]="field.label"
@@ -84,7 +84,7 @@
                    [formControlName]="field.label"
                    step="any" />
             <!-- default type-->
-            <input class="form-ctrl my-1"
+            <input class="form-ctrl"
                    required
                    *ngSwitchDefault
                    [attr.aria-label]="field.label"
@@ -92,15 +92,13 @@
                    [type]="field.type"
                    [formControlName]="field.label" />
           </div>
-          <div *ngIf="submitted && f['{{ field.label }}'].errors" 
-          class="invalid-feedback" 
+          <div *ngIf="f[field.label].errors" 
+          class="error-message" 
           [attr.aria-label]="field.label"
           id="err-{{ field.label }}">
-            <div *ngIf="f['{{ field.label }}'].errors['required']">
               Choisissez une valeur
-            </div>
           </div>
-          <span></span>
+          
         </div>
       </ng-container>
     </form>
