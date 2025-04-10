@@ -11,7 +11,7 @@ import { SubheaderMvtsComponent } from '../stocks/mouvements/subheader-mvts/subh
 import { SubheaderRegisterComponent } from './subheader/subheader-register/subheader-register.component';
 import { HighlightDirective } from '../shared/_directives/highlight.directive';
 
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { SharedModule } from '../shared/shared.modules';
 
 // Providers
