@@ -7,9 +7,10 @@ import { AuthenticationService } from 'src/app/general/_services';
 import { SeeyouService } from '../_services/seeyou.service';
 
 @Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+    selector: 'app-header',
+    templateUrl: './header.component.html',
+    styleUrls: ['./header.component.scss'],
+    standalone: false
 })
 
 export class HeaderComponent implements OnInit, OnDestroy {

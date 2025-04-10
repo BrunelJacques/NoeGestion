@@ -2,9 +2,10 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { SeeyouService } from '../_services';
 
 @Component({
-  selector: 'app-subheader',
-  templateUrl: './subheader.component.html',
-  styleUrls: ['./subheader.component.scss']
+    selector: 'app-subheader',
+    templateUrl: './subheader.component.html',
+    styleUrls: ['./subheader.component.scss'],
+    standalone: false
 })
 
 export class SubheaderComponent implements OnInit, OnDestroy {

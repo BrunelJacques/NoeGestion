@@ -12,9 +12,10 @@ import { Article } from '../../_models/article';
 import { ParamsService } from '../../_services/params.service';
 
 @Component({
-  selector: 'app-one-sortie',
-  templateUrl: './one-sortie.component.html',
-  styleUrls: ['./one-sortie.component.scss']
+    selector: 'app-one-sortie',
+    templateUrl: './one-sortie.component.html',
+    styleUrls: ['./one-sortie.component.scss'],
+    standalone: false
 })
 
 export class OneSortieComponent implements OnInit, OnDestroy {

@@ -8,8 +8,9 @@ import { Subject, takeUntil } from 'rxjs';
 
 
 @Component({
-  selector: 'app-subheader-mvts',
-  templateUrl: './subheader-mvts.component.html',
+    selector: 'app-subheader-mvts',
+    templateUrl: './subheader-mvts.component.html',
+    standalone: false
 })
 
 export class SubheaderMvtsComponent {

@@ -5,11 +5,12 @@ import { Subscription } from 'rxjs';
 import { Alert, AlertType } from 'src/app/general/_models';
 import { AlertService } from 'src/app/general/_services';
 
-@Component({ 
-    selector: 'app-alert', 
+@Component({
+    selector: 'app-alert',
     templateUrl: 'alert.component.html',
-    styleUrls: ['alert.component.less']
- })
+    styleUrls: ['alert.component.less'],
+    standalone: false
+})
 
 export class AlertComponent implements OnInit, OnDestroy {
     @Input() id = 'default-alert';

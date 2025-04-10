@@ -11,8 +11,9 @@ import { AlertService, SeeyouService } from 'src/app/general/_services';
 import { Constantes } from 'src/app/constantes';
 
 @Component({
-  selector: 'app-params',
-  templateUrl: './params.component.html',
+    selector: 'app-params',
+    templateUrl: './params.component.html',
+    standalone: false
 })
 
 export class ParamsComponent implements OnInit, OnDestroy {

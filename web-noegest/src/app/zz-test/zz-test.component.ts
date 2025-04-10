@@ -8,9 +8,10 @@ import { passwordValidator } from '../shared/_validators/valid.validator';
 import { tabooValidator } from '../shared/_validators/valid.validator';
 
 @Component({
-  selector: 'app-zz-test',
-  templateUrl: './zz-test.component.html',
-  styleUrls: ['./zz-test.component.scss']
+    selector: 'app-zz-test',
+    templateUrl: './zz-test.component.html',
+    styleUrls: ['./zz-test.component.scss'],
+    standalone: false
 })
 export class ZzTestComponent implements OnInit, AfterViewInit {
 

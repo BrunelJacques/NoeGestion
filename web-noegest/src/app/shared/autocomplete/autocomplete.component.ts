@@ -5,18 +5,19 @@ import { MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, MatAutocompleteDefaultOptions, MatAut
 import { Autocomplete } from 'src/app/stocks/_models/params';
 
 @Component({
-  selector: 'app-autocomplete',
-  templateUrl: './autocomplete.component.html',
-  styleUrls: ['./autocomplete.component.scss'],
-  providers: [
-    {
-      provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS,
-      useValue: {
-        autoActiveFirstOption: true,
-        disableRipple: false // false for 'startsWith', true for 'contains'
-      } as MatAutocompleteDefaultOptions
-    }
-  ]
+    selector: 'app-autocomplete',
+    templateUrl: './autocomplete.component.html',
+    styleUrls: ['./autocomplete.component.scss'],
+    providers: [
+        {
+            provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS,
+            useValue: {
+                autoActiveFirstOption: true,
+                disableRipple: false // false for 'startsWith', true for 'contains'
+            } as MatAutocompleteDefaultOptions
+        }
+    ],
+    standalone: false
 })
 
 export class AutocompleteComponent implements OnInit, OnDestroy {

@@ -3,8 +3,9 @@ import { SeeyouService } from 'src/app/general/_services';
 import { User } from '../../_models';
 import { AuthenticationService } from 'src/app/general/_services';
 @Component({
-  selector: 'app-subheader-register',
-  templateUrl: './subheader-register.component.html',
+    selector: 'app-subheader-register',
+    templateUrl: './subheader-register.component.html',
+    standalone: false
 })
 
 export class SubheaderRegisterComponent {
