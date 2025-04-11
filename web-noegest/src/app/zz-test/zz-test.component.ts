@@ -11,7 +11,7 @@ import { tabooValidator } from '../shared/_validators/valid.validator';
     selector: 'app-zz-test',
     templateUrl: './zz-test.component.html',
     styleUrls: ['./zz-test.component.scss'],
-    standalone: false
+    
 })
 export class ZzTestComponent implements OnInit, AfterViewInit {
 

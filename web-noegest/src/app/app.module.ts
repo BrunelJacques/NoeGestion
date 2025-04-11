@@ -15,19 +15,15 @@ registerLocaleData(localeFr,'fr')
 
 
 @NgModule({
-  declarations: [
+  imports: [
     AppComponent,
     ZzTestComponent,
-  ],
-  imports: [
     AppRoutingModule,
     BrowserAnimationsModule, // contient BrowserModule à ne charger qu'une seule fois
-    GeneralModule, // reprend les declarations 'general' 
+    GeneralModule, // reprend les declarations 'general'
     SharedModule,
     StocksModule,
   ],
-  bootstrap: [AppComponent
-  ],   
   providers: [
     { provide: LOCALE_ID, useValue: 'fr' }
   ]

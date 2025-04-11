@@ -14,7 +14,7 @@ import { AlertService, SeeyouService } from 'src/app/general/_services';
     selector: 'app-sorties',
     templateUrl: './sorties.component.html',
     styleUrls: ['./sorties.component.scss'],
-    standalone: false
+    
 })
 
 

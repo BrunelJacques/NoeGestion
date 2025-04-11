@@ -97,7 +97,7 @@ input, select {
   color: var(--texte-gris);
   background-color: var(--fond-saisie);
 }
-// Focus Effect 
+// Focus Effect
 input:focus-visible, select:focus-visible {
   outline: rgb(0, 98, 128);
   outline-width: 5px;
@@ -216,7 +216,7 @@ label {
 button {
   a {
     display: flex;
-    align-items: center;  
+    align-items: center;
   }
   span {
     display: block;
@@ -366,7 +366,7 @@ td {
   margin: 0;
 }
 
-.card-row { 
+.card-row {
   display: flex;
   flex-flow: row wrap;
   white-space: unset;
@@ -425,7 +425,7 @@ td {
 
 /*-------  personalisation  mat-form-field --------------*/
 mat-form-field {
-  //height: 30px !important; // Set fixed height 
+  //height: 30px !important; // Set fixed height
   //transform: translateY(-0px) !important;
   margin: 0 1% 0 2% !important;
   align-content: flex-start;
@@ -433,7 +433,7 @@ mat-form-field {
   label {
     width: 100%;
     max-width: unset;
-    
+
   }
   input {
     font-size: 14px ;
@@ -454,13 +454,13 @@ mat-form-field {
   overflow: visible;
 }
 .mat-mdc-text-field-wrapper {
-  top: 0px !important; // Adjust start position 
+  top: 0px !important; // Adjust start position
   display: flex;
   //background-color: greenyellow !important;
   overflow: visible;
 }
 .mat-mdc-form-field-flex  {
-  top: 0px !important;  
+  top: 0px !important;
 }
 .mat-mdc-floating-label {
   top: 20px  !important;
