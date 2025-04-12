@@ -5,10 +5,9 @@ import { ArticleService } from '../../_services/article.service';
 import { Autocomplete } from '../../_models/params';
 
 @Component({
-    selector: 'app-article-search',
-    templateUrl: './article-search.component.html',
-    styleUrls: ['./article-search.component.scss'],
-    standalone: false
+  selector: 'app-article-search',
+  templateUrl: './article-search.component.html',
+  styleUrls: ['./article-search.component.scss']
 })
 
 export class ArticleSearchComponent implements OnInit, OnDestroy {

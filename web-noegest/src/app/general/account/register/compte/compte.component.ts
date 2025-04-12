@@ -8,9 +8,8 @@ import { passwordValidator } from 'src/app/shared/_validators/valid.validator';
 import { User } from 'src/app/general/_models';
 
 @Component({
-    selector: 'app-compte',
-    templateUrl: './compte.component.html',
-    standalone: false
+  selector: 'app-compte',
+  templateUrl: './compte.component.html'
 })
 export class CompteComponent implements OnInit {
 

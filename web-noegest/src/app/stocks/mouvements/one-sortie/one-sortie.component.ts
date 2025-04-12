@@ -10,13 +10,11 @@ import { ActivatedRoute } from '@angular/router';
 import { FonctionsPerso } from 'src/app/shared/fonctions-perso';
 import { Article } from '../../_models/article';
 import { ParamsService } from '../../_services/params.service';
-import { MatCardModule } from '@angular/material/card';
 
 @Component({
-    selector: 'app-one-sortie',
-    templateUrl: './one-sortie.component.html',
-    styleUrls: ['./one-sortie.component.scss'],
-    imports: [MatCardModule]
+  selector: 'app-one-sortie',
+  templateUrl: './one-sortie.component.html',
+  styleUrls: ['./one-sortie.component.scss']
 })
 
 export class OneSortieComponent implements OnInit, OnDestroy {
@@ -44,8 +42,8 @@ export class OneSortieComponent implements OnInit, OnDestroy {
     private paramsService: ParamsService,
     private mvtService: MvtService,
     private fp: FonctionsPerso,
-    @Inject(FormBuilder) private fbMvt:FormBuilder,
-    @Inject(FormBuilder) private fbPar:FormBuilder,
+    private fbMvt:FormBuilder,
+    private fbPar:FormBuilder,
     private alertService: AlertService,
     private datePipe: DatePipe,
     @Inject(ActivatedRoute) private route: ActivatedRoute,
@@ -87,7 +85,7 @@ export class OneSortieComponent implements OnInit, OnDestroy {
     this.fgPar.disable();
 
     // form de saisie de l'enregistrement
-    this.fgMvt = this.fbMvt.group({ });
+    this.fgMvt = this.fbMvt.group({});
     this.fieldsForm.forEach(field => {
       this.fgMvt.addControl(field.label,this.fbMvt.control(field.value));
       this.fgMvt.get(field.label)?.setValidators([Validators.required,])

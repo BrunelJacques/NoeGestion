@@ -7,10 +7,7 @@ import { User } from '../../_models';
 
 
 
-@Component({
-    templateUrl: 'register.component.html',
-    standalone: false
-})
+@Component({ templateUrl: 'register.component.html' })
 
 export class RegisterComponent implements OnInit, OnDestroy {
 	loading = false  

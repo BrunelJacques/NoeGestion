@@ -10,12 +10,9 @@ import { Params } from '../_models/params';
 import { AlertService, SeeyouService } from 'src/app/general/_services';
 import { Constantes } from 'src/app/constantes';
 
-
-
 @Component({
-    selector: 'app-params',
-    templateUrl: './params.component.html',
-    
+  selector: 'app-params',
+  templateUrl: './params.component.html',
 })
 
 export class ParamsComponent implements OnInit, OnDestroy {
