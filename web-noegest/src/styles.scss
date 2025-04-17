@@ -25,8 +25,9 @@
   --fond-primary-clair: #c5c5ff;
   --texte-clair:  cornflowerblue;
   --texte-sombre:  #09238D;
+  --texte-gris: rgb(0,0,0,0.54);
   --texte-link: #0d6efd;
-  --max-width-field: 200px;
+  --max-width-field: 210px;
   --mdc-filled-button-label-text-color:#09238D;
 }
 
@@ -44,19 +45,20 @@
   color: white;
   background-color:  var(--fond-sombre) !important;
 }
-.fond-primary { 
+.fond-primary {
   background-color: var(--fond-primary)!important;
   color:white
 }
-.fond-primary-clair { 
+.fond-primary-clair {
   background-color: var(--fond-primary-clair)!important;
   color: var(--texte-sombre);
 }
 
-.texte-clair {color: var(--texte-clair)!important}
+.texte-clair  {color: var(--texte-clair)!important}
 .texte-sombre {color: var(--texte-sombre)!important}
+.texte-gris   {color: var(--texte-gris)!important}
 .link {
-  color: var(--texte-link)!important;
+  color: var(--texte-link) !important;
   text-decoration: underline;
 }
 .white {color: white}
@@ -64,21 +66,16 @@
 
 .ombre { box-shadow: 0 9px 6px -6px  #999;}
 
-.mw-field {
-  margin-left: 2% !important;
-  margin-right: 2% !important;
-  max-width: var(--max-width-field);}
-
 body {
   max-width: 1000px;
   background-color: var(--fond-ecran);
   font-weight: 400;
-  color: var(--texte-sombre)!important;
+  color: var(--texte-sombre);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   font-size: 14px;
   line-height: 1.1;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;    
+  -moz-osx-font-smoothing: grayscale;
   margin: 0;
 }
 
@@ -90,32 +87,43 @@ main {
   width: 100%;
 }
 
-input, select { 
-  margin-left: 2%;
-  margin-right: 2%;
-  max-width: var(--max-width-field);
+input, select {
+  border: 2px solid #ccc;
+  border-radius: 6px;
+  transition: border-color 1.4s ease-in-out;
+  margin-left: 1%;
+  margin-right: 1%;
+  padding: 5px;
   min-height: 1.55rem;
   font-size: 1.05rem;
+  color: var(--texte-gris);
   background-color: var(--fond-saisie);
 }
-
-label { 
-  margin: 7px 5px 2px 5px; 
-  //flex-grow: 100;
-  //text-align-last: center ;
+// Focus Effect
+input:focus-visible, select:focus-visible {
+  outline: rgb(0, 98, 128);
+  outline-width: 5px;
+  box-shadow: 0 0 10px rgba(63, 81, 181, 0.5);
+  background-color: whitesmoke;
 }
 
-.form-label {
-  min-width: 100px;
-  text-align: end;
+label {
+  margin: 7px 5px 2px 5px;
 }
 
-.full-width {
-  width: 100%!important;
-  margin-left: 2%;
-  margin-right: 2%;
+.row {
+  display: flex;
+  flex-flow: row wrap;
+  width: 100%;
+  mat-form-field {
+    margin: 0 0.3rem 0.5rem 0.3rem;
+    max-width: var(--max-width-field);
+  }
 }
 
+.nowrap {
+  flex-wrap: nowrap;
+}
 .app-container {
   min-height: 350px;
   overflow: hidden;
@@ -132,7 +140,7 @@ label {
 }
 
 .card-container .card:not(:last-child) {
-  display: flex;    
+  display: flex;
   flex-direction: row;
   margin-right: 0;
 }
@@ -152,16 +160,9 @@ label {
 }
 
 .card {
-  flex-flow: row wrap;
-  align-content: start;
+  flex: 1;
+  align-content: flex-start;
   justify-content: center;
-  background-color: var(--fond-blanc);
-  color: var(--texte-sombre);
-  margin-top: 10px;
-}
-
-.card-header {
-  flex-direction: column;
 }
 
 .card-body {
@@ -169,7 +170,6 @@ label {
 }
 .card.card-small {
   max-width: 280px;
-  /*flex: 5 200px;*/
   margin: 5px;
 }
 
@@ -187,43 +187,20 @@ label {
   margin-left: 60px;
 }
 
-.short {
-  max-width: 170px;
-}
-
-.bloc-expand {
-  display: block;
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  bottom: 0;
-}
-
-.expand {  /* pour un div dans un container à position relative*/
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-
-
-.w100px {
-  display: flex;
-  flex-flow: row nowrap;
-  width: 100px;
-}
-
-.w110px {
-  display: flex;
-  flex-flow: row nowrap;
-  width: 110px;
-}
-.w130px {
-  display: flex;
-  flex-flow: row nowrap;
-  width: 130px;
-}
+.w20px { width: 20px; max-width: 20px;}
+.w40px { width: 40px; max-width: 40px;}
+.w60px { width: 60px; max-width: 60px;}
+.w80px { width: 80px; max-width: 80px;}
+.w100px { width: 100px; max-width: 100px;}
+.w120px { width: 120px; max-width: 120px;}
+.w140px { width: 140px; max-width: 140px;}
+.w160px { width: 160px; max-width: 160px;}
+.w180px { width: 180px; max-width: 180px;}
+.w200px { width: 200px; max-width: 200px;}
+.w240px { width: 240px; max-width: 240px;}
+.h60px  {height: 60px;  max-height: 60px;}
+.h100px {height: 100px; max-height: 100px;}
+.h300px {height: 300px; max-height: 300px;}
 
 .btn {
   margin-top: 5px;
@@ -238,40 +215,83 @@ label {
   box-shadow: 0px 0px 15px white;
 }
 
+button {
+  a {
+    display: flex;
+    align-items: center;
+  }
+  span {
+    display: block;
+    max-width: unset;
+    align-items: center;
+    align-content: center;
+  }
+}
 
+/*----- ctrl gérés en form-row -----*/
+.form-grp {
+  display: flex;
+  flex-flow: column wrap;
+  margin: 1.3rem 1rem 2rem 0;
+  width: 100%;
+  gap: 4%;
+}
+
+@media (max-width: 250px) {
+  .form-row {
+    flex-direction: column;
+    align-items: flex-start !important;
+    label {
+      max-width: 100% !important;
+      width: 100% !important;
+      justify-content: flex-start !important;
+      word-break: break-word ;
+    }
+    input {
+      width: 100% !important;
+    }
+  }
+}
 .form-row {
   display: flex;
   flex-flow: row wrap;
-  justify-content: space-evenly;
-  align-items: center;
-  margin: 0;
-  gap: 10px 4px;
+  //word-break: break-all;
+  width: 100%;
+  align-items: center; // Ensure proper alignment
+  justify-content: center;
+  margin: 0.5rem 0.3rem 0 0;
+  label {
+    display: flex;
+    flex: 1 1 auto; // Allow the label to shrink first
+    max-width: 20%; // Set a max-width so it shrinks first
+    width:  20%;
+    color: var(--texte-gris);
+    justify-content: flex-end;
+    margin: 7px 0 1px 2px;  }
+  input {
+    display: flex;
+    min-width: 0; // Allows input to shrink properly
+    margin: 7px 5px 1px 6px;
+    }
+  select {
+    display: flex;
+    min-width: 0; // Allows input to shrink properly
+    margin: 7px 5px 1px 6px;
+   }
+  span {
+    display: flex;
+    flex: 1 5 auto;
+    min-width: 0;
+    max-width: 10%; // Set a max-width so it shrinks first
+    width:  10%;;
+    margin: 7px 5px 1px 6px;
+  }
 }
-
-.form-group {
-   margin: 0.5rem 0.3rem;
-   display: flex;
-   flex-flow: row wrap;
-   width: 100%;
-   justify-content: space-evenly;
-
-}
-
-zzrow {
-  --bs-gutter-x: 1.5rem;
-  --bs-gutter-y: 0;
-  display: flex;
-  flex-wrap: wrap;
-  margin-top: calc(-1 * var(--bs-gutter-y));
-  margin-right: calc(-0.5 * var(--bs-gutter-x));
-  margin-left: calc(-0.5 * var(--bs-gutter-x));
-}
-
-.form-control {
-  margin-left: 2%;
-  margin-right: 2%;
+.form-ctrl {
+  margin-left: 0;
+  margin-right: 0;
   font-size: 1.05rem;
-  padding: 1px 6px ;
+  padding: 1px 3px ;
   line-height: 1;
   background-color: var(--fond-saisie);
   --mdc-filled-text-field-container-shape: 5px;
@@ -280,8 +300,9 @@ zzrow {
   border-top-right-radius: var(--mdc-filled-text-field-container-shape);
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
-  border-color: var(--texte-sombre) !important;
+  border-color: var(--texte-sombre) ;
 }
+//----------- fin ctrl géré en form-row ----
 
 .table>:not(caption)>*>* {
   color: var(--texte-sombre);
@@ -289,7 +310,7 @@ zzrow {
 }
 
 td {
-  padding: 0.2rem!important;
+  padding: 0.2rem;
   vertical-align: middle;
 }
 .spacer { flex: 1; }
@@ -314,137 +335,69 @@ td {
   font-size: 10px;
 }
 
-.center { 
-  text-align: center!important;
+.centrer {
+  //margin: auto;
+  text-align: center !important;
+  align-content: center !important;
+  align-items: center !important;
+  justify-content: center !important;
+  justify-items: center !important;
+}
+
+.right, .end {
+  text-align: right !important;
+  justify-content: flex-end;
+  justify-items: flex-end;
+  align-content: flex-end;
+  align-items: flex-end;
+}
+
+.left, .start {
+  text-align: start !important;
+  justify-content: flex-start;
+  justify-items: flex-end;
+  align-content: flex-end;
+  align-items: flex-end;
+}
+
+
+.evenly {
   justify-content: space-evenly;
-  justify-items: center;
-  align-content: space-evenly;
-  align-items: center;
+}
+.form-row.evenly {
+  margin: 0;
 }
 
-.right { 
+.card-row {
   display: flex;
-  text-align: right!important;
-  justify-content: right;
-  justify-items: right;
-  align-content: end;
-  align-items: end;
+  flex-flow: row wrap;
+  white-space: unset;
+  width: 100%;
+  justify-content: space-evenly;
+  align-items: center; // Ensure proper alignment
+  justify-content: center;
+
+ }
+
+ .box {
+  display: flex;      /* Makes each box adjust to its content */
+  flex-wrap: wrap;
+  white-space: normal;       /* Prevents internal text from wrapping */
+  padding: 5px 10px;         /* Optional: Adds spacing inside boxes */
+  max-width: 50%;
+  label {
+    display: flex;
+    flex: 1 1 auto; // Allow the label to shrink first
+    max-width: max-content; // Set a max-width so it shrinks first
+    margin-left: 8px;
+    justify-content: flex-start;
+  }
 }
-.left { text-align: left!important; }
-
-.start { 
-  display: flex;
-  justify-content: start !important;}
-
-.end   { 
-  display: flex;
-  justify-content: end   !important;}
-
-.no-newline { display: inline-block; }
 
 .no-secable { white-space: nowrap; }
 
 .bi {
-  font-size: 1rem; 
-}
-
-// openClassRoom pour material
-
-mat-form-field {
-  margin-left: 2% ;
-  margin-right: 2% ;
-  max-width: 286px;
-  width: 100%;
-}
-
-.form-field { /* Utilisable avec label ou subtitle pour harmoniser avec formfield */
-  margin-left: 2% !important;
-  margin-right: 2% !important ;
-  max-width: var(--max-width-field);
-  background-color: var(--fond-saisie);
-
-}
-
-
-mat-form-field .mat-mdc-form-field-infix {
-  min-height: 33px; /* hauteur de la partie grisée - adjust the height as needed */
-  padding: 0 !important;
-  // ce top se cumule avec le suivant et permet d'écarter les deux noms du field avec ou sans contenu
-  top: 8px !important;
-}
-
-// Nom du field qui monte lors de l'imput
-//mat-form-field .mat-mdc-text-field-wrapper .mat-mdc-form-field-flex  {
-//top: 13px !important;
-//}
-
-.mat-mdc-form-field-input-control {
-  position: absolute;
-  top: 3px !important;
-}
-
-.mdc-floating-label {
-  margin: 0px!important;
-  top: 12px !important;
-}
-
-mat-form-field .mdc-text-field {
-  //top: 5px !important;
-  padding: 0  8px;
-}
-
-.mat-mdc-form-field-focus-overlay {
-  background-color: var(--fond-saisie) !important;
-}
-
-.mat-mdc-icon-button.mat-mdc-button-base {
-  height: 33px;
-  width: 33px;
-  padding:0;
-}
-
-
-// custom position mat-flat-button
-.mat-mdc-button .mat-mdc-button-touch-target, .mat-mdc-unelevated-button .mat-mdc-button-touch-target, .mat-mdc-raised-button .mat-mdc-button-touch-target, .mat-mdc-outlined-button .mat-mdc-button-touch-target {
-  position: absolute;
-  top: 20px !important;
-  height: 20px;
-  left: 0;
-  right: 0;
-}
-
-// custom affichage d'erreurs formfield
-.mat-mdc-form-field-subscript-wrapper, .mat-mdc-form-field-bottom-align::before {
-  line-height: 13px !important;
-  height: 13px !important;
-  vertical-align: text-bottom;
-}
-
-.mat-radio-button ~ .mat-radio-button {
-  margin-left: 16px;
-}
-
-mat-card-title {
-  display: flex;
-  justify-content: space-evenly;
-  width:100%;
-  background-color: var(--fond-titre);
-  color: var(--texte-sombre) !important;
-}
-
-mat-card-subtitle {
-  display: flex;
-  justify-content: space-evenly;
-  width:100%;
-  color: var(--texte-sombre) !important;
-}
-
-mat-card {
-  max-width: 650px
-}
-
-mat-card-actions {
-  text-align: center;
+  font-size: 1rem;
 }
 
 .main-form {
@@ -465,9 +418,84 @@ mat-card-actions {
   align-items: center;
 }
 
-.error-text {
-  color: red;
+.error-message {
+  color: var(--bs-form-invalid-color);
+  font-size: 0.875em;
+  text-align: center;
+  width: 100%;
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+/*-------  personalisation  mat-form-field --------------*/
+mat-form-field {
+  //height: 30px !important; // Set fixed height
+  //transform: translateY(-0px) !important;
+  margin: 0 1% 0 2% !important;
+  align-content: flex-start;
+  flex: row flex !important;
+  label {
+    width: 100%;
+    max-width: unset;
+
+  }
+  input {
+    font-size: 14px ;
+    white-space: normal;
+    //background-color: rgb(0, 98, 128, 0.5);
+  }
+}
+.mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-text-field__input{
+  //background-color: rgb(219, 119, 158, 0.4) !important;
+  position: relative;
+  overflow: visible !important;
+  top: 5px;
+}
+.mat-mdc-text-field-wrapper:not(.mdc-text-field--outlined) .mat-mdc-form-field-infix {
+  padding: 4px 0 0 0;
+  min-height: 36px;
+  //background-color: #9ecbce;
+  overflow: visible;
+}
+.mat-mdc-text-field-wrapper {
+  top: 0px !important; // Adjust start position
+  display: flex;
+  //background-color: greenyellow !important;
+  overflow: visible;
+}
+.mat-mdc-form-field-flex  {
+  top: 0px !important;
+}
+.mat-mdc-floating-label {
+  top: 20px  !important;
+  margin: 0;
+  //background-color: rgb(112, 220, 20, 0);
+  z-index: 10;
+}
+.mat-mdc-form-field-subscript-wrapper {
+  display: flex;
+  align-content: center;
+  top:0px;
+  //background-color: yellow;
+  overflow: visible;
+}
+.mat-mdc-form-field-focus-overlay {
+  top: 0px !important;
+  height: 0px;
+}
+mat-error {
+  max-height: 15px;
+}
+.mat-mdc-form-field-error {
+  max-height: 15px;
+  position: fixed;
+  top: -5px;
+}
+.mdc-line-ripple {
+  position:relative;
+  top: 25px;
+  padding: 5px;
+}
+/* fin de personalisation  mat-form-field */
+
+mat-card-title {
+  font-family: var(--mat-card-title-text-font);
+}

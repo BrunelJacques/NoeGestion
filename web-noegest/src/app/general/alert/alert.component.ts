@@ -4,12 +4,14 @@ import { Subscription } from 'rxjs';
 
 import { Alert, AlertType } from '../_models';
 import { AlertService } from '../_services';
+import { CommonModule } from '@angular/common';
 
 @Component({ 
     selector: 'app-alert', 
     templateUrl: 'alert.component.html',
     styleUrls: ['alert.component.less'],
-    standalone: true
+    standalone: true,
+    imports: [CommonModule]
  })
 
 export class AlertComponent implements OnInit, OnDestroy {
