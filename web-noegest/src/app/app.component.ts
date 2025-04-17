@@ -1,15 +1,14 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterModule } from '@angular/router';
+import { AlertComponent } from './general/_alert';
+import { HeaderComponent } from './general/header';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
-  template: `
-    <h1>Welcome to {{title}} !</h1>
-    <router-outlet />
-  `,
+  templateUrl: './app.component.html',
   styles: [],
+  imports: [RouterModule, AlertComponent, HeaderComponent ]
 })
 export class AppComponent {
-  title = 'noegest';
+  title = 'noegestion';
 }

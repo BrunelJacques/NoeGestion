@@ -1,7 +1,8 @@
 /* Importing Bootstrap SCSS file. */
-//@use 'node_modules/bootstrap/scss/bootstrap.scss' as *;
-//@use 'node_modules/bootstrap-icons/font/bootstrap-icons.css' as *;
-//@use '@angular/material/prebuilt-themes/deeppurple-amber.css';
+@use 'bootstrap/scss/bootstrap' as *;
+@use 'bootstrap-icons/font/bootstrap-icons' as *;
+
+@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
 
 /* Use a media query to add a break point at xxxpx: */
 @media screen and (max-width: 800px) {

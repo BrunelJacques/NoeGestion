@@ -157,6 +157,13 @@ SIMPLE_JWT = {
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = False
 
+# ajouté pour test de google qui bloque internet
+SECURE_SSL_REDIRECT = False
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
+
+
+
 #LOGIN_REDIRECT_URL = 'home'
 #LOGIN_URL = '/login'
 
