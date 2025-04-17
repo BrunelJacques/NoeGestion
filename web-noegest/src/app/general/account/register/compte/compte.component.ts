@@ -1,19 +1,26 @@
 
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Observable, distinctUntilChanged, map, tap } from 'rxjs';
-import { confirmEqualValidator } from 'src/app/shared/_validators/confirm-equal.validator';
-import { tabooValidator }    from 'src/app/shared/_validators/valid.validator';
-import { passwordValidator } from 'src/app/shared/_validators/valid.validator';
-import { User } from 'src/app/general/_models';
+import { Observable, distinctUntilChanged, map } from 'rxjs';
+import { confirmEqualValidator } from '../../../../shared/_validators/confirm-equal.validator';
+import { tabooValidator, passwordValidator } from '../../../../shared/_validators/valid.validator';
+import { User } from '../../../_models';
+import { CommonModule } from '@angular/common';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { AbstractControl, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-compte',
-  templateUrl: './compte.component.html'
+  templateUrl: './compte.component.html',
+  standalone: true,
+  imports:[ CommonModule, MatCardModule, ReactiveFormsModule, MatFormFieldModule]
 })
 export class CompteComponent implements OnInit {
+ 
+  //[x: string]: FormControl<any>;
 
-  @Input() user!: User;
+  @Input() user: User = new User;
   @Output() valid = new EventEmitter<{value:boolean,user:User}>();
 
   mainForm!: FormGroup
@@ -24,10 +31,18 @@ export class CompteComponent implements OnInit {
   emailForm!: FormGroup;
   showEmailError$!: Observable<boolean>;
 
-  passwordCtrl!: FormControl
-  confirmPasswordCtrl!: FormControl
+  passwordCtrl = new FormControl('', Validators.required);
+  confirmPasswordCtrl = new FormControl('', Validators.required);
   loginInfoForm!: FormGroup;
-  showPasswordError$!: Observable<boolean>;
+  showPasswordError$!: Observable<string | false | null>;
+  firstName!: FormControl;
+  lastName!: FormControl;
+  phone!: FormControl;
+  email!: FormControl;
+  confirm!: FormControl;
+  username!: FormControl;
+  password!: FormControl;
+  confirmPassword!: FormControl;
 
   constructor (
     private formBuilder: FormBuilder) {}
@@ -46,7 +61,7 @@ export class CompteComponent implements OnInit {
     this.personalInfoForm = this.formBuilder.group({
       firstName: ['',tabooValidator('test')],
       lastName: ['', Validators.required]
-    }),
+    });
 
     this.phoneCtrl = this.formBuilder.control(null);
     this.emailCtrl = this.formBuilder.control('');
@@ -62,11 +77,12 @@ export class CompteComponent implements OnInit {
       updateOn: 'blur'
     });
 
+    this.username = this.formBuilder.control(null);
     this.passwordCtrl = this.formBuilder.control('' )
     this.confirmPasswordCtrl = this.formBuilder.control('', Validators.required)
     
     this.loginInfoForm = this.formBuilder.group({
-      username: ['', Validators.required],
+      username: this.username,
       password: this.passwordCtrl,
       confirmPassword: this.confirmPasswordCtrl,
     }, {
@@ -176,7 +192,7 @@ export class CompteComponent implements OnInit {
     this.personalInfoForm.setValue({
       firstName:user.firstName,
       lastName:user.lastName
-    }),
+    });
     this.mainForm.setValue({
       personalInfo: {
         firstName:user.firstName,
@@ -202,7 +218,6 @@ export class CompteComponent implements OnInit {
       const err = ctrl.getError('passwordValidator')
       return err
     }
-    
     {return "Saisie non valide"}
   }
 

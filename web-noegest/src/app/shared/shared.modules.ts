@@ -21,12 +21,9 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
-// Fait maison
-import { AutocompleteComponent } from "./autocomplete/autocomplete.component";
 
 @NgModule({
   declarations: [
-    AutocompleteComponent,
   ],
   imports: [
     CommonModule,
@@ -44,7 +41,6 @@ import { AutocompleteComponent } from "./autocomplete/autocomplete.component";
   ],
   exports: [
     ReactiveFormsModule,
-    AutocompleteComponent,
     MatCardModule,
     MatListModule,
     MatButtonModule,

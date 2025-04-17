@@ -1,13 +1,17 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { BehaviorSubject, map, Observable, startWith, Subject, switchMap, takeUntil } from 'rxjs';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, MatAutocompleteDefaultOptions, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { Autocomplete } from 'src/app/stocks/_models/params';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, MatAutocomplete, MatAutocompleteDefaultOptions, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { Autocomplete } from '../../stocks/_models/params';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatOptionModule } from '@angular/material/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-autocomplete',
   templateUrl: './autocomplete.component.html',
   styleUrls: ['./autocomplete.component.scss'],
+  imports: [MatFormFieldModule, MatAutocomplete, ReactiveFormsModule, MatOptionModule, CommonModule],
   providers: [
     {
       provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS,
@@ -25,8 +29,8 @@ export class AutocompleteComponent implements OnInit, OnDestroy {
     selectedItem: 'deux',
     width: '254px'
   };
-  @Output() selected: EventEmitter<string> = new EventEmitter();
-  @Output() modified: EventEmitter<string> = new EventEmitter();
+  @Output() selected = new EventEmitter<string>();
+  @Output() modified = new EventEmitter<string>();
 
   formGroup!: FormGroup;
   filteredItems$ :Observable<string[]> = this.autocomplete.items$;
@@ -56,7 +60,7 @@ export class AutocompleteComponent implements OnInit, OnDestroy {
 
     // useful for debug, but verbose
     this.autocomplete.items$.subscribe(items => {
-      console.log('autocomplete.ts init nb et first: ', items.length,items[0]);
+      console.log('autocomplete.ts init: ', items);
     });
   }
 

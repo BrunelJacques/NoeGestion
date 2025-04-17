@@ -1,18 +1,20 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subject,takeUntil } from 'rxjs';
 
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-
 import { ParamsService } from '../_services/params.service';
 import { Camp, Fournisseur } from '../_models/params';
 import { Params } from '../_models/params';
 
-import { AlertService, SeeyouService } from 'src/app/general/_services';
-import { Constantes } from 'src/app/constantes';
+import { AlertService, SeeyouService } from '../../general/_services';
+import { Constantes } from '../../constantes';
+import { CommonModule } from '@angular/common';
+import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-params',
   templateUrl: './params.component.html',
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule]
 })
 
 export class ParamsComponent implements OnInit, OnDestroy {
@@ -103,7 +105,7 @@ export class ParamsComponent implements OnInit, OnDestroy {
     }
   }
 
-  onSubmit(){
+  onSubmit() {
     this.submitted = true;
     // reset alerts on submit
     this.alertService.clear();
@@ -111,16 +113,28 @@ export class ParamsComponent implements OnInit, OnDestroy {
     if (this.paramsForm.invalid) {
       return;
     }
-    this.loading = true,
-    this.paramsService.formToParams(this.paramsForm,this.params),
-    this.params.modif = new Date().toISOString(),
-    this.paramsService.setParams(this.params)
-    this.onQuit()
-  }
+    this.loading = true;
+    this.paramsService.formToParams(this.paramsForm, this.params);
+    this.params.modif = new Date();
+    this.paramsService.setParams(this.params);
+    this.onQuit();
+}
+
 
   getCamps(): void {
-    this.camps = this.paramsService.camps 
-  }
+    this.paramsService.campsSubj$
+      .subscribe({
+        next: (data:Camp[]) => {
+          this.camps = data;
+        },
+        error: (e) => {
+          if (e != 'Camps Not Found') {
+            console.error(e)
+          }
+        }
+      });
+
+    }
 
   getParams(): void {
     this.loading = true;

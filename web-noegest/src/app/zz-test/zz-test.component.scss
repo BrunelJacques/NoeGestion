@@ -1,23 +1,19 @@
+
+.container {
+  margin: 10px;
+}
+
 .item {
-  border-radius: 10px;
+  border-radius: .2em;
   color: #ffffff;
   font-family: sans-serif;
-  font-size: 1em;
-  padding: 0.5em 0.6em;
-  margin: 10px 5px;
-  max-width: 250px;
+  font-size: 2em;
+  padding: 4em 1em;
+  text-transform: uppercase;
 }
 
 .item-1 {
-  background-color: #dbe6e3;
-  border: 2px solid cyan;
-  outline-color: pink;
-  outline-width: 16px;
-  outline-style: outset;
-  transition: border-color 1.4s ease-in-out;
-}
-.item-1:focus {
-  border: 5px solid purple
+  background-color: #009169;
 }
 
 .item-2 {
@@ -36,45 +32,4 @@
   background-color: #073443;
 }
 
-//-------- ci dessous les tests ---------- --*/
-.test {
-  all: unset;
-}
 
-
-/* Personnalisation d'input custom */
-.custom-input-container {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  label {
-    position: absolute;
-    top: 40%;
-    left: calc(50% - 70px);
-    transform: translateY(-100%);
-    font-size: 14px;
-    color: rgba(0, 0, 0, 0.6);
-    transition: 0.2s ease all;
-    pointer-events: none;
-  }
-}
-
-.custom-input:not(:placeholder-shown) + label {
-  top: 12px;
-  font-size: 11px;
-  color: #3f51b5;
-}
-.custom-input {
-  height: 36px;
-  padding: 8px 0 0 10px ;
-  //border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 14px;
-  outline: none;
-  width: 100%;
-}
-.custom-input:focus {
-  border-color: #3f51b5;
-}
-// fin de personnalisation d'input custom

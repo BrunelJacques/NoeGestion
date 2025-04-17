@@ -10,7 +10,7 @@ export interface Article {
   rations?: number;
   fournisseur?: string;
   tx_tva?: number;
-  dernier_achat?: string; //date iso
+  dernier_achat?: string;
 }
 
 export const ARTICLE0 : Article = {

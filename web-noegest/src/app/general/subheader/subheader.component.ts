@@ -4,7 +4,8 @@ import { SeeyouService } from '../_services';
 @Component({
   selector: 'app-subheader',
   templateUrl: './subheader.component.html',
-  styleUrls: ['./subheader.component.scss']
+  styleUrls: ['./subheader.component.scss'],
+  standalone: true
 })
 
 export class SubheaderComponent implements OnInit, OnDestroy {
@@ -13,7 +14,7 @@ export class SubheaderComponent implements OnInit, OnDestroy {
   lstUrls = ['stocks','kms']
   lstMvt = ['params','sorties','onesortie']
   mvt = false
-  register = false
+  boutons = false
 
   constructor(
     private seeyouService: SeeyouService,
@@ -22,8 +23,8 @@ export class SubheaderComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.seeyouService.templateActive$.subscribe(
       (template) => {
-        this.mvt = (this.lstMvt.indexOf(template)!= -1 ),
-        this.register = (template === 'register')
+        this.mvt = (this.lstMvt.indexOf(template)!= -1 );
+        this.boutons = (template === 'register')
       })
   }
 

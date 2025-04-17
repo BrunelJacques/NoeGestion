@@ -3,17 +3,19 @@ import { BehaviorSubject, map,   Subject, takeUntil, tap } from 'rxjs';
 import { Article, ArticleNom } from '../../_models/article';
 import { ArticleService } from '../../_services/article.service';
 import { Autocomplete } from '../../_models/params';
+import { AutocompleteComponent } from '../../../shared/autocomplete/autocomplete.component';
 
 @Component({
   selector: 'app-article-search',
   templateUrl: './article-search.component.html',
-  styleUrls: ['./article-search.component.scss']
+  styleUrls: ['./article-search.component.scss'],
+  imports: [AutocompleteComponent]
 })
 
 export class ArticleSearchComponent implements OnInit, OnDestroy {
 
   @Input() article!: Article;
-  @Output() retour:EventEmitter<Article> = new EventEmitter();
+  @Output() retour = new EventEmitter<Article>();
 
   searchBox!: ElementRef
   autocomplete: Autocomplete = { items$: new BehaviorSubject<string[]>(['un', 'deux']), selectedItem: '', width: '' };
@@ -22,18 +24,15 @@ export class ArticleSearchComponent implements OnInit, OnDestroy {
 
   constructor(
     private articleService: ArticleService,
-    ) {    if (!this.article) {
-      this.articleService.searchArticles('*')
-      .subscribe()
-    }}
+    ) {}
 
   ngOnInit(): void {
     // pour affichage de la valeur initiale
+
     if (!this.article) {
       this.articleService.searchArticles('*')
-    } else {
-      this.autocomplete.selectedItem = this.article.nom
     }
+    this.autocomplete.selectedItem = this.article.nom
   }
 
   ngOnDestroy(): void {
@@ -59,9 +58,6 @@ export class ArticleSearchComponent implements OnInit, OnDestroy {
 
   // appelle un lot de noms d'articles contenant 'term'
   searchNoms(term: string): void {
-    if (term == '') {
-      term = this.article.nom.slice(0,3)
-    }
     this.articleService.searchArticlesNom(term)
       .pipe(
         takeUntil(this.destroy$),
@@ -76,17 +72,15 @@ export class ArticleSearchComponent implements OnInit, OnDestroy {
   onSelected(item: string) {
     const ix = this.getIndexItem(item)
     const id = this.articlesNoms[ix].id
-    console.log('selected: ', id, item, this.article)
+    console.log('selected: ', id, item, this.article.nom)
     if (ix >= 0) {
       this.articleService.getArticle(id)
       .pipe(
-        takeUntil(this.destroy$),
-        tap(x => this.article = x),
         map(x => {
-          console.log('emit: ', this.article),
-          this.retour.emit(x)
+          this.retour.emit( x );
+          console.log('emit: ', this.article.nom)
         })
-      ).subscribe()
+      )
     }
   }
 

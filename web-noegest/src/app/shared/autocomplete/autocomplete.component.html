@@ -1,15 +1,14 @@
-<ng-container [formGroup]="formGroup">
-<div class="form-row start mb-1 w-100">
+<form class="start" [formGroup]="formGroup" >
   <label for="saisie">Article</label>
-    <input class="form-ctrl my-1 w240px"
-      id="saisie"
-      type="text" 
-      [placeholder]="formGroup.controls['myControl'].touched ? '' : 'Saisir le début...'"
-      matInput
-      formControlName="myControl" 
-      [matAutocomplete]="auto">
+  <mat-form-field>
+    <input
+    id="saisie"
+    type="text" 
+    [placeholder]="formGroup.controls['myControl'].touched ? '' : 'Saisir le début...'"
+    matInput
+    formControlName="myControl"
+    >
     <mat-autocomplete 
-      class="w-100"
       autoActiveFirstOption
       #auto="matAutocomplete" (optionSelected)="onSelected($event)">
       <mat-option 
@@ -18,11 +17,11 @@
         {{item}}
       </mat-option>
     </mat-autocomplete>
-    <div class="error-message w-100 centrer"
+    <div class="error-text"
     *ngIf="formGroup.controls['myControl'].hasError('required') 
     && formGroup.controls['myControl'].touched"
     >
       Champ obligatoire !
     </div>
-</div>
-</ng-container>
+  </mat-form-field>
+</form>

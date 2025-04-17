@@ -1,15 +1,17 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Inject, PLATFORM_ID } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Subject, takeUntil, tap } from 'rxjs';
 
-import { AuthenticationService } from 'src/app/general/_services';
+import { AuthenticationService } from '../_services';
 import { SeeyouService } from '../_services/seeyou.service';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  styleUrls: ['./header.component.scss'],
+  standalone: true,
+  imports: [CommonModule]
 })
 
 export class HeaderComponent implements OnInit, OnDestroy {
@@ -32,7 +34,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.authenticationService.user$
     .pipe(
       tap(x => {
-        this.isLoggedIn = (x.username !== undefined),
+        this.isLoggedIn = (x.username !== undefined);
         this.username = x.username
       }),
       takeUntil(this.destroy$))

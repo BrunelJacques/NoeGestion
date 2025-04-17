@@ -1,30 +1,38 @@
 
 <div class="row m-0 p-0">
   <!-- 1ere colonne reprenant les paramètres d'affichage-->
-  <mat-card [formGroup]="fgPar" class="col-sm-3 my-0 p-0 fond-saumon">
-    <mat-card-title class="fs-6  mx-2">Filtres actifs </mat-card-title>
-    <div class="form-row evenly">
-      <div class="filtre">
-        <label for='jourPar'>Jour:</label>
-        <input class="form-ctrl"
-        type= "text" id="jourPar" name="jourPar"
+  <mat-card [formGroup]="fgPar" class="main-form col-sm-3 my-0 p-0 fond-saumon">
+    <mat-card-title class="fs-6">Filtres actifs </mat-card-title>
+    <div class="">
+      <div class="form-row">
+        <label class="col-3 col-sm-12" for='jourPar'>Jour:</label>
+        <input
+        type= "date" id="jourPar" name="jourPar"
         formControlName="jour"
-        readonly>
+        class="form-control col-7 col-sm-12"
+        >
       </div>
-      <div class="filtre">
-        <label for='versPar'>Vers:</label>
-        <input class="form-ctrl"
+      <div class="form-row">
+        <label class="col-3 col-sm-12" for='versPar'>Vers:</label>
+        <input
         type= "text" id="versPar" name="versPar"
         formControlName="origine"
-        readonly>
+        class="form-control col-7 col-sm-12">
       </div>
-      <div class="filtre" *ngIf="(fPar['origine'].value === 'camp')">
-        <label for="camp">Camp:</label>
-        <input class="form-ctrl" 
-        id="camp" name="camp"
-        formControlName="camp"
-        aria-label="camp"
-        readonly>
+    </div>
+    <div class="form-row">
+      <div *ngIf="(fPar['origine'].value === 'camp')">
+        <label class="col-3 col-sm-12" for="camp">Camp: {{params.camp}} </label>
+        <select id="camp" name="camp"
+          formControlName="camp"
+          class="form-control col-7 col-sm-12" aria-label="camp"
+          >
+          <option [ngValue]="fPar['camp']" disabled>Choisir un camp</option>
+          <option *ngFor="let camp of camps"
+            [ngValue]="camp.id">
+            {{camp['nom']}}
+          </option>
+        </select>
       </div>
     </div>
   </mat-card>
@@ -32,75 +40,50 @@
   <!-- 2ème colonne données à saisir-->
   <div  class="col-sm-9 card mb-1 p-1">
     <form [formGroup]="fgMvt"
-    class="form-grp my-1">
-
+    class="form-group was-validated">
       <!-- appel du choix d'un article -->
-      <app-article-search
-      class="w-100"
-      *ngIf="mvt"
-      [article]="mvt.article"
-      (retour)="onArticle($event)">
+      <app-article-search class="col-12"
+        [article]="mvt.article"
+        (retour)="onArticle($event)">
       </app-article-search>
 
-      <!-- gestion du mouvement -->      
-      <ng-container *ngFor="let field of fieldsForm">
-        <div class="form-row start"
-        *ngIf="!((!showCamp&&field.label==='Camp')||(!showService&&field.label==='Service'))">
-          <label class="" for="{{ field.label }}">{{ field.label }}</label>
-          <div class="start" [ngSwitch]="field.type">
-            <!-- type select -->
-            <select class="form-ctrl"
-                    required
-                    *ngSwitchCase="'select'"
-                    [attr.aria-label]="field.label"
-                    id="{{field.label}}"
-                    type="field.type"
-                    [formControlName]="field.label">
+      <!-- gestion du mouvement -->
+      <div>
+        <div class="row"
+        *ngFor="let field of fieldsMvt">
+          <div class="col-4 ">
+            <label for="{{ field.label}}">{{ field.label }}</label>
+          </div>
+          <div class="col-8" [ngSwitch]="field.type">
+            <select class="form-control my-1"
+            required
+            *ngSwitchCase="'select'"
+            aria-label="{field.label}"
+            type="field.type"
+            [formControlName]="field.label">
               <option *ngFor="let option of field.options" [value]="option">{{ option }}</option>
             </select>
-            <!-- type label-->
-            <input class="form-ctrl"
-                   *ngSwitchCase="'label'"
-                   [attr.aria-label]="field.label"
-                   id="{{field.label}}"
-                   type="text"
-                   [formControlName]="field.label"
-                   readonly>
-            <!-- type date -->
-            <input class="form-ctrl"
-                  required
-                  *ngSwitchCase="'date'"
-                  [attr.aria-label]="field.label"
-                  id="{{field.label}}"
-                  [type]= "'date'"
-                  [formControlName]="field.label" />
-            <!-- type number -->
-            <input class="form-ctrl"
-                   required
-                   *ngSwitchCase="'number'"
-                   [attr.aria-label]="field.label"
-                   id="{{field.label}}"
-                   [type] = "field.type"
-                   [formControlName]="field.label"
-                   step="any" />
-            <!-- default type-->
-            <input class="form-ctrl"
-                   required
-                   *ngSwitchDefault
-                   [attr.aria-label]="field.label"
-                   id="{{field.label}}"
-                   [type]="field.type"
-                   [formControlName]="field.label" />
+            <input class="form-control my-1"
+            *ngSwitchCase="'label'"
+            aria-label="{field.label}"
+            id="{field.label}"
+            type="text"
+            readonly
+            >
+            <div *ngIf="submitted && f['{{ field.label }}'].errors" class="invalid-feedback" id="{{ field.label}}">
+              <div *ngIf="f['{{ field.label }}'].errors['required']">Choisissez une valeur'
+              </div>
+            </div>
+            <input class="form-control my-1"
+            required
+            *ngSwitchDefault
+            aria-label="{field.label}"
+            type="field.type"
+            [formControlName]="field.label" />
           </div>
-          <div *ngIf="f[field.label].errors" 
-          class="error-message" 
-          [attr.aria-label]="field.label"
-          id="err-{{ field.label }}">
-              Choisissez une valeur
-          </div>
-          
+
         </div>
-      </ng-container>
+      </div>
     </form>
   </div>
 </div>

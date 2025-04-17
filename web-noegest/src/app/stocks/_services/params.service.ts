@@ -5,9 +5,9 @@ import { FonctionsPerso } from '../../shared/fonctions-perso';
 import { DatePipe } from '@angular/common';
 
 import { Params,  PARAMS0, Camp, Fournisseur, Rayon, Magasin } from '../_models/params';
-import { Constantes } from 'src/app/constantes';
+import { Constantes } from '../../constantes';
 import { Mouvement } from '../_models/mouvement';
-import { HandleError } from 'src/app/general/_helpers/error.interceptor';
+import { HandleError } from '../../general/_helpers';
 import { FormGroup } from '@angular/forms';
 
 export interface CampsRetour {count: number; results: Camp[];}
@@ -18,12 +18,11 @@ export interface RayonsRetour {count: number; results: Rayon[];}
 @Injectable({ providedIn: 'root'})
 
 export class ParamsService {
-  lstService = Constantes.LSTSERVICE;
-  lstService_code = this.lstService.map((x) => x.id)
-
+  lstservice = Constantes.LSTSERVICE;
+  lstservice_code = this.lstservice.map((x) => x.id)
   public paramsSubj$= new BehaviorSubject<Params>(PARAMS0);
-  camps!:Camp[]
-  key = "stParams";
+  public campsSubj$= new BehaviorSubject<Camp[]>([]);
+  private key = "stParams";
   public fournisseurs: Fournisseur[] = [];
   public rayons: Rayon[] = [] ;
   public magasins: Magasin[] = [];
@@ -38,7 +37,7 @@ export class ParamsService {
     private fp: FonctionsPerso,
     ){
       this.getStoredParams()
-      this.setCamps()
+      this.getCampsSubj()
       this.initParamsOptions()
     }
 
@@ -86,7 +85,7 @@ export class ParamsService {
       'origine': params.origine,
       'camp': params.camp,
       'tva': params.tva,
-      'service': this.lstService[params.service].code,
+      'service': this.lstservice[params.service].code,
       'fournisseur': params.fournisseur,
     })
   }
@@ -94,11 +93,11 @@ export class ParamsService {
   formToParams(form:{value:Params}, params:Params):void {
     if (form.value.origine != 'camp') {
       form.value.camp = '00'}
-    params.jour = new Date(form.value.jour).toISOString().slice(0,10),
-    params.origine = form.value.origine,
-    params.camp = form.value.camp,
-    params.service = this.lstService_code.indexOf(form.value.service),
-    params.fournisseur = form.value.fournisseur,
+    params.jour = new Date(form.value.jour);
+    params.origine = form.value.origine;
+    params.camp = form.value.camp;
+    params.service = this.lstservice_code.indexOf(form.value.service);
+    params.fournisseur = form.value.fournisseur;
     params.tva = form.value.tva
   }
 
@@ -117,17 +116,21 @@ export class ParamsService {
     return []
   }
 
-  setCamps(){
-    this.getCamps()
+  getCampsSubj(){
+    const url = this.constantes.GEANALYTIQUE_URL+"?axe=ACTIVITES&obsolete=False"
+    this.http.get<CampsRetour>(url)
+      .pipe(
+        catchError(this.handleError.handleError<CampsRetour>('getHttp', { count: 0, results: [] }))
+      )
       .subscribe(
         (data) => {
-          this.camps = data
-          console.log('paramsService.camps: ',data)
-        },
+          this.campsSubj$.next(data.results)
+          console.log(this.campsSubj$)
+        }
       );
     }
 
-  // call by resolver route, before opening one-sortie, set in datax['camps']
+  // appelé par resolver route, avant ouverture de one-sortie, mis dans datax['camps']
   getCamps(){
     const url = this.constantes.GEANALYTIQUE_URL+"?axe=ACTIVITES&obsolete=False"
     return this.http.get<CampsRetour>(url)
@@ -142,7 +145,7 @@ export class ParamsService {
       )
     }
 
-  getFournisseurs() {
+      getFournisseurs() {
     if (this.fournisseurs.length == 0) {
       const url = this.constantes.STFOURNISSEUR_URL
       this.http.get<FournisseursRetour>(url)

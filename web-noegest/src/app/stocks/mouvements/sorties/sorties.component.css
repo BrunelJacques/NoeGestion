@@ -1,0 +1,20 @@
+* {
+  margin: 0px 0px 0px;
+ }
+
+.date {
+  min-width: 60px;
+}
+
+.btn {
+  font-size: 10px;
+  line-height: 0.5;
+  padding: 0;
+  height: 20px;
+  width: 25px;
+ }
+
+.ctnbtn {
+  padding: 1px;
+  text-align: right;
+}

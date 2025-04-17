@@ -5,15 +5,16 @@ import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
 import { Article, ArticleNom ,ArtsNomRetour, ArtsRetour} from '../_models/article';
-import { HandleError } from 'src/app/general/_helpers/error.interceptor';
-import { Constantes } from 'src/app/constantes';
+import { HandleError } from '../../general/_helpers';
+import { Constantes } from '../../constantes';
 import { ActivatedRoute } from '@angular/router';
 
 @Injectable({providedIn: 'root'})
+
 export class ArticleService {
 
-  articlesUrl = this.cst.STARTICLE_URL
-  articlesNomUrl = this.cst.STARTICLE_NOM_URL
+  articlesUrl!: string
+  articlesNomUrl!: string
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };
@@ -25,6 +26,8 @@ export class ArticleService {
     private handleError: HandleError,
     private activatedRoute: ActivatedRoute,
   ){
+    this.articlesUrl = this.cst.STARTICLE_URL
+    this.articlesNomUrl = this.cst.STARTICLE_NOM_URL
     this.articlesNom$ = this.activatedRoute.data
     .pipe(map(data => data['']))
     console.log('article.service articleNom$', this.articlesNom$)

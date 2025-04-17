@@ -6,30 +6,30 @@ export interface Mouvement {
     sens: number;
     origine: string;
     article: Article;
-    nb_colis?: number;
-    qte_mouvement: number;
-    prix_unit: number;
+    nbcolis?: number;
+    qtemouvement: number;
+    prixunit: number;
     service: number;
-    rations?: number;
-    analytique: string;
+    nbrations?: number;
+    analytique: number;
     fournisseur?: string;
     ordi: string;
     saisie: string;
-    transfert?: string;
+    transfert?: Date;
 }
 
 export const MVT0: Mouvement =  {
     id: 0,
-    jour: (new Date(2000,1,1)).toISOString(),
+    jour: "",
     sens: -1,
-    origine: '',
+    origine: "",
     article: ARTICLE0,
-    qte_mouvement: 1,
-    prix_unit: 1,
+    qtemouvement: 1,
+    prixunit: 1,
     service: 0,
-    analytique: '00',
-    ordi: '',
-    saisie: (new Date(2000,1,1)).toISOString(),
+    analytique: 0,
+    ordi: "",
+    saisie: "",
 }
 
 export interface MvtsRetour {

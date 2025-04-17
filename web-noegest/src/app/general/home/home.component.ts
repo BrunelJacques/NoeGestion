@@ -1,12 +1,10 @@
 import { Component } from '@angular/core';
 
-
-import { environment } from 'src/environments/environment';
+import { environment } from '../../../environments/environment.prod';
 import { AuthenticationService } from '../_services';
 import { SeeyouService} from '../_services/seeyou.service';
 
-
-import { User } from 'src/app/general/_models';
+import { User } from '../_models';
 
 
 

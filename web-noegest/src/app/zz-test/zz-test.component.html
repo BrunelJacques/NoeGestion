@@ -1,224 +1,45 @@
-<input type="text">
-<div class="custom-input-container centrer"
-[formGroup]="emailForm">
-  <div>
-    <input  class="item-1 custom-input"
-    type="text"
-    id="ffEmail"
-    formControlName="confirm" placeholder="">
 
-    <label for="ffEmail">clic here basic</label>
-  </div>
-  <div class="error-message">{{ getFormControlErrorText(confirmEmailCtrl) }}</div>
-</div>
-
-<div class="form-row"
-[formGroup]="emailForm">
-  <label  class=""
-  for="confirmEmail">basic row mail</label>
-  <input class=""
-  placeholder="Entrez email"
-  type="text"
-  id="confirmEmail"
-  formControlName="confirm">
-  <span></span>
-  <div class="error-message">{{ getFormControlErrorText(confirmEmailCtrl) }}</div>
-</div>
-<div>----------- fin du basic test --------------</div>
-
-<mat-card class="" [formGroup]="mainForm"></mat-card>
-  <mat-card-title> <h1>Ceci est mat-card-title</h1></mat-card-title>
-  <mat-card-subtitle>Email en Material angular</mat-card-subtitle>
-  <mat-card-content class="mt-2" 
-  [formGroup]="emailForm" >
-    <mat-form-field appearance="fill">
-      <mat-label>Adresse mail</mat-label>
-      <input
-      class=""
-      type="text"
-      aria-label="Adresse mail"
+<form class="start" [formGroup]="formGroup" >
+  <mat-form-field>
+    <mat-label for="saisie">Article</mat-label>
+    <input
+      type="text" 
+      [placeholder]="formGroup.controls['myControl'].touched ? '' : 'Saisir le début...'"
+      aria-label="autocomplete"
       matInput
-      formControlName="email">
-      <mat-error> {{getFormControlErrorText(emailCtrl)}} </mat-error>
-    </mat-form-field>
-    <mat-form-field appearance="fill">
-      <mat-label>Confirmer le mail</mat-label>
+      [formControl]="monControl"
+      [matAutocomplete]="auto">
+    <mat-autocomplete 
+      autoActiveFirstOption
+      #auto="matAutocomplete" (optionSelected)="onSelected($event)">
+      <mat-option 
+        *ngFor="let item of filteredItems$ | async" 
+        [value]="item">
+        {{item}}
+      </mat-option>
+    </mat-autocomplete>
+    <div class="error-text"
+    *ngIf="formGroup.controls['myControl'].hasError('required') 
+    && formGroup.controls['myControl'].touched"
+    >
+      Champ obligatoire !
+    </div>
+  </mat-form-field>
+  <form class="example-form">
+    <mat-form-field class="example-full-width">
+      <mat-label>Number</mat-label>
       <input type="text"
-      aria-label="confirm"
-      matInput
-      formControlName="confirm"> <!--pbconfirm-->
-      <mat-error> {{getFormControlErrorText(confirmEmailCtrl)}} </mat-error>
+             placeholder="Pick one"
+             aria-label="Number"
+             matInput
+             [formControl]="myControl"
+             [matAutocomplete]="auto">
+      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+        @for (option of filteredOptions | async; track option) {
+          <mat-option [value]="option">{{option}}</mat-option>
+        }
+      </mat-autocomplete>
     </mat-form-field>
-  </mat-card-content>
-  <small *ngIf="showEmailError$ | async" class="error-message" >Les deux adresses ne correspondent pas</small>
-  <div class="mt-1"> TEST {{showEmailError$| async}}</div>
-
-  <mat-card class="m-3" [formGroup]="loginInfoForm" >
-    <mat-card-subtitle>mots de passe</mat-card-subtitle>
-    <mat-card-content class="test">
-      <mat-form-field >
-        <mat-label>Mot de passe</mat-label>
-        <input type="password"
-        aria-label="password"
-        matInput formControlName="password">
-        <mat-error> {{getFormControlErrorText(passwordCtrl)}} </mat-error>
-      </mat-form-field>
-      <mat-form-field >
-        <mat-label>Confirm. mot de passe</mat-label>
-        <input type="password"
-        aria-label="confirm_password"
-        matInput formControlName="confirmPassword">
-        <mat-error> {{getFormControlErrorText(confirmPasswordCtrl)}} </mat-error>
-      </mat-form-field>
-    </mat-card-content>
-    <small class="error-message" *ngIf="showPasswordError$ | async">Mots de passe différents</small>
-  </mat-card>
-
-
-<!-- test gestion de boxes -->
-<div class="card-row row">
-  <div class="box col-6">
-    <label for="item-1">Item un</label>
-    <input class="box"
-    type="text"
-    aria-label="item-1"
-    id="item-1">
-  </div>
-  <div class="box col-3">
-    <label for="item-2">Item deuxième</label>
-    <input class="box"
-    type="text"
-    aria-label="item-2"
-    id="item-2">
-  </div>
-  <div class="box">
-    <label for="item-3">It 3</label>
-    <div class="card">
-      <input class="form-ctrl "
-      type="text"
-      aria-label="item-3"
-      id="item-3">
-    </div>
-    <span></span>
-  </div>
-</div>
-
-<div class="form-row">
-  <label for="item-4" class="item item-4">
-    Item 4 eme
-  </label>
-  <input class="item item-4" aria-label="item-4 lbl" id="item-4">
-</div>
-
-<div class="mb-3">container enrichi par fx</div>
-<div class="container"
-     fxLayout="row"
-     fxLayout.xs="column"
-     fxLayoutAlign="center"
-     fxLayoutGap="10px"
-     fxLayoutGap.xs="0"
->
-<div>
-  <div class="item-1">
-    Item 1bis fxLayout is a directive used to define the layout of the HTML elements. i.e., it decides the flow of children elements within a flexbox container
-  </div>
-  <div class="item item-2">
-    Item 2bis
-  </div>
-</div>
-  <div class="item item-4">
-    Item 4
-  </div>
-  <div class="item item-5">
-    Item 5
-  </div>
-</div>
-
-
-<div class="mb-3 form-check">
-      <input type="checkbox" class="form-check-input" id="exampleCheck1">
-      <label class="form-check-label" for="exampleCheck1">Check me out</label>
-</div>
-<button type="submit" class="btn btn-primary">Submit</button>
-
-<mat-card class="">
-  <mat-card-title >Titre</mat-card-title>
-  <div class="row m-1">
-    <div class="col-12 col-sm-4 p-0">
-      <mat-card-subtitle>1.1 sous-titre</mat-card-subtitle>
-      <div class="form-row">
-        <div class="fond-saumon">ma colonne 1.1</div>
-        <div>ma colonne 1.2</div>
-      </div>
-      </div>
-    <div class="col-12 col-sm-8">
-      <div class="row">
-        <div>ma colonne 2.1</div>
-        <div class="fond-box">ma colonne 2.2</div>
-      </div>
-    </div>
-  </div>
-</mat-card>
-
-
-<div class="">
-  <div>Titre2</div>
-  <mat-card-subtitle>
-    <span>matcardtitle</span>
-  </mat-card-subtitle>
-</div>
-<div class="row m-1">
-  <div class="col-12 col-sm-4 p-0 fond-titre">
-      <mat-card-subtitle class="fond-titre">1.1 sous-titre</mat-card-subtitle>
-
-      <mat-form-field appearance="fill" class="p-0">
-        <mat-label>Ma date</mat-label>
-        <input type="date" matInput [formControl]="myDateCtrl">
-        <mat-error> {{getFormControlErrorText(myDateCtrl)}} </mat-error>
-      </mat-form-field>
-
-      <mat-form-field appearance="fill">
-        <mat-label>Mon_Texte</mat-label>
-        <input type="text" matInput [formControl]="emailCtrl">
-        <mat-error>{{getFormControlErrorText(myDateCtrl)}} </mat-error>
-      </mat-form-field>
-
-      <mat-card-subtitle>1.2 sous-titre</mat-card-subtitle>
-      <mat-form-field appearance="fill">
-        <mat-label>Ma date</mat-label>
-        <input type="date" matInput [formControl]="myDateCtrl">
-        <mat-error> {{getFormControlErrorText(myDateCtrl)}} </mat-error>
-      </mat-form-field>
-
-      <mat-form-field appearance="fill">
-        <mat-label>Mon Texte</mat-label>
-        <input type="text" matInput [formControl]="emailCtrl">
-        <mat-error>{{getFormControlErrorText(myDateCtrl)}} </mat-error>
-      </mat-form-field>
-  </div>
-  <div class="col-12 col-sm-8">
-      <mat-card-subtitle>Mon deuxième sous-titre</mat-card-subtitle>
-        <mat-form-field appearance="fill">
-          <mat-label>
-            ceci est mon label
-          </mat-label>
-          <input type="text" matInput [formControl]="emailCtrl">
-
-          <mat-error>Ce champ est nécessaire </mat-error>
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label>
-            ceci est mon label2
-          </mat-label>
-          <input type="date" matInput [formControl]="myDateCtrl">
-
-          <mat-error>Ce champ est nécessaire </mat-error>
-        </mat-form-field>
-  </div>
-</div>
-
-<!-- test saisie complétée avec select-->
- <div>Test autocomplete</div>
-<app-autocomplete  (retour)="onRetour($event)"></app-autocomplete>
-
-
+  </form>
+  
+</form>

@@ -1,151 +1,115 @@
-/* eslint-disable @typescript-eslint/ban-types */
-import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
-import { Observable, map } from 'rxjs';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { confirmEqualValidator } from '../shared/_validators/confirm-equal.validator';
-import { User } from '../general/_models';
-import { passwordValidator } from '../shared/_validators/valid.validator';
-import { tabooValidator } from '../shared/_validators/valid.validator';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { BehaviorSubject, map, Observable, startWith, Subject, switchMap, takeUntil } from 'rxjs';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, MatAutocompleteDefaultOptions, MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatOptionModule } from '@angular/material/core';
+import { CommonModule } from '@angular/common';
+import { MatInputModule } from '@angular/material/input';
+import { Autocomplete } from '../stocks/_models/params';
 
 @Component({
   selector: 'app-zz-test',
   templateUrl: './zz-test.component.html',
-  styleUrls: ['./zz-test.component.scss']
+  styleUrls: ['./zz-test.component.scss'],
+  imports: [
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule, 
+    MatAutocompleteModule,
+    ReactiveFormsModule, 
+    MatOptionModule, 
+    CommonModule],
+  providers: [
+    {
+      provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS,
+      useValue: {
+        autoActiveFirstOption: true,
+        disableRipple: false // false for 'startsWith', true for 'contains'
+      } as MatAutocompleteDefaultOptions
+    }
+  ]
 })
-export class ZzTestComponent implements OnInit, AfterViewInit {
 
-  @Input() userValue!: User;
+export class ZzTestComponent implements OnInit, OnDestroy {
+  @Input() autocomplete: Autocomplete = {
+    items$: new BehaviorSubject<string[]>(['un', 'deux', 'deuxième', 'dos', 'trois']),
+    selectedItem: 'deux',
+    width: '254px'
+  };
+  @Output() selected = new EventEmitter<string>();
+  @Output() modified = new EventEmitter<string>();
 
-  mainForm!: FormGroup
-  personalInfoForm!: FormGroup;
-  usernameCtrl!: FormControl;
+  formGroup!: FormGroup;
+  filteredItems$ :Observable<string[]> = this.autocomplete.items$;
+  monControl!: FormControl;
 
-  emailCtrl!: FormControl;
-  confirmEmailCtrl!: FormControl;
-  emailForm!: FormGroup;
-  showEmailError$!: Observable<Boolean>;
+  myControl = new FormControl('');
+  options: string[] = ['One', 'Two', 'Three'];
+  filteredOptions!: Observable<string[]>;
 
-  passwordCtrl!: FormControl
-  confirmPasswordCtrl!: FormControl
-  loginInfoForm!: FormGroup;
-  showPasswordError$!: Observable<Boolean>;
+  private destroy$ = new Subject<void>();
 
-  passwordError!: string;
-
-  constructor (
-    private formBuilder: FormBuilder) {}
-
+  constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
-    this.initFormControls();
-    this.initMainForm()
-    this.initObservables()
-  }
-
-  private initMainForm(): void {
-    this.mainForm = this.formBuilder.group({
-      personalInfo: this.personalInfoForm,
-      emailInfo: this.emailForm,
-      loginInfo: this.loginInfoForm,
-    })
-  }
-
-  private initFormControls(): void {
-//------------------------------------
-    this.myTxtCtrl = this.formBuilder.control('invite',Validators.required)
-    this.myDateCtrl = this.formBuilder.control('',Validators.required)
-    this.mainForm = this.formBuilder.group({
-      myTxt: this.myTxtCtrl,
-      myDate: this.myDateCtrl
-    })
-//------------------------------------
-
-    this.personalInfoForm = this.formBuilder.group({
-      firstName: [''],
-      lastName: ["", Validators.required]
-    }),
-
-    this.emailCtrl = this.formBuilder.control('');
-    this.confirmEmailCtrl = this.formBuilder.control('');
-   
-    this.emailForm = this.formBuilder.group({
-      email: this.emailCtrl,
-      confirm: this.confirmEmailCtrl
-    }, {
-      validators: [confirmEqualValidator('email', 'confirm')],
-      // updateOn détermine la fréquence de l'action, blur c'est quand on sort du groupe
-      updateOn: 'blur'
-    });
-    
-    this.passwordCtrl = this.formBuilder.control('');
-    this.confirmPasswordCtrl = this.formBuilder.control('');
-    this.usernameCtrl = this.formBuilder.control('', Validators.required)
-    
-    this.loginInfoForm = this.formBuilder.group({
-      password: this.passwordCtrl,
-      confirmPassword: this.confirmPasswordCtrl,
-    }, {
-      validators: [confirmEqualValidator('password', 'confirmPassword')],
-      updateOn: 'blur'
-    });
-  }
-
-  ngAfterViewInit(): void {
-    console.log("ngAfterViewInit zztest")
-  }
-
-  initObservables() {
-    this.setEmailValidators()
-    this.setPasswordValidators()
-    
-    this.showEmailError$ =  this.emailForm.statusChanges.pipe(
-      map(status => status === 'INVALID' && 
-        this.emailCtrl.value && 
-        this.confirmEmailCtrl.value
-      )
+    this.filteredOptions = this.myControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value || '')),
     );
+    // Initialize form group with required validator
+    this.formGroup = this.fb.group({
+      myControl: ['', Validators.required]
+    });
 
-    this.showPasswordError$ = this.loginInfoForm.statusChanges.pipe(
-      map(status => status === 'INVALID' && 
-        this.passwordCtrl.value && 
-        this.confirmPasswordCtrl.value
-      )
+    if (this.autocomplete.selectedItem ) {
+      this.formGroup.get('myControl')?.setValue(this.autocomplete.selectedItem);
+    }
+
+    // Set up the filteredItems$ Observable to filter items based on input value
+    this.filteredItems$ = this.formGroup.get('myControl')?.valueChanges?.pipe(
+      startWith(''),
+      switchMap(value => {
+        this.modified.emit(value); // Emit the modified text
+        return this._oldFilter(value);
+      }),
+      takeUntil(this.destroy$)
+    ) || new Observable<string[]>(observer => observer.next([]));
+
+    // useful for debug, but verbose
+    this.autocomplete.items$.subscribe(items => {
+      console.log('autocomplete.ts init: ', items);
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  private _oldFilter(value: string): Observable<string[]> {
+    if (!value || !this.autocomplete.items$) {
+      return this.autocomplete.items$;
+    }
+    const filterValue = value.toLowerCase();
+
+    // Return a new Observable that emits the filtered items
+    return this.autocomplete.items$.pipe(
+      map(items => items.filter(item => item.toLowerCase().includes(filterValue)))
     );
   }
 
 
-  private setEmailValidators(): void {
-    this.emailCtrl.addValidators([
-        tabooValidator('provisoire'),
-        Validators.required,
-        Validators.email]);
-    this.confirmEmailCtrl.addValidators([
-        Validators.required,
-        Validators.email
-    ]);
+  onSelected(event: MatAutocompleteSelectedEvent): void {
+    this.selected.emit(event.option.value);
   }
 
-  private setPasswordValidators(): void {
-    this.passwordCtrl.addValidators([
-        passwordValidator(),
-        Validators.required,
-        ]);
+  onModified(event: MatAutocompleteSelectedEvent): void {
+    this.modified.emit(event.option.value);
   }
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
 
-  getFormControlErrorText(ctrl: AbstractControl) {
-    if (ctrl.hasError('required')) {
-      return 'Ce champ est obligatoire'
-    } else {return "Saisie non valide"}
+    return this.options.filter(option => option.toLowerCase().includes(filterValue));
   }
-
-  onRetour(param: unknown) {
-    console.log(param)
-  }
-//---------------------------------
-myTxtCtrl!: FormControl;
-myDateCtrl!: FormControl;
-
-//---------------------------------
 }
-  
-  

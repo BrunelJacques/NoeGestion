@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { SeeyouService } from 'src/app/general/_services';
+import { SeeyouService } from '../../../general/_services';
 import { ParamsService } from '../../_services/params.service';
-import { Constantes } from 'src/app/constantes';
+import { Constantes } from '../../../constantes';
 import { DatePipe } from '@angular/common';
 import { Params } from '../../_models/params';
 import { Subject, takeUntil } from 'rxjs';
@@ -27,7 +27,7 @@ export class SubheaderMvtsComponent {
   params!:Params
   jour: string | null = ""
   lstservice = Constantes.LSTSERVICE
-  lstModules: { [key: string]: string } = {
+  lstModules: Record<string, string> = {
     'sorties': 'Sorties',
     'entrees': 'Entrées',
     'params': 'Filtres',

@@ -4,16 +4,19 @@ import { MvtsRetour, Mouvement } from '../../_models/mouvement';
 import { MvtService } from '../../_services/mvt.service';
 import { ParamsService } from '../../_services/params.service'
 import { Params } from '../../_models/params';
-import { DatePipe } from '@angular/common';
-import { Constantes } from 'src/app/constantes';
-import { FonctionsPerso } from 'src/app/shared/fonctions-perso';
-import { AlertService, SeeyouService } from 'src/app/general/_services';
+import { CommonModule, DatePipe } from '@angular/common';
+import { Constantes } from '../../../constantes';
+import { FonctionsPerso } from '../../../shared/fonctions-perso';
+import { AlertService, SeeyouService } from '../../../general/_services';
+import { RouterModule } from '@angular/router';
+import { SharedModule } from '../../../shared/shared.modules';
 
 
 @Component({
   selector: 'app-sorties',
   templateUrl: './sorties.component.html',
-  styleUrls: ['./sorties.component.scss']
+  styleUrls: ['./sorties.component.css'],
+  imports: [CommonModule, RouterModule, SharedModule]
 })
 
 
@@ -31,6 +34,8 @@ export class SortiesComponent implements OnInit, OnDestroy {
 
   lstorigine_codes = Constantes.LSTORIGINE_SORTIES.map((x: { code: unknown })=>x.code) ;
   lstservice = Constantes.LSTSERVICE
+  ansiToFr!: (dateString: string | undefined) => string | null;
+  division!: (dividende: unknown, diviseur: unknown) => number;
 
   constructor(
     private paramsService: ParamsService,
@@ -38,7 +43,7 @@ export class SortiesComponent implements OnInit, OnDestroy {
     private datePipe: DatePipe,
     private seeyouService:SeeyouService,
     private alertService: AlertService,
-    public fp: FonctionsPerso,
+    private fp: FonctionsPerso,
     ) {this.initSubscriptions()}
 
   initSubscriptions() {
@@ -49,12 +54,12 @@ export class SortiesComponent implements OnInit, OnDestroy {
       .subscribe(() => this.seeyouService.goBack())    
   }
 
-  // appelé par .html
-  division = this.fp.quotient
-
   ngOnInit(): void {
     this.getParams();
     this.getSorties();
+    // appelé par .html
+    this.division = this.fp.quotient
+    this.ansiToFr = this.fp.dateAnsiToFr
   }
 
   ngOnDestroy(): void {
@@ -64,10 +69,8 @@ export class SortiesComponent implements OnInit, OnDestroy {
   }
   mvtsFilter = (mvt: Mouvement) => {
     let ret = true
-
     // filtre sur la date
-
-    if (mvt.jour != this.params.jour) {
+    if (mvt.jour != this.datePipe.transform(this.params.jour,'yyyy-MM-dd')) {
       ret = false
     }
     // filtre sur le type d'origine du mouvement

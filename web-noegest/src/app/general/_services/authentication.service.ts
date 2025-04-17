@@ -1,16 +1,16 @@
 ﻿/* ligne ci dessous pour reconaître les types NodeJS.Timeout */
 /// <reference types="node" />
 
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { User } from '../_models';
-import { Constantes } from 'src/app/constantes';
+import { Constantes } from '../../constantes';
 
 @Injectable({ providedIn: 'root' })
+
 export class AuthenticationService {
     private cst = new Constantes;
     public userSubject: BehaviorSubject<User>;

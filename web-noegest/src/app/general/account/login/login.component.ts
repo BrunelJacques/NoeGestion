@@ -1,12 +1,16 @@
 ﻿import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, RouterLink } from '@angular/router';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
-import { AuthenticationService, AlertService } from 'src/app/general/_services';
+import { AuthenticationService, AlertService } from '../../_services';
+import { SharedModule } from '../../../shared/shared.modules';
+import { CommonModule } from '@angular/common';
 
 @Component({ 
-    templateUrl: 'login.component.html' })
+    templateUrl: 'login.component.html',
+    imports: [SharedModule, CommonModule, RouterLink],
+})
 
 export class LoginComponent implements OnInit {
     form!: UntypedFormGroup;

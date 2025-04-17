@@ -1,13 +1,23 @@
 ﻿import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormControl } from '@angular/forms';
+import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Subject, first, startWith, takeUntil, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AlertService, AuthenticationService, SeeyouService } from 'src/app/general/_services';
+import { AlertService, AuthenticationService, SeeyouService } from '../../_services';
 import { User } from '../../_models';
+import { MatCardModule } from '@angular/material/card';
+import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
+import { CommonModule } from '@angular/common';
+import { MatIcon } from '@angular/material/icon';
+import { CompteComponent } from './compte/compte.component';
+import { InfoComponent } from './info/info.component';
 
 
 
-@Component({ templateUrl: 'register.component.html' })
+@Component({ 
+	imports: [MatCardModule, MatRadioButton, CommonModule, MatRadioGroup, MatIcon, 
+		ReactiveFormsModule, CompteComponent, InfoComponent ],
+	templateUrl: 'register.component.html' 
+})
 
 export class RegisterComponent implements OnInit, OnDestroy {
 	loading = false  
@@ -56,7 +66,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
 		this.authenticationService.user$.pipe(
 			takeUntil(this.destroy$),
 			tap(x => {
-				this.isLogged = (x.username !== undefined),
+				this.isLogged = (x.username !== undefined);
 				this.user = x
 			}),
 		).subscribe()
@@ -64,7 +74,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
 		this.situationCtrl.valueChanges.pipe(
 			startWith(this.situationCtrl.value),
 			tap( () => { 
-				this.testCoherenceSituation(),
+				this.testCoherenceSituation();
 				this.user.situation = this.situationCtrl.value
 			}),
 			takeUntil(this.destroy$),
@@ -97,7 +107,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
 	onValid(valid: {value: boolean, user:User}) {
 		if (!valid.value) { this.userFormValid = false } 
-		else { this.userFormValid = true,
+		else { this.userFormValid = true;
 			console.log('user', valid.user) }
 		//this.onSubmit()
 	}

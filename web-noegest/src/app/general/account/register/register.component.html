@@ -1,15 +1,13 @@
 ﻿<mat-card class="main-form">
-  <div class="card-row">
-    <div class="box fs-5">Votre situation Noegest?</div>
-    <div class="box fs-6"> choisissez votre situation Noegest</div>
-  </div>
-  <mat-radio-group class="centrer mt-0"
-  [formControl]="situationCtrl">
+  <mat-card-title>Mon Compte {{user.username}} </mat-card-title>
+  <mat-card-subtitle class="fs-6">Votre situation Noegest?</mat-card-subtitle>
+  <mat-radio-group [formControl]="situationCtrl">
     <mat-radio-button value="exist">Compte existant</mat-radio-button>
     <mat-radio-button value="new">Staff</mat-radio-button>
     <mat-radio-button value="info">Info</mat-radio-button>
   </mat-radio-group>
 
+  
   <div *ngIf=" 'info' === (situationCtrl.value)">
     <app-info></app-info>
   </div>
@@ -17,8 +15,7 @@
     <app-compte  [user]="user" (valid)="onValid($event)"></app-compte>
   </div>
 
-  <mat-card-actions *ngIf=" 'info' !== (situationCtrl.value)"
-  class="centrer">
+  <mat-card-actions *ngIf=" 'info' !== (situationCtrl.value)">
     <button
     mat-flat-button color="primary" 
     type="submit"
@@ -26,9 +23,13 @@
     aria-label="Confirm">
       Demande<mat-icon>send</mat-icon>
     </button>
-    <button mat-flat-button class="fond-soutenu m-1">
-      <a routerLink="../login">Abandon<mat-icon>reply</mat-icon></a>
-    </button>
+    <a mat-flat-button 
+    class="fond-soutenu m-3"
+    routerLink="../login"
+    role="button">
+      Abandon
+      <mat-icon>reply</mat-icon>
+    </a>
   </mat-card-actions>
 </mat-card>
 

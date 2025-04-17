@@ -3,8 +3,13 @@
 }
 
 @media (min-width: 576px) {
-  .custom-vh { height:calc(100vh - 100px);}
+  .custom-vh { height:calc(100vh - 100px) }
 }
+
+@media (min-width: 992px) {
+  .custom-vh { height: auto; }
+  } 
+
 
 i {
   color: whitesmoke;

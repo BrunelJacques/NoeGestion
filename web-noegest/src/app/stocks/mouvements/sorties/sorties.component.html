@@ -2,7 +2,7 @@
   <div class="table-responsive">
     <table class=" table-striped table">
     <thead >
-      <tr class="centrer coltitle">
+      <tr class="center coltitle">
         <th class="col coltitle">-</th>
         <th class="col-8  pb-0">Article</th>
         <th class="col ">Qte</th>
@@ -11,40 +11,40 @@
         <th class="col  px-0 pb-0 d-none d-sm-table-cell">Parts</th>
         <th class="col  p-0 d-none d-sm-table-cell">Px Moy</th>
         <th class="col  px-0 pb-0 d-none d-sm-table-cell">Saisie/</th>
-        <th class="col  px-0 pb-0 d-none d-sm-table-cell centrer">Ordi</th>
+        <th class="col  px-0 pb-0 d-none d-sm-table-cell left">Ordi</th>
         <th class="col  p-0">Reste Stock</th>
-        <th class="col  px-0 pb-0 d-sm-table-cell last">last buy</th>
+        <th class="col  small12 px-0 pb-0 d-sm-table-cell right">last buy</th>
       </tr>
     </thead>
     <tbody pb-0>
       <tr *ngFor="let mvt of sorties;">
         <td>
-          <a
+          <a 
           routerLink="/stocks/onesortie/{{mvt.id}}"
           class="bi bi-pencil">
           </a>
         </td>
         <td class= "py-0 fs-7"> {{mvt.article.nom}} </td>
-        <td class= "py-0" routerLink="/stocks/onesortie/{{mvt.id}}">
-          {{mvt.qte_mouvement * -1 | number : '1.0-2'}} <span class="small12">{{mvt.article.unite_stock}}</span>
+        <td class= "py-0" routerLink="/stocks/onesortie/{{mvt.id}}"> 
+          {{mvt.qtemouvement * -1 | number : '1.0-2'}} <span class="small12">{{mvt.article.unite_stock}}</span> 
         </td>
-        <td routerLink="/stocks/onesortie/{{mvt.id}}"> {{mvt.qte_mouvement * -1 * mvt.prix_unit | number : '1.2-2'}} </td>
+        <td routerLink="/stocks/onesortie/{{mvt.id}}"> {{mvt.qtemouvement * -1 * mvt.prixunit | number : '1.2-2'}} </td>
         <td routerLink="/stocks/onesortie/{{mvt.id}}"> {{mvt.service}} </td>
-        <td class= "d-none d-sm-table-cell small12 left"  routerLink="/stocks/onesortie/{{mvt.id}}">
-          {{mvt.rations | number : '1.0-2'}}
+        <td class= "d-none d-sm-table-cell small12 left"  routerLink="/stocks/onesortie/{{mvt.id}}"> 
+          {{mvt.nbrations | number : '1.0-2'}} 
         </td>
-        <td class= "d-none d-sm-table-cell"  routerLink="/stocks/onesortie/{{mvt.id}}">
-          {{mvt.article.prix_moyen| number : '1.0-2'}}
+        <td class= "d-none d-sm-table-cell"  routerLink="/stocks/onesortie/{{mvt.id}}"> 
+          {{mvt.article.prix_moyen| number : '1.0-2'}} 
         </td>
-        <td class= "d-none d-sm-table-cell small12"  routerLink="/stocks/onesortie/{{mvt.id}}">
-          {{mvt.saisie}}
+        <td class= "d-none d-sm-table-cell small12"  routerLink="/stocks/onesortie/{{mvt.id}}"> 
+          {{ansiToFr(mvt.saisie)}} 
         </td>
-        <td class= "d-none d-sm-table-cell small10"  routerLink="/stocks/onesortie/{{mvt.id}}">
-          {{mvt.ordi}}
+        <td class= "d-none d-sm-table-cell small10"  routerLink="/stocks/onesortie/{{mvt.id}}"> 
+          {{mvt.ordi}} 
         </td>
         <td routerLink="/stocks/onesortie/{{mvt.id}}"> {{mvt.article.qte_stock| number : '1.0-2'}} </td>
-        <td class= "small10 date"  routerLink="/stocks/onesortie/{{mvt.id}}">
-          {{fp.dateIsoToFr(mvt.article.dernier_achat)}}
+        <td class= "small10 date"  routerLink="/stocks/onesortie/{{mvt.id}}"> 
+          {{ansiToFr(mvt.article.dernier_achat)}} 
         </td>
       </tr>
     </tbody>

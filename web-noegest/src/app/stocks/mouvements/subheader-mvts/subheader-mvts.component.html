@@ -1,42 +1,38 @@
-<div class="card card-row fond-ecran cebter m-0 px-1">
+<div class="card fond-ecran cebter m-0 px-1">
   <!-- infos en cours -->
-  <span class="fw-bold m-1"> {{lstModules[template]}}
+  <span class="w-100 fw-bold m-1"> {{lstModules[template]}}
   </span>
-  <div *ngIf="!isListe && !isToParams"
-  class="row mx-2">
-    Ajustez les paramètres puis:
-  </div>
-  <span class="mat-body my-1" *ngIf="isListe">
+  <span *ngIf="isListe" class="mat-body my-1">
     liste
     <span *ngIf="isToParams">pour {{params['origine']}} en cuisine</span>
     <span *ngIf="params['origine'] === 'camp'">pour camp '{{params['camp']}}'</span>
   </span>
-  <span class="no-secable my-1 ps-2" *ngIf="isListe">
-      Le: {{jour}}
-  </span>
 
-  <div>
-    <!-- navigation contextuelle -->
-    <div *ngIf = isToParams
-    class="btn fond-soutenu w140px p-1 m-1">
-      <a class="bi bi-gear"
-      routerLink="/stocks/params">
-        <span class="p-1">Modif Filtres</span>
-      </a>
-    </div>
-    <div *ngIf = isListe
-    class="btn fond-soutenu w140px p-1 m-1">
-      <a class="bi bi-plus-circle"
-      routerLink="/stocks/onesortie/0">
-        <span class="p-1">ajout ligne</span>
-      </a>
-    </div>
+  <div *ngIf="isListe" class="col my-1 ps-2" >
+      Le: {{jour}}
   </div>
+
+  <!-- navigation contextuelle -->
+  <div *ngIf = isToParams
+  class="btn fond-ecran w130px p-1 m-1">
+    <a class="bi bi-gear"
+    routerLink="/stocks/params">
+      <span class="p-1">Modif Filtres</span>
+    </a>
+  </div>
+  <div *ngIf = isListe
+  class="btn fond-soutenu w130px p-1 m-1">
+    <a class="bi bi-plus-circle"
+    routerLink="/stocks/onesortie/0">
+      <span class="p-1">ajout ligne</span>
+    </a>
+  </div>
+
   <!-- boutons de retours -->
-  <div class="centrer" *ngIf = isToQuit>
+  <div class="center" *ngIf = isToQuit>
     <button mat-flat-button color="primary"
     type="submit"
-    class="w140px p-1 py-sm-2 m-1"
+    class="w130px p-1 py-sm-2 m-1"
     aria-label="Confirm"
     [disabled]="!valid"
     (click)="onClickOk()">
@@ -44,7 +40,7 @@
     </button>
     <button mat-flat-button  
     type="button"
-    class="w140px fond-soutenu link p-1 py-sm-2 m-1"
+    class="w130px fond-soutenu link p-1 py-sm-2 m-1"
     aria-label="Close"
     (click)="onClickQuit()">
       abandon<mat-icon>reply</mat-icon>

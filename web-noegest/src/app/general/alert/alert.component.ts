@@ -8,7 +8,8 @@ import { AlertService } from 'src/app/general/_services';
 @Component({ 
     selector: 'app-alert', 
     templateUrl: 'alert.component.html',
-    styleUrls: ['alert.component.less']
+    styleUrls: ['alert.component.less'],
+    standalone: true
  })
 
 export class AlertComponent implements OnInit, OnDestroy {

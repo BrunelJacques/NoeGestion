@@ -1,39 +1,21 @@
+label { 
+  margin: 7px 0px 2px 0px; 
+  flex-grow: 100;
+  align-content: end;
+  text-align-last: start;
+  max-width: 90px;
+}
 
-.filtre {
-  all: unset;
+input mat-mdc-{
+  max-width: 280;
+}
+
+.form-row {
   display: flex;
-  flex-wrap: row,nowrap;
-  align-content: space-evenly;
-  align-items: center;
-  margin-inline-end: 5px;
-  color: purple ;
-  label {
-    word-break: break-all;
-    width: 44px;
-    max-width: 44px;
-    margin: 0 5px 0 0;
-    padding: 0%;
-    font-size: calc(10px + 0.3vw); 
-    flex: 1;
-    zoom: 90%
-  }
-  input {
-    word-break: break-all;
-    width: 45%;
-    max-width:55px;
-    margin: 4px 0;
-    font-size: 12px; 
-    
-  }
-}
-
-
-#jourPar {
-  width: 75%;
-  max-width:95px;
-}
-
-#Jour{
-  flex: 0 120px;
-  max-width: unset;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  align-items: left;
+  margin: 4px 1px 0 1px;
+  gap: 0 0 ;
+  line-height: 16px;
 }
