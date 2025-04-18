@@ -3,5 +3,12 @@
 import { bootstrapApplication } from '@angular/platform-browser';
 import { AppComponent } from './app/app.component';
 import { appConfig } from './app/app.config';
+import { HandleError } from './app/general/_helpers';
 
-bootstrapApplication(AppComponent, appConfig).catch(err => console.error(err));
+appConfig.providers.push(HandleError); 
+
+bootstrapApplication(
+  AppComponent,
+  appConfig
+).catch(err => console.error(err))
+;

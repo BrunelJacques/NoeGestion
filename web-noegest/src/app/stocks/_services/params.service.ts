@@ -15,6 +15,8 @@ export interface FournisseursRetour {count: number; results: Fournisseur[];}
 export interface MagasinsRetour {count: number; results: Magasin[];}
 export interface RayonsRetour {count: number; results: Rayon[];}
 
+
+
 @Injectable({ providedIn: 'root'})
 
 export class ParamsService {
