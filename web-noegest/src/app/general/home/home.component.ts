@@ -14,7 +14,6 @@ import { User } from '../_models';
   styleUrls: ['./home.component.css']
 })
 
-
 export class HomeComponent  {
 
   user = new User();

@@ -435,7 +435,6 @@ mat-form-field {
   label {
     width: 100%;
     max-width: unset;
-
   }
   input {
     font-size: 14px ;
@@ -494,8 +493,8 @@ mat-error {
   top: 25px;
   padding: 5px;
 }
-/* fin de personalisation  mat-form-field */
-
-mat-card-title {
-  font-family: var(--mat-card-title-text-font);
+.mat-mdc-card-title, .mat-mdc-card-subtitle {
+  margin-left: 20px !important;
+  margin-right: 20px !important;
 }
+/* fin de personalisation  mat-form-field */

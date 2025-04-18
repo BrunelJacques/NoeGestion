@@ -1,18 +1,22 @@
 <mat-card class=" m-1">
   <mat-card class="m-1" [formGroup]="personalInfoForm" >
     <mat-card-subtitle>Informations personnelles</mat-card-subtitle>
-    <div class="form-row">
-      <mat-form-field>
-        <mat-label >Prénom</mat-label>
-        <input type="text" matInput [formControl]="firstName" placeholder= "saisir prénom" formControlName="firstName" >
-        <mat-error> Saisie incorrecte </mat-error>
-      </mat-form-field>
-      <mat-form-field appearance="fill">
-        <mat-label>Nom</mat-label>
-        <input type="text" matInput [formControl]="lastName" placeholder= "saisir nom" formControlName="lastName" >
-        <mat-error>Champ nécessaire </mat-error>
-      </mat-form-field>
-    </div>
+  
+    <mat-form-field>
+      <mat-label >Prénom</mat-label>
+      <input 
+      type="text" 
+      matInput 
+      formControlName="firstName" 
+      placeholder= "saisir prénom" 
+      >
+      <mat-error> Saisie incorrecte </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Nom</mat-label>
+      <input type="text" matInput [formControl]="lastName" placeholder= "saisir nom" formControlName="lastName" >
+      <mat-error>Champ nécessaire </mat-error>
+    </mat-form-field>
   </mat-card>
 
   <mat-card class="m-1" [formGroup]="emailForm" >

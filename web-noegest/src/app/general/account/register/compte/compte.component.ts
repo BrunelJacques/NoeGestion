@@ -5,16 +5,16 @@ import { confirmEqualValidator } from '../../../../shared/_validators/confirm-eq
 import { tabooValidator, passwordValidator } from '../../../../shared/_validators/valid.validator';
 import { User } from '../../../_models';
 import { CommonModule } from '@angular/common';
-import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { AbstractControl, ReactiveFormsModule } from '@angular/forms';
+import { AbstractControl} from '@angular/forms';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { SharedModule } from '../../../../shared/shared.modules';
 
 @Component({
   selector: 'app-compte',
   templateUrl: './compte.component.html',
+  styles: [],
   standalone: true,
-  imports:[ CommonModule, MatCardModule, ReactiveFormsModule, MatFormFieldModule]
+  imports:[ CommonModule, SharedModule]
 })
 export class CompteComponent implements OnInit {
  

@@ -3,7 +3,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 import { SharedModule } from '../shared/shared.modules';
-import { StocksRoutingModule } from './stocks-routing.module';
+import { RouterModule } from '@angular/router';
 
 
 
@@ -13,8 +13,8 @@ import { StocksRoutingModule } from './stocks-routing.module';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    StocksRoutingModule,
     SharedModule,
+    RouterModule
   ],
 
 })

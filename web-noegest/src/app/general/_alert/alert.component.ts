@@ -5,11 +5,14 @@ import { Subscription } from 'rxjs';
 
 import { Alert, AlertType } from '../_models';
 import { AlertService } from '../_services';
+import { HandleError } from '../_helpers';
+
 
 @Component({ 
     selector: 'app-alert', 
     templateUrl: 'alert.component.html',
     standalone: true,
+    providers: [HandleError],
     imports: [CommonModule]
  })
 
