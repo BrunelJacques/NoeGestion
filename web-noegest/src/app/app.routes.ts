@@ -13,9 +13,6 @@ import { ParamsComponent } from './stocks/params/params.component';
 import { OneSortieComponent } from './stocks/mouvements/one-sortie/one-sortie.component';
 import { OneEntreeComponent } from './stocks/mouvements/one-entree/one-entree.component';
 import { CampsResolver } from './stocks/_resolvers/camps.resolvers';
-import { AboutComponent } from './about/about.component';
-import { ExperienceComponent } from './about/experience/experience.component';
-import { SkillComponent } from './about/skill/skill.component';
 import { TestComponent } from './test/test.component';
 import { testRoutes } from './test/test.routes';
 
@@ -24,20 +21,10 @@ const accountRouting = () => import('./general/account/account-routing.module').
 export const routes: Routes = [
     { path: 'zztest', component: ZzTestComponent},
     { path: 'account', loadChildren: accountRouting },
-    { path: '', component: HomeComponent, canActivate: [AuthGuard] },
-
+    { path: '', component: HomeComponent },
     {path: 'test', 
       component:TestComponent,
       children: testRoutes
-    },
-
-    {
-      path: 'about', component: AboutComponent,
-      children: [
-        { path: '', component: ZzTestComponent },
-        { path: 'experience', component: ExperienceComponent },
-        { path: 'skill', component: SkillComponent },
-      ],
     },
 
     {path: 'stocks', component: HomeComponent,
