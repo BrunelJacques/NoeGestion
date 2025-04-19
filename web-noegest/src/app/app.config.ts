@@ -5,12 +5,14 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { provideHttpClient, withFetch } from '@angular/common/http';
+import { HandleError } from './general/_helpers';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-  provideRouter(routes),
-  provideHttpClient(withFetch()),
-  provideZoneChangeDetection({ eventCoalescing: true }),
-  provideClientHydration(withEventReplay())
+    { provide: HandleError},
+    provideRouter(routes),
+    provideHttpClient(withFetch()),
+    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideClientHydration(withEventReplay())
   ]
 };

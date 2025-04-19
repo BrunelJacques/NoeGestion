@@ -5,9 +5,9 @@ import { RouterOutlet } from '@angular/router';
 @Component({
   selector: 'app-test',
   imports: [RouterOutlet, CommonModule ],
-  templateUrl: `./test.component.html`
+  templateUrl: `./tests.component.html`
 })
 
-export class TestComponent {
+export class TestsComponent {
 
 }
