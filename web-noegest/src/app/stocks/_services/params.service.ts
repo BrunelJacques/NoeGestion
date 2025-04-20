@@ -1,30 +1,27 @@
-import { Injectable } from '@angular/core';
+import { Injectable, PLATFORM_ID, Inject } from '@angular/core';
+import { isPlatformBrowser, DatePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, catchError, map, tap } from 'rxjs';
-import { FonctionsPerso } from '../../shared/fonctions-perso';
-import { DatePipe } from '@angular/common';
 
+import { FonctionsPerso } from '../../shared/fonctions-perso';
 import { Params,  PARAMS0, Camp, Fournisseur, Rayon, Magasin } from '../_models/params';
 import { Constantes } from '../../constantes';
 import { Mouvement } from '../_models/mouvement';
 import { HandleError } from '../../general/_helpers';
 import { FormGroup } from '@angular/forms';
 
-import { isPlatformBrowser } from '@angular/common';
-import { PLATFORM_ID, Inject } from '@angular/core';
 
 export interface CampsRetour {count: number; results: Camp[];}
 export interface FournisseursRetour {count: number; results: Fournisseur[];}
 export interface MagasinsRetour {count: number; results: Magasin[];}
 export interface RayonsRetour {count: number; results: Rayon[];}
 
-
-
 @Injectable({ providedIn: 'root'})
 
 export class ParamsService {
   private datePipe = new  DatePipe("");
   private handleError = new HandleError;
+  private isBrowser: boolean;
   lstservice = Constantes.LSTSERVICE;
   lstservice_code = this.lstservice.map((x) => x.id);
   public paramsSubj$= new BehaviorSubject<Params>(PARAMS0);
@@ -41,12 +38,13 @@ export class ParamsService {
     private http: HttpClient,
     private fp: FonctionsPerso,
     @Inject(PLATFORM_ID) private platformId: object) {
-      if (isPlatformBrowser(this.platformId)) {
+      this.isBrowser = isPlatformBrowser(this.platformId);
+      if (this.isBrowser) {
         localStorage.setItem('key', 'value');
-        this.getStoredParams();
-        this.getCampsSubj();
-        this.initParamsOptions();
       }
+      this.getStoredParams();
+      this.getCampsSubj();
+      this.initParamsOptions();
     }
 
   initParamsOptions() {
@@ -57,16 +55,20 @@ export class ParamsService {
 
   // stockage de l'info en local & affectation subject
   setParams(item: Params) {
-    localStorage.setItem(this.key, JSON.stringify(item))
-    this.paramsSubj$.next(item)
+    if (this.isBrowser) {
+      localStorage.setItem(this.key, JSON.stringify(item))
+      this.paramsSubj$.next(item)
+    }
   }
 
   getStoredParams() {
-    const key = localStorage.getItem(this.key)
-    if (key === null )
-    {return}
-    else
-    {  this.paramsSubj$.next(this.ajusteParams(JSON.parse(key))) }
+    if (this.isBrowser) {
+      const key = localStorage.getItem(this.key)
+      if (key === null )
+      {return}
+      else
+      {  this.paramsSubj$.next(this.ajusteParams(JSON.parse(key))) }
+  }
   }
 
   ajusteParams(params:Params){
