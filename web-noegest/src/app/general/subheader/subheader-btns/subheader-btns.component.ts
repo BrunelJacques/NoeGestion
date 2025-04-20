@@ -1,10 +1,14 @@
 import { Component } from '@angular/core';
-import { SeeyouService } from 'src/app/general/_services';
+import { SeeyouService } from '../../_services';
+import { CommonModule } from '@angular/common';
+import { SharedModule } from '../../../shared/shared.modules';
 
 
 @Component({
   selector: 'app-subheader-btns',
   templateUrl: './subheader-btns.component.html',
+  standalone: true,
+  imports: [ CommonModule, SharedModule ]
 })
 
 export class SubheaderBtnsComponent {
@@ -16,18 +20,19 @@ export class SubheaderBtnsComponent {
   template = "."
   valid = true
 
-  constructor(
-    private seeyouService: SeeyouService,
-  ){
-    this.seeyouService.templateActive$.subscribe(
-      (template) => { 
-        this.template = template
-        this.parentName = this.seeyouService.getParentName()
-      }
-    )
-    this.seeyouService.isBtnOk$.subscribe(
-      (x) => {this.isBtnOk = x}
-    )
+  private seeyouService: SeeyouService; // Explicitly declare the property
+
+  constructor(seeyouService: SeeyouService) {
+    this.seeyouService = seeyouService; // Assign it in the constructor
+
+    this.seeyouService.templateActive$.subscribe((template) => {
+      this.template = template;
+      this.parentName = this.seeyouService.getParentName();
+    });
+
+    this.seeyouService.isBtnOk$.subscribe((x) => {
+      this.isBtnOk = x;
+    });
   }
 
   onClickOk() {

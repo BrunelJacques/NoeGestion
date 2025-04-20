@@ -2,18 +2,21 @@ import { Component } from '@angular/core';
 import { SeeyouService } from '../../../general/_services';
 import { ParamsService } from '../../_services/params.service';
 import { Constantes } from '../../../constantes';
-import { DatePipe } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { Params } from '../../_models/params';
 import { Subject, takeUntil } from 'rxjs';
+import { SharedModule } from '../../../shared/shared.modules';
 
 
 @Component({
   selector: 'app-subheader-mvts',
   templateUrl: './subheader-mvts.component.html',
+  standalone: true,
+  imports: [ CommonModule, SharedModule ]
 })
 
 export class SubheaderMvtsComponent {
-
+  private datePipe = new DatePipe('fr-FR');
   private destroy$!: Subject<boolean>;
   parentName = "-"
   nomModule = "-"
@@ -39,7 +42,6 @@ export class SubheaderMvtsComponent {
   constructor(
     private seeyouService: SeeyouService,
     private paramsService: ParamsService,
-    private datePipe: DatePipe,
   ){
     this.seeyouService.templateActive$.subscribe(
       (template) => {

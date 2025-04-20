@@ -1,11 +1,15 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { SeeyouService } from '../_services';
+import { CommonModule } from '@angular/common';
+import { SubheaderMvtsComponent } from "../../stocks/mouvements/subheader-mvts/subheader-mvts.component";
+import { SubheaderBtnsComponent } from "./subheader-btns/subheader-btns.component";
 
 @Component({
   selector: 'app-subheader',
   templateUrl: './subheader.component.html',
   styleUrls: ['./subheader.component.scss'],
-  standalone: true
+  standalone: true,
+  imports: [CommonModule, SubheaderMvtsComponent, SubheaderBtnsComponent]
 })
 
 export class SubheaderComponent implements OnInit, OnDestroy {

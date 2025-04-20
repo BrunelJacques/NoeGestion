@@ -10,6 +10,9 @@ import { Mouvement } from '../_models/mouvement';
 import { HandleError } from '../../general/_helpers';
 import { FormGroup } from '@angular/forms';
 
+import { isPlatformBrowser } from '@angular/common';
+import { PLATFORM_ID, Inject } from '@angular/core';
+
 export interface CampsRetour {count: number; results: Camp[];}
 export interface FournisseursRetour {count: number; results: Fournisseur[];}
 export interface MagasinsRetour {count: number; results: Magasin[];}
@@ -20,8 +23,10 @@ export interface RayonsRetour {count: number; results: Rayon[];}
 @Injectable({ providedIn: 'root'})
 
 export class ParamsService {
+  private datePipe = new  DatePipe("");
+  private handleError = new HandleError;
   lstservice = Constantes.LSTSERVICE;
-  lstservice_code = this.lstservice.map((x) => x.id)
+  lstservice_code = this.lstservice.map((x) => x.id);
   public paramsSubj$= new BehaviorSubject<Params>(PARAMS0);
   public campsSubj$= new BehaviorSubject<Camp[]>([]);
   private key = "stParams";
@@ -34,15 +39,15 @@ export class ParamsService {
   constructor(
     private constantes: Constantes,
     private http: HttpClient,
-    private handleError: HandleError,
-    private datePipe: DatePipe,
     private fp: FonctionsPerso,
-    ){
-      this.getStoredParams()
-      this.getCampsSubj()
-      this.initParamsOptions()
+    @Inject(PLATFORM_ID) private platformId: object) {
+      if (isPlatformBrowser(this.platformId)) {
+        localStorage.setItem('key', 'value');
+        this.getStoredParams();
+        this.getCampsSubj();
+        this.initParamsOptions();
+      }
     }
-
 
   initParamsOptions() {
     this.getFournisseurs()

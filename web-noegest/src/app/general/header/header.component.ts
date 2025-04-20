@@ -5,13 +5,14 @@ import { Subject, takeUntil, tap } from 'rxjs';
 
 import { AuthenticationService } from '../_services';
 import { SeeyouService } from '../_services/seeyou.service';
+import { SubheaderComponent } from "../subheader/subheader.component";
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
   standalone: true,
-  imports: [CommonModule]
+  imports: [CommonModule, SubheaderComponent]
 })
 
 export class HeaderComponent implements OnInit, OnDestroy {
