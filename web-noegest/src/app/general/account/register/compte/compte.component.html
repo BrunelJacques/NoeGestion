@@ -1,77 +1,88 @@
-<mat-card class=" m-1">
-  <mat-card class="m-1" [formGroup]="personalInfoForm" >
-    <mat-card-subtitle>Informations personnelles</mat-card-subtitle>
-  
-    <mat-form-field>
-      <mat-label >Prénom</mat-label>
-      <input 
-      type="text" 
-      matInput 
-      formControlName="firstName" 
-      placeholder= "saisir prénom" 
-      >
-      <mat-error> Saisie incorrecte </mat-error>
-    </mat-form-field>
-    <mat-form-field appearance="fill">
-      <mat-label>Nom</mat-label>
-      <input type="text" matInput [formControl]="lastName" placeholder= "saisir nom" formControlName="lastName" >
-      <mat-error>Champ nécessaire </mat-error>
-    </mat-form-field>
-  </mat-card>
+<mat-card class="mx-1" [formGroup]="personalInfoForm" >
+  <mat-card-subtitle>Informations personnelles</mat-card-subtitle>
 
-  <mat-card class="m-1" [formGroup]="emailForm" >
-    <div class="form-row">
-      <mat-card-subtitle  class="mw-field fs-6">Vous joindre?</mat-card-subtitle>
-      <mat-form-field >
-        <mat-label>Téléphone</mat-label>
-        <input type="text" matInput [formControl]="phone" placeholder="téléphone" formControlName="phone" >
-        <mat-error> {{getFormControlErrorText(phoneCtrl)}} </mat-error>
-      </mat-form-field>
-    </div>
-    <div class="form-row">
-      <mat-form-field >
-        <mat-label>Adresse mail</mat-label>
-        <input class="" type="text" matInput [formControl]="email" placeholder="email" formControlName="email" >
-        <mat-error> {{getFormControlErrorText(emailCtrl)}} </mat-error>
-      </mat-form-field>
-      <mat-form-field >
-        <mat-label>Confirmer le mail</mat-label>
-        <input type="text" matInput [formControl]="confirm" placeholder="confirm email" formControlName="confirm" >
-        <mat-error> {{getFormControlErrorText(confirmEmailCtrl)}} </mat-error>
-      </mat-form-field>
+  <mat-form-field>
+    <mat-label >Prénom</mat-label>
+    <input type="text" 
+    matInput 
+    formControlName="firstName" 
+    placeholder= "prénom" 
+    >
+    <mat-error> Saisie incorrecte </mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Nom</mat-label>
+    <input type="text" 
+    matInput 
+    placeholder= "saisir nom" 
+    formControlName="lastName" >
+    <mat-error>Champ nécessaire </mat-error>
+  </mat-form-field>
+</mat-card>
 
-    </div>
-    <small class="error-text" *ngIf="showEmailError$ | async">Adresses différentes</small>
-  </mat-card>
+<mat-card class="mx-1" [formGroup]="emailForm" >
+  <mat-card-subtitle  class="mw-field fs-6">Vous joindre?</mat-card-subtitle>
+  <mat-form-field class="centrer">
+    <mat-label class="w100px">Téléphone</mat-label>
+    <input type="text" 
+    matInput 
+    placeholder="saisir téléphone" 
+    [formControl]="phone" >
+    <mat-error> {{getFormControlErrorText(phone)}} </mat-error>
+  </mat-form-field>
+  <mat-form-field >
+    <mat-label>Adresse mail</mat-label>
+    <input type="text" 
+    matInput 
+    placeholder="saisir email" 
+    [formControl]="email" >
+    <mat-error> {{getFormControlErrorText(email)}} </mat-error>
+  </mat-form-field>
+  <mat-form-field >
+    <mat-label>Confirmer le mail</mat-label>
+    <input type="text" 
+    matInput 
+    placeholder="confirm email"
+    [formControl]="confirm">
+    <mat-error> {{getFormControlErrorText(confirm)}} </mat-error>
+  </mat-form-field>
+  <small class="error-message" *ngIf="showEmailError$ | async">Adresses différentes</small>
+</mat-card>
 
-  <mat-card class="m-1" [formGroup]="loginInfoForm" >
+<mat-card class="mx-1" [formGroup]="loginInfoForm" >
+  <mat-card-subtitle  class="mw-field fs-6">Connexion :</mat-card-subtitle>
+  <mat-form-field >
+  <mat-label>Identifiant</mat-label>
+  <input type="text" 
+  matInput 
+  [formControl]="username" 
+  placeholder="identifiant" >
+  <mat-error>Champ nécessaire</mat-error>
+  </mat-form-field>
 
-    <div class="form-row">
-      <mat-card-subtitle  class="mw-field fs-6">Connexion :</mat-card-subtitle>
-      <mat-form-field >
-        <mat-label>Identifiant</mat-label>
-        <input type="text" matInput [formControl]="username" placeholder="identifiant" formControlName="username" >
-        <mat-error>Champ nécessaire</mat-error>
-      </mat-form-field>
-    </div>
+  <!--mat-form-field >
+  <mat-label>Mot de passe</mat-label>
+  <input type="password" 
+  matInput 
+  [formControl]="password" 
+  placeholder="mot de passe" 
+  aria-label="password">
+  <mat-error> {{getFormControlErrorText(passwordCtrl)}} </mat-error>
+  </mat-form-field>
 
-    <div class="form-row">
-      <mat-form-field >
-        <mat-label>Mot de passe</mat-label>
-        <input type="password" matInput [formControl]="password" placeholder="mot de passe" formControlName="password" aria-label="password">
-        <mat-error> {{getFormControlErrorText(passwordCtrl)}} </mat-error>
-      </mat-form-field>
-      <mat-form-field >
-        <mat-label>Confirm. mot de passe</mat-label>
-        <input type="password" matInput [formControl]="confirmPassword" placeholder="confirm mot de passe" formControlName="confirmPassword" aria-label="confirmPassword" >
-        <mat-error> {{getFormControlErrorText(confirmPasswordCtrl)}} </mat-error>
-      </mat-form-field>
-    </div>
-    <small class="error-text" *ngIf="showPasswordError$ | async">Mots de passe différents</small>
+  <mat-form-field >
+  <mat-label>Confirm. mot de passe</mat-label>
+  <input type="password" 
+  matInput 
+  [formControl]="confirmPassword" 
+  placeholder="confirm mot de passe" 
+  aria-label="confirmPassword" >
+  <mat-error> {{getFormControlErrorText(confirmPasswordCtrl)}} </mat-error>
+  </mat-form-field>
+  <small class="error-message" *ngIf="showPasswordError$ | async">Mots de passe différents</small>
 
-    <mat-card-actions>
-      <button mat-flat-button color="primary"  
-      [disabled]="!mainForm.valid">status</button>
-    </mat-card-actions>
-  </mat-card>
+  <mat-card-actions>
+    <button mat-flat-button color="primary"  
+    [disabled]="!mainForm.valid">status</button>
+  </mat-card-actions-->
 </mat-card>

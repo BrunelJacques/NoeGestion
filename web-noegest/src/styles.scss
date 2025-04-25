@@ -187,6 +187,7 @@ label {
   margin-left: 60px;
 }
 
+// w-25 w-50 w-75 w-100 bootstrap width in %
 .w20px { width: 20px; max-width: 20px;}
 .w40px { width: 40px; max-width: 40px;}
 .w60px { width: 60px; max-width: 60px;}
@@ -287,6 +288,8 @@ button {
     margin: 7px 5px 1px 6px;
   }
 }
+
+//.form-control exists in bootstrap
 .form-ctrl {
   margin-left: 0;
   margin-right: 0;
@@ -430,16 +433,27 @@ mat-form-field {
   //height: 30px !important; // Set fixed height
   //transform: translateY(-0px) !important;
   margin: 0 1% 0 2% !important;
-  align-content: flex-start;
+  align-items: center;
   flex: row flex !important;
   label {
     width: 100%;
     max-width: unset;
   }
   input {
-    font-size: 14px ;
     white-space: normal;
-    //background-color: rgb(0, 98, 128, 0.5);
+    margin-left: 0;
+    margin-right: 0;
+    padding: 1px 3px ;
+    line-height: 1;
+    vertical-align: baseline;
+    background-color: var(--fond-saisie);
+    --mdc-filled-text-field-container-shape: 5px;
+    border-width: 0 0 1px 0;
+    border-top-left-radius: var(--mdc-filled-text-field-container-shape);
+    border-top-right-radius: var(--mdc-filled-text-field-container-shape);
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-color: var(--texte-sombre) ;
   }
 }
 .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-text-field__input{
@@ -492,6 +506,9 @@ mat-error {
   position:relative;
   top: 25px;
   padding: 5px;
+}
+.mat-mdc-card {
+  align-items: center;
 }
 .mat-mdc-card-title, .mat-mdc-card-subtitle {
   margin-left: 20px !important;

@@ -25,21 +25,19 @@ export class CompteComponent implements OnInit {
 
   mainForm!: FormGroup
   personalInfoForm!: FormGroup;
-  phoneCtrl!: FormControl;
-  emailCtrl!: FormControl;
-  confirmEmailCtrl!: FormControl;
   emailForm!: FormGroup;
-  showEmailError$!: Observable<boolean>;
+  showEmailError$!: Observable<string | boolean | null>;
 
   passwordCtrl = new FormControl('', Validators.required);
   confirmPasswordCtrl = new FormControl('', Validators.required);
+  
   loginInfoForm!: FormGroup;
   showPasswordError$!: Observable<string | false | null>;
   firstName!: FormControl;
   lastName!: FormControl;
-  phone!: FormControl;
-  email!: FormControl;
-  confirm!: FormControl;
+  phone = new FormControl('');
+  email = new FormControl('');
+  confirm = new FormControl('');
   username!: FormControl;
   password!: FormControl;
   confirmPassword!: FormControl;
@@ -63,14 +61,10 @@ export class CompteComponent implements OnInit {
       lastName: ['', Validators.required]
     });
 
-    this.phoneCtrl = this.formBuilder.control(null);
-    this.emailCtrl = this.formBuilder.control('');
-    this.confirmEmailCtrl = this.formBuilder.control('');
-   
     this.emailForm = this.formBuilder.group({
-      phone: this.phoneCtrl,
-      email: this.emailCtrl,
-      confirm: this.confirmEmailCtrl
+      phone: this.phone,
+      email: this.email,
+      confirm: this.confirm
     }, {
       validators: [confirmEqualValidator('email', 'confirm')],
       // updateOn détermine la fréquence de l'action, blur c'est quand on sort du groupe
@@ -105,10 +99,10 @@ export class CompteComponent implements OnInit {
     
     this.showEmailError$ =  this.emailForm.statusChanges.pipe(
       map(status => 
-        this.emailCtrl.value !== this.confirmEmailCtrl.value &&
+        this.email.value !== this.confirm.value &&
         status === 'INVALID' && 
-        this.emailCtrl.value && 
-        this.confirmEmailCtrl.value
+        this.email.value && 
+        this.confirm.value
       )
     );
 
@@ -140,24 +134,21 @@ export class CompteComponent implements OnInit {
         if (control) {
           control.updateValueAndValidity();
         } else {
-          this.phoneCtrl.updateValueAndValidity()
-          console.log("c'est null!!")
-          console.log(this.phoneCtrl)
-          console.log(this.emailForm)
+          this.phone.updateValueAndValidity()
       }
       });      
     });
   }
 
   private setEmailValidators(): void {
-    this.phoneCtrl.addValidators([
+    this.phone.addValidators([
       Validators.required, 
       Validators.minLength(10), 
       Validators.maxLength(16)])
-    this.emailCtrl.addValidators([
+    this.email.addValidators([
         Validators.required,
         Validators.email]);
-    this.confirmEmailCtrl.addValidators([
+    this.confirm.addValidators([
         Validators.required,
         Validators.email
     ]);
@@ -182,6 +173,7 @@ export class CompteComponent implements OnInit {
     this.user.firstName = this.fpi['firstName'].value
     this.user.lastName = this.fpi['lastName'].value
     this.user.email = this.fem['email'].value
+    this.confirm = this.fem['confirm'].value
     this.user.phone = this.fem['phone'].value
     this.user.username = this.fli['username'].value
     this.user.password = this.fli['password'].value

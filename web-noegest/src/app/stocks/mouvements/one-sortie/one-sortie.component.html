@@ -9,7 +9,7 @@
         <input
         type= "date" id="jourPar" name="jourPar"
         formControlName="jour"
-        class="form-control col-7 col-sm-12"
+        class="form-ctrl col-7 col-sm-12"
         >
       </div>
       <div class="form-row">
@@ -17,7 +17,7 @@
         <input
         type= "text" id="versPar" name="versPar"
         formControlName="origine"
-        class="form-control col-7 col-sm-12">
+        class="form-ctrl col-7 col-sm-12">
       </div>
     </div>
     <div class="form-row">
@@ -25,7 +25,7 @@
         <label class="col-3 col-sm-12" for="camp">Camp: {{params.camp}} </label>
         <select id="camp" name="camp"
           formControlName="camp"
-          class="form-control col-7 col-sm-12" aria-label="camp"
+          class="form-ctrl col-7 col-sm-12" aria-label="camp"
           >
           <option [ngValue]="fPar['camp']" disabled>Choisir un camp</option>
           <option *ngFor="let camp of camps"
@@ -55,7 +55,7 @@
             <label for="{{ field.label}}">{{ field.label }}</label>
           </div>
           <div class="col-8" [ngSwitch]="field.type">
-            <select class="form-control my-1"
+            <select class="form-ctrl my-1"
             required
             *ngSwitchCase="'select'"
             aria-label="{field.label}"
@@ -63,7 +63,7 @@
             [formControlName]="field.label">
               <option *ngFor="let option of field.options" [value]="option">{{ option }}</option>
             </select>
-            <input class="form-control my-1"
+            <input class="form-ctrl my-1"
             *ngSwitchCase="'label'"
             aria-label="{field.label}"
             id="{field.label}"
@@ -74,7 +74,7 @@
               <div *ngIf="f['{{ field.label }}'].errors['required']">Choisissez une valeur'
               </div>
             </div>
-            <input class="form-control my-1"
+            <input class="form-ctrl my-1"
             required
             *ngSwitchDefault
             aria-label="{field.label}"

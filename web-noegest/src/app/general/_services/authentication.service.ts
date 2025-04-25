@@ -47,7 +47,7 @@ export class AuthenticationService {
         //pas de revoke token avec Django RestFramework
         this.stopRefreshTokenTimer();
         this.userSubject.next(new User);
-        this.router.navigate(['/account/login']);
+        this.router.navigate(['/login']);
     }
 
     register(user: User) {

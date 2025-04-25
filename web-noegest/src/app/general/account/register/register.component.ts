@@ -79,8 +79,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
 			}),
 			takeUntil(this.destroy$),
 		).subscribe()
-
-
 	}
 
 	testCoherenceSituation(): void {
@@ -129,7 +127,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
 			.subscribe({
 					next: () => {
 							this.alertService.success('Votre demande sera analysée dans quelques jours', { keepAfterRouteChange: true });
-							this.router.navigate(['/account/login'], { relativeTo: this.route });
+							this.router.navigate(['/login'], { relativeTo: this.route });
 					},
 					error: error => {
 							this.alertService.error(error);

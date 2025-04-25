@@ -8,12 +8,16 @@ import { TestsComponent } from './tests/tests.component';
 import { testsRoutes } from './tests/tests.routes';
 import { StocksComponent } from './stocks/stocks.component';
 import { stocksRoutes } from './stocks/stocks.routes';
+import { LoginComponent } from './general/account/login';
+import { RegisterComponent } from './general/account/register';
 
-const accountRouting = () => import('./general/account/account-routing.module').then(x => x.AccountRoutingModule);
+//const accountRouting = () => import('./general/account/account-routing.module').then(x => x.AccountRoutingModule);
 
 export const routes: Routes = [
     { path: 'zz-test', component: ZzTestComponent},
-    { path: 'account', loadChildren: accountRouting },
+    { path: 'login', component: LoginComponent},
+    { path: 'register', component: RegisterComponent},
+    //{ path: 'account', loadChildren: accountRouting },
     { path: 'tests', component:TestsComponent, children: testsRoutes },
     { path: 'stocks', component:StocksComponent, children: stocksRoutes },
     { path: '', component: HomeComponent },
