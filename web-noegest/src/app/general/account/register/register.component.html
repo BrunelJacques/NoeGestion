@@ -7,7 +7,7 @@
     <mat-radio-button value="info">Info</mat-radio-button>
   </mat-radio-group>
 
-  
+
   <div *ngIf=" 'info' === (situationCtrl.value)">
     <app-info></app-info>
   </div>
@@ -17,13 +17,13 @@
 
   <mat-card-actions *ngIf=" 'info' !== (situationCtrl.value)">
     <button
-    mat-flat-button color="primary" 
+    mat-flat-button color="primary"
     type="submit"
     [disabled]="loading || !userFormValid"
     aria-label="Confirm">
       Demande<mat-icon>send</mat-icon>
     </button>
-    <a mat-flat-button 
+    <a mat-flat-button
     class="fond-soutenu m-3"
     routerLink="../login"
     role="button">

@@ -8,7 +8,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { Constantes } from '../../../constantes';
 import { FonctionsPerso } from '../../../shared/fonctions-perso';
 import { AlertService, SeeyouService } from '../../../general/_services';
-import { RouterModule } from '@angular/router';
+import { RouterLink, RouterModule } from '@angular/router';
 import { SharedModule } from '../../../shared/shared.modules';
 import { HandleError } from '../../../general/_helpers/error.interceptor';
 
@@ -17,7 +17,7 @@ import { HandleError } from '../../../general/_helpers/error.interceptor';
   selector: 'app-sorties',
   templateUrl: './sorties.component.html',
   styleUrls: ['./sorties.component.css'],
-  imports: [CommonModule, RouterModule, SharedModule],
+  imports: [CommonModule, RouterModule, SharedModule, RouterLink],
   providers: [HandleError],
 })
 

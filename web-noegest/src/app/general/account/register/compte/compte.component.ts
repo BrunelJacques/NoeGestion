@@ -14,7 +14,7 @@ import { SharedModule } from '../../../../shared/shared.modules';
   templateUrl: './compte.component.html',
   styles: [],
   standalone: true,
-  imports:[ CommonModule, SharedModule]
+  imports:[CommonModule, SharedModule]
 })
 export class CompteComponent implements OnInit {
  

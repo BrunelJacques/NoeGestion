@@ -5,13 +5,15 @@ import { AuthenticationService } from '../_services';
 import { SeeyouService} from '../_services/seeyou.service';
 
 import { User } from '../_models';
+import { RouterLink } from '@angular/router';
 
 
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.css'],
+  imports: [RouterLink]
 })
 
 export class HomeComponent  {

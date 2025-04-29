@@ -1,7 +1,7 @@
 ﻿import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Subject, first, startWith, takeUntil, tap } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AlertService, AuthenticationService, SeeyouService } from '../../_services';
 import { User } from '../../_models';
 import { MatCardModule } from '@angular/material/card';
@@ -15,7 +15,7 @@ import { InfoComponent } from './info/info.component';
 
 @Component({ 
 	imports: [MatCardModule, MatRadioButton, CommonModule, MatRadioGroup, MatIcon, 
-		ReactiveFormsModule, CompteComponent, InfoComponent ],
+		ReactiveFormsModule, CompteComponent, InfoComponent, RouterLink],
 	templateUrl: 'register.component.html' 
 })
 

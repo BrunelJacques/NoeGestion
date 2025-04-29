@@ -6,13 +6,14 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { Params } from '../../_models/params';
 import { Subject, takeUntil } from 'rxjs';
 import { SharedModule } from '../../../shared/shared.modules';
+import { RouterLink } from '@angular/router';
 
 
 @Component({
   selector: 'app-subheader-mvts',
   templateUrl: './subheader-mvts.component.html',
   standalone: true,
-  imports: [ CommonModule, SharedModule ]
+  imports: [ CommonModule, SharedModule, RouterLink ]
 })
 
 export class SubheaderMvtsComponent {
