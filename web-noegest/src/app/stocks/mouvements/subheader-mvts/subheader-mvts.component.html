@@ -1,4 +1,4 @@
-<div class="card fond-ecran cebter m-0 px-1">
+<div class="form-group fond-ecran texte-gris m-0 px-1">
   <!-- infos en cours -->
   <span class="w-100 fw-bold m-1"> {{lstModules[template]}}
   </span>
@@ -13,26 +13,28 @@
   </div>
 
   <!-- navigation contextuelle -->
-  <div *ngIf = isToParams
-  class="btn fond-ecran w130px p-1 m-1">
-    <a class="bi bi-gear"
-    routerLink="/stocks/params">
-      <span class="p-1">Modif Filtres</span>
+  <div class="form-group">
+    <button mat-flat-button *ngIf = isToParams
+    class="w110px m-1 p-1 bi bi-gear"
+    routerLink="/stocks/params"
+    color="primary" 
+    >
+       <span class="ps-1"> Modif Filtres</span>
+    </button>
+    
+    <a mat-flat-button *ngIf = isListe
+    class="fond-soutenu bi bi-plus-circle"
+    routerLink="/stocks/onesortie/0"
+    role="button">
+    <span class="ps-1">Ajout ligne </span>
     </a>
-  </div>
-  <div *ngIf = isListe
-  class="btn fond-soutenu w130px p-1 m-1">
-    <a class="bi bi-plus-circle"
-    routerLink="/stocks/onesortie/0">
-      <span class="p-1">ajout ligne</span>
-    </a>
-  </div>
-
+</div>
   <!-- boutons de retours -->
-  <div class="center" *ngIf = isToQuit>
-    <button mat-flat-button color="primary"
-    type="submit"
+  <div class="form-group" *ngIf = isToQuit>
+    <button mat-flat-button 
     class="w130px p-1 py-sm-2 m-1"
+    type="submit"
+    color="primary"
     aria-label="Confirm"
     [disabled]="!valid"
     (click)="onClickOk()">

@@ -6,13 +6,14 @@ import { Subject, takeUntil, tap } from 'rxjs';
 import { AuthenticationService } from '../_services';
 import { SeeyouService } from '../_services/seeyou.service';
 import { SubheaderComponent } from "../subheader/subheader.component";
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
   standalone: true,
-  imports: [CommonModule, SubheaderComponent]
+  imports: [CommonModule, SubheaderComponent, RouterLink]
 })
 
 export class HeaderComponent implements OnInit, OnDestroy {
