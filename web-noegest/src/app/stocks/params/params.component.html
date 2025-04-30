@@ -4,16 +4,16 @@
       <h2>Filtres d'affichage</h2>      
     </div>
     <form [formGroup]="paramsForm" 
-        class="form-group was-validated"
-        (ngSubmit)="onSubmit()">
+    class="form-group was-validated"
+    (ngSubmit)="onSubmit()">
       <div class="form-row">
         <label for="jour">Date:</label>
         <input
-            type= "date" id="jour" name="jour"
-            formControlName="jour"
-            class="form-ctrl"
-            min="2020-01-01" max="2050-12-31"
-            [ngClass]="{ 'is-invalid': f['jour'].errors}">
+        class="form-ctrl"
+        type= "date" id="jour" name="jour"
+        formControlName="jour"
+        min="2020-01-01" max="2050-12-31"
+        [ngClass]="{ 'is-invalid': f['jour'].errors}">
         <div *ngIf="f['jour'].errors" class="invalid-feedback">
           <div *ngIf="f['jour'].errors">
             Choisissez une date ou abandonnez!

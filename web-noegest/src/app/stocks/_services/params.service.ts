@@ -89,6 +89,8 @@ export class ParamsService {
   paramsToForm(params:Params,form:FormGroup){
     if (!params.service || params.service < 0){
       params.service = 0 }
+    //const today = new Date().toISOString().split('T')[0]; 
+    console.log("To forms jour:", params.jour)
     form.patchValue({
       'jour': this.datePipe.transform(params.jour, 'yyyy-MM-dd'),
       'origine': params.origine,
@@ -100,6 +102,7 @@ export class ParamsService {
   }
 
   formToParams(form:{value:Params}, params:Params):void {
+    console.log("ToParams jour:", params.jour)
     if (form.value.origine != 'camp') {
       form.value.camp = '00'}
     params.jour = new Date(form.value.jour);

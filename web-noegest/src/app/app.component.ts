@@ -10,5 +10,5 @@ import { HeaderComponent } from './general/header';
   imports: [RouterModule, AlertComponent, HeaderComponent ]
 })
 export class AppComponent {
-  title = 'noegestion';
+  title = 'noegest';
 }

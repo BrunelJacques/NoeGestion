@@ -60,13 +60,14 @@ export class ParamsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.parentName = this.seeyouService.getParentName()
     this.initForm()
-    this.getParams()
+    //this.getParams()
     this.getCamps()
   }
 
   initForm(): void {
+    const today = new Date().toISOString().split('T')[0]; 
     this.paramsForm = this.formBuilder.group({
-      jour: [new Date(),Validators.required],
+      jour: [today,Validators.required],
       origine:"repas",
       camp: ["00", Validators.required],
       tva: "en TTC",
@@ -143,6 +144,7 @@ export class ParamsComponent implements OnInit, OnDestroy {
         next: (data:Params) => {
           this.params = data;
           this.paramsService.paramsToForm(this.params,this.paramsForm)
+          console.log(this.paramsForm.value)
           this.lstorigine = this.lstorigine_sorties
           this.loading = false
           this.majOrigine(this.params.origine)
@@ -155,6 +157,5 @@ export class ParamsComponent implements OnInit, OnDestroy {
       });
     this.fournisseurs = this.paramsService.fournisseurs
   }
-
 }
 

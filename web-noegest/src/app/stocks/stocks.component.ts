@@ -8,6 +8,4 @@ import { RouterOutlet } from '@angular/router';
   templateUrl: `./stocks.component.html`,
   styles: ``
 })
-export class StocksComponent {
-
-}
+export class StocksComponent {}
