@@ -1,6 +1,6 @@
 ﻿<mat-card class="main-form">
   <mat-card-title>Mon Compte {{user.username}} </mat-card-title>
-  <mat-card-subtitle class="fs-6">Votre situation Noegest?</mat-card-subtitle>
+  <mat-card-subtitle class="fs-6">{{titre}}</mat-card-subtitle>
   <mat-radio-group [formControl]="situationCtrl">
     <mat-radio-button value="exist">Compte existant</mat-radio-button>
     <mat-radio-button value="new">Staff</mat-radio-button>

@@ -130,7 +130,6 @@ export class CompteComponent implements OnInit {
     [this.emailForm.controls,].forEach(ctrl => {
       Object.keys(ctrl).forEach(key => {
         const control = this.mainForm.get(key);
-        console.log('test: ', key, control)
         if (control) {
           control.updateValueAndValidity();
         } else {

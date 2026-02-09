@@ -26,6 +26,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
 	situationCtrl!: FormControl
 	destroy$!: Subject<boolean>
 	isLogged!:boolean
+	titre = ''
 
 	constructor(
 		private route: ActivatedRoute,
@@ -76,6 +77,14 @@ export class RegisterComponent implements OnInit, OnDestroy {
 			tap( () => { 
 				this.testCoherenceSituation();
 				this.user.situation = this.situationCtrl.value
+				if (this.situationCtrl.value == 'new') {
+					this.titre = "Création d'un compte Staff"
+				} else  if (this.situationCtrl.value == 'info') {
+					this.titre = "Seul le staff peut créer un compte"
+				} else {				
+					this.titre = "Votre situation Noegest?"
+				}
+				console.log('flag:',this.situationCtrl.value)
 			}),
 			takeUntil(this.destroy$),
 		).subscribe()
