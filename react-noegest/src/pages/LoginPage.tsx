@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/useAuth";
+import { FancyInput, FancyInputPassword } from "../components/general/FancyInput.tsx";
 
 const LoginPage: React.FC = () => {
   const { login } = useAuth();
@@ -18,18 +19,17 @@ const LoginPage: React.FC = () => {
   return (
     <form onSubmit={handleSubmit}>
       <h1>Login</h1>
-      <input
+      <FancyInput
         value={username}
-        onChange={e => setUsername(e.target.value)}
-        placeholder="Username"
+        onChange={e => setUsername(e)}
+        placeholder="Identifiant"
       />
-      <input
-        type="password"
-        value={password}
-        onChange={e => setPassword(e.target.value)}
-        placeholder="Password"
-      />
-      <button type="submit">Log in</button>
+    <FancyInputPassword
+      value={password}
+      onChange={setPassword}
+      placeholder="Mot de passe"
+    />
+    <button type="submit">Log in</button>
     </form>
   );
 };
