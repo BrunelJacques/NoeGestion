@@ -1,11 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import App from "./App";
-import LoginPage from "./pages/LoginPage.tsx";
-//import HomePage from "./pages/HomePage.tsx";
-import { AuthProvider } from "./context/AuthProvider.tsx";
-import TestPage from "./pages/TestPage.tsx";
+import App from "./app/App.tsx";
+import LoginPage from "./auth/pages/LoginPage.tsx";
+import { AuthProvider } from "./auth/context/AuthProvider.tsx";
+import Galery from "./shared/pages/Galery/index.tsx";
+
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
@@ -13,8 +13,8 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
       <AuthProvider>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/galery" element={<Galery />} />
           <Route path="/*" element={<App />} />
-          <Route path="/test" element={<TestPage />} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>
