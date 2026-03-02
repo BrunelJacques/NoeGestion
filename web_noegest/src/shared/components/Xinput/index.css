@@ -1,0 +1,58 @@
+.fancy-input {
+  width: 100%;
+  padding: 0.6rem 2.8rem 0.6rem 1rem; /* space for icon 2.8rem */
+  border-radius: 8px;
+  border: 1px solid #c5c5c5;
+
+  background: #f9fafb;
+  color: #374151;
+  font-size: 1rem;
+
+  transition:
+    border-color 120ms ease-out,
+    box-shadow 120ms ease-out,
+    background 120ms ease-out;
+}
+
+.fancy-input:hover {
+  background: #f3f4f6;
+}
+
+.fancy-input:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+}
+
+.fancy-input::placeholder {
+  color: #9ca3af;
+}
+
+/* Password wrapper */
+.fancy-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+/* Add right padding so text doesn't overlap the icon */
+.fancy-input.with-toggle {
+  padding-right: 2.8rem;
+}
+
+/* Eye button */
+.toggle-visibility {
+  position: absolute;
+  right: 0.6rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  opacity: 0.7;
+  transition: opacity 120ms ease-out;
+}
+
+.toggle-visibility:hover {
+  opacity: 1;
+}
