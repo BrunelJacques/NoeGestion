@@ -8,10 +8,6 @@
 
     "types": ["node"],
 
-
-    /* Linting */
-    "strict": true, 
-    "forceConsistentCasingInFileNames": true,
   },
   "include": ["vite.config.ts"]
 }

@@ -1,24 +1,34 @@
 import React from 'react';
 import Xbutton from '../../components/Xbutton';
-
-
-const MyComponent = () => (<div>Hello World</div>)
+import Xinput from '../../components/Xinput';
+import { useState } from 'react';
+import { HelloWord } from '../HelloWorld';
 
 const Galery: React.FC = () => {
   console.clear();
-  console.log("test page"); 
+  console.log("test page");
+  const [myVariable, setMyVariable] = useState("");
+
   return (
     <div> 
       <h1>Test de Mon Composant</h1>
       <p>Content would be below </p>
 
-      <MyComponent />
- 
-      <Xbutton
-        label='Click here' 
-        onClick={() => console.log("Button clicked")}
-      />
-      
+      <HelloWord />
+      <div>
+        <Xbutton
+          label='Click here' 
+          onClick={() => console.log("Button clicked")}
+        />
+      </div>
+      <div>
+        <Xinput
+          value= {myVariable}
+          onChange={setMyVariable}
+          placeholder="Ici saisie de ma variable"  />
+    
+      </div>
+
       <div>------ end ------</div>  
     </div>
 
