@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from "react";
 
-type Theme = "light" | "dark";
+import type { Theme } from "./types";
 
 interface LocalStorageProps {
   defaultTheme?: Theme;

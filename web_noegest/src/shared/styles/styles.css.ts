@@ -4,7 +4,7 @@ import { globalStyle, createGlobalTheme } from "@vanilla-extract/css";
 // ------------------------------
 // 1. CSS VARIABLES (THEME)
 // ------------------------------
-export const vars = createGlobalTheme(":root", {
+export const varsGlobal = createGlobalTheme(":root", {
   colors: {
     fondSoutenu: "#c5c5ff",
     fondTitre: "#e8e8e8",
@@ -46,9 +46,9 @@ globalStyle(".main", {
 // ------------------------------
 globalStyle("body", {
   maxWidth: "1000px",
-  backgroundColor: vars.colors.fondEcran,
+  backgroundColor: varsGlobal.colors.fondEcran,
   fontWeight: "400",
-  color: vars.colors.texteSombre,
+  color: varsGlobal.colors.texteSombre,
   fontFamily:
     '-apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
   fontSize: "14px",
@@ -80,8 +80,8 @@ globalStyle("input, select", {
   padding: "5px",
   minHeight: "1.55rem",
   fontSize: "1.05rem",
-  color: vars.colors.texteGris,
-  backgroundColor: vars.colors.fondSaisie,
+  color: varsGlobal.colors.texteGris,
+  backgroundColor: varsGlobal.colors.fondSaisie,
 });
 
 globalStyle("input.form-ctrl", {
@@ -108,21 +108,21 @@ globalStyle("label", {
 // ------------------------------
 const util = {
   bg: {
-    fondEcran: vars.colors.fondEcran,
-    fondSaisie: vars.colors.fondSaisie,
-    fondBox: vars.colors.fondBlanc,
-    fondTitre: vars.colors.fondTitre,
-    fondSoutenu: vars.colors.fondSoutenu,
-    fondSaumon: vars.colors.fondSaumon,
-    fondRose: vars.colors.fondRose,
-    fondSombre: vars.colors.fondSombre,
-    fondPrimary: vars.colors.fondPrimary,
-    fondPrimaryClair: vars.colors.fondPrimaryClair,
+    fondEcran: varsGlobal.colors.fondEcran,
+    fondSaisie: varsGlobal.colors.fondSaisie,
+    fondBox: varsGlobal.colors.fondBlanc,
+    fondTitre: varsGlobal.colors.fondTitre,
+    fondSoutenu: varsGlobal.colors.fondSoutenu,
+    fondSaumon: varsGlobal.colors.fondSaumon,
+    fondRose: varsGlobal.colors.fondRose,
+    fondSombre: varsGlobal.colors.fondSombre,
+    fondPrimary: varsGlobal.colors.fondPrimary,
+    fondPrimaryClair: varsGlobal.colors.fondPrimaryClair,
   },
   text: {
-    clair: vars.colors.texteClair,
-    sombre: vars.colors.texteSombre,
-    gris: vars.colors.texteGris,
+    clair: varsGlobal.colors.texteClair,
+    sombre: varsGlobal.colors.texteSombre,
+    gris: varsGlobal.colors.texteGris,
   },
 };
 
@@ -142,7 +142,7 @@ Object.entries(util.text).forEach(([name, color]) => {
 });
 
 globalStyle(".link", {
-  color: vars.colors.texteLink,
+  color: varsGlobal.colors.texteLink,
   textDecoration: "underline",
 });
 
@@ -199,7 +199,7 @@ globalStyle(".card-small", {
 });
 
 globalStyle(".highlight-card", {
-  backgroundColor: vars.colors.fondSoutenu,
+  backgroundColor: varsGlobal.colors.fondSoutenu,
   color: "white",
   fontWeight: "600",
   border: "none",
@@ -234,7 +234,7 @@ globalStyle(".btn", {
   marginTop: "5px",
   minWidth: "30px",
   borderWidth: "1px",
-  borderColor: vars.colors.texteLink,
+  borderColor: varsGlobal.colors.texteLink,
 });
 
 globalStyle(".btn:focus", {
@@ -267,7 +267,7 @@ globalStyle(".form-row", {
 // 12. TABLES
 // ------------------------------
 globalStyle(".table>:not(caption)>*>*", {
-  color: vars.colors.texteSombre,
+  color: varsGlobal.colors.texteSombre,
   textAlign: "right",
 });
 
