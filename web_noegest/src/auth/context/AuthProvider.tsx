@@ -30,6 +30,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       { username, password }
     );
     setTokens(res.data);
+
+    console.log("Login successful, tokens:", res.data);
   };
 
   const logout = () => {
@@ -37,7 +39,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, tokens, login, logout }}>
+    <AuthContext.Provider value={{ user, tokens, login, logout, loading: false }}>
       {children}
     </AuthContext.Provider>
   );
