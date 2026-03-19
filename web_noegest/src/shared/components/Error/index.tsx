@@ -1,9 +1,11 @@
-import ErrorIllustration from '../../../assets/404.svg';
+import ErrorIllustration from '../../../assets/erreur_404.jpg';
 import { useTheme } from '../../../hooks/index.tsx';
 import * as s from './error.css.ts';
 
-function Error() {
+export function Error() {
+
   const { theme } = useTheme(); // "light" | "dark"
+  console.log('Current theme in Error component:', theme);
 
   return (
     <div className={s.wrapper}>

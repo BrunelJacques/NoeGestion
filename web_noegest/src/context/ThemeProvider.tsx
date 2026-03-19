@@ -1,6 +1,6 @@
 import { useState, ReactNode } from 'react';
 import { Theme } from './types';
-import { ThemeContext } from './themeContext.tsx';
+import { ThemeContext } from './themeContext.ts';
 
 
 

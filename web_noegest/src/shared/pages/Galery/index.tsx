@@ -3,6 +3,7 @@ import Xbutton from '../../components/Xbutton';
 import Xinput from '../../components/Xinput';
 import { useState } from 'react';
 import { HelloWord } from '../HelloWorld';
+import { Error } from '../../components/Error';
 
 const Galery: React.FC = () => {
   console.clear();
@@ -28,6 +29,7 @@ const Galery: React.FC = () => {
           placeholder="Ici saisie de ma variable"  />
     
       </div>
+      <div><Error /></div>
 
       <div>------ end ------</div>  
     </div>
