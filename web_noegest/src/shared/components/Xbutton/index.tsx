@@ -1,6 +1,6 @@
 // Xbutton.tsx
 import React from "react";
-import "./index.css";
+import * as st from "./Xbutton.css";
 
 type XbuttonProps = {
   label: string;
@@ -18,7 +18,7 @@ export const Xbutton: React.FC<XbuttonProps> = ({
   return (
     <button
       type={type}
-      className="fancy-button"
+      className={st.fancyButton}
       onClick={onClick}
       disabled={disabled}
     >

@@ -1,5 +1,5 @@
-import ErrorIllustration from '../../../assets/erreur_404.jpg';
-import { useTheme } from '../../../hooks/index.tsx';
+import ErrorIllustration from '../../../assets/images/erreur_404.jpg';
+import { useTheme } from '../../hooks/index.tsx';
 import * as s from './error.css.ts';
 
 export function Error() {

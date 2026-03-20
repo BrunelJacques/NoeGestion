@@ -1,41 +1,36 @@
 import { Link } from 'react-router-dom'
-import styled from 'styled-components'
-import { StyledLink } from '../../utils/style/Atoms'
-import LightLogo from '../../assets/light-logo.png'
-import DarkLogo from '../../assets/dark-logo.png'
-import { useTheme } from '../../utils/hooks'
+import { useTheme } from '../../hooks/index.tsx'
 
-const HomeLogo = styled.img`
-  height: 70px;
-`
+import Logo from '../../../assets/logo.png'
+import * as styles from './header.css'
+import { StyledLink } from '../../styles/StyledLink/index.tsx'
 
-const NavContainer = styled.nav`
-  padding: 30px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`
+
+
 
 function Header() {
   const { theme } = useTheme()
 
   return (
-    <NavContainer>
+    <nav className={styles.navContainer}>
       <Link to="/">
-        <HomeLogo src={theme === 'light' ? DarkLogo : LightLogo} />
+        <img title="Logo" className={styles.homeLogo} src={Logo} />
       </Link>
-      <div>
+
+      <div className={styles.linksWrapper}>
         <StyledLink $theme={theme} to="/">
           Accueil
         </StyledLink>
-        <StyledLink $theme={theme} to="/freelances">
-          Profils
+
+        <StyledLink $theme={theme} to="/galery">
+          Galery
         </StyledLink>
-        <StyledLink to="/survey/1" $isFullLink>
-          Faire le test
+
+        <StyledLink to="/logout" $isFullLink>
+          Logout
         </StyledLink>
       </div>
-    </NavContainer>
+    </nav>
   )
 }
 

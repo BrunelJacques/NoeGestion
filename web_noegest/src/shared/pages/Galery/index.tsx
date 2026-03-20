@@ -2,7 +2,7 @@ import React from 'react';
 import Xbutton from '../../components/Xbutton';
 import Xinput from '../../components/Xinput';
 import { useState } from 'react';
-import { HelloWord } from '../HelloWorld';
+import HelloWorld from '../HelloWorld';
 import { Error } from '../../components/Error';
 
 const Galery: React.FC = () => {
@@ -15,7 +15,7 @@ const Galery: React.FC = () => {
       <h1>Test de Mon Composant</h1>
       <p>Content would be below </p>
 
-      <HelloWord />
+      <HelloWorld />
       <div>
         <Xbutton
           label='Click here' 
