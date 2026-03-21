@@ -1,9 +1,11 @@
+
 import { Link } from 'react-router-dom'
 import { useTheme } from '../../hooks/index.tsx'
 
 import Logo from '../../../assets/logo.png'
-import * as styles from './header.css'
+import * as styles from './index.css'
 import { StyledLink } from '../../styles/StyledLink/index.tsx'
+import { useAuth } from '../../../auth/context/useAuth.tsx'
 
 
 
@@ -11,26 +13,30 @@ import { StyledLink } from '../../styles/StyledLink/index.tsx'
 function Header() {
   const { theme } = useTheme()
 
+  const { user } = useAuth();
+  const  logLib  = user ? 'Logout' : 'Login';
+  
   return (
-    <nav className={styles.navContainer}>
+    <div className={styles.headerContainer}>
       <Link to="/">
-        <img title="Logo" className={styles.homeLogo} src={Logo} />
+        <img title="Logo" className={styles.logo} src={Logo} />
       </Link>
+      <nav className={styles.navContainer}>
 
-      <div className={styles.linksWrapper}>
-        <StyledLink $theme={theme} to="/">
+        <StyledLink $theme={theme} to="/" $isFullLink>
           Accueil
         </StyledLink>
 
-        <StyledLink $theme={theme} to="/galery">
+        <StyledLink $theme={theme} to="/galery" >
           Galery
         </StyledLink>
 
         <StyledLink to="/logout" $isFullLink>
-          Logout
+          {logLib}
         </StyledLink>
-      </div>
-    </nav>
+      </nav>
+      <div className={styles.burger}>☰</div>
+    </div>
   )
 }
 

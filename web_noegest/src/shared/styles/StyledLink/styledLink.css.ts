@@ -4,8 +4,8 @@ import { style } from '@vanilla-extract/css'
 
 export const baseLink = style({
   textDecoration: 'none',
-  padding: '10px 15px',
-  borderRadius: '8px',
+  padding: '8px 8px',
+  borderRadius: '10px',
   fontWeight: 500,
   transition: '0.2s ease',
 })

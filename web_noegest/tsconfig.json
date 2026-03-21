@@ -24,6 +24,10 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
-    "erasableSyntaxOnly": false
+    "erasableSyntaxOnly": false,
+
+    /* Option pour vitest */
+    "types": ["vitest/globals"]
+      
   },
 }

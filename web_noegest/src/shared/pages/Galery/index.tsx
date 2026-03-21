@@ -12,6 +12,7 @@ const Galery: React.FC = () => {
 
   return (
     <div> 
+      
       <h1>Test de Mon Composant</h1>
       <p>Content would be below </p>
 
