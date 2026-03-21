@@ -2,21 +2,21 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import './shared/styles/global.css.ts'
+import './assets/styles/global.css.ts'
 
-import { AuthProvider } from "./auth/context/AuthProvider.tsx";
-import { ThemeProvider } from "./context/ThemeProvider.tsx";
-import PrivateRoute from "./auth/context/PrivateRoute.tsx";
+import { AuthProvider } from "./providers/AuthProvider.tsx";
+import { ThemeProvider } from "./providers/ThemeProvider.tsx";
+import PrivateRoute from "./components/PrivateRoute.tsx";
 
-import App from "./app/App.tsx";
-import Header from "./shared/components/Header/index.tsx";
+import App from "./App.tsx";
+import Header from "./layout/Header/index.tsx";
 
-import HomePage from "./app/HomePage.tsx";
-import LoginPage from "./auth/pages/LoginPage.tsx";
-import LogoutPage from "./auth/pages/LogoutPage.tsx";
-import Galery from "./shared/pages/Galery/index.tsx";
-import HelloWorld from "./shared/pages/HelloWorld/index.tsx";
-import Error from "./shared/components/Error/index.tsx";
+import HomePage from "./pages/HomePage.tsx";
+import LoginPage from "./pages/LoginPage.tsx";
+import LogoutPage from "./pages/LogoutPage.tsx";
+import Galery from "./pages/Galery/index.tsx";
+import HelloWorld from "./pages/HelloWorld/index.tsx";
+import Error from "./components/Error/index.tsx";
 
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
