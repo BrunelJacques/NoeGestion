@@ -1,6 +1,6 @@
 import ErrorIllustration from '../../../assets/images/erreur_404.jpg';
 import { useTheme } from '../../hooks/index.tsx';
-import * as s from './error.css.ts';
+import * as s from './index.css.ts';
 
 export function Error() {
 
@@ -9,7 +9,9 @@ export function Error() {
 
   return (
     <div className={s.wrapper}>
-      <h1 className={s.title[theme]}>Oups...</h1>
+      <h4 className={s.subtitle[theme]}>
+        Il semblerait que la page que vous cherchez n’existe pas
+      </h4>
 
       <img
         src={ErrorIllustration}
@@ -17,9 +19,6 @@ export function Error() {
         className={s.illustration}
       />
 
-      <h2 className={s.subtitle[theme]}>
-        Il semblerait que la page que vous cherchez n’existe pas
-      </h2>
     </div>
   );
 }

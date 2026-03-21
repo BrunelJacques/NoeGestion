@@ -1,7 +1,7 @@
 // footer.css.ts
 import { style } from '@vanilla-extract/css'
 
-export const footerContainer = style({
+export const footer = style({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',

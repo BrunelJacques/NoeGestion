@@ -2,7 +2,7 @@ import { style, styleVariants } from '@vanilla-extract/css';
 import { vars } from '../../styles/theme.css'; // assuming you have a theme contract
 
 export const wrapper = style({
-  margin: '30px',
+  margin: '5px',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
@@ -32,5 +32,5 @@ export const subtitle = styleVariants({
 });
 
 export const illustration = style({
-  maxWidth: '800px',
+  maxWidth: '100%',
 });

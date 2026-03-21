@@ -8,7 +8,7 @@ function Footer() {
   const { toggleTheme, theme } = useTheme()
 
   return (
-    <footer className={styles.footerContainer}>
+    <footer className={styles.footer}>
 
       <button
         className={styles.nightModeButton}

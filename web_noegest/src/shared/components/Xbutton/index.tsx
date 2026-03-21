@@ -1,6 +1,6 @@
 // Xbutton.tsx
 import React from "react";
-import * as st from "./Xbutton.css";
+import * as st from "./index.css";
 
 type XbuttonProps = {
   label: string;

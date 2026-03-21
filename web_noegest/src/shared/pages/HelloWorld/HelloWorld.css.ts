@@ -1,15 +1,10 @@
 // helloWorld.css.ts
-import { style, globalStyle } from "@vanilla-extract/css";
-import { varsGlobal } from "../../styles/styles.css";
-
-// Set the body background globally
-globalStyle("body", {
-  backgroundColor: varsGlobal.colors.fondSoutenu,
-});
+import { style, } from "@vanilla-extract/css";
+import { varsGlobal } from "../../styles/zzzstyles.css";
 
 // Style for the HelloWorld component
 export const helloWorld = style({
-  backgroundColor: varsGlobal.colors.fondSaumon,
+  backgroundColor: varsGlobal.colors.fondRose,
   padding: "20px",
   borderRadius: "8px",
   fontSize: "1.2rem",

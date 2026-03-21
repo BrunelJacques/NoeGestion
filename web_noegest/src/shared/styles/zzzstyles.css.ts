@@ -1,4 +1,5 @@
-// styles.css.ts
+// styles.css.ts origine Angular, adapté pour React + Vanilla Extract
+
 import { globalStyle, createGlobalTheme } from "@vanilla-extract/css";
 
 // ------------------------------

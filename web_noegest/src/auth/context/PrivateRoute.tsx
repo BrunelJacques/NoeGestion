@@ -4,7 +4,6 @@ import type { JSX } from "react";
 
 const PrivateRoute: React.FC<{ children: JSX.Element }> = ({ children }) => {
   const { user, loading } = useAuth();
-  console.log("PrivateRoute user:", user?.username);
 
   if (loading) return <div>Loading...</div>;
   
