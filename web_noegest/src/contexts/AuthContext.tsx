@@ -40,7 +40,7 @@ export interface JwtPayload {
 export interface AuthContextType {
   user: User | null;
   tokens: Tokens | null;
-  login: (username: string, password: string) => Promise<void>;
+  login: (username: string, password: string) => Promise<boolean>;
   logout: () => void;
   loading: boolean;
 }

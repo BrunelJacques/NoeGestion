@@ -1,14 +1,17 @@
-import HomePage from "./pages/HomePage.tsx";
+
+import { RouterProvider } from 'react-router-dom'
+import { router } from './router'
+import { AuthProvider } from './providers/AuthProvider'
+import { ThemeProvider } from './providers/ThemeProvider'
 
 function App() {
-
   return (
-    <div>
-      <h1>Entrons dans WEB_NOEGEST</h1>
-      <HomePage />
-    </div>
-  );
+    <ThemeProvider>
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
+    </ThemeProvider>
+  )
 }
 
-export default App;
-
+export default App

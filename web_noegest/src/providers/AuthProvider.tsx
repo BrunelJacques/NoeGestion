@@ -18,13 +18,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const [loading, setLoading] = useState(true);
 
-  // Decode JWT (optional — only if you want exp, user_id, etc.)
-  /* 
-  const jwtPayload = useMemo(() => {
-    if (!tokens) return null;
-    return jwtDecode(tokens.access);
-  }, [tokens]); */
-
   // Persist tokens + user
   useEffect(() => {
     if (tokens) localStorage.setItem("tokens", JSON.stringify(tokens));
@@ -64,30 +57,36 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   // Login
   const login = async (username: string, password: string) => {
-    console.log("apiUrl.TOKEN_URL: ", apiUrl.TOKEN_URL) 
-    const res = await axios.post<LoginResponse>(
-      apiUrl.TOKEN_URL
-      ,
-      { username, password }
-    );
+  
+    try {
+      const res = await axios.post<LoginResponse>(
+        apiUrl.TOKEN_URL
+        ,
+        { username, password }
+      );
 
-    // Store tokens
-    setTokens({
-      access: res.data.access,
-      refresh: res.data.refresh,
-    });
+      // Store tokens
+      setTokens({
+        access: res.data.access,
+        refresh: res.data.refresh,
+      });
 
-    // Store user profile
-    setUser({
-      id: res.data.id,
-      username: res.data.username,
-      email: res.data.email,
-      firstName: res.data.firstName,
-      lastName: res.data.lastName,
-      groups: res.data.groups,
-      isStaff: res.data.isStaff,
-      isActive: res.data.isActive,
-    });
+      // Store user profile
+      setUser({
+        id: res.data.id,
+        username: res.data.username,
+        email: res.data.email,
+        firstName: res.data.firstName,
+        lastName: res.data.lastName,
+        groups: res.data.groups,
+        isStaff: res.data.isStaff,
+        isActive: res.data.isActive,
+      });
+      return true;
+    } catch (err) {
+      console.error("Login failed", err);
+      return false;
+    }
   };
 
   // Logout
