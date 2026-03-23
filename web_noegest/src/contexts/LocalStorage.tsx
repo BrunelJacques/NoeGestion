@@ -9,7 +9,7 @@ interface LocalStorageProps {
   defaultTheme?: Theme;
 }
 
-export const LocalStorage: React.FC<LocalStorageProps> = ({ defaultTheme = "light" }) => {
+export default function LocalStorage({ defaultTheme = "light" }: LocalStorageProps) {
   const [theme, setTheme] = useState<Theme>(() => {
     const saved = localStorage.getItem("theme");
     return (saved as Theme) || defaultTheme;
@@ -28,4 +28,3 @@ export const LocalStorage: React.FC<LocalStorageProps> = ({ defaultTheme = "ligh
   );
 };
 
-export default LocalStorage;

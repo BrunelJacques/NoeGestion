@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 
 type XinputProps = {
   type?: string;
@@ -7,12 +7,12 @@ type XinputProps = {
   placeholder?: string;
 };
 
-export const Xinput: React.FC<XinputProps> = ({
+export default function Xinput ({
   type = "text",
   value,
   onChange,
   placeholder
-}) => {
+}: XinputProps)  {
   return (
     <input
       type={type}
@@ -24,11 +24,7 @@ export const Xinput: React.FC<XinputProps> = ({
   );
 };
 
-export const XinputPassword: React.FC<XinputProps> = ({
-  value,
-  onChange,
-  placeholder
-}) => {
+export function XinputPassword({ value, onChange, placeholder }: XinputProps) {
   const [visible, setVisible] = useState(false);
 
   return (
@@ -51,5 +47,3 @@ export const XinputPassword: React.FC<XinputProps> = ({
     </div>
   );
 };
-
-export default Xinput;

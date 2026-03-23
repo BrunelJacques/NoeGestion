@@ -1,11 +1,17 @@
 import type { ReactNode } from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import axios from "axios";
+
 import { AuthContext } from "../contexts/AuthContext";
 import type { Tokens, LoginResponse, User } from "../contexts/AuthContext";
 import { apiUrl } from "../constants/api.Constants";
 
+import { api, setAuthTokens, setRefreshHandler, setLogoutHandler } from "../services/api"; 
+
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
+
+
+  // --- STATE INIT ---
   const [tokens, setTokens] = useState<Tokens | null>(() => {
     const stored = localStorage.getItem("tokens");
     return stored ? JSON.parse(stored) : null;
@@ -18,61 +24,131 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const [loading, setLoading] = useState(true);
 
-  // Persist tokens + user
-  useEffect(() => {
-    if (tokens) localStorage.setItem("tokens", JSON.stringify(tokens));
-    else localStorage.removeItem("tokens");
-  }, [tokens]);
+  const tokensRef = useRef<Tokens | null>(tokens);
 
-  useEffect(() => {
-    if (user) localStorage.setItem("user", JSON.stringify(user));
-    else localStorage.removeItem("user");
-  }, [user]);
+  // --- CENTRALIZED STORAGE ---
+  const saveAuth = useCallback((newTokens: Tokens | null, newUser: User | null) => {
+    if (newTokens) {
+      localStorage.setItem("tokens", JSON.stringify(newTokens));
+    } else {
+      localStorage.removeItem("tokens");
+    }
 
-  // Auto-load user on refresh if tokens exist
-  useEffect(() => {
-    const loadUser = async () => {
-      if (!tokens || user) {
-        setLoading(false);
-        return;
-      }
+    if (newUser) {
+      localStorage.setItem("user", JSON.stringify(newUser));
+    } else {
+      localStorage.removeItem("user");
+    }
 
-      try {
-        const res = await axios.get<User>(apiUrl.TOKENREFRESH_URL, {
-          headers: { Authorization: `Bearer ${tokens.access}` },
-        });
-        setUser(res.data);
-      } catch (err) {
-        console.error("Failed to load user", err);
-        setTokens(null);
-        setUser(null);
-      } finally {
-        setLoading(false);
-      }
-    };
+    setTokens(newTokens);
+    setUser(newUser);
+  }, []);
 
-    loadUser();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tokens]);
+    // --- LOGOUT ---
+  const logout = useCallback(() => {
+    saveAuth(null, null);
+  }, [saveAuth]);
 
-  // Login
-  const login = async (username: string, password: string) => {
-  
+  const logoutRef = useRef(logout);
+
+  // --- REFRESH TOKEN ---
+  const refreshToken = useCallback(async (): Promise<string | null> => {
+    const currentTokens = tokensRef.current;
+
+    if (!currentTokens?.refresh) return null;
+
     try {
-      const res = await axios.post<LoginResponse>(
-        apiUrl.TOKEN_URL
-        ,
-        { username, password }
+      const res = await axios.post<{ access: string }>(
+        apiUrl.TOKENREFRESH_URL,
+        { refresh: currentTokens.refresh }
       );
 
-      // Store tokens
-      setTokens({
+      const newTokens = {
+        access: res.data.access,
+        refresh: currentTokens.refresh,
+      };
+
+      setTokens(newTokens);
+      localStorage.setItem("tokens", JSON.stringify(newTokens));
+
+      return res.data.access;
+    } catch (err) {
+      console.error("Refresh failed", err);
+  
+      logoutRef.current();
+      return null;
+    }
+  }, []);
+
+
+  // --- LOAD USER ---
+  const loadUser = useCallback(async () => {
+    try {
+      const res = await api.get<User>(apiUrl.ME_URL);
+      setUser(res.data);
+    } catch (err) {
+      console.error("Failed to load user", err);
+      logoutRef.current();
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+
+  // --- INIT LOAD ---
+
+  useEffect(() => {
+    tokensRef.current = tokens;
+  }, [tokens]);
+
+  useEffect(() => {
+    logoutRef.current = logout;
+  }, [logout]);
+
+  useEffect(() => {
+    if (!tokens) {
+      setLoading(false);
+      return;
+    }
+
+    loadUser();
+  }, [tokens, loadUser]);
+
+
+  useEffect(() => {
+    setAuthTokens(tokens?.access || null);
+  }, [tokens]);
+
+  useEffect(() => {
+    setRefreshHandler(refreshToken);
+    setLogoutHandler(logout);
+  }, [refreshToken, logout]);
+
+  // init
+  useEffect(() => {
+    if (!tokens) {
+      setLoading(false);
+      return;
+    }
+
+    loadUser();
+  }, [tokens, loadUser]);
+
+
+  // --- LOGIN ---
+  const login = async (username: string, password: string) => {
+    try {
+      const res = await api.post<LoginResponse>(
+          apiUrl.TOKEN_URL,
+          { username, password }
+      );
+
+      const newTokens = {
         access: res.data.access,
         refresh: res.data.refresh,
-      });
+      };
 
-      // Store user profile
-      setUser({
+      const newUser: User = {
         id: res.data.id,
         username: res.data.username,
         email: res.data.email,
@@ -81,20 +157,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         groups: res.data.groups,
         isStaff: res.data.isStaff,
         isActive: res.data.isActive,
-      });
-      return true;
+      };
+
+      saveAuth(newTokens, newUser);
+
+      return { success: true };
     } catch (err) {
       console.error("Login failed", err);
-      return false;
+      return { success: false };
     }
   };
-
-  // Logout
-  const logout = () => {
-    setTokens(null);
-    setUser(null);
-  };
-
+  // --- CONTEXT VALUE ---
   return (
     <AuthContext.Provider
       value={{
@@ -103,6 +176,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         login,
         logout,
         loading,
+        isAuthenticated: !!tokens,
       }}
     >
       {children}

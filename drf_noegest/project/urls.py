@@ -29,6 +29,9 @@ router.register('stfournisseur_article', StFournisseur_articleViewset,basename='
 urlpatterns = [
     path('api-auth/token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api-auth/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+
+    path('api-auth/me/', MeView.as_view(), name='me'),
+
     path('api/', include(router.urls)),
     path('api-auth/', include('rest_framework.urls')),
     path('admin-noegest/', admin.site.urls),

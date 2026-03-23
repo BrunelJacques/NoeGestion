@@ -1,5 +1,4 @@
 // Xbutton.tsx
-import React from "react";
 import * as st from "./index.css";
 
 type XbuttonProps = {
@@ -9,12 +8,7 @@ type XbuttonProps = {
   type?: "button" | "submit" | "reset";
 };
 
-export const Xbutton: React.FC<XbuttonProps> = ({
-  label,
-  onClick,
-  disabled = false,
-  type = "button",
-}) => {
+export default function Xbutton({ label, onClick, disabled = false, type = "button" }: XbuttonProps) {
   return (
     <button
       type={type}
@@ -27,4 +21,3 @@ export const Xbutton: React.FC<XbuttonProps> = ({
   );
 };
 
-export default Xbutton;

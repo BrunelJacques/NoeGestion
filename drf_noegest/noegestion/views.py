@@ -33,6 +33,28 @@ class GetRetrieveSerializer:
             return self.retrieve_serializer_class
         return super().get_serializer_class()
 
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+
+from django.contrib.auth.models import User
+
+class MeView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        return Response({
+            "id": user.id,
+            "username": user.username,
+            "email": user.email,
+            "firstName": user.first_name,
+            "lastName": user.last_name,
+            "isStaff": user.is_staff,
+            "isActive": user.is_active,
+            "groups": [g.name for g in user.groups.all()],
+        })
+
 # Views simples
 class GeAnalytiqueViewset(ModelViewSet):
     serializer_class = GeAnalytiqueSerializer

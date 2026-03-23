@@ -1,11 +1,10 @@
-import React from 'react';
 import Xbutton from '../../components/Xbutton';
 import Xinput from '../../components/Xinput';
 import { useState } from 'react';
 import HelloWorld from '../HelloWorld';
 import { Error } from '../../components/Error';
 
-const Galery: React.FC = () => {
+export default function Galery() {
   console.clear();
   console.log("test page");
   const [myVariable, setMyVariable] = useState("");
@@ -38,4 +37,3 @@ const Galery: React.FC = () => {
   )
 }
 
-export default Galery;

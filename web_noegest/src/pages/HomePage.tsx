@@ -1,7 +1,7 @@
 import { useAuth } from "../hooks/useAuth.tsx";
 import Footer from "../layout/Footer/index.tsx";
 
-const HomePage: React.FC = () => {
+export default function HomePage () {
   const { user } = useAuth();
 
   return (
@@ -13,4 +13,4 @@ const HomePage: React.FC = () => {
   );
 };
 
-export default HomePage;
+

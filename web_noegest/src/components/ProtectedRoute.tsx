@@ -1,21 +1,7 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 
-/* 
-
-// méthode simple
-export default function ProtectedRoute() {
-  const { user, loading } = useAuth();
-
-  if (loading) {
-    return <div>Loading...</div>; // ✅ conservé
-  }
-
-  return user ? <Outlet /> : <Navigate to="/login" replace />;
-}
- */
-
-// idem mais plus évoluée
+// méthode  évoluée sans React.FC et children, mais avec Outlet
 import { useLocation } from "react-router-dom";
 export default function ProtectedRoute() {
   const { user, loading } = useAuth();
@@ -37,6 +23,7 @@ export default function ProtectedRoute() {
 
   return <Outlet />;
 }
+
 /* 
 // original version Auth
 

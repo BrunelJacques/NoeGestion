@@ -37,12 +37,17 @@ export interface JwtPayload {
   [key: string]: unknown;
 }
 
+type LoginResult = {
+  success: boolean;
+  error?: string;
+};
 export interface AuthContextType {
   user: User | null;
   tokens: Tokens | null;
-  login: (username: string, password: string) => Promise<boolean>;
+  login: (username: string, password: string) => Promise<LoginResult>;
   logout: () => void;
   loading: boolean;
+  isAuthenticated: boolean; 
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(
