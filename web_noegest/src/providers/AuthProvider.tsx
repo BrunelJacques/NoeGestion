@@ -6,7 +6,7 @@ import { AuthContext } from "../contexts/AuthContext";
 import type { Tokens, LoginResponse, User } from "../contexts/AuthContext";
 import { apiUrl } from "../constants/api.Constants";
 
-import { api, setAuthTokens, setRefreshHandler, setLogoutHandler } from "../services/api"; 
+import { api, setAuthTokens, setRefreshHandler, setLogoutHandler } from "./apiAxios"; 
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
