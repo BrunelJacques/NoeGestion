@@ -110,7 +110,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setLoading(false);
       return;
     }
-
     loadUser();
   }, [tokens, loadUser]);
 
@@ -123,16 +122,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setRefreshHandler(refreshToken);
     setLogoutHandler(logout);
   }, [refreshToken, logout]);
-
-  // init
-  useEffect(() => {
-    if (!tokens) {
-      setLoading(false);
-      return;
-    }
-
-    loadUser();
-  }, [tokens, loadUser]);
 
 
   // --- LOGIN ---

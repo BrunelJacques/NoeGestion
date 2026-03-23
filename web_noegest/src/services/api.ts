@@ -24,12 +24,25 @@ export const setLogoutHandler = (fn: () => void) => {
 };
 
 // --- REQUEST INTERCEPTOR ---
-api.interceptors.request.use((config) => {
+/* api.interceptors.request.use((config) => {
   if (accessToken) {
     config.headers.Authorization = `Bearer ${accessToken}`;
   }
   return config;
 });
+ */
+// Garde ton instance mais assure-toi que l'intercepteur est direct
+api.interceptors.request.use((config) => {
+  // On récupère le token depuis le localStorage SI la variable locale est vide
+  // Cela évite les problèmes de désynchronisation au rafraîchissement de la page
+  const token = accessToken || JSON.parse(localStorage.getItem("tokens") || "{}")?.access;
+  
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
 
 // --- RESPONSE INTERCEPTOR ---
 api.interceptors.response.use(
