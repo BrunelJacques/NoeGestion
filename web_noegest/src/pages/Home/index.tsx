@@ -1,7 +1,7 @@
-import { useAuth } from "../hooks/useAuth.tsx";
-import Footer from "../layout/Footer/index.tsx";
+import { useAuth } from "../../hooks/useAuth.tsx";
+import Footer from "../../layout/Footer/index.tsx";
 
-export default function HomePage () {
+export default function Home () {
   const { user } = useAuth();
 
   return (
