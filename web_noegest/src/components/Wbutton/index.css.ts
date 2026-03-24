@@ -4,8 +4,8 @@ import { style } from '@vanilla-extract/css'
 export const fancyButton = style({
   // layout
   padding: '0.6rem 1.4rem',
-  borderRadius: '999px',
-  border: '1px solid #c5c5c5',
+  borderRadius: '11px',
+  border: '3px solid #c5c5c5',
 
   // colors & text
   background: 'linear-gradient(135deg, #4f46e5, #6366f1)',
@@ -25,7 +25,7 @@ export const fancyButton = style({
   // hover
   selectors: {
     '&:hover:not(:disabled)': {
-      transform: 'translateY(-1px)',
+      transform: 'translateY(-5px)',
       boxShadow: '0 6px 16px rgba(15, 23, 42, 0.35)',
       background: 'linear-gradient(135deg, #4338ca, #4f46e5)',
       borderColor: '#a5b4fc',

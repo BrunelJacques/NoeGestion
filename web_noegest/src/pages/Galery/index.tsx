@@ -1,4 +1,5 @@
 import Xbutton from '../../components/Xbutton';
+import { Wbutton } from '../../components/Wbutton';
 import Xinput from '../../components/Xinput';
 import { useState } from 'react';
 import HelloWorld from '../HelloWorld';
@@ -16,11 +17,15 @@ export default function Galery() {
       <p>Content would be below </p>
 
       <HelloWorld />
+
       <div>
-        <Xbutton
-          label='Click here' 
-          onClick={() => console.log("Button clicked")}
-        />
+        <Wbutton
+          onClick={() => console.log("WButton clicked")}
+          //disabled={true}
+          // type='button' // 'button'|'submit'|'reset'
+        >
+          Wbutton Click here
+        </Wbutton>
       </div>
       <div>
         <Xinput
