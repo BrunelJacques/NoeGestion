@@ -2,16 +2,23 @@
 import { RouterProvider } from 'react-router-dom'
 import { router } from './router'
 import { AuthProvider } from './providers/AuthProvider'
-import { ThemeProvider } from './providers/ThemeProvider'
+import { ThemeContext } from "./contexts/ThemeContext";
+import { useTheme } from "./hooks/useTheme";
+
+
 
 function App() {
+  const themeState = useTheme();
+
   return (
-    <ThemeProvider>
+    <ThemeContext.Provider value={themeState}>
       <AuthProvider>
         <RouterProvider router={router} />
       </AuthProvider>
-    </ThemeProvider>
+     </ThemeContext.Provider>
   )
 }
+ 
+
 
 export default App

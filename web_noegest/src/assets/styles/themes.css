@@ -1,0 +1,20 @@
+/* Origine GPT */
+:root {
+  --color-bg: #ffffff;
+  --color-text: #111111;
+  --primary: #3b82f6;
+}
+
+/* Dark */
+[data-theme="dark"] {
+  --color-bg: #111111;
+  --color-text: #ffffff;
+  --primary: #60a5fa;
+}
+
+/* Custom (exemple) */
+[data-theme="purple"] {
+  --color-bg: #9d48b6;
+  --color-text: #f3e8ff;
+  --primary: #a855f7;
+}

@@ -1,4 +1,4 @@
-// themes.css.ts
+// theme.css.ts
 import { createThemeContract, createTheme } from '@vanilla-extract/css';
 
 

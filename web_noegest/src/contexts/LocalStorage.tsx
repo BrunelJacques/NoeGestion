@@ -1,6 +1,8 @@
 // Exemple composant utilisant le localStorage pour stocker sur le disque le thème sélectionné par l'utilisateur.
 // seesionStorage est similaire mais les données sont supprimées lorsque la session du navigateur se termine.
 
+// non utilisé
+
 import { useState, useEffect } from "react";
 
 import type { Theme } from "./ThemeContext";

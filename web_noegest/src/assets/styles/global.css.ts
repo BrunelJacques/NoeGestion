@@ -17,12 +17,6 @@ globalStyle('body', {
   WebkitFontSmoothing: 'antialiased',
 })
 
-/* Images propres */
-globalStyle('img', {
-  maxWidth: '100%',
-  display: 'block',
-})
-
 /* Liens */
 globalStyle('a', {
   textDecoration: 'none',
