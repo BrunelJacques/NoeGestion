@@ -1,21 +1,25 @@
-// première version du theme, toggle deux thèmes seulement
+// on applique la classe générée par Vanilla-Extract (lightTheme ou darkTheme) sur un conteneur racine
+import { useState, useEffect } from "react";
+import type { ReactNode } from "react"
+import { ThemeContext } from "../contexts/ThemeContext";
 
-import { useState, ReactNode } from 'react';
+export const ThemeProvider = ({ children }: { children: ReactNode }) => {
+  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+    return (localStorage.getItem("theme") as 'light' | 'dark') || "light";
+  });
 
-import { ThemeContext, Theme } from '../contexts/ThemeContext.ts';
-
-
-export default function ThemeProvider ({ children }: { children: ReactNode }) {
-  const [theme,sTheme] = useState<Theme>('light');
-
-  const setTheme = () => {
-    sTheme((t) => (t === 'light' ? 'dark' : 'light'));
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === "light" ? "dark" : "light"));
   };
 
+  useEffect(() => {
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
   return (
-    <ThemeContext.Provider value={{ theme, setTheme }}>
+    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+      {/* On met ici, juste les enfants */}
       {children}
     </ThemeContext.Provider>
   );
 };
-

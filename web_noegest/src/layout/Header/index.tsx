@@ -41,7 +41,7 @@ function Header() {
   }, [isOpen])
 
   const { user } = useAuth();
-  const  logLib  = user ? 'Logout' : 'Login';
+  const  logLabel  = user ? 'Logout' : 'Login';
   
   return (
     <div ref={menuRef} className={styles.header}>
@@ -66,7 +66,7 @@ function Header() {
         </StyledLink>
 
         <StyledLink to="/logout" $isFullLink>
-          {logLib}
+          {logLabel}
         </StyledLink>
       </nav>
       

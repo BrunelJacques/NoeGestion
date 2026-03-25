@@ -21,9 +21,6 @@ export const router = createBrowserRouter([
       { path: '/home', element: <Home /> },
       { path: '/login', element: <Login /> },
 
-      { path: '*', element: <Error /> },
-
-
       // PROTECTED
       {
         element: <ProtectedRoute />,

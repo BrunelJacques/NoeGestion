@@ -1,9 +1,6 @@
 import { style, styleVariants } from '@vanilla-extract/css'
-import { vars } from '../../assets/styles/theme.css'
 
 export const header = style({
-  color: "var(--text-color)",
-  backgroundColor: vars.colors.primary,
   display: 'flex',
   padding: '0 1rem',
   height: '40px',
@@ -22,7 +19,6 @@ export const nav = styleVariants({
     position: 'absolute',
     top: '40px',
     right: 0,
-    backgroundColor: vars.colors.primary,
     padding: '0px',
 
     gap: '7px',

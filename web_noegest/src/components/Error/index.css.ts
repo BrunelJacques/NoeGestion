@@ -6,7 +6,7 @@ export const wrapper = style({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  backgroundColor: vars.colors.background, // theme-driven
+  backgroundColor: vars.color.background, // theme-driven
 });
 
 export const title = styleVariants({
@@ -22,7 +22,7 @@ export const title = styleVariants({
 
 export const subtitle = styleVariants({
   light: {
-    color: vars.colors.secondary,
+    color: vars.color.primary,
     fontWeight: 300,
   },
   dark: {

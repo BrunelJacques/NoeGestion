@@ -1,3 +1,5 @@
+// fancy button
+
 import { ButtonHTMLAttributes } from 'react'
 import * as styles from './index.css.ts'
 

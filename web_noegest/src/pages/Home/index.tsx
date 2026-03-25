@@ -1,43 +1,42 @@
 import { useAuth } from "../../hooks/useAuth.tsx";
-import Footer from "../../layout/Footer/index.tsx";
-
-import { useContext } from "react";
-import { ThemeContext } from "../../contexts/ThemeContext.ts";
-
+import { Card } from "../../components/Card";
+import { useTheme } from "../../hooks/useTheme.tsx";
+import { Button } from "../../components/Button/index.tsx";
+import { vars } from "../../assets/styles/theme.css.ts";
 
 export default function Home () {
   const { user } = useAuth();
-
-  const context = useContext(ThemeContext);
-
-  if (!context) throw new Error("ThemeContext missing");
-
-  const { theme, setTheme } = context;
-
-
+  const { theme, toggleTheme } = useTheme();
   return (
     <div>
       <h1>Welcome {user?.username}</h1>
-      {/* Add nested routes if you want */}
-      <Footer />
+
       <h1>Choix du thème</h1>
 
-      <p>Thème actuel : {theme}</p>
-
-      <button onClick={() => setTheme("light")}>Light</button>
-      <button onClick={() => setTheme("dark")}>Dark</button>
-      <button onClick={() => setTheme("purple")}>Purple</button>
-
-    <div
-      style={{
-        background: "var(--color-bg)",
-        color: "var(--color-text)",
-        border: "1px solid green",
-        padding: "1rem",
-      }}
-    >
-      Card stylée avec thème
-    </div>
+      <p>Thème actuel : <strong>{theme}</strong></p>
+      <h1>Mon App ({theme})</h1>
+      <div>
+        <span>Salut, {user?.username} </span>
+        <Button onClick={toggleTheme}>
+          Passer en {theme === 'light' ? '🌙 Dark' : '☀️ Light'}
+        </Button>
+      
+      </div>
+      <hr style={{ margin: '20px 0', borderColor: vars.color.border }} />
+      <div
+        style={{
+          background: "var(--color-bg)",
+          color: "var(--color-text)",
+          border: "1px solid green",
+          padding: "1rem",
+        }}
+      >
+        Card stylée avec thème
+      </div>
+      < Card title='MyCard Tittle' 
+        description="Je la décris ainsi" 
+        onAction={()=> alert('Cliqué !')} 
+      />
     </div>
   );
 };

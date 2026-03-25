@@ -13,7 +13,7 @@ export default function Galery() {
   return (
     <div> 
       
-      <h1>Test de Mon Composant</h1>
+      <h1>'Galery' pour tests</h1>
       <p>Content would be below </p>
 
       <HelloWorld />
@@ -34,7 +34,10 @@ export default function Galery() {
           placeholder="Ici saisie de ma variable"  />
     
       </div>
-      <div><Error /></div>
+      <div>
+        <h3>--------- Ici le test erreur 404 --------------------</h3>
+        <Error />
+        </div>
 
       <div>------ end ------</div>  
     </div>
