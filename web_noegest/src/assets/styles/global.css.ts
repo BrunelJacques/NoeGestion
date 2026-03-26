@@ -8,15 +8,15 @@ export const varsGlobal = createGlobalTheme(':root', {
     maxWidthField: "210px",
   },
   misc: {
-    mdcFilledButtonLabelTextColor: colors.texteSombre,
+    mdcFilledButtonLabelTextColor: colors.txtSombre,
     matFilledButtonHorizontalPadding: "5px",
   }
 });
 
 // Styles globaux
 globalStyle('body', {
-  backgroundColor: colors.fondEcran,
-  color: colors.texteSombre,
+  backgroundColor: colors.bgEcran,
+  color: colors.txtSombre,
   margin: 0,
   padding: 0,
   fontFamily: 'Arial, sans-serif',
