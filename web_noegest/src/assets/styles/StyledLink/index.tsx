@@ -1,6 +1,6 @@
 // StyledLink.tsx
 import { Link } from 'react-router-dom'
-import { linkRecipe } from './styledLink.css'
+import { linkRecipe } from './index.css'
 
 type StyledLinkProps = {
   to: string

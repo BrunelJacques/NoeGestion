@@ -1,5 +1,5 @@
 import { style, styleVariants } from '@vanilla-extract/css';
-import { vars } from '../../assets/styles/theme.css'; // assuming you have a theme contract
+import { vars } from '../../assets/styles/themes.css'; // assuming you have a theme contract
 
 export const wrapper = style({
   margin: '5px',

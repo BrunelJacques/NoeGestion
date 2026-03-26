@@ -1,6 +1,6 @@
 // Card.css.ts
 import { style } from '@vanilla-extract/css';
-import { vars } from '../../assets/styles/theme.css'; // On récupère notre contrat global
+import { vars } from '../../assets/styles/themes.css'; // On récupère notre contrat global
 
 export const cardStyle = style({
   backgroundColor: vars.color.surface, // Utilise la couleur de surface du thème

@@ -1,24 +1,23 @@
-import { globalStyle } from '@vanilla-extract/css'
+// assets/styles/global.css.ts
+import { globalStyle, createGlobalTheme } from '@vanilla-extract/css';
+import { colors } from './colors.css';
 
-/* Reset basique */
-globalStyle('*', {
+export const varsGlobal = createGlobalTheme(':root', {
+  colors,
+  layout: {
+    maxWidthField: "210px",
+  },
+  misc: {
+    mdcFilledButtonLabelTextColor: colors.texteSombre,
+    matFilledButtonHorizontalPadding: "5px",
+  }
+});
+
+// Styles globaux
+globalStyle('body', {
+  backgroundColor: colors.fondEcran,
+  color: colors.texteSombre,
   margin: 0,
   padding: 0,
-  boxSizing: 'border-box',
-})
-
-globalStyle('html, body', {
-  height: '100%',
   fontFamily: 'Arial, sans-serif',
-})
-
-globalStyle('body', {
-  lineHeight: 1.5,
-  WebkitFontSmoothing: 'antialiased',
-})
-
-/* Liens */
-globalStyle('a', {
-  textDecoration: 'none',
-  color: 'inherit',
-})
+});

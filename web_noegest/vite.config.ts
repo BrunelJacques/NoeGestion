@@ -6,9 +6,15 @@ import { vanillaExtractPlugin } from '@vanilla-extract/vite-plugin'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), vanillaExtractPlugin()],
-    test: {
+  test: {
     environment: 'jsdom',
     globals: true,
     setupFiles: './src/setupTests.ts',
   },
+  // désactivé car vscode n'aide alors plus dans le cheminement
+  /* resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
+  }, */
 })

@@ -2,9 +2,6 @@
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 
-import './assets/styles/global.css.ts'
-//import "./assets/styles/themes.css";
-
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <App />
 )

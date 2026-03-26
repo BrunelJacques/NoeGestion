@@ -1,7 +1,7 @@
 // AppCard.tsx
 import type { ReactNode } from 'react';
 import { useTheme } from '../../hooks/useTheme';
-import { lightTheme, darkTheme } from '../../assets/styles/theme.css';
+import { lightTheme, darkTheme } from '../../assets/styles/themes.css';
 import { container } from './index.css';
 
 interface AppCardProps {

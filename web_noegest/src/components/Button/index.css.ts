@@ -1,5 +1,5 @@
 import { style } from '@vanilla-extract/css';
-import { vars } from '../../assets/styles/theme.css'
+import { vars } from '../../assets/styles/themes.css'
 
 export const buttonStyle = style({
   backgroundColor: vars.color.primary,
