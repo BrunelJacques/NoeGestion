@@ -20,7 +20,7 @@ export const vars = createThemeContract({
 // Thème clair
 export const lightTheme = createTheme(vars, {
   color: {
-    background: colors.blanc,
+    background: colors.bgEcran,
     text: colors.txtSombre,
     primary: colors.bgPrimary,
     secondary: colors.bgSecondary,
@@ -36,8 +36,8 @@ export const lightTheme = createTheme(vars, {
 // Thème sombre
 export const darkTheme = createTheme(vars, {
   color: {
-    background: colors.bgSombre,
-    text: colors.txtClair,
+    background: colors.bgNoir,
+    text: colors.txtBlanc,
     primary: colors.bgEcran,
     secondary: colors.bgSecondary,
     surface: colors.bgTitre,

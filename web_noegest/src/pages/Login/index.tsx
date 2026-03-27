@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
-import Xinput, { XinputPassword } from "../../components/Xinput";
+import Xinput, { XinputPassword } from "../../ui/Xinput";
 
 export default function Login() {
   const { login } = useAuth();

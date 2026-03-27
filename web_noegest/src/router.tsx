@@ -7,7 +7,6 @@ import Login from './pages/Login'
 import Logout from './pages/Logout'
 import Galery from './pages/Galery'
 import HelloWorld from './pages/HelloWorld'
-import Error from './components/Error'  
 
 
 export const router = createBrowserRouter([

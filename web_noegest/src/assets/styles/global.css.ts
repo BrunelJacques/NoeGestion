@@ -1,23 +1,37 @@
-// assets/styles/global.css.ts
-import { globalStyle, createGlobalTheme } from '@vanilla-extract/css';
-import { colors } from './colors.css';
+// assets/styles/global.css.tsx    appelé par main.tsx
 
+import { vars } from './themes.css';
+import { globalStyle } from '@vanilla-extract/css';
+
+/* 
 export const varsGlobal = createGlobalTheme(':root', {
-  colors,
-  layout: {
-    maxWidthField: "210px",
+// double emploi avec colors appellées directement
+color: {
+    primary: 'blue',
+    secondary: 'red',
   },
-  misc: {
-    mdcFilledButtonLabelTextColor: colors.txtSombre,
-    matFilledButtonHorizontalPadding: "5px",
-  }
+  space: {
+    small: '4px',
+    medium: '8px',
+  },
 });
+ */
 
 // Styles globaux
-globalStyle('body', {
-  backgroundColor: colors.bgEcran,
-  color: colors.txtSombre,
+globalStyle('html, body', {
+  backgroundColor: vars.color.background,
+  color: vars.color.text,
   margin: 0,
   padding: 0,
   fontFamily: 'Arial, sans-serif',
-});
+  minHeight: '100vh',
+  width: '100%',
+  maxWidth: 1000,
+ // Optionnel : transition douce 
+  transition: 'background-color 0.3s ease, color 0.3s ease'
+})
+
+
+globalStyle('*', {
+  boxSizing: 'border-box',
+})

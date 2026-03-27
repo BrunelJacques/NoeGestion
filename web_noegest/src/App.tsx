@@ -8,8 +8,8 @@ import { ThemeProvider } from './providers/ThemeProvider'
 function App() {
   return (
     <ThemeProvider>
-      <AuthProvider>        
-        <RouterProvider router={router} />
+      <AuthProvider>                
+          <RouterProvider router={router} />
       </AuthProvider>
     </ThemeProvider>
   )

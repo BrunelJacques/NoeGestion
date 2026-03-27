@@ -1,5 +1,6 @@
 // assets/styles/colors.css.ts
 export const colors = {
+  bgNoir: "#224",
   bgSombre: "#3f729b",
   bgSoutenu: "#c5c5ff",
   bgTitre: "#e8e8e8",
@@ -22,5 +23,5 @@ export const colors = {
   surface: '#f3f4f6',
   brdSombre: '#070e22',
   brdClair: '#e0e7fa',
-  blanc: "#ffffff",
 };
+

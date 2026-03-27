@@ -6,7 +6,7 @@ import Logo from '../../assets/icons/logo.png'
 
 import * as styles from './index.css.ts'
 
-import { StyledLink } from '../../assets/styles/StyledLink/index.tsx'
+import { StyledLink } from '../../components/StyledLink/index.tsx'
 import { useAuth } from '../../hooks/useAuth.tsx'
 
 

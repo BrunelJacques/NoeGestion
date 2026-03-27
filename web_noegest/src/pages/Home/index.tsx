@@ -1,8 +1,8 @@
 import { useAuth } from "../../hooks/useAuth.tsx";
-import { Card } from "../../components/Card";
+import { Card } from "../../ui/Card/index.tsx";
 import { useTheme } from "../../hooks/useTheme.tsx";
-import { Button } from "../../components/Button/index.tsx";
-import { hr, red } from "./index.css.ts";
+import { Button } from "../../ui/Button/index.tsx";
+import { hr, local } from "./index.css.ts";
 
 export default function Home () {
   const { user } = useAuth();
@@ -12,20 +12,17 @@ export default function Home () {
     <div>
       <h1>Welcome {user?.username}</h1>
 
-      <h1>Choix du thème</h1>
-
-      <p>Thème actuel : <strong>{theme}</strong></p>
+      <p>Thème actuel : {theme}</p>
       <h1>Mon App ({theme})</h1>
       <div>
-        <span>Salut, {user?.username} </span>
         <Button onClick={()=>toggleTheme(theme)}>
-          Passer en {theme === 'light' ? '🌙 Dark' : '☀️ Light'}
+          Passer en mode {theme === 'light' ? '🌙 Dark' : '☀️ Light'}
         </Button>
       
       </div>
       <hr className={hr} />
-      <div className = {red}>
-        Card stylée avec thème
+      <div className = {local}>
+        Card stylée localement
       </div>
       < Card title='MyCard Tittle' 
         description="Je la décris ainsi" 

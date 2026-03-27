@@ -1,10 +1,12 @@
 import { style, styleVariants } from '@vanilla-extract/css'
+import { colors } from '../../assets/styles/colors.css'
 
 export const header = style({
   display: 'flex',
   padding: '0 1rem',
-  height: '40px',
+  height: '43px',
   alignItems: 'center',
+  backgroundColor: colors.bgSombre
 })
 
 export const logo = style({

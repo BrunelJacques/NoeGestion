@@ -5,16 +5,16 @@ import * as styles from './index.css.ts'
 
 
 function Footer() {
-  const { toggleTheme, theme } = useTheme()
+  const { theme, toggleTheme } = useTheme()
 
   return (
     <footer className={styles.footer}>
 
       <button
         className={styles.nightModeButton}
-        onClick={toggleTheme}
+        onClick={()=>toggleTheme(theme)} // anonymisation pour éviter conflit évènements
       >
-        Changer l'affichage : {theme === 'light' ? '☀️' : '🌙'}
+        Afficher en mode {theme === 'light' ? 'noir 🌙' : 'clair ☀️'}
       </button>
     </footer>
   )

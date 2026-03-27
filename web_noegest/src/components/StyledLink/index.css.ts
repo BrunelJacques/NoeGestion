@@ -1,7 +1,7 @@
 // styledLink.css.ts
 import { recipe } from '@vanilla-extract/recipes'
 import { style } from '@vanilla-extract/css'
-import { colors } from '../colors.css'
+import { colors } from '../../assets/styles/colors.css'
 
 export const baseLink = style({
   textDecoration: 'none',

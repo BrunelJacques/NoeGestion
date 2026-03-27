@@ -1,6 +1,6 @@
 import Xbutton from '../../components/Xbutton';
-import { Wbutton } from '../../components/Wbutton';
-import Xinput from '../../components/Xinput';
+import { Wbutton } from '../../ui/Wbutton';
+import Xinput from '../../ui/Xinput';
 import { useState } from 'react';
 import HelloWorld from '../HelloWorld';
 import { Error } from '../../components/Error';
