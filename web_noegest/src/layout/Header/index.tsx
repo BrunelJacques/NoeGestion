@@ -62,7 +62,9 @@ export default function Header() {
         <Xlink $theme={theme} to="/" $isFullLink>
           Accueil
         </Xlink>
-
+        <Xlink $theme={theme} to="/helloFullLink " $isFullLink> 
+          Hello
+        </Xlink>
         <Xlink $theme={theme} to="/galery" $isFullLink >
           Galery
         </Xlink>
