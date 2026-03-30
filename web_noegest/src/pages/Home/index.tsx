@@ -1,7 +1,6 @@
 import { useAuth } from "../../hooks/useAuth.tsx";
 import { Card } from "../../ui/Card/index.tsx";
 import { useTheme } from "../../hooks/useTheme.tsx";
-import { Button } from "../../ui/Button/index.tsx";
 import { hr, local } from "./index.css.ts";
 
 export default function Home () {
@@ -15,9 +14,9 @@ export default function Home () {
       <p>Thème actuel : {theme}</p>
       <h1>Mon App ({theme})</h1>
       <div>
-        <Button onClick={()=>toggleTheme(theme)}>
+        <button onClick={()=>toggleTheme(theme)}>
           Passer en mode {theme === 'light' ? '🌙 Dark' : '☀️ Light'}
-        </Button>
+        </button>
       
       </div>
       <hr className={hr} />

@@ -1,4 +1,5 @@
-// StyledLink.tsx
+// src/ui/Xlink.tsx
+
 import { Link } from 'react-router-dom'
 import { linkRecipe } from './index.css'
 
@@ -9,11 +10,11 @@ type StyledLinkProps = {
   $isFullLink?: boolean
 }
 
-export function StyledLink({
+export function Xlink({
   to,
   children,
   $theme = 'light',
-  $isFullLink = false,
+  $isFullLink,
 }: StyledLinkProps) {
   return (
     <Link
@@ -28,4 +29,4 @@ export function StyledLink({
   )
 }
 
-export default StyledLink
+export default Xlink

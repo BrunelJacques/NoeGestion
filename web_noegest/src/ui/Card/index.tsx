@@ -1,6 +1,6 @@
 // Card.tsx
 import { cardStyle } from './index.css';
-import { Button } from '../Button';
+import { Xbutton } from '../Xbutton';
 
 interface CardProps {
   title: string;
@@ -12,7 +12,7 @@ export const Card = ({ title, description, onAction }: CardProps) => (
   <div className={cardStyle}>
     <h3>{title}</h3>
     <p>{description}</p>
-    <Button onClick={onAction}>Action Card</Button>
+    <Xbutton onClick={onAction}>Action Card</Xbutton>
   </div>
 );
 

@@ -12,7 +12,7 @@ export const cardStyle = style({
   maxWidth: '300px',
   display: 'flex',
   flexDirection: 'column',
-  gap: vars.space.medium,
+  // gap: vars.space.medium,
   transition: 'transform 0.2s ease-in-out, background-color 0.3s ease',
 
   ':hover': {

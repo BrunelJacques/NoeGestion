@@ -3,16 +3,15 @@ import { useTheme } from '../../hooks/useTheme.tsx'
 import { useRef, useEffect, useState } from 'react'
 
 import Logo from '../../assets/icons/logo.png'
+import Home from '../../assets/icons/home2.png'
 
-import * as styles from './index.css.ts'
+import * as s from './index.css.ts'
 
-import { StyledLink } from '../../components/StyledLink/index.tsx'
+import { Xlink } from '../../ui/Xlink/index.tsx'
 import { useAuth } from '../../hooks/useAuth.tsx'
 
 
-
-
-function Header() {
+export default function Header() {
   const menuRef = useRef<HTMLDivElement | (null)>(null)
 
   const { theme } = useTheme()
@@ -35,7 +34,6 @@ function Header() {
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside)
-      console.log("menuRef: ", menuRef) 
 
     }
   }, [isOpen])
@@ -44,35 +42,36 @@ function Header() {
   const  logLabel  = user ? 'Logout' : 'Login';
   
   return (
-    <div ref={menuRef} className={styles.header}>
+    <div ref={menuRef} className={s.header}>
+      
       <Link to="/">
-        <img title="Logo" className={styles.logo} src={Logo} />
+        <img title="Home" className={s.home} src={Home} />
       </Link>
 
-      <div className={styles.burger}
+      <Link to="/">
+        <img title="Logo" className={s.logo} src={Logo} />
+      </Link>
+
+      <div className={s.burger}
           onClick={() => setIsOpen(!isOpen)}
       >
         ☰
       </div>
 
-      <nav className={isOpen ? styles.nav.open : styles.nav.closed}>
-
-        <StyledLink $theme={theme} to="/" $isFullLink>
+      <nav className={isOpen ? s.nav.open : s.nav.closed}>
+        <Xlink $theme={theme} to="/" $isFullLink>
           Accueil
-        </StyledLink>
+        </Xlink>
 
-        <StyledLink $theme={theme} to="/galery" >
+        <Xlink $theme={theme} to="/galery" $isFullLink >
           Galery
-        </StyledLink>
-
-        <StyledLink to="/logout" $isFullLink>
-          {logLabel}
-        </StyledLink>
+        </Xlink>
       </nav>
-      
+
+      <Xlink  to="/logout" $isFullLink>
+          {logLabel}
+      </Xlink>
 
     </div>
   )
 }
-
-export default Header

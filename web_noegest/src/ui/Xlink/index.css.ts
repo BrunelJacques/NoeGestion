@@ -1,4 +1,5 @@
-// styledLink.css.ts
+// src/ui/Xlink.css.ts
+
 import { recipe } from '@vanilla-extract/recipes'
 import { style } from '@vanilla-extract/css'
 import { colors } from '../../assets/styles/colors.css'
@@ -9,6 +10,8 @@ export const baseLink = style({
   borderRadius: '10px',
   fontWeight: 500,
   transition: '0.2s ease',
+  minWidth: '80px',
+  textAlign: 'center',
 })
 
 export const linkRecipe = recipe({
@@ -31,8 +34,8 @@ export const linkRecipe = recipe({
         background: colors.primary,
         color: colors.txtClair,
         ':hover': { 
-            background: colors.bgSombre,
-            color: colors.txtBlanc
+            background: colors.bgHeader,
+            color: colors.txtGris
 
           },
       },

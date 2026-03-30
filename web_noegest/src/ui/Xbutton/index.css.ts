@@ -1,11 +1,13 @@
-// Wbutton.css.ts
+// Xbutton.css.ts
 import { style } from '@vanilla-extract/css'
 
-export const fancyButton = style({
+export const buttonStyle = style({
   // layout
   padding: '0.6rem 1.4rem',
+  margin: '0 0 3px 0', 
   borderRadius: '11px',
   border: '3px solid #c5c5c5',
+  
 
   // colors & text
   background: 'linear-gradient(135deg, #4f46e5, #6366f1)',
@@ -25,7 +27,7 @@ export const fancyButton = style({
   // hover
   selectors: {
     '&:hover:not(:disabled)': {
-      transform: 'translateY(-5px)',
+      transform: 'translateY(-6px)',
       boxShadow: '0 6px 16px rgba(15, 23, 42, 0.35)',
       background: 'linear-gradient(135deg, #4338ca, #4f46e5)',
       borderColor: '#a5b4fc',
@@ -33,8 +35,9 @@ export const fancyButton = style({
 
     // active
     '&:active:not(:disabled)': {
-      transform: 'translateY(0)',
+      transform: 'translateY(-3px)',
       boxShadow: '0 2px 6px rgba(15, 23, 42, 0.3)',
+      filter: 'brightness(1.1)'
     },
 
     // focus-visible

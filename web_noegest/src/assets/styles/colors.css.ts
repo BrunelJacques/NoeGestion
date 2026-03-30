@@ -1,7 +1,8 @@
 // assets/styles/colors.css.ts
 export const colors = {
   bgNoir: "#224",
-  bgSombre: "#3f729b",
+  bgHeader: "#3f729b",
+  bgFooter: "#A5C3DB",
   bgSoutenu: "#c5c5ff",
   bgTitre: "#e8e8e8",
   bgSaisie: "#e8f0fe",

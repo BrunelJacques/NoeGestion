@@ -3,19 +3,6 @@
 import { vars } from './themes.css';
 import { globalStyle } from '@vanilla-extract/css';
 
-/* 
-export const varsGlobal = createGlobalTheme(':root', {
-// double emploi avec colors appellées directement
-color: {
-    primary: 'blue',
-    secondary: 'red',
-  },
-  space: {
-    small: '4px',
-    medium: '8px',
-  },
-});
- */
 
 // Styles globaux
 globalStyle('html, body', {
@@ -31,7 +18,11 @@ globalStyle('html, body', {
   transition: 'background-color 0.3s ease, color 0.3s ease'
 })
 
-
 globalStyle('*', {
   boxSizing: 'border-box',
 })
+
+globalStyle('h1, h2, h3, h4, h5, h6,p', {
+  margin: '0.3em',
+  padding: '0.3em',
+});

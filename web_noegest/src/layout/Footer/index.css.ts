@@ -1,18 +1,20 @@
 // footer.css.ts
 import { style } from '@vanilla-extract/css'
+import { colors } from '../../assets/styles/colors.css'
 
 export const footer = style({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
+  verticalAlign: 'center',
   justifyContent: 'center',
-  padding: '60px 0',
+  padding: '6px 0',
+  backgroundColor: colors.bgFooter,
 })
 
-export const nightModeButton = style({
-  backgroundColor: 'transparent',
+export const nightLightBtn = style({
   border: 'none',
   cursor: 'pointer',
-  color: '#8186A0', // your colors.secondary
-  paddingTop: '30px',
+  color: colors.txtBlanc,
+  backgroundColor: colors.bgHeader,
 })

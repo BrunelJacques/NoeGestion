@@ -1,12 +1,20 @@
-import { style, styleVariants } from '@vanilla-extract/css'
+// Header.css.ts
+
+import { style, styleVariants, type CSSProperties } from '@vanilla-extract/css'
 import { colors } from '../../assets/styles/colors.css'
 
 export const header = style({
   display: 'flex',
-  padding: '0 1rem',
+  padding: '0 10px',
   height: '43px',
   alignItems: 'center',
-  backgroundColor: colors.bgSombre
+  backgroundColor: colors.bgHeader
+})
+
+export const home = style({
+  height: '30px',
+  padding: '0 5px 0 0',
+  flexShrink: 0, // logo stays stable
 })
 
 export const logo = style({
@@ -14,47 +22,60 @@ export const logo = style({
   flexShrink: 0, // logo stays stable
 })
 
+const desktopCommon: CSSProperties = {
+  display: 'flex',
+  flexDirection: 'row',
+  gap: '2px',
+  marginLeft: 'auto',
+  marginRight: 5,
+};
+
+const desktop = 'screen and (min-width: 601px)';// breakpoint pour les écrans plus larges que 600px
+
 export const nav = styleVariants({
   open: {
     display: 'flex',
     flexDirection: 'column',
     position: 'absolute',
-    top: '40px',
-    right: 0,
-    padding: '0px',
-
-    gap: '7px',
+    top: 40,
+    right: 7,
+    padding: 0,
+    marginTop: 3,
+    marginRight: 3,
+    gap: '4px',
     '@media': {
-    'screen and (min-width: 601px)': {
-      position: 'static',
-      flexDirection: 'row',
-      marginLeft: 'auto',
+      [desktop]: {
+        position: 'static',
+        ...desktopCommon,
+      },
     },
   },
-  },
+
   closed: {
     display: 'none',
     '@media': {
-    'screen and (min-width: 601px)': {
-      display: 'flex', // visible en desktop
-      flexDirection: 'row',
-      gap: '7px',
-      marginLeft: 'auto',
+      [desktop]: {
+        ...desktopCommon,
+      },
     },
   },
-  },
-
-})
+});
 
 export const burger = style({
-  display: 'none',
   fontSize: '24px',
   cursor: 'pointer',
+  display: 'block', 
+  marginLeft: 'auto',
+  marginRight: 7,
 
   '@media': {
-    'screen and (max-width: 600px)': {
-      display: 'block', 
-      marginLeft: 'auto',
+    [desktop]: {
+    display: 'none',
+    
     },
   },
+})
+
+export const logout = style({
+  
 })

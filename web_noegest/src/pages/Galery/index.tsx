@@ -1,9 +1,9 @@
-import Xbutton from '../../components/Xbutton';
-import { Wbutton } from '../../ui/Wbutton';
-import Xinput from '../../ui/Xinput';
+import { Xbutton } from '../../ui/Xbutton';
+import Xinput      from '../../ui/Xinput';
 import { useState } from 'react';
 import HelloWorld from '../HelloWorld';
 import { Error } from '../../components/Error';
+import { hr } from './index.css';
 
 export default function Galery() {
   console.clear();
@@ -14,20 +14,21 @@ export default function Galery() {
     <div> 
       
       <h1>'Galery' pour tests</h1>
-      <p>Content would be below </p>
+      <p>rappel HelloWorld </p>
+      <hr className={hr} />
 
       <HelloWorld />
-
+      <p>Autes tests connecté</p>
+      <hr />
       <div>
-        <Wbutton
+        <Xbutton
           onClick={() => console.log("WButton clicked")}
           //disabled={true}
-          // type='button' // 'button'|'submit'|'reset'
+          type='button' // 'button'|'submit'|'reset'
         >
-          Wbutton Click here
-        </Wbutton>
-      </div>
-      <div>
+          Xbutton Click here
+        </Xbutton>
+
         <Xinput
           value= {myVariable}
           onChange={setMyVariable}
