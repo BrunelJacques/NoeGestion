@@ -6,14 +6,14 @@ import { colors } from '../../assets/styles/colors.css'
 export const header = style({
   display: 'flex',
   padding: '0 10px',
-  height: '43px',
+  height: '40px',
   alignItems: 'center',
   backgroundColor: colors.bgHeader
 })
 
 export const home = style({
-  height: '30px',
-  padding: '0 5px 0 0',
+  height: '35px',
+  padding: '3px 5px 0 0',
   flexShrink: 0, // logo stays stable
 })
 
@@ -28,24 +28,25 @@ const desktopCommon: CSSProperties = {
   gap: '2px',
   marginLeft: 'auto',
   marginRight: 5,
+  marginTop:0,
+  padding: 0,
 };
 
-const desktop = 'screen and (min-width: 601px)';// breakpoint pour les écrans plus larges que 600px
+const isWideScreen = 'screen and (min-width: 601px)';// breakpoint pour les écrans plus larges que 600px
 
 export const nav = styleVariants({
   open: {
-    display: 'flex',
+    ...desktopCommon,
     flexDirection: 'column',
     position: 'absolute',
     top: 40,
     right: 7,
-    padding: 0,
-    marginTop: 3,
-    marginRight: 3,
-    gap: '4px',
+    //minHeight: '100%',
+
     '@media': {
-      [desktop]: {
+      [isWideScreen]: {
         position: 'static',
+        height: '80%',
         ...desktopCommon,
       },
     },
@@ -54,7 +55,8 @@ export const nav = styleVariants({
   closed: {
     display: 'none',
     '@media': {
-      [desktop]: {
+      [isWideScreen]: {
+        flexDirection: 'row',
         ...desktopCommon,
       },
     },
@@ -69,7 +71,7 @@ export const burger = style({
   marginRight: 7,
 
   '@media': {
-    [desktop]: {
+    [isWideScreen]: {
     display: 'none',
     
     },
@@ -77,5 +79,11 @@ export const burger = style({
 })
 
 export const logout = style({
-  
+  height: '80%',
+})
+
+export const profile= style({
+  height: '25px',
+  marginLeft: 5,
+  flexShrink: 1
 })

@@ -10,7 +10,7 @@ type StyledLinkProps = {
   $isFullLink?: boolean
 }
 
-export function Xlink({
+export default function Xlink({
   to,
   children,
   $theme = 'light',
@@ -28,5 +28,3 @@ export function Xlink({
     </Link>
   )
 }
-
-export default Xlink

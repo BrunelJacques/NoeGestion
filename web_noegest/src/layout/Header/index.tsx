@@ -4,6 +4,7 @@ import { useRef, useEffect, useState } from 'react'
 
 import Logo from '../../assets/icons/logo.png'
 import Home from '../../assets/icons/home2.png'
+import profile from '../../assets/icons/profile.png'
 
 import * as s from './index.css.ts'
 
@@ -62,18 +63,19 @@ export default function Header() {
         <Xlink $theme={theme} to="/" $isFullLink>
           Accueil
         </Xlink>
-        <Xlink $theme={theme} to="/helloFullLink " $isFullLink> 
+        <Xlink $theme={theme} to="/hello" $isFullLink> 
           Hello
         </Xlink>
         <Xlink $theme={theme} to="/galery" $isFullLink >
           Galery
         </Xlink>
       </nav>
-
-      <Xlink  to="/logout" $isFullLink>
-          {logLabel}
-      </Xlink>
-
+      <div className={s.logout}>
+        <Xlink  to="/logout" $isFullLink>
+            {logLabel}
+            <img title="profile" className={s.profile} src={profile} />
+        </Xlink>
+      </div>
     </div>
   )
 }

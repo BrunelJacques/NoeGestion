@@ -6,12 +6,16 @@ import { colors } from '../../assets/styles/colors.css'
 
 export const baseLink = style({
   textDecoration: 'none',
-  padding: '8px 8px',
+  padding: 3,
+  height: '90%',
   borderRadius: '10px',
   fontWeight: 500,
   transition: '0.2s ease',
   minWidth: '80px',
   textAlign: 'center',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
 })
 
 export const linkRecipe = recipe({

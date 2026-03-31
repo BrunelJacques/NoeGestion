@@ -1,49 +1,62 @@
-import  { useState } from "react";
+// src/ui/Xinput.tsx
+import { ComponentPropsWithoutRef } from "react";
+import { useState } from "react";
+import * as s from "./index.css.ts";
 
-type XinputProps = {
-  type?: string;
-  value: string;
-  onChange: (value: string) => void;
-  placeholder?: string;
-};
+
+// On utilise Omit pour remplacer le onChange standard par le tien (qui attend une string)
+interface XinputProps extends Omit<ComponentPropsWithoutRef<
+  "input">, 
+  "onChange"> 
+{
+    onChange: (value: string) => void;
+    altClassName?: string;
+}
 
 export default function Xinput ({
   type = "text",
   value,
   onChange,
-  placeholder
+  altClassName = "",
+  ...props
 }: XinputProps)  {
   return (
     <input
       type={type}
-      className="fancy-input"
       value={value}
       onChange={e => onChange(e.target.value)}
-      placeholder={placeholder}
+      className={s.inputStyle + " " + altClassName} 
+      {...props}
     />
   );
 };
 
-export function XinputPassword({ value, onChange, placeholder }: XinputProps) {
-  const [visible, setVisible] = useState(false);
+export function XinputPassword(props: XinputProps) {
+
+  const [isVisible, setIsVisible] = useState(false);
+  function toggleVisibility() {
+    setIsVisible(!isVisible);
+  };
 
   return (
-    <div className="fancy-input-wrapper">
-      <input
-        type={visible ? "text" : "password"}
-        className="fancy-input"
-        value={value}
-        onChange={e => onChange(e.target.value)}
-        placeholder={placeholder}
+    <div  className={s.inputWrapperStyle}>
+      <Xinput
+        {...props}
+        // On force le type en fonction de l'état local
+        type={isVisible ? "text" : "password"}
+        // On s'assure que le style laisse de la place pour l'icône à droite
+        autoComplete={props.autoComplete || "current-password"}
       />
-
+      
       <button
-        type="button"
-        className="toggle-visibility"
-        onClick={() => setVisible(v => !v)}
+        className={s.toggleVisibilityStyle}
+        type="button" // Important pour ne pas soumettre le formulaire par erreur
+        onClick={toggleVisibility}
+        aria-label={isVisible ? "Masquer le mot de passe" : "Afficher le mot de passe"}
       >
-        {visible ? "🙈" : "👁️"}
+        {isVisible ? "👁️" : "🙈"}
       </button>
     </div>
   );
-};
+}
+

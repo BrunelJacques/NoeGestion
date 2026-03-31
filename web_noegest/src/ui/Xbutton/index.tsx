@@ -1,4 +1,4 @@
-// Xbutton.tsx  (fancy style button)
+// src/ui/Xbutton/index.tsx
 
 import { ReactNode,  ButtonHTMLAttributes } from 'react'
 import * as s from './index.css.ts'
@@ -6,11 +6,14 @@ import * as s from './index.css.ts'
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
+  altClassName?: string;
 }
 
-export function Xbutton({children, ...props}: ButtonProps) {
+export default function Xbutton({children, altClassName = "", ...props}: ButtonProps) {
   return (
-    <button  className={s.buttonStyle} {...props}>
+    <button  
+    className={s.buttonStyle + " " + altClassName} 
+    {...props}>
         {children}
     </button>
   )

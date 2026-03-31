@@ -7,7 +7,7 @@ import Login from './pages/Login'
 import Logout from './pages/Logout'
 import Galery from './pages/Galery'
 import HelloWorld from './pages/HelloWorld'
-
+import Error404 from './pages/Error404'
 
 export const router = createBrowserRouter([
   {
@@ -29,6 +29,7 @@ export const router = createBrowserRouter([
           { path: '/logout', element: <Logout />},
         ],
       },
+      { path: '*', element: <Error404 /> },
     ],
   },
 ])
