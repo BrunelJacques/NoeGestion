@@ -1,49 +1,50 @@
-import { style, styleVariants } from '@vanilla-extract/css';
-import { vars } from '../../assets/styles/themes.css'; // assuming you have a theme contract
-
+import { CSSProperties, style, styleVariants } from '@vanilla-extract/css';
+import { colors } from '../../assets/styles/colors.css';  
 
 export const wrapper = style({
-  margin: '5px',
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  backgroundColor: vars.color.background, // theme-driven
-  color: "#a00",
-  padding: "12px 16px",
-  justifyContent: "space-between",
+  backgroundColor: colors.bgRose,
   borderBottom: "1px solid #e0a0a0",
+  margin: '0',
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  padding: "4px",
+  justifyContent: "space-between",
 });
+
+
+const titleBase: CSSProperties = {
+  flexDirection: 'column',
+  fontWeight: 300, 
+  width: '100%',
+  marginLeft: '20px',
+};
 
 export const title = styleVariants({
   light: {
-    color: '#000000',
-    fontWeight: 300,
+    ...titleBase,
+    color: colors.txtSombre, // theme-driven
   },
   dark: {
-    color: '#ffffff',
-    fontWeight: 300,
+    ...titleBase,
+    backgroundColor: colors.bgRose,
+    color: colors.txtLink,
   },
 });
 
-export const subtitle = styleVariants({
-  light: {
-    color: vars.color.primary,
-    fontWeight: 300,
-  },
-  dark: {
-    color: '#ffffff',
-    fontWeight: 300,
-  },
-});
 
 export const illustration = style({
-  maxWidth: '60px',
+  backgroundColor: colors.bgBordeaux,
+  padding: '0 2px',
 });
 
 export const closeButton = style({
-  background: "transparent",
   border: "none",
   fontSize: "20px",
-  cursor: "pointer",
+  backgroundColor: "transparent",
   color: "#a00",
+  borderBlock: "1px solid",
+  borderBlockColor: colors.bgBordeaux,
+  marginLeft: "10px",
+
 });

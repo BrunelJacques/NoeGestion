@@ -4,6 +4,7 @@ export const colors = {
   bgHeader: "#3f729b",
   bgFooter: "#A5C3DB",
   bgSoutenu: "#c5c5ff",
+  bgBordeaux: "#b21e37",
   bgTitre: "#e8e8e8",
   bgSaisie: "#e8f0fe",
   bgEcran: "#f5f5f5",
@@ -21,7 +22,7 @@ export const colors = {
   txtBlanc: "#fff",
   txtLink: "#0d6efd",
   primary: '#3b82f6',
-  surface: '#f3f4f6',
+  title: '#f3f4f6',
   brdSombre: '#070e22',
   brdClair: '#e0e7fa',
 };

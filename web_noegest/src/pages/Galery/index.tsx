@@ -4,11 +4,15 @@ import { useState } from 'react';
 import HelloWorld from '../HelloWorld';
 import ErrorBanner  from '../../components/ErrorBanner';
 import { hr } from './index.css';
+import { useError } from '../../contexts/ErrorContext';
+
 
 export default function Galery() {
   console.clear();
   console.log("test page");
   const [myVariable, setMyVariable] = useState("");
+  const { setError } = useError();
+  setError("Erreur de test dans Galery");
 
   return (
     <div> 
@@ -36,7 +40,8 @@ export default function Galery() {
     
       </div>
       <div>
-        <h3>--------- Ici le test erreur 404 --------------------</h3>
+        <h3>--------- Ici le test erreur --------------------</h3>
+
         <ErrorBanner />
         </div>
 

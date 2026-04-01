@@ -1,7 +1,6 @@
 // src/components/Error/index.tsx
 import { useTheme } from '../../hooks/useTheme.tsx';
 import * as s from './index.css.ts';
-import { errorStyle }  from '../../assets/styles/utilities.css.ts';
 import { useError } from '../../contexts/ErrorContext.tsx';
 import interroge from '../../assets/icons/interroge.png';
 
@@ -12,19 +11,21 @@ export default function ErrorBanner() {
   if (!error) return null;
 
   return (
-    <div className={`${errorStyle} ${s.wrapper}`}>
-      <div>
+    <div className={s.wrapper}>
+      <div className={s.illustration}>
         <img
           src={interroge}
           alt="icone interrogation"
-          className={s.illustration}
-        />              
-        <h4 className={s.subtitle[theme]}>  
+          
+        /> 
+      </div>
+      <div className={s.title[theme]}>         
+        <h4>  
           Nous avons un problème !
         </h4>
+        {error}
+        <button className={s.closeButton} onClick={clearError}>X</button>
       </div>
-      {error}
-      <button className={s.closeButton} onClick={clearError}>X</button>
     </div>
   );
 }

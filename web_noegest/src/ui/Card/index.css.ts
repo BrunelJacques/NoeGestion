@@ -1,11 +1,12 @@
 // Card.css.ts
 import { style } from '@vanilla-extract/css';
 import { vars } from '../../assets/styles/themes.css'; // On récupère notre contrat global
+import { containerStyle } from '../../assets/styles/utilities.css';
 
 export const cardStyle = style({
-  backgroundColor: vars.color.surface, // Utilise la couleur de surface du thème
+  [containerStyle]: true, // Utilise les styles de conteneur global
+  backgroundColor: vars.color.bgtitle, // Utilise la couleur de surface du thème
   color: vars.color.text,             // Utilise le texte du thème
-  padding: vars.space.medium,         // Utilise l'espacement du contrat
   borderRadius: '12px',
   border: `1px solid ${vars.color.primary}`, // Bordure basée sur la couleur primaire
   boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',

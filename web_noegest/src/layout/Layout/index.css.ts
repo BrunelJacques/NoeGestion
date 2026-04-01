@@ -1,6 +1,7 @@
 import { style } from '@vanilla-extract/css'
 import { vars } from '../../assets/styles/themes.css'
 
+
 export const layout = style({
   minHeight: '100vh',
   display: 'flex',
@@ -13,5 +14,5 @@ export const outlet = style({
   color: vars.color.text,
   width: '100%',
   flex: 1,
-  padding: vars.space.medium,
+  padding: 4,
 })

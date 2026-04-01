@@ -5,15 +5,12 @@ import { colors } from './colors.css';
 export const vars = createThemeContract({
   color: {
     background: '',
+    bgtitle: '',
+    bgcard: '',
     text: '',
     primary: '',
     secondary:'',
-    surface: '',
     border: '',
-  },
-  space: {
-    small: '',
-    medium: '',
   },
 });
 
@@ -21,15 +18,12 @@ export const vars = createThemeContract({
 export const lightTheme = createTheme(vars, {
   color: {
     background: colors.bgEcran,
+    bgtitle: colors.bgTitre,
+    bgcard: colors.bgSoutenu,
     text: colors.txtSombre,
     primary: colors.bgPrimary,
     secondary: colors.bgSecondary,
-    surface: colors.bgTitre,
     border: colors.brdSombre,
-  },
-  space: {
-    small: "4px",
-    medium: "8px",
   },
 });
 
@@ -37,14 +31,11 @@ export const lightTheme = createTheme(vars, {
 export const darkTheme = createTheme(vars, {
   color: {
     background: colors.bgNoir,
+    bgtitle: colors.bgTitre,
+    bgcard: colors.bgTitre,
     text: colors.txtBlanc,
     primary: colors.bgEcran,
     secondary: colors.bgSecondary,
-    surface: colors.bgTitre,
     border: colors.brdClair,
-  },
-  space: {
-    small: "4px",
-    medium: "8px",
   },
 });
