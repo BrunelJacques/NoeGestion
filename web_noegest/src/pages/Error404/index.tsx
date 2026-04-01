@@ -3,7 +3,7 @@
 import ErrorIllustration from '../../assets/images/erreur_404.jpg';
 import { useTheme } from '../../hooks/useTheme.tsx';
 import * as s from './index.css.ts';
-import { error }  from '../../assets/styles/utilities.css.ts'
+import { errorStyle }  from '../../assets/styles/utilities.css.ts'
 
 export function Error404() {
 
@@ -11,7 +11,7 @@ export function Error404() {
   console.log('Current theme in Error component:', theme);
 
   return (
-    <div className={`${error} ${s.wrapper}`}>
+    <div className={`${errorStyle} ${s.wrapper}`}>
       <h4 className={s.subtitle[theme]}>
         Il semblerait que la page que vous cherchez n’existe pas
       </h4>

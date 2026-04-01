@@ -2,15 +2,16 @@
 import { style } from '@vanilla-extract/css'
 
 export const formStyle = style({  
-  margin: '3rem',
+  margin: 'auto',
   padding: '0.6rem',
   gap: '1rem',
   display: 'flex',
   flexDirection: 'column',
-  alignItems: 'right',
+  
+  maxWidth: '300px',
   })
 
 export const btnStyle = style({ 
   marginLeft: 'auto',
-  minWidth: '100px',
+  minWidth: '80px',
 })

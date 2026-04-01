@@ -8,6 +8,10 @@ export const wrapper = style({
   flexDirection: 'column',
   alignItems: 'center',
   backgroundColor: vars.color.background, // theme-driven
+  color: "#a00",
+  padding: "12px 16px",
+  justifyContent: "space-between",
+  borderBottom: "1px solid #e0a0a0",
 });
 
 export const title = styleVariants({
@@ -33,5 +37,13 @@ export const subtitle = styleVariants({
 });
 
 export const illustration = style({
-  maxWidth: '100%',
+  maxWidth: '60px',
+});
+
+export const closeButton = style({
+  background: "transparent",
+  border: "none",
+  fontSize: "20px",
+  cursor: "pointer",
+  color: "#a00",
 });

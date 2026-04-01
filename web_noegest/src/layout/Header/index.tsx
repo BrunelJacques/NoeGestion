@@ -8,7 +8,7 @@ import profile from '../../assets/icons/profile.png'
 
 import * as s from './index.css.ts'
 
-import { Xlink } from '../../ui/Xlink/index.tsx'
+import Xlink from '../../ui/Xlink/index.tsx'
 import { useAuth } from '../../hooks/useAuth.tsx'
 
 

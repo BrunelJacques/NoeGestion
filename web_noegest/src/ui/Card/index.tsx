@@ -1,6 +1,6 @@
 // Card.tsx
 import { cardStyle } from './index.css';
-import { Xbutton } from '../Xbutton';
+import Xbutton from '../Xbutton';
 
 interface CardProps {
   title: string;

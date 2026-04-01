@@ -7,7 +7,7 @@ export const container = style({
   padding: vars.space.medium,
 })
 
-export const error = style({
+export const errorStyle = style({
   color: vars.color.secondary,
   fontWeight: 'bold',
 })

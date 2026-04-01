@@ -1,40 +1,25 @@
 // src/pages/Login.tsx
 
 import { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import { useAuth } from "../../hooks/useAuth";
 import  Xinput, { XinputPassword } from "../../ui/Xinput";
 import  Xbutton from "../../ui/Xbutton";
 import * as s from "./index.css.ts";
+import { useLoginHandler } from "../../hooks/useLoginHandler.tsx";
 
 export default function Login() {
-  const { login } = useAuth();
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  // URL d'origine ou fallback vers "/"
-  const from = location.state?.from || "/";
-  const to = from === '/logout' ? '/home': from ; // Évite de rediriger vers /logout après déconnexion
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const {loginWithCredentials} = useLoginHandler();
 
-  async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
+  // URL d'origine ou fallback vers "/"
+  //const from = location.state?.from || "/";
+  //const to = from === '/logout' ? '/home': from ; // Évite de rediriger vers /logout après déconnexion
+
+  function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
-
-    const result = await login(username, password);
-    const success = result.success;
-    console.log("Login success:", success,from, to);
-
-    if (!success) {
-      console.log("Login echec:", success);
-      alert("Échec de la connexion. Veuillez vérifier vos identifiants.");
-      return;
+    loginWithCredentials(username, password);
     }
 
-    if (success) {
-      navigate(to, { replace: true });
-    }
-  }
 
   return (
   <>

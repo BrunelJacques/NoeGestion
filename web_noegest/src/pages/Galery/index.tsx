@@ -1,8 +1,8 @@
-import { Xbutton } from '../../ui/Xbutton';
+import Xbutton from '../../ui/Xbutton';
 import Xinput      from '../../ui/Xinput';
 import { useState } from 'react';
 import HelloWorld from '../HelloWorld';
-import { Error } from '../../components/Error';
+import ErrorBanner  from '../../components/ErrorBanner';
 import { hr } from './index.css';
 
 export default function Galery() {
@@ -37,7 +37,7 @@ export default function Galery() {
       </div>
       <div>
         <h3>--------- Ici le test erreur 404 --------------------</h3>
-        <Error />
+        <ErrorBanner />
         </div>
 
       <div>------ end ------</div>  

@@ -152,8 +152,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       return { success: true };
     } catch (err) {
-      console.error("Login failed", err);
-      return { success: false };
+      return { 
+        success: false ,
+        error: err instanceof Error ? err.message : String(err),
+      };
     }
   };
   // --- CONTEXT VALUE ---
