@@ -5,6 +5,7 @@ import  Xinput, { XinputPassword } from "../../ui/Xinput";
 import  Xbutton from "../../ui/Xbutton";
 import * as s from "./index.css.ts";
 import { useLoginHandler } from "../../hooks/useLoginHandler.tsx";
+import { Link } from "react-router";
 
 export default function Login() {
   const [username, setUsername] = useState("");
@@ -22,11 +23,16 @@ export default function Login() {
 
 
   return (
-  <>
-    <h1>Login</h1> 
+  <div className={s.container}>
+    <h3>Intranet Matthania</h3>
+    <h5>Accès réservé au staff de l'association.</h5>
+    <h5>membre sans compte?
+      <Link to="/register">          
+          _créer un compte
+      </Link>
+    </h5>
 
     <form onSubmit={handleSubmit} className={s.formStyle}>
-
       <Xinput
         value={username}
         onChange={setUsername}
@@ -40,12 +46,11 @@ export default function Login() {
         placeholder="Mot de passe"
         autoComplete="current-password"
       />
-
       <Xbutton type="submit" altClassName={s.btnStyle}>
-        OK
+        Validation
       </Xbutton>
     </form>
-  </>
+  </div>
   );
 }
 

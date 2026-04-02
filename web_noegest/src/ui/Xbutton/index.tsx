@@ -10,9 +10,11 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 export default function Xbutton({children, altClassName = "", ...props}: ButtonProps) {
+  const btnStyle = altClassName ? `${s.baseStyle} ${altClassName}`.trim() :  `${s.baseStyle} ${s.altDefault}`.trim();
+
   return (
     <button  
-    className={s.buttonStyle + " " + altClassName} 
+    className={btnStyle} 
     {...props}>
         {children}
     </button>

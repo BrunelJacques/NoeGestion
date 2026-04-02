@@ -1,17 +1,20 @@
-// Xbutton.css.ts
+// src/ui/Xbutton/index.css.ts
 import { style } from '@vanilla-extract/css'
+import { vars } from '../../assets/styles/themes.css'
 
-export const buttonStyle = style({
-  // layout
-  padding: '0.6rem 1.4rem',
-  margin: '0 0 3px 0', 
+
+export const altDefault = style({
+  backgroundColor: vars.color.primary,
+  color: vars.color.altText,
+  border: '3px solid {vars.color.text}',
+})
+
+export const baseStyle = style({
+// On attache le style au layer 'base', il n'aura pas priorité sur les styles d'altClassName
+  padding: '7px 10px',
+  margin: '5px', 
   borderRadius: '11px',
-  border: '3px solid #c5c5c5',
   
-
-  // colors & text
-  background: 'linear-gradient(135deg, #4f46e5, #6366f1)',
-  color: '#f3f4f6',
   fontSize: '0.95rem',
   fontWeight: 500,
   letterSpacing: '0.03em',
@@ -30,7 +33,7 @@ export const buttonStyle = style({
       transform: 'translateY(-6px)',
       boxShadow: '0 6px 16px rgba(15, 23, 42, 0.35)',
       background: 'linear-gradient(135deg, #4338ca, #4f46e5)',
-      borderColor: '#a5b4fc',
+      borderColor: vars.color.border,
     },
 
     // active
@@ -51,8 +54,9 @@ export const buttonStyle = style({
       cursor: 'not-allowed',
       opacity: 0.55,
       boxShadow: 'none',
-      background: '#9ca3af',
-      borderColor: '#9ca3af',
+      background: vars.color.secondary,
+      color: vars.color.altText,
+      borderColor: vars.color.border,
     },
   },
 })

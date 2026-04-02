@@ -23,6 +23,6 @@ globalStyle('*', {
 })
 
 globalStyle('h1, h2, h3, h4, h5, h6,p', {
-  margin: '0.3em',
-  padding: '0.3em',
+  margin: '7px 0 0 10px',
+  padding: '5px',
 });
