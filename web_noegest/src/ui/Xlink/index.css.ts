@@ -24,8 +24,8 @@ export const linkRecipe = recipe({
   variants: {
     theme: {
       light: {
-        color: colors.txtNoir,
-        ':hover': { color: colors.txtSombre },
+        color: colors.txtBlanc,
+        ':hover': { color: colors.txtMid },
       },
       dark: {
         color: colors.txtBlanc,
@@ -35,8 +35,8 @@ export const linkRecipe = recipe({
 
     isFullLink: {
       true: {
-        background: colors.primary,
-        color: colors.txtClair,
+        background: colors.bgLink,
+        color: colors.txt_lesslight,
         ':hover': { 
             background: colors.bgHeader,
             color: colors.txtGris

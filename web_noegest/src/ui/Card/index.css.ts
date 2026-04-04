@@ -5,7 +5,7 @@ import { containerStyle } from '../../assets/styles/utilities.css';
 
 export const cardStyle = style({
   [containerStyle]: true, // Utilise les styles de conteneur global
-  backgroundColor: vars.color.bgtitle, // Utilise la couleur de surface du thème
+  backgroundColor: vars.color.cardTitle, // Utilise la couleur de surface du thème
   color: vars.color.text,             // Utilise le texte du thème
   borderRadius: '12px',
   border: `1px solid ${vars.color.primary}`, // Bordure basée sur la couleur primaire

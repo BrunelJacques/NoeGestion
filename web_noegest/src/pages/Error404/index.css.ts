@@ -7,7 +7,7 @@ export const wrapper = style({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  backgroundColor: vars.color.background, // theme-driven
+  backgroundColor: vars.color.body, // theme-driven
 });
 
 export const title = styleVariants({

@@ -23,7 +23,7 @@ const titleBase: CSSProperties = {
 export const title = styleVariants({
   light: {
     ...titleBase,
-    color: colors.txtSombre, // theme-driven
+    color: colors.txt_dark, // theme-driven
   },
   dark: {
     ...titleBase,

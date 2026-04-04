@@ -1,7 +1,6 @@
 // src/pages/Login.css.ts
 import { style } from '@vanilla-extract/css'
 import { vars } from '../../assets/styles/themes.css'
-import { colors } from '../../assets/styles/colors.css'
 
 export const container = style({
   display: 'flex',
@@ -25,7 +24,7 @@ export const btnStyle = style({
   marginLeft: 'auto',
   minWidth: '110px',
   backgroundColor: vars.color.primary,
-  color: vars.color.altText,
-  border: `1px solid ${colors.bgBleu}`,
+  color: vars.color.textPrimary,
+  border: `1px solid ${vars.color.border}`,
 })
 

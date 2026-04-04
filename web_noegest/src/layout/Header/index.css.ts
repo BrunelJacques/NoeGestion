@@ -69,6 +69,7 @@ export const burger = style({
   display: 'block', 
   marginLeft: 'auto',
   marginRight: 7,
+  color: colors.bgSaisie,
 
   '@media': {
     [isWideScreen]: {

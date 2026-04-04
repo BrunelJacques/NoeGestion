@@ -12,9 +12,10 @@ export const footer = style({
   backgroundColor: colors.bgFooter,
 })
 
-export const nightLightBtn = style({
-  border: 'none',
+export const toggleAfficheMode = style({
+  border: `1px solid ${colors.bgHeader}`,
+  
   cursor: 'pointer',
-  color: colors.txtBlanc,
-  backgroundColor: colors.bgHeader,
+  color: colors.bgHeader,
+  backgroundColor: colors.bgFooter,
 })

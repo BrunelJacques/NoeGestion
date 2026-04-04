@@ -10,7 +10,7 @@ export const layout = style({
 })
 
 export const outlet = style({
-  backgroundColor: vars.color.background,
+  backgroundColor: vars.color.body,
   color: vars.color.text,
   width: '100%',
   flex: 1,

@@ -10,7 +10,7 @@ export const hr = style({
 })
 
 export const local = style({
-  background: colors.bgSoutenu,
+  background: colors.bglight_card,
   color: colors.txtLink,
   padding: "1rem",
   margin: '20px 50px',

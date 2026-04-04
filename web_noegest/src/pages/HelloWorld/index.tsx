@@ -3,6 +3,7 @@ import { helloWorld } from "./index.css";
 import { useAuth } from "../../hooks/useAuth.tsx";
 import { useTheme } from "../../hooks/useTheme.tsx";
 import {  local } from "./index.css.ts";
+import Xinput from "../../ui/Xinput/index.tsx";
 
 export function HelloWorld() {
     const { user } = useAuth();
@@ -13,7 +14,7 @@ export function HelloWorld() {
         <h3>Hello world </h3>
         <h5>user: {user?.lastName}  {user?.firstName}</h5> 
       </div>
-      < Card title='MyCard Tittle' 
+      < Card title='MyCard Tittle hello world' 
         description="Je la décris ainsi"
         onAction= {()=>console.log("clic my car")}
        />
@@ -25,7 +26,8 @@ export function HelloWorld() {
             
             </div>
             <div className = {local}>
-              Card stylée localement
+              Card stylée localement Hello
+              <Xinput placeholder="Saisissez quelque chose..." />
             </div>      
     </div>
   );

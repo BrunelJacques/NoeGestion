@@ -6,7 +6,7 @@ import { globalStyle } from '@vanilla-extract/css';
 
 // Styles globaux
 globalStyle('html, body', {
-  backgroundColor: vars.color.background,
+  backgroundColor: vars.color.body,
   color: vars.color.text,
   margin: 0,
   padding: 0,

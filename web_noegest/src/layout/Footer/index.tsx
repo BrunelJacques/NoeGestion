@@ -11,8 +11,8 @@ function Footer() {
     <footer className={styles.footer}>
 
       <button
-        className={styles.nightLightBtn}
-        onClick={()=>toggleTheme(theme)} // anonymisation pour éviter conflit évènements
+      className={styles.toggleAfficheMode}
+      onClick={()=>toggleTheme(theme)} // anonymisation pour éviter conflit évènements
       >
         Afficher en mode {theme === 'light' ? 'noir 🌙' : 'clair ☀️'}
       </button>

@@ -1,6 +1,7 @@
 // src/ui/Xinput.css.ts
 
 import { style } from '@vanilla-extract/css'
+import { colors } from '../../assets/styles/colors.css'
 
 export const inputStyle = style({
   width: '100%',
@@ -8,25 +9,26 @@ export const inputStyle = style({
   borderRadius: '8px',
   border: '1px solid #c5c5c5',
 
-  background: '#f9fafb',
-  color: '#374151',
+  background: colors.bgSaisie,
+  color: colors.txt_dark,
   fontSize: '1rem',
 
   transition:
     'border-color 120ms ease-out, box-shadow 120ms ease-out, background 120ms ease-out',
 
   ':hover': {
-    background: '#f3f4f6',
+    background: 'red',
   },
 
   ':focus': {
     outline: 'none',
     borderColor: '#6366f1',
+    background:  colors.bgSaumon,
     boxShadow: '0 0 0 3px rgba(99, 102, 241, 0.25)',
   },
 
   '::placeholder': {
-    color: '#9ca3af',
+    color:  colors.txt_lessdark ,
   },
 })
 

@@ -21,7 +21,7 @@ export default function Home () {
       </div>
       <hr className={hr} />
       <div className = {local}>
-        Card stylée localement
+        Card style localement Home
       </div>
       < Card title='MyCard Tittle' 
         description="Je la décris ainsi" 

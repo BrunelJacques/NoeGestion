@@ -5,7 +5,7 @@ import { vars } from '../../assets/styles/themes.css'
 
 export const altDefault = style({
   backgroundColor: vars.color.primary,
-  color: vars.color.altText,
+  color: vars.color.textPrimary,
   border: '3px solid {vars.color.text}',
 })
 
@@ -55,7 +55,7 @@ export const baseStyle = style({
       opacity: 0.55,
       boxShadow: 'none',
       background: vars.color.secondary,
-      color: vars.color.altText,
+      color: vars.color.textLower,
       borderColor: vars.color.border,
     },
   },

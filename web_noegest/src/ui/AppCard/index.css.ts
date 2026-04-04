@@ -2,7 +2,7 @@ import { style } from '@vanilla-extract/css';
 import { vars } from '../../assets/styles/themes.css'; 
 
 export const container = style({
-  backgroundColor: vars.color.background,
+  backgroundColor: vars.color.body,
   color: vars.color.text,
   minHeight: '100vh',
   width: '100%',
