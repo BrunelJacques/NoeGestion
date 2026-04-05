@@ -2,28 +2,32 @@
 
 import { style } from '@vanilla-extract/css'
 import { colors } from '../../assets/styles/colors.css'
+import { vars } from '../../assets/styles/themes.css'
 
 export const inputStyle = style({
   width: '100%',
-  padding: '0.6rem 2.8rem 0.6rem 1rem', // space for icon 2.8rem
+  padding: '0.3rem 2.8rem 0.3rem 1rem', // space for icon 2.8rem
   borderRadius: '8px',
-  border: '1px solid #c5c5c5',
+  border: `1px solid ${vars.color.border}`,
 
-  background: colors.bgSaisie,
-  color: colors.txt_dark,
-  fontSize: '1rem',
+
+  background: colors.bglight_body,
+  color: colors.txtDarkGray,
+  fontSize: '16px',
 
   transition:
     'border-color 120ms ease-out, box-shadow 120ms ease-out, background 120ms ease-out',
 
   ':hover': {
-    background: 'red',
+    background: 'white',
   },
 
   ':focus': {
     outline: 'none',
-    borderColor: '#6366f1',
-    background:  colors.bgSaumon,
+    fontSize: '18px',
+    borderColor: vars.color.primary,
+    background:  colors.bgSaisie,
+    color: colors.txtBlack,
     boxShadow: '0 0 0 3px rgba(99, 102, 241, 0.25)',
   },
 
@@ -54,14 +58,3 @@ export const toggleVisibilityStyle = style({
   },
 })
 
-/* export const eyeIconStyle = style({
-  width: '1.2rem',
-  height: '1.2rem',
-  fill: '#6b7280',
-  position: "absolute",
-  right: "10px",
-  background: "none",
-  border: "none",
-  cursor: "pointer",
-  fontSize: "1.2rem" 
-})*/

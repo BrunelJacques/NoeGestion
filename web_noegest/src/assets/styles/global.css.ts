@@ -26,3 +26,8 @@ globalStyle('h1, h2, h3, h4, h5, h6,p', {
   margin: '7px 0 0 10px',
   padding: '5px',
 });
+
+/* globalStyle('input', {
+all: 'unset',
+}) */
+

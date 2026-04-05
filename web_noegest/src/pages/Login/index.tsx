@@ -27,8 +27,8 @@ export default function Login() {
     <h3>Intranet Matthania</h3>
     <h5>Accès réservé au staff de l'association.</h5>
     <h5>membre sans compte?
-      <Link to="/register">          
-          _créer un compte
+      <Link to="/register" className={s.linkStyle}>          
+          créer un compte
       </Link>
     </h5>
 
@@ -46,6 +46,7 @@ export default function Login() {
         placeholder="Mot de passe"
         autoComplete="current-password"
       />
+      
       <Xbutton type="submit" altClassName={s.btnStyle}>
         Validation
       </Xbutton>

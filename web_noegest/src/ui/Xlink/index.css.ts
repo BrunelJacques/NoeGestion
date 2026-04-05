@@ -24,12 +24,12 @@ export const linkRecipe = recipe({
   variants: {
     theme: {
       light: {
-        color: colors.txtBlanc,
-        ':hover': { color: colors.txtMid },
+        color: colors.txtWhite,
+        ':hover': { color: colors.txtDarkGray },
       },
       dark: {
-        color: colors.txtBlanc,
-        ':hover': { color: colors.txtGris },
+        color: colors.txtWhite,
+        ':hover': { color: colors.txtGray },
       },
     },
 
@@ -39,7 +39,7 @@ export const linkRecipe = recipe({
         color: colors.txt_lesslight,
         ':hover': { 
             background: colors.bgHeader,
-            color: colors.txtGris
+            color: colors.txtGray
 
           },
       },

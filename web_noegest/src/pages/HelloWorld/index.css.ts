@@ -5,7 +5,7 @@ import { vars } from '../../assets/styles/themes.css'
 
 export const helloWorld = style({
   backgroundColor: colors.bgRose,
-  color: colors.txtGris,
+  color: colors.txtGray,
   padding: "20px",
   borderRadius: "8px",
   fontSize: "1.2rem",
