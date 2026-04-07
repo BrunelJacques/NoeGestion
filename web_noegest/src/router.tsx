@@ -1,3 +1,4 @@
+// src/router.tsx
 import { createBrowserRouter } from 'react-router-dom'
 import Layout from './layout/Layout'
 import ProtectedRoute from './components/ProtectedRoute'
@@ -8,6 +9,7 @@ import Logout from './pages/Logout'
 import Galery from './pages/Galery'
 import HelloWorld from './pages/HelloWorld'
 import Error404 from './pages/Error404'
+import Register from './pages/Register'
 
 export const router = createBrowserRouter([
   {
@@ -16,15 +18,16 @@ export const router = createBrowserRouter([
     children: [
       
       // PUBLIC
-      { path: '/', element: <Home /> },
-      { path: '/home', element: <Home /> },
+      { path: '/', element: <Login /> },
       { path: '/login', element: <Login /> },
+      { path: '/register', element: <Register /> },
       { path: '/hello', element: <HelloWorld /> },
 
       // PROTECTED
       {
         element: <ProtectedRoute />,
         children: [
+          { path: '/home', element: <Home /> },
           { path: '/galery', element: <Galery /> },
           { path: '/logout', element: <Logout />},
         ],

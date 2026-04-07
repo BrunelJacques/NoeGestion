@@ -27,7 +27,29 @@ globalStyle('h1, h2, h3, h4, h5, h6,p', {
   padding: '5px',
 });
 
-/* globalStyle('input', {
-all: 'unset',
-}) */
+globalStyle('input', {
+  all: 'unset',
+  maxWidth: '200px',
+  padding: '0.5rem',
+  borderRadius: '4px',  
+})
 
+
+globalStyle('.container', {
+  display: 'flex',
+  marginLeft: 'auto',
+  marginRight: 'auto',
+  flexDirection: 'column',
+  alignItems: 'left',
+  maxWidth: '400px',
+})
+
+
+globalStyle('.form', {
+  marginLeft: '10px',
+  padding: '0.6rem',
+  gap: '1rem',
+  display: 'flex',
+  flexDirection: 'column',
+  maxWidth: '300px',
+  })

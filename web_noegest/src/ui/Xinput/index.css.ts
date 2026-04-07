@@ -1,24 +1,38 @@
 // src/ui/Xinput.css.ts
-
 import { style } from '@vanilla-extract/css'
 import { colors } from '../../assets/styles/colors.css'
 import { vars } from '../../assets/styles/themes.css'
 
-export const inputStyle = style({
-  width: '100%',
-  padding: '0.3rem 2.8rem 0.3rem 1rem', // space for icon 2.8rem
-  borderRadius: '8px',
+export const wrapper = style({
+  display: "flex",
+  alignItems: "center",
+  gap: "8px",
+});
+
+export const wrapperPassword = style({
+  position: 'relative',
+})
+
+export const label = style({
+  textAlign: "right",
+  whiteSpace: "nowrap",
+  width: "40%",
+  fontSize: '12px',
+  fontWeight: 500,
+});
+
+export const baseInput = style({
+  width: '60%',
+  padding: '3px 5px 3px 10px', // space for icon 2.8rem
+  borderRadius: '5px',
   border: `1px solid ${vars.color.border}`,
-
-
-  background: colors.bglight_body,
+  background: colors.bgInput,
   color: colors.txtDarkGray,
   fontSize: '16px',
-
   transition:
     'border-color 120ms ease-out, box-shadow 120ms ease-out, background 120ms ease-out',
 
-  ':hover': {
+    ':hover': {
     background: 'white',
   },
 
@@ -28,17 +42,12 @@ export const inputStyle = style({
     borderColor: vars.color.primary,
     background:  colors.bgSaisie,
     color: colors.txtBlack,
-    boxShadow: '0 0 0 3px rgba(99, 102, 241, 0.25)',
+    boxShadow: `2px 2px 10px 3px ${vars.color.primary}`,//offsetRight, offsetDown, gradiant, largeur, couleur
   },
 
   '::placeholder': {
     color:  colors.txt_lessdark ,
   },
-})
-
-export const inputWrapperStyle = style({
-  position: 'relative',
-  width: '100%',
 })
 
 export const toggleVisibilityStyle = style({
@@ -47,9 +56,10 @@ export const toggleVisibilityStyle = style({
   top: '50%',
   transform: 'translateY(-50%)',
   background: 'none',
+  color: colors.txtDarkGray,
   border: 'none',
   cursor: 'pointer',
-  fontSize: '1.1rem',
+  fontSize: '14px',
   opacity: 0.7,
   transition: 'opacity 120ms ease-out',
 

@@ -23,7 +23,7 @@ export default function Login() {
 
 
   return (
-  <div className={s.container}>
+  <div className="container">
     <h3>Intranet Matthania</h3>
     <h5>Accès réservé au staff de l'association.</h5>
     <h5>membre sans compte?
@@ -32,10 +32,11 @@ export default function Login() {
       </Link>
     </h5>
 
-    <form onSubmit={handleSubmit} className={s.formStyle}>
+    <form onSubmit={handleSubmit} className="form">
       <Xinput
         value={username}
         onChange={setUsername}
+        label="libellé"
         autoComplete="username"
         placeholder="Identifiant"
       />
@@ -47,7 +48,7 @@ export default function Login() {
         autoComplete="current-password"
       />
       
-      <Xbutton type="submit" altClassName={s.btnStyle}>
+      <Xbutton type="submit">
         Validation
       </Xbutton>
     </form>

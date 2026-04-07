@@ -14,8 +14,8 @@ export const footer = style({
 
 export const toggleAfficheMode = style({
   border: `1px solid ${colors.bgHeader}`,
-  
+  borderRadius: '5px',  
   cursor: 'pointer',
-  color: colors.bgHeader,
+  color: colors.txt_lessdark,
   backgroundColor: colors.bgFooter,
 })

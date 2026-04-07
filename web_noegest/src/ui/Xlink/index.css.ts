@@ -8,7 +8,7 @@ export const baseLink = style({
   textDecoration: 'none',
   padding: 3,
   height: '90%',
-  borderRadius: '10px',
+  borderRadius: '8px',
   fontWeight: 500,
   transition: '0.2s ease',
   minWidth: '80px',

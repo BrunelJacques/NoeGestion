@@ -1,17 +1,17 @@
 // Footer.tsx
 import { useTheme } from '../../hooks/useTheme.tsx'
 
-import * as styles from './index.css.ts'
+import * as s from './index.css.ts'
 
 
 function Footer() {
   const { theme, toggleTheme } = useTheme()
 
   return (
-    <footer className={styles.footer}>
+    <footer className={s.footer}>
 
       <button
-      className={styles.toggleAfficheMode}
+      className={s.toggleAfficheMode}
       onClick={()=>toggleTheme(theme)} // anonymisation pour éviter conflit évènements
       >
         Afficher en mode {theme === 'light' ? 'noir 🌙' : 'clair ☀️'}

@@ -9,11 +9,25 @@ export const altDefault = style({
   border: '3px solid {vars.color.text}',
 })
 
+
+export const btnStyle = style({ 
+  marginLeft: 'auto',
+  minWidth: '110px',
+  backgroundColor: vars.color.primary,
+  color: vars.color.textPrimary,
+  border: `1px solid ${vars.color.border}`,
+})
+
+
+
 export const baseStyle = style({
 // On attache le style au layer 'base', il n'aura pas priorité sur les styles d'altClassName
+  marginLeft: 'auto',
+  backgroundColor: vars.color.primary,
+  color: vars.color.textPrimary,
+  border: `1px solid ${vars.color.border}`,
   padding: '7px 10px',
-  margin: '5px', 
-  borderRadius: '11px',
+  borderRadius: '10px',
   
   fontSize: '0.95rem',
   fontWeight: 500,

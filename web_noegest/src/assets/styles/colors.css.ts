@@ -21,14 +21,15 @@ export const colors = {
   bgHeader: "#3f729b",
   bgLink: "#007BFF",
   bgRose: "#ffe4e1",
-  bgSaisie: "#FFFFC5",
+  bgSaisie: "#FFFFF3",
+  bgInput: "#E8F0FE",
   bgSaumon: "#ffdead",
   bgGreen: "#8ED973",
   txtBlack: "#0F172A",
   txtDarkGray: "#808080",
   txtGray: "#a9a9a9",
   txtLightGray: "#d3d3d3",
-  txtBWhite: "#FFFFFF",
+  txtWhite: "#FFFFFF",
   txtLink: "#0C769E",
 };
 
