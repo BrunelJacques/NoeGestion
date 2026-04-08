@@ -1,6 +1,6 @@
 // assets/styles/colors.css.ts
 export const colors = {
-  bglight_card: "#E5ECEF",
+    bglight_card: "#FDFFFF",
   bglight_title: "#DAE9F8",
   bglight_body: "#f5f8fa",
   bglight_primary: "#673ab7",

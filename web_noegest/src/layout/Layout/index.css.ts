@@ -14,5 +14,5 @@ export const outlet = style({
   color: vars.color.text,
   width: '100%',
   flex: 1,
-  padding: 4,
+  padding: 6,
 })

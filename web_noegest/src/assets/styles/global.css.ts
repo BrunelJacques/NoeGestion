@@ -14,18 +14,30 @@ globalStyle('html, body', {
   minHeight: '100vh',
   width: '100%',
   maxWidth: 1000,
- // Optionnel : transition douce 
-  transition: 'background-color 0.3s ease, color 0.3s ease'
+  transition: 'background-color 1.3s ease, color 1.3s ease'  
 })
 
 globalStyle('*', {
   boxSizing: 'border-box',
 })
 
-globalStyle('h1, h2, h3, h4, h5, h6,p', {
-  margin: '7px 0 0 10px',
-  padding: '5px',
+globalStyle('h1, h2, h3', {
+  margin: '7px 0 0 7px',
+  padding: '0',
 });
+
+globalStyle('h4, h5, h6,p', {
+  margin: '3px 0 0 15px',
+  padding: '0',
+});
+
+globalStyle('h2, h4, h6', {
+  color: vars.color.textLower,
+});
+
+globalStyle('p',{
+  fontSize: '12px'
+})
 
 globalStyle('input', {
   all: 'unset',
@@ -37,19 +49,37 @@ globalStyle('input', {
 
 globalStyle('.container', {
   display: 'flex',
+  flexDirection: 'column',
   marginLeft: 'auto',
   marginRight: 'auto',
-  flexDirection: 'column',
-  alignItems: 'left',
-  maxWidth: '400px',
+  maxWidth: '500px',
+  background: vars.color.body,
+  transition: 'background-color 0.6s ease, color 0.6s ease'  
 })
 
 
 globalStyle('.form', {
+  display: 'flex',
+  flexDirection: 'column',
   marginLeft: '10px',
   padding: '0.6rem',
   gap: '1rem',
-  display: 'flex',
-  flexDirection: 'column',
   maxWidth: '300px',
   })
+
+  
+globalStyle('.card', {
+  display: 'flex',
+  flexDirection: 'column',
+  marginTop: 10,
+  background: vars.color.card, // Utilise la couleur de surface du thème
+  color: vars.color.text,             // Utilise le texte du thème
+  borderRadius: '8px',
+  boxShadow: `0 0 5px -1px ${vars.color.primary}`,
+  maxWidth: '300px',
+  transition: 'transform 0.2s ease-in-out, background-color 0.3s ease'
+})
+
+globalStyle('.card:hover', {
+  transform: 'translateY(-4px)',
+})

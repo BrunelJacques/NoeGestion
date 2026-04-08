@@ -1,7 +1,5 @@
-import { style } from '@vanilla-extract/css'
+// styles/utilities.css.ts
+export const breakpoints = {
+  mobile: '600px',
+};
 
-export const containerStyle = style({
-  maxWidth: '800px',
-  margin: '0 auto',
-  padding: 4,
-})

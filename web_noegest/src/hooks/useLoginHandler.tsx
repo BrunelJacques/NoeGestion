@@ -33,6 +33,5 @@ export function useLoginHandler() {
     navigate(to, { replace: true });
   }
 
-
   return { loginWithCredentials };
 }

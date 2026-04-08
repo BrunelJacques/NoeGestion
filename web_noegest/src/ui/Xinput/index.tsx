@@ -9,7 +9,7 @@ interface XinputProps extends Omit<
   ComponentPropsWithoutRef<"input">, 
   "onChange"
 >{
-    onChange: (value: string) => void;
+    onChange?: (value: string) => void;
     altClassName?: string;
     label?: string;
 }

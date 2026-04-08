@@ -28,7 +28,7 @@ export const baseInput = style({
   border: `1px solid ${vars.color.border}`,
   background: colors.bgInput,
   color: colors.txtDarkGray,
-  fontSize: '16px',
+  fontSize: '12px',
   transition:
     'border-color 120ms ease-out, box-shadow 120ms ease-out, background 120ms ease-out',
 
