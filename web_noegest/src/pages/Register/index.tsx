@@ -1,21 +1,25 @@
 // src/pages/Register.tsx
 
 import { useState } from "react";
-import  Xinput from "../../ui/Xinput/index.tsx";
+import  Xinput, { XinputDate } from "../../ui/Xinput/index.tsx";
 import  Xbutton from "../../ui/Xbutton/index.tsx";
-import { useLoginHandler } from "../../hooks/useLoginHandler.tsx";
 import * as s from "./index.css.ts"
+import { useAuth } from "../../hooks/useAuth.tsx";
+
 
 export default function Register() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const {loginWithCredentials} = useLoginHandler();
+  const { user } = useAuth();
+  const [username] = useState(user?.username);
+  const isLogged = user !== null
 
+  function noAction(){}
 
   function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
-    loginWithCredentials(username, password);
+    // todo
+    console.log("call register todo! username:",username)
     }
+    
   return (
   <>
   <div className="container">
@@ -27,48 +31,51 @@ export default function Register() {
   <div className={s.localCard}>
     <form onSubmit={handleSubmit} className={s.cardGrid}>
       <Xinput
-        value={username}
-        onChange={setUsername}
+        value={user?.email}
+        onChange={noAction}
         label="Mail identifiant"
         placeholder="adresse mail"
         autoComplete="email"
+        disabled={isLogged}
       />
 
       <Xinput
-        value={password}
-        onChange={setPassword}
+        value={user?.lastName}
+        onChange={noAction}
         label="Nom"
         placeholder="votre nom"
         autoComplete="family-name"
+        disabled={isLogged}
       />
 
       <Xinput
-        value={username}
-        onChange={setUsername}
+        value={user?.firstName}
+        onChange={noAction}
         label="Prénom"
         placeholder="votre prénom"
         autoComplete="given-name"
+        disabled={isLogged}
       />
 
-      <Xinput
-        value={username}
-        onChange={setUsername}
+      <XinputDate
+        value={user?.naissance}
+        onChange={noAction}
         label="Date de naissance"
-        placeholder="jj/mm/aaaa"
-        autoComplete="off"
+        autoComplete="bday"
+        disabled={isLogged}
       />
 
       <Xinput
-        value={username}
-        onChange={setUsername}
+        value={user?user.telephone:""}
+        onChange={noAction}
         label="Téléphone"
         placeholder="06xxxxxxxx"
-        autoComplete="tel"
+        autoComplete="mobile"
       />
 
       <Xinput
-        value={password}
-        onChange={setPassword}
+        value=""
+        onChange={noAction}
         label="Nvx mot de passe"
         placeholder="8car Maj Min Chifre"
         autoComplete="off"

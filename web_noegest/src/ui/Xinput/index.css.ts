@@ -20,6 +20,11 @@ export const label = style({
   fontWeight: 500,
 });
 
+export const disabledInput = style({
+  opacity: 0.5,
+  cursor: "not-allowed",
+});
+
 export const baseInput = style({
   width: '60%',
   padding: '3px 5px 3px 10px', // space for icon 2.8rem

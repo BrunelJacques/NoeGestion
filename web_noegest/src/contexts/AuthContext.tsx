@@ -27,6 +27,8 @@ export interface User {
   email: string;
   firstName: string;
   lastName: string;
+  naissance: string;
+  telephone: string;
   groups: string[];
   isStaff: boolean;
   isActive: boolean;
