@@ -7,11 +7,10 @@ export const wrapper = style({
   display: "flex",
   alignItems: "center",
   gap: "8px",
+  width: "100%",
+  position: 'relative',
 });
 
-export const wrapperPassword = style({
-  position: 'relative',
-})
 
 export const label = style({
   textAlign: "right",

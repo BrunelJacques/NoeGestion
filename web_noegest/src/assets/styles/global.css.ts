@@ -39,6 +39,7 @@ globalStyle('p',{
   fontSize: '12px'
 })
 
+
 globalStyle('input', {
   all: 'unset',
   maxWidth: '200px',
@@ -46,17 +47,24 @@ globalStyle('input', {
   borderRadius: '4px',  
 })
 
+globalStyle('hr',{
+  border: 'none',
+  height: '1px',
+  background: `linear-gradient(to right, transparent, ${vars.color.primary}, transparent)`,
+  margin: '7px 0',
+})
+
+globalStyle('.discret',{
+ background: "transparent",
+})
 
 globalStyle('.container', {
-  display: 'flex',
-  flexDirection: 'column',
   marginLeft: 'auto',
   marginRight: 'auto',
   maxWidth: '500px',
   background: vars.color.body,
   transition: 'background-color 0.6s ease, color 0.6s ease'  
 })
-
 
 globalStyle('.form', {
   display: 'flex',

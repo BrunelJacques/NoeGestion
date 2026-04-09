@@ -28,6 +28,8 @@ export default function Login() {
         </Link>
       </h5>
 
+      <hr className='discret' />
+
       <form onSubmit={handleSubmit} className="form">
         <Xinput
           value={username}
@@ -48,9 +50,12 @@ export default function Login() {
         <Xbutton type="submit">Validation</Xbutton>
       </form>
 
+      <hr />
+
       {/* Rendu conditionnel : on vérifie si username n'est pas vide */}
       {username.trim() !== "" && (
         <h5>
+
           Changer mot de passe?
           <Link to="/register" className={s.linkStyle}>
             renvoi mot_passe

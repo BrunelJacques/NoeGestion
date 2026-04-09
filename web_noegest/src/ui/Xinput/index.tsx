@@ -18,7 +18,7 @@ interface XinputProps extends Omit<
 export default function Xinput ({
   type = "text",
   value,
-  onChange,
+  onChange = () => {},
   altClassName = "",
   label = "label input",
   ...props
@@ -29,8 +29,12 @@ export default function Xinput ({
       <input
         type={type}
         value={value}
-        onChange={e => onChange(e.target.value)}
-        className={s.baseInput + " " + altClassName} 
+        onChange={e => onChange?.(e.target.value)}
+        //className={s.baseInput + " " + altClassName} 
+        className={[
+          s.baseInput, 
+          altClassName
+        ].filter(Boolean).join(' ')}
         {...props}
         /> 
     </div>
@@ -44,19 +48,15 @@ export function XinputPassword(props: XinputProps) {
     setIsVisible(!isVisible);
   };
   return (
-    <div  className={s.wrapperPassword}>
-      <div className={s.wrapper}>
-        <Xinput
-          // Transmet les props en paquet
-          {...props}
-          // Force le props.type en fonction de l'état local
-          type={isVisible ? "text" : "password"}
-          // Assure que le style laisse de la place pour l'icône à droite
-          autoComplete={props.autoComplete || "current-password"}
-        />
-      </div>
-
-      <button
+    <div  className={s.wrapper}>
+      <Xinput
+        // Transmet les props en paquet
+        {...props}
+        // Force le props.type en fonction de l'état local
+        type={isVisible ? "text" : "password"}
+        autoComplete={props.autoComplete || "current-password"}
+      />
+       <button
         className={s.toggleVisibilityStyle}
         type="button" // Important pour ne pas soumettre le formulaire par erreur
         onClick={toggleVisibility}

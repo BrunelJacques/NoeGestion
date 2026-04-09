@@ -51,8 +51,8 @@ export default function Register() {
       />
 
       <Xinput
-        value={password}
-        onChange={setPassword}
+        value={username}
+        onChange={setUsername}
         label="Date de naissance"
         placeholder="jj/mm/aaaa"
         autoComplete="off"

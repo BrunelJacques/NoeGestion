@@ -30,6 +30,6 @@ export const colors = {
   txtGray: "#a9a9a9",
   txtLightGray: "#d3d3d3",
   txtWhite: "#FFFFFF",
-  txtLink: "#0C769E",
+  txtLink: "#007BFF",
 };
 
