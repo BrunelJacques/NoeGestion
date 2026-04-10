@@ -17,7 +17,7 @@ interface XinputProps extends Omit<
 export default function Xinput ({
   type = "text",
   value,
-  onChange = () => {},
+  onChange,
   altClassName = "",
   label = "label input",
   disabled = false,
@@ -29,11 +29,13 @@ export default function Xinput ({
     onChange?.(e.target.value);
   };
 
+  const typeInput = (type == "password")? "password": "text"
+
   return (
     <div className={s.wrapper}>
       {label && <span className={s.label}>{label} :</span>}
       <input
-        type={type}
+        type={typeInput}
         value={value}
         disabled={disabled}
         onChange={handleChange}
@@ -49,37 +51,63 @@ export default function Xinput ({
 }
 
 
-function formatDateInput(raw: string): string {
-  // Supprime tout sauf les chiffres
-  const digits = raw.replace(/\D/g, "").slice(0, 8);
-
-  const parts = [];
-  if (digits.length >= 2) parts.push(digits.slice(0, 2));       // jj
-  if (digits.length >= 4) parts.push(digits.slice(2, 4));       // mm
-  if (digits.length > 4)  parts.push(digits.slice(4, 8));       // aaaa
-
-  //console.log("formatDate:", raw, parts.join("/"))
-  //return parts.join("/");
-  return raw
-}
-
 
 export function XinputDate(props: XinputProps) {
-  const [raw, setRaw] = useState("");
-  
+  const [date, setDate] = useState('');
+  const [isValid, setIsValid] = useState(true);
+
+  function formatDate (val: string) {
+    let value = val.replace(/\D/g, ''); // On retire tout ce qui n'est pas un chiffre
+    
+    if (value.length > 8) value = value.slice(0, 8); // On limite à 8 chiffres (jjmmaaaa)
+
+    // Formatage dynamique : jj/mm/aaaa
+    let formattedValue = '';
+    if (value.length > 0) {
+      formattedValue = value.substring(0, 2);
+      if (value.length > 2) {
+        formattedValue += '/' + value.substring(2, 4);
+      }
+      if (value.length > 4) {
+        formattedValue += '/' + value.substring(4, 8);
+      }
+    }
+
+    setDate(formattedValue);
+
+    // Validation basique si la date est complète
+    if (value.length === 8) {
+      const day = parseInt(value.substring(0, 2));
+      const month = parseInt(value.substring(2, 4));
+      const year = parseInt(value.substring(4, 8));
+      
+      // Vérification simple de la validité (mois entre 1-12, jours 1-31)
+      const dateObj = new Date(year, month - 1, day);
+      const isDateValid = 
+        dateObj.getFullYear() === year && 
+        dateObj.getMonth() === month - 1 && 
+        dateObj.getDate() === day;
+      
+      setIsValid(isDateValid);
+    } else {
+      setIsValid(true); // On ne montre pas d'erreur tant que la saisie est en cours
+    }
+  };
+
   return (
-    <div  className={s.wrapper}>
+    <div className= {s.wrapper}>
+      {props.label && <span className={s.label}>{props.label} :</span>}
       <Xinput
         {...props}
-        value={formatDateInput(raw)}
-        onChange={(x) => {
-          setRaw(x);
-        }} 
-        placeholder={props?.placeholder || "jj/mm/aaaa"}
+        value={date}
+        placeholder="jj/mm/aaaa"
+        onChange={formatDate} 
+        maxLength={10} // "10/10/2024" = 10 caractères
       />
+      {!isValid && <p className={s.errorStyle}>Date invalide</p>}
     </div>
   );
-}
+};
 
 
 export function XinputPassword(props: XinputProps) {

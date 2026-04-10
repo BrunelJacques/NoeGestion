@@ -8,6 +8,7 @@ function noAction(val: string){
   if (val.trim() !== "") {
     console.log("Noaction valeur:", val);
   }
+
   return
 }
 
@@ -26,13 +27,13 @@ export default function Home () {
       <XdateInput
         value={user?.naissance}
         onChange={noAction}
-        label="Date de naissance"
+        label="Date XdateInput"
       />
 
       <XinputDate
         value={user?.naissance}
         onChange={noAction}
-        label="Date de naissance"
+        label="Date XinputDate"
         autoComplete="bday"
       />
 

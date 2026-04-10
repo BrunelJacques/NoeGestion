@@ -19,6 +19,10 @@ export const Xtest = (props: XinputProps) => {
   const [isValid, setIsValid] = useState(true);
   
   const handleDateChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (props.value !== undefined) {
+      console.log("Xtest props:",props);
+    }
+
     let value = e.target.value.replace(/\D/g, ''); // On retire tout ce qui n'est pas un chiffre
     
     if (value.length > 8) value = value.slice(0, 8); // On limite à 8 chiffres (jjmmaaaa)
@@ -56,7 +60,6 @@ export const Xtest = (props: XinputProps) => {
     }
   };
 
-  console.log("Xtest props:",props)
   return (
     <div>
       <input

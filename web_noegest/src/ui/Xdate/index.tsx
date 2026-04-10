@@ -1,6 +1,6 @@
 // src/ui/Xdate/index.tsx
 import { ComponentPropsWithoutRef, useState, ChangeEvent } from 'react';
-import { inputStyle, errorStyle } from './index.css';
+import * as s from "../Xinput/index.css";
 
 
 // On utilise Omit pour remplacer le onChange standard par le tien (qui attend une string)
@@ -14,7 +14,10 @@ interface XinputProps extends Omit<
 }
 
 
-export default function XdateInput(props: XinputProps) {
+export default function XdateInput({
+  label = "label DateInput",
+  ...props
+  }: XinputProps) {
   const [date, setDate] = useState('');
   const [isValid, setIsValid] = useState(true);
 
@@ -57,17 +60,16 @@ export default function XdateInput(props: XinputProps) {
   };
 
   return (
-    <div>
+    <div className= {s.wrapper}>
+      {label && <span className={s.label}>{label} :</span>}
       <input
         {...props}
-        type="text"
-        placeholder="JJ/MM/AAAA"
         value={date}
-        onChange={handleDateChange}
-        className={inputStyle}
+        placeholder="jj/mm/aaaa"
+        onChange={handleDateChange} 
         maxLength={10} // "10/10/2024" = 10 caractères
       />
-      {!isValid && <p className={errorStyle}>Date invalide</p>}
+      {!isValid && <p className={s.errorStyle}>Date invalide</p>}
     </div>
   );
 };
