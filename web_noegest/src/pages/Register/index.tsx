@@ -1,11 +1,12 @@
 // src/pages/Register.tsx
 
 import { useState } from "react";
-import  Xinput from "../../ui/Xinput/index.tsx";
-import  Xbutton from "../../ui/Xbutton/index.tsx";
-import XdateInput from "../../ui/Xdate/index.tsx";
+import { Xinput } from "../../ui/Xinput/index.tsx";
+import  { Xbutton } from "../../ui/Xbutton/index.tsx";
 import * as s from "./index.css.ts"
 import { useAuth } from "../../hooks/useAuth.tsx";
+import { XinputDate } from "../../ui/variants/XinputDate.tsx";
+import { XinputPhone } from "../../ui/variants/XinputPhone.tsx";
 
 
 export default function Register() {
@@ -58,16 +59,16 @@ export default function Register() {
         disabled={isLogged}
       />
 
-      <XdateInput
-        value={user?.naissance}
+      <XinputDate
+        value={user?.bday}
         onChange={noAction}
         label="Date de naissance"
         autoComplete="bday"
         disabled={isLogged}
       />
 
-      <Xinput
-        value={user?user.telephone:""}
+      <XinputPhone
+        value={user?user.phone:""}
         onChange={noAction}
         label="Téléphone"
         placeholder="06xxxxxxxx"

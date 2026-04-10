@@ -1,11 +1,12 @@
 // src/pages/Login.tsx
 
 import { useState } from "react";
-import  Xinput, { XinputPassword } from "../../ui/Xinput";
-import  Xbutton from "../../ui/Xbutton";
+import { Xinput }  from "../../ui/Xinput";
+import { Xbutton } from "../../ui/Xbutton";
 import * as s from "./index.css.ts";
 import { useLoginHandler } from "../../hooks/useLoginHandler.tsx";
 import { Link } from "react-router";
+import { XinputPassword } from "../../ui/variants/XinputPassword.tsx";
 
 
 export default function Login() {
@@ -33,7 +34,9 @@ export default function Login() {
       <form onSubmit={handleSubmit} className="form">
         <Xinput
           value={username}
-          onChange={setUsername}
+          onChange={ (e:React.ChangeEvent<HTMLInputElement>) => {
+            setUsername(e.target.value)
+          }}
           label="Mail identifiant"
           autoComplete="username"
           placeholder="Adresse mail ou ID"
@@ -41,7 +44,9 @@ export default function Login() {
 
         <XinputPassword
           value={password}
-          onChange={setPassword}
+          onChange={ (e:React.ChangeEvent<HTMLInputElement>) => {
+            setPassword(e.target.value)
+          }}
           label="Mot de passe"
           placeholder="Mot de passe"
           autoComplete="current-password"

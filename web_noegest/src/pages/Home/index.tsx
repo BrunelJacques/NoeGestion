@@ -1,12 +1,12 @@
+// src/ui/variants/XinputDate.tsx
 import { useAuth } from "../../hooks/useAuth.tsx";
-import XdateInput from "../../ui/Xdate/index.tsx";
-import { Xtest } from "../../ui/Xtest/index.tsx";
-import { XinputDate } from "../../ui/Xinput/index.tsx";
+import { XinputDate } from "../../ui/variants/XinputDate.tsx";
+import { Xinput } from "../../ui/Xinput/index.tsx";
+import { XinputPhone } from "../../ui/variants/XinputPhone.tsx";
 
-
-function noAction(val: string){
-  if (val.trim() !== "") {
-    console.log("Noaction valeur:", val);
+function noAction(val:React.ChangeEvent<HTMLInputElement> ){
+  if (val.target.value.trim() !== "") {
+    console.log("Home Noaction:", val);
   }
 
   return
@@ -18,24 +18,27 @@ export default function Home () {
   return (
     <div>
       <h1>Welcome {user?.username}</h1>
-      <Xtest 
-        value={user?.naissance}
-        onChange={(val: string) => console.log("Nouvelle valeur:", val)}
-        placeholder="placeholder"
-        label="libellé" />
 
-      <XdateInput
-        value={user?.naissance}
+      <Xinput 
+        value={user?.bday}
         onChange={noAction}
-        label="Date XdateInput"
-      />
+        placeholder="placeholder"
+        label="Xinput nature" />
 
       <XinputDate
-        value={user?.naissance}
+        value={user?.bday}
         onChange={noAction}
-        label="Date XinputDate"
+        label="XinputDate"
         autoComplete="bday"
       />
+
+      <XinputPhone
+        value={user?.phone}
+        onChange={noAction}
+        label="XinputPhone"
+        autoComplete="06xxyyzzww"
+      />
+
 
     </div>
   );

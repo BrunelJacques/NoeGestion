@@ -1,5 +1,5 @@
-import Xbutton from '../../ui/Xbutton';
-import Xinput      from '../../ui/Xinput';
+import { Xbutton } from '../../ui/Xbutton';
+import { Xinput}      from '../../ui/Xinput';
 import HelloWorld from '../HelloWorld';
 import { useState } from 'react';
 import { useError } from '../../contexts/ErrorContext';

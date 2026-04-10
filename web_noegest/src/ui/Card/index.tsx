@@ -1,6 +1,6 @@
 // Card.tsx
-import Xbutton from '../Xbutton';
-import Xinput from '../Xinput';
+import { Xbutton } from '../Xbutton';
+import { Xinput} from '../Xinput';
 
 interface CardProps {
   title: string;
