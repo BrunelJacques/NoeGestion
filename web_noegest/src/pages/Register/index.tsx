@@ -1,8 +1,9 @@
 // src/pages/Register.tsx
 
 import { useState } from "react";
-import  Xinput, { XinputDate } from "../../ui/Xinput/index.tsx";
+import  Xinput from "../../ui/Xinput/index.tsx";
 import  Xbutton from "../../ui/Xbutton/index.tsx";
+import XdateInput from "../../ui/Xdate/index.tsx";
 import * as s from "./index.css.ts"
 import { useAuth } from "../../hooks/useAuth.tsx";
 
@@ -32,7 +33,7 @@ export default function Register() {
     <form onSubmit={handleSubmit} className={s.cardGrid}>
       <Xinput
         value={user?.email}
-        onChange={noAction}
+        //onChange={noAction}
         label="Mail identifiant"
         placeholder="adresse mail"
         autoComplete="email"
@@ -57,7 +58,7 @@ export default function Register() {
         disabled={isLogged}
       />
 
-      <XinputDate
+      <XdateInput
         value={user?.naissance}
         onChange={noAction}
         label="Date de naissance"

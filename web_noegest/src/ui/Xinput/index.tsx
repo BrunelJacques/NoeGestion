@@ -58,14 +58,13 @@ function formatDateInput(raw: string): string {
   if (digits.length >= 4) parts.push(digits.slice(2, 4));       // mm
   if (digits.length > 4)  parts.push(digits.slice(4, 8));       // aaaa
 
-  console.log("formatDate:", raw, parts.join("/"))
+  //console.log("formatDate:", raw, parts.join("/"))
   //return parts.join("/");
   return raw
 }
 
 
 export function XinputDate(props: XinputProps) {
-  //const [date, setDate] = useState("");
   const [raw, setRaw] = useState("");
   
   return (

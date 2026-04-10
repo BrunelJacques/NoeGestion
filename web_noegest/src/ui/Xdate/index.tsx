@@ -1,6 +1,6 @@
+// src/ui/Xdate/index.tsx
 import { ComponentPropsWithoutRef, useState, ChangeEvent } from 'react';
 import { inputStyle, errorStyle } from './index.css';
-
 
 
 // On utilise Omit pour remplacer le onChange standard par le tien (qui attend une string)
@@ -14,10 +14,10 @@ interface XinputProps extends Omit<
 }
 
 
-export const Xtest = (props: XinputProps) => {
+export default function XdateInput(props: XinputProps) {
   const [date, setDate] = useState('');
   const [isValid, setIsValid] = useState(true);
-  
+
   const handleDateChange = (e: ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value.replace(/\D/g, ''); // On retire tout ce qui n'est pas un chiffre
     
@@ -56,10 +56,10 @@ export const Xtest = (props: XinputProps) => {
     }
   };
 
-  console.log("Xtest props:",props)
   return (
     <div>
       <input
+        {...props}
         type="text"
         placeholder="JJ/MM/AAAA"
         value={date}
