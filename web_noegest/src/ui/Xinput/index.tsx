@@ -25,9 +25,11 @@ export function Xinput({
   ...props
 }: XinputProps) {
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (disabled) return;
+
     
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+    if (disabled) return;
     onChange?.(e);
   };
 

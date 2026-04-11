@@ -1,24 +1,29 @@
 // src/ui/variants/XinputDate.tsx
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Xinput, XinputProps } from "../Xinput";
-import { formatDateInput, isValidDate } from "../formaters/date.ts";
+import { formatDateInput as formatValue, isValidDate } from "../formaters/date.ts";
 import * as s from "../Xinput/index.css";
+import { handleCursor } from "../formaters/handleCursor.ts";
 
 
 export function XinputDate(props: XinputProps) {
-  const [raw, setRaw] = useState("");
-  const formatted = formatDateInput(raw);
-  const valid = isValidDate(raw);
+  
+  const [value, setValue] = useState("");
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const valid = isValidDate(value);
 
   return (
     <div className={s.wrapperV}>
       
       <Xinput
         {...props}
-        value={formatted}
-        placeholder="jj/mm/aaaa"
+        ref={inputRef} // sans ref, inputRef reste null
+        value={value}
         maxLength={10}
-        onChange={(x) => setRaw(x.target.value)}
+        onChange={(e:React.ChangeEvent<HTMLInputElement>) => {
+          handleCursor({ event: e, inputRef, formatValue, setValue })
+        }}
+        placeholder="jj/mm/aaaa"
         error={!valid ? "Date invalide" : null}
       />
     </div>
