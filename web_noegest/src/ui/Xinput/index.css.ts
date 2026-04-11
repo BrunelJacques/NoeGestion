@@ -3,14 +3,19 @@ import { style } from '@vanilla-extract/css'
 import { colors } from '../../assets/styles/colors.css'
 import { vars } from '../../assets/styles/themes.css'
 
-export const wrapper = style({
+export const wrapperV = style({
   display: "flex",
-  alignItems: "center",
-  gap: "8px",
-  width: "100%",
+  flexDirection: "column",
   position: 'relative',
 });
 
+export const wrapperH = style({
+  display: "flex",
+  flexDirection: "row",
+  alignItems: "center",
+  gap: "8px",
+  width: "100%",
+})
 
 export const label = style({
   textAlign: "right",
@@ -30,28 +35,32 @@ export const baseInput = style({
   padding: '3px 5px 3px 10px', // space for icon 2.8rem
   borderRadius: '5px',
   border: `1px solid ${vars.color.border}`,
-  background: colors.bgInput,
-  color: colors.txtDarkGray,
-  fontSize: '12px',
-  transition:
-    'border-color 120ms ease-out, box-shadow 120ms ease-out, background 120ms ease-out',
 
-    ':hover': {
-    background: 'white',
+  selectors: {
+    "&:placeholder-shown": { // placeHloder ou blanc
+    background: colors.bgInput,
+    color: colors.txt_lessdark,
+    fontSize: '12px',
+    fontWeight: "lighter",
+    },
+    "&:not(:placeholder-shown)": { // placeHolder null ou masqué par value
+    background: colors.bgSaisie,
+    color: colors.txt_dark,
+    fontSize: '14px',
+    fontWeight: "bold",
+    },
+    '&:hover': { background: 'white'},
+
+    '&:focus': {
+      outline: 'none',
+      fontSize: '18px',
+      borderColor: vars.color.primary,
+      background:  colors.bgSaisie,
+      color: colors.txtBlack,
+      boxShadow: `2px 2px 10px 3px ${vars.color.primary}`,//offsetRight, offsetDown, gradiant, largeur, couleur
+    },
   },
 
-  ':focus': {
-    outline: 'none',
-    fontSize: '18px',
-    borderColor: vars.color.primary,
-    background:  colors.bgSaisie,
-    color: colors.txtBlack,
-    boxShadow: `2px 2px 10px 3px ${vars.color.primary}`,//offsetRight, offsetDown, gradiant, largeur, couleur
-  },
-
-  '::placeholder': {
-    color:  colors.txt_lessdark ,
-  },
 })
 
 export const toggleVisibilityStyle = style({
@@ -88,8 +97,8 @@ export const DateInputStyle = style({
 });
 
 export const errorStyle = style({
-  color: '#dc3545',
+  color: 'red',
+  background: colors.bglight_card,
   fontSize: '12px',
-  marginTop: '4px',
-  fontFamily: 'sans-serif',
+  margin: '0 auto 0 44%',
 });

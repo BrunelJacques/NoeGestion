@@ -79,7 +79,7 @@ export default function Register() {
         value=""
         onChange={noAction}
         label="Nvx mot de passe"
-        placeholder="8car Maj Min Chifre"
+        placeholder="8car+Maj+Min+Chiffre"
         autoComplete="off"
       />
       

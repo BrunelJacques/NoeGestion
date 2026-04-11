@@ -9,7 +9,7 @@ export function XinputPassword(props: XinputProps) {
     setIsVisible(!isVisible);
   };
   return (
-    <div  className={s.wrapper}>
+    <div  className={s.wrapperV}>
       <Xinput
         // Transmet les props en paquet
         {...props}

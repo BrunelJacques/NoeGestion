@@ -1,16 +1,12 @@
 // src/ui/formateurs/phone.ts
 
-export const formatPhone = (value: string): string => {
-  // Supprime tout sauf les chiffres
-  const digits = value.replace(/\D/g, "");
-
-  // Limite à 10 chiffres (format FR)
-  const trimmed = digits.slice(0, 10);
-
-  // Ajoute un espace tous les 2 chiffres
-  return trimmed.replace(/(\d{2})(?=\d)/g, "$1 ").trim();
+export const formatPhoneNumber = (value: string): string => {
+  const digits = value.replace(/\D/g, "").slice(0, 10);
+  return digits.replace(/(\d{2})(?=\d)/g, "$1 ").trim();
 };
 
+
+// non implémenté, gardé pour le futur 
 export const formatInternationalPhone = (value: string): string => {
   let digits = value.replace(/[^\d+]/g, "");
 
@@ -19,12 +15,6 @@ export const formatInternationalPhone = (value: string): string => {
     digits = "+" + digits.replace(/\+/g, "");
   }
 
-  return digits.replace(/(\d{2})(?=\d)/g, "$1 ").trim();
-};
-
-
-export const formatPhoneNumber = (value: string): string => {
-  const digits = value.replace(/\D/g, "").slice(0, 10);
   return digits.replace(/(\d{2})(?=\d)/g, "$1 ").trim();
 };
 
@@ -43,7 +33,6 @@ export const getCursorPosition = (formatted: string, digitIndex: number): number
 
   return formatted.length;
 };
-
 
 type HandlePhoneChangeParams = {
   event: React.ChangeEvent<HTMLInputElement>;

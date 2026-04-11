@@ -11,7 +11,7 @@ export function XinputDate(props: XinputProps) {
   const valid = isValidDate(raw);
 
   return (
-    <div className={s.wrapper}>
+    <div className={s.wrapperV}>
       
       <Xinput
         {...props}
@@ -19,9 +19,8 @@ export function XinputDate(props: XinputProps) {
         placeholder="jj/mm/aaaa"
         maxLength={10}
         onChange={(x) => setRaw(x.target.value)}
+        error={!valid ? "Date invalide" : null}
       />
-
-      {!valid && <p className={s.errorStyle}>Date invalide</p>}
     </div>
   );
 }
