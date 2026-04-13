@@ -27,7 +27,7 @@ globalStyle('h1, h2, h3', {
 });
 
 globalStyle('h4, h5, h6,p', {
-  margin: '3px 0 0 15px',
+  margin: '5px 0 0 15px',
   padding: '0',
 });
 
@@ -61,9 +61,19 @@ globalStyle('.discret',{
 globalStyle('.container', {
   marginLeft: 'auto',
   marginRight: 'auto',
-  maxWidth: '500px',
+  maxWidth: '700px',
+  alignContent: 'center',
   background: vars.color.body,
   transition: 'background-color 0.6s ease, color 0.6s ease'  
+})
+
+globalStyle('.subcontainer', {
+  display: 'block',
+  marginLeft: 'auto',
+  marginRight: 'auto',
+  alignContent: 'start',
+  justifyContent: 'space-evenly',
+  width: 'fit-content',
 })
 
 globalStyle('.form', {

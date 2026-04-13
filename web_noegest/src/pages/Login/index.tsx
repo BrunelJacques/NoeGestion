@@ -20,53 +20,56 @@ export default function Login() {
   }
   return (
     <div className="container">
-      <h3>Intranet Matthania</h3>
-      <h5>Accès réservé au staff de l'association.</h5>
-      <h5>
-        membre sans compte?
-        <Link to="/register" className={s.linkStyle}>
-          créer un compte
-        </Link>
-      </h5>
+      <div className="subcontainer">
+        <h3>Intranet Matthania</h3>
+        <h5>Accès réservé au staff de l'association.</h5>
+      
+        <hr className='discret' />
 
-      <hr className='discret' />
+        <form onSubmit={handleSubmit} className="form">
+          <Xinput
+            value={username}
+            onChange={ (e:React.ChangeEvent<HTMLInputElement>) => {
+              setUsername(e.target.value)
+            }}
+            label="Mail identifiant"
+            autoComplete="username"
+            placeholder="Adresse mail ou ID"
+          />
 
-      <form onSubmit={handleSubmit} className="form">
-        <Xinput
-          value={username}
-          onChange={ (e:React.ChangeEvent<HTMLInputElement>) => {
-            setUsername(e.target.value)
-          }}
-          label="Mail identifiant"
-          autoComplete="username"
-          placeholder="Adresse mail ou ID"
-        />
+          <XinputPassword
+            value={password}
+            onChange={ (e:React.ChangeEvent<HTMLInputElement>) => {
+              setPassword(e.target.value)
+            }}
+            label="Mot de passe"
+            placeholder="Mot de passe"
+            autoComplete="current-password"
+          />
 
-        <XinputPassword
-          value={password}
-          onChange={ (e:React.ChangeEvent<HTMLInputElement>) => {
-            setPassword(e.target.value)
-          }}
-          label="Mot de passe"
-          placeholder="Mot de passe"
-          autoComplete="current-password"
-        />
-
-        <Xbutton type="submit">Validation</Xbutton>
-      </form>
-
+          <Xbutton type="submit">Validation</Xbutton>
+        </form>
+      </div>
       <hr />
 
-      {/* Rendu conditionnel : on vérifie si username n'est pas vide */}
-      {username.trim() !== "" && (
-        <h5>
-
-          Changer mot de passe?
+      <div className={s.containlink}>
+        {/* Rendu conditionnel : on vérifie si username n'est pas vide */}
+        {username.trim() !== "" && (
+          <h5 className={s.inlineBlock}>
+            Changer mot de passe?
+            <Link to="/register" className={s.linkStyle}>
+              renvoi mot_passe
+            </Link>
+          </h5>
+        )}
+        <h5 className={s.inlineBlock}>
+          Membre sans compte?
           <Link to="/register" className={s.linkStyle}>
-            renvoi mot_passe
+            créer un compte
           </Link>
         </h5>
-      )}
+      </div>
+
     </div>
   );
 }
