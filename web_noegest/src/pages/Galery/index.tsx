@@ -34,15 +34,20 @@ export default function Galery() {
         Xbutton: Déclencher une erreur?
       </Xbutton>
 
-      <Xinput
+       <Xinput
         value= {myVariable}
-        onChange={setMyVariable}
-        placeholder="Ici saisie de ma variable"  />
-    
-      <Card title='MyCard Tittle' 
-        description="Je la décris ainsi"
-        onAction= {()=>console.log("clic my car")} />
-
+        onChange={(e:React.ChangeEvent<HTMLInputElement>) => {
+              setMyVariable(e.target.value)
+        }}
+        placeholder="Ici saisie de ma variable"  /> 
+  
+        <Card 
+          title='MyCard Tittle' 
+          description="Je la décris ainsi"
+        >
+          ceci est un child à composer et styler
+        </Card>        
+         
       <p>Thème actuel : {theme}</p>
       <button onClick={()=>toggleTheme(theme)}>
         Passer en mode {theme === 'light' ? '🌙 Dark' : '☀️ Light'}
