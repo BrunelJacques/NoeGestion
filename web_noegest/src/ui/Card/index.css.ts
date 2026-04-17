@@ -9,7 +9,11 @@ export const titleStyle = style({
 });
 
 export const contentStyle = style({
-  fontSize: '0.9rem',
+  display: "flex",
+  flexWrap: "wrap",
+  justifyContent: "center",
+  gap: 16,
+  margin: 10,
+  fontSize: '14px',
   lineHeight: '1.5',
-  opacity: 0.8,
 });
