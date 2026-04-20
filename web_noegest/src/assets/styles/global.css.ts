@@ -21,8 +21,21 @@ globalStyle('*', {
   boxSizing: 'border-box',
 })
 
+globalStyle('h3, h4',{
+  fontSize: '18px',
+});
+
+globalStyle('h5, h6',{
+  fontSize: '14px',
+});
+
+globalStyle('h7, h8',{
+  fontSize: '12px',
+});
+
+
 globalStyle('h1, h2, h3', {
-  margin: '7px 0 0 7px',
+  margin: '5px 0 0 7px',
   padding: '0',
 });
 
@@ -62,8 +75,6 @@ globalStyle('.container', {
   marginLeft: 'auto',
   marginRight: 'auto',
   maxWidth: '700px',
-  alignContent: 'center',
-  background: vars.color.body,
   transition: 'background-color 0.6s ease, color 0.6s ease'  
 })
 
@@ -71,7 +82,6 @@ globalStyle('.subcontainer', {
   display: 'block',
   marginLeft: 'auto',
   marginRight: 'auto',
-  alignContent: 'start',
   justifyContent: 'space-evenly',
   width: 'fit-content',
 })
@@ -89,14 +99,10 @@ globalStyle('.form', {
 globalStyle('.card', {
   display: 'flex',
   flexDirection: 'column',
-  margin: "20px auto",
+  margin: "10px auto 0 auto",
   background: vars.color.card, // Utilise la couleur de surface du thème
   color: vars.color.text,             // Utilise le texte du thème
   borderRadius: '8px',
   boxShadow: `0 0 5px -1px ${vars.color.primary}`,
   transition: 'transform 0.2s ease-in-out, background-color 0.3s ease'
-})
-
-globalStyle('.card:hover', {
-  transform: 'translateY(-4px)',
 })

@@ -13,7 +13,7 @@ export const contentStyle = style({
   flexWrap: "wrap",
   justifyContent: "center",
   gap: 16,
-  margin: 10,
+  margin: '0 10px 5px 10px',
   fontSize: '14px',
   lineHeight: '1.5',
 });

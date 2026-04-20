@@ -11,7 +11,7 @@ export function Error404() {
 
   return (
     <div className={s.wrapper}>
-      <h4 className={s.subtitle[theme]}>
+      <h4 className={s.description[theme]}>
         Il semblerait que la page que vous cherchez n’existe pas
       </h4>
 

@@ -18,7 +18,7 @@ export const baseLink = style({
   justifyContent: 'center',
 })
 
-export const linkRecipe = recipe({
+export const xLinkRecipe = recipe({
   base: baseLink,
 
   variants: {

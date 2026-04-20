@@ -21,7 +21,7 @@ export const title = styleVariants({
   },
 });
 
-export const subtitle = styleVariants({
+export const description = styleVariants({
   light: {
     color: vars.color.primary,
     fontWeight: 300,

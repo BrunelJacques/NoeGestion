@@ -14,7 +14,7 @@ export const colors = {
   txt_lessdark: " #215C98",
   txt_light: "#f5f5f5",
   txt_lesslight: "#c5c5ff",
-  brd_dark: "#104861",
+  brd_dark: "#44B3E1",
   brd_light: "#ffff00",
   bgBordeaux: "#b21e37",
   bgFooter: "#A5C3DB",

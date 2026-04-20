@@ -1,44 +1,42 @@
-// src/ui/variants/XinputDate.tsx
-import { Link } from "react-router-dom";
+// src/pages/Home.tsx
 import { useAuth } from "../../hooks/useAuth.tsx";
 import { Card } from "../../ui/Card/index.tsx";
+import { AppCard } from "../../ui/AppCard/index.tsx";
 import epicerie from "../../assets/images/epicerie2x.jpg";
 import minibus from "../../assets/images/minibus2x.jpg";
-import * as s from "./index.css.ts"
-
+import { XlinkAppli } from "../../ui/XlinkAppli/index.tsx";
 
 export default function Home () {
   const { user } = useAuth();
-  const actif = false;
+  const disabled = true;
   
   return (
     <div>
-      <h3>Noegestion de Matthania</h3>
-      <hr></hr>
-      <h5>Bienvenue  {user?.username} entre dans le service</h5> 
-      <Card title={"Cliquez sur une application active"} description={"les applications sont activées selon les droits de chaque utilisateur"} >
-        
-        <Link 
-        className={`card ${s.cardAppli}`}   
-        to="/stocks">
-          <img className={s.image} title="imgEpicerie" src={epicerie} />
-          <div className={s.cardText}>
-            <div>STOCKS</div>
-            <div>pour un calcul de prix de journée nourriture</div>
-          </div>
-        </Link>
+      <AppCard>
+        <h3>Noegestion de Matthania</h3>
+        <h5>Bienvenue  {user?.username} entre dans le service</h5> 
+      </AppCard>
+      <Card>
+        <AppCard>
+          <h5>Cliquez sur une application active</h5>
+          <p>les applications sont activées selon les droits de chaque utilisateur"</p>
+        </AppCard>           
+        <XlinkAppli
+          to="/stocks"
+          disabled={false}  
+          imageSrc={epicerie}
+          title="Gestion Stocks"
+          description="suivi des stocks pour prix de journée
+          "
+        />
 
-        <Link 
-        to="/km"
-        onClick={e => !actif && e.preventDefault()}
-        className={actif ? `card ${s.cardAppli}` : `card ${s.off}`}>
-          <img className={s.image} title="imgMinibus" src={minibus} />
-          
-          <div className={s.cardText}>
-            <div className={s.cardText}>Suivi KM {!actif && "_INACTIF"}</div>
-              pour le suivi des km et l'affectation du coût
-          </div>
-        </Link>
+        <XlinkAppli
+          to="/km"
+          disabled={disabled}  
+          imageSrc={minibus}
+          title="Suivi KM"
+          description="suivi des véhicules et l'affectation du coût"
+        />
 
       </Card>
     </div>
