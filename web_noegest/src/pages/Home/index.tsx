@@ -20,14 +20,14 @@ export default function Home () {
         <AppCard>
           <h5>Cliquez sur une application active</h5>
           <p>les applications sont activées selon les droits de chaque utilisateur"</p>
-        </AppCard>           
+        </AppCard>     
+
         <XlinkAppli
           to="/stocks"
           disabled={false}  
           imageSrc={epicerie}
           title="Gestion Stocks"
-          description="suivi des stocks pour prix de journée
-          "
+          description="suivi des stocks pour prix de journée"
         />
 
         <XlinkAppli

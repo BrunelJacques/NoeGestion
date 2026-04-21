@@ -40,6 +40,7 @@ export const xLinkRecipe = recipe({
 export const cardText = style({
    display:"flex",
    flexWrap: "wrap",
+   position: "relative",
    gap:3,
    padding: "3px 5px",
    maxWidth:160
@@ -53,3 +54,11 @@ export const image = style({
    padding: "5px",
 });
 
+export const overlay = style({
+  position: "absolute",
+  top: 28,
+  left: 30,
+  fontSize: 16,
+  fontWeight: 600,
+  color: colors.txt_dark,
+});

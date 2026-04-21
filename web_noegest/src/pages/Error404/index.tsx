@@ -7,7 +7,6 @@ import * as s from './index.css.ts';
 export function Error404() {
 
   const { theme } = useTheme(); // "light" | "dark"
-  console.log('Current theme in Error component:', theme);
 
   return (
     <div className={s.wrapper}>

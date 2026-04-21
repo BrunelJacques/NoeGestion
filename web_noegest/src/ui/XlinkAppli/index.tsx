@@ -21,6 +21,7 @@ export function XlinkAppli({
   description
 }: XlinkAppliProps) {
   return (
+  <>
     <Link 
       className={` ${s.xLinkRecipe({ disabled })}`}   
       to={to}
@@ -29,13 +30,15 @@ export function XlinkAppli({
     >
       <AppCard>
         <img className={s.image} title={title} src={imageSrc} />
-        <div>{disabled && "Inactif"}</div>
       </AppCard>
       <div className={s.cardText}>
         <h3>{title}</h3>
+        {disabled && <span className={s.overlay}>Inactif</span>}
         <p>{description}</p>
       </div>
     </Link>
+    
+  </>
   )
 }
 
