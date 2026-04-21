@@ -10,6 +10,9 @@ import Galery from './pages/Galery'
 import HelloWorld from './pages/HelloWorld'
 import Error404 from './pages/Error404'
 import Register from './pages/Register'
+import StFiltres from './stocks/pages/Filtres'
+import StMouvements from './stocks/pages/Mouvements'
+import StOneMvt from './stocks/pages/OneMvt'
 
 export const router = createBrowserRouter([
   {
@@ -30,6 +33,9 @@ export const router = createBrowserRouter([
           { path: '/home', element: <Home /> },
           { path: '/galery', element: <Galery /> },
           { path: '/logout', element: <Logout />},
+          { path: '/stocks/filtres', element: <StFiltres />},
+          { path: '/stocks/mouvements', element: <StMouvements />},
+          { path: '/stocks/one-mvt/:id', element: <StOneMvt />},
         ],
       },
       { path: '*', element: <Error404 /> },

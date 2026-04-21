@@ -23,8 +23,8 @@ export default function Home () {
         </AppCard>     
 
         <XlinkAppli
-          to="/stocks"
-          disabled={false}  
+          to="/stocks/pages/filtres"
+          disabled={false}
           imageSrc={epicerie}
           title="Gestion Stocks"
           description="suivi des stocks pour prix de journée"
