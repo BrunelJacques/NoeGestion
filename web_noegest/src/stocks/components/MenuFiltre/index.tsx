@@ -2,10 +2,17 @@
 
 
 
-export default function MenuFiltre() {
+export interface FiltresProps  {
+  altClassName?: string;
+}
+
+export default function MenuFiltre(props: FiltresProps) {
   return (
-    <div className="menu-filtre">
-      <span>Menu Filtre ________________ ___________________</span>
+    <div className={props.altClassName}>
+      <span>Menu Filtre test</span>
+      <span>Menu</span>
+      <span>Filtre</span>
+      <span>Menu_______Filtre</span>
     </div>
   );
 }

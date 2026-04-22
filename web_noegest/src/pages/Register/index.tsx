@@ -25,7 +25,7 @@ export default function Register() {
   return (
   <>
   <div className="container">
-    <h3>Demande de création de compte</h3>
+    <h2>Demande de création de compte</h2>
     <h4>Accès réservé au staff de l'association.</h4>
     <p>Vos données doivent correspondre à celles déjà détenues par Matthania.</p>
   </div>

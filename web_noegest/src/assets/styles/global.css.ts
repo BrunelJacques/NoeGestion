@@ -7,7 +7,6 @@ import { globalStyle } from '@vanilla-extract/css';
 // Styles globaux
 globalStyle('html, body', {
   backgroundColor: vars.color.body,
-  color: vars.color.text,
   margin: 0,
   padding: 0,
   fontFamily: 'Arial, sans-serif',
@@ -44,12 +43,9 @@ globalStyle('h4, h5, h6,p', {
   padding: '0',
 });
 
-globalStyle('h2, h4, h6', {
-  color: vars.color.textLower,
-});
-
 globalStyle('p',{
-  fontSize: '12px'
+  fontSize: '14px',
+  fontWeight: '500',
 })
 
 

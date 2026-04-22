@@ -21,7 +21,7 @@ export const label = style({
   textAlign: "right",
   whiteSpace: "nowrap",
   width: "40%",
-  fontSize: '12px',
+  fontSize: '14px',
   fontWeight: 500,
 });
 
@@ -40,7 +40,7 @@ export const baseInput = style({
     "&:placeholder-shown": { // placeHloder ou blanc
     background: colors.bgInput,
     color: colors.txt_lessdark,
-    fontSize: '12px',
+    fontSize: '14px',
     fontWeight: "lighter",
     },
     "&:not(:placeholder-shown)": { // placeHolder null ou masqué par value
@@ -86,7 +86,7 @@ export const DateInputStyle = style({
   padding: '8px 12px',
   borderRadius: '4px',
   border: '1px solid #ccc',
-  fontSize: '16px',
+  fontSize: '18px',
   outline: 'none',
   selectors: {
     '&:focus': {
