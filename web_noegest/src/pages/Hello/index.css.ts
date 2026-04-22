@@ -1,8 +1,8 @@
-// helloWorld.index.css.ts
+// hello.index.css.ts
 import { style } from "@vanilla-extract/css";
 import { colors } from "../../assets/styles/colors.css";
 
-export const helloWorld = style({
+export const hello = style({
   backgroundColor: colors.bgSaumon,
   color: colors.txtGray,
   padding: "0 20px",

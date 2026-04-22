@@ -6,8 +6,8 @@ import { colors } from '../../assets/styles/colors.css'
 
 export const baseLink = style({
   textDecoration: 'none',
-  padding: 3,
-  height: '90%',
+  padding: 2,
+  margin: 3,
   borderRadius: '8px',
   fontWeight: 500,
   transition: '0.2s ease',

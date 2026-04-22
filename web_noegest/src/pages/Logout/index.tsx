@@ -10,7 +10,7 @@ export default function Logout () {
 
   useEffect(() => {
     logout(); // Effacement user et tokens
-    navigate("/home", { replace: true });
+    navigate("/", { replace: true });
   }, [logout, navigate]);
 
   return <div>Logging out…</div>;

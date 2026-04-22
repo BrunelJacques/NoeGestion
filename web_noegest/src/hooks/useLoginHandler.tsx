@@ -17,7 +17,6 @@ export function useLoginHandler() {
     const result = await login(username, password);
 
     if (!result.success) {
-      console.log("WWW  useLoginHandler")
       setError( 
         [
           "Échec de login. Vérifiez vos identifiants",
@@ -30,6 +29,9 @@ export function useLoginHandler() {
     }
 
     setError(""); // Clear any previous error
+
+    console.log("WWW  useLoginHandler SUCCESS, navigate to:", to)
+
     navigate(to, { replace: true });
   }
 

@@ -45,26 +45,26 @@ export default function Header() {
   return (
     <div ref={menuRef} className={s.header}>
       
-      <Link to="/">
+      <Link to="/home">
         <img title="Home" className={s.home} src={Home} />
       </Link>
 
-      <Link to="/">
+      <Link to="/home">
         <img title="Logo" className={s.logo} src={Logo} />
       </Link>
 
       <div className={s.burger}
-          onClick={() => setIsOpen(!isOpen)}
+      onClick={() => setIsOpen(!isOpen)}
       >
         ☰
       </div>
 
       <nav className={isOpen ? s.nav.open : s.nav.closed}>
-        <Xlink $theme={theme} to="/" $isFullLink>
-          Accueil
+        <Xlink $theme={theme} to="/stocks/filtres" $isFullLink>
+          Stocks
         </Xlink>
-        <Xlink $theme={theme} to="/hello" $isFullLink> 
-          Hello
+        <Xlink $theme={theme} to="/km" $isFullLink> 
+          Km
         </Xlink>
         <Xlink $theme={theme} to="/galery" $isFullLink >
           Galery

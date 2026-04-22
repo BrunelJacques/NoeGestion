@@ -1,0 +1,16 @@
+// src/stocks/Layout/index.tsx
+import { Outlet } from "react-router-dom";
+import * as s from "./index.css";
+import { StMenu } from "../components/StMenu";
+
+
+export default function StLayout() {
+  return (
+//    <StProvider>
+    <div className={s.layout}>
+      <StMenu className={s.menu} />
+      <Outlet />
+    </div>
+//    </StProvider>
+  );
+}

@@ -1,13 +1,14 @@
 //src/stocks/pages/Filtres/index.tsx
-import CardFiltre from "../../components/CardFiltre";
-import MenuFiltre from "../../components/MenuFiltre";
 import * as s from "./index.css";
 
 export default function Filtres () {
   return (
-    <div className={s.filtres}>
-      <MenuFiltre className={`${s.menu}`}  />
-      <CardFiltre className={`${s.card}`} />
+    <div className={s.card}>
+      <span>Card Filtre  ___________________ ___________</span>
+      <span>AAAA AA</span>
+      <span>bbbb bbb</span>
+      <span>aaaaa a_______bb bbbbb</span>
     </div>
   );
-} 
+}
+

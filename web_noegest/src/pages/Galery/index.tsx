@@ -1,6 +1,6 @@
 import { Xbutton } from '../../ui/Xbutton';
 import { Xinput}      from '../../ui/Xinput';
-import HelloWorld from '../HelloWorld';
+import Hello from '../Hello';
 import { useState } from 'react';
 import { useError } from '../../contexts/ErrorContext';
 import { Card } from "../../ui/Card";
@@ -21,9 +21,9 @@ export default function Galery() {
     <> 
       <h3>Bonjour user: {user?.lastName}  {user?.firstName}</h3> 
       <h1>'Galery'</h1>
-      <h5>rappel HelloWorld </h5>
-      <HelloWorld />
-      <h5>Fin HelloWorld - autres éléments de Galery: </h5>
+      <h5>rappel Hello</h5>
+      <Hello />
+      <h5>Fin Hello - autres éléments de Galery: </h5>
       <hr className = {hrstyle} />
 
       <Xbutton

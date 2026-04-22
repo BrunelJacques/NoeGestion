@@ -5,7 +5,7 @@ import { Xinput }  from "../../ui/Xinput";
 import { Xbutton } from "../../ui/Xbutton";
 import * as s from "./index.css.ts";
 import { useLoginHandler } from "../../hooks/useLoginHandler.tsx";
-import { Link, useNavigate } from "react-router";
+import { Link } from "react-router";
 import { XinputPassword } from "../../ui/variants/XinputPassword.tsx";
 
 
@@ -13,14 +13,12 @@ export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { loginWithCredentials } = useLoginHandler();
-  const navigate = useNavigate();
 
 
   async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
     await loginWithCredentials(username, password);
-    navigate("/home");
-  } 
+  }
 
   return (
     <div className="container">

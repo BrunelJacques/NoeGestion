@@ -1,6 +1,7 @@
 
-export const  FILTRES0: TpFiltres= {
-  id: 0,
+export const  FILTRES0: TypFiltre= {
+  sens: "entrant",
+  tiers: "tous",
   jour: new Date(2022,8,17),//valeur pour démo, provisoire
   origine: "repas",
   service: 0,
@@ -10,8 +11,9 @@ export const  FILTRES0: TpFiltres= {
   modif: new Date()
 }
 
-export type TpFiltres = {
-  id: number;
+export type TypFiltre = {
+  sens: "entrant" | "sortant";
+  tiers: string;
   jour: Date;
   origine: string;
   service: number;
