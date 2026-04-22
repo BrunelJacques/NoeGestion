@@ -1,4 +1,4 @@
-//src/stocks/pages/Filtres/Mouvements/index.tsx
+//src/stocks/pages/Mouvements/index.tsx
 
 export default function Mouvements () {
   return (

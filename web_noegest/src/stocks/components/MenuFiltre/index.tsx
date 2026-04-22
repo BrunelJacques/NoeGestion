@@ -3,16 +3,16 @@
 
 
 export interface FiltresProps  {
-  altClassName?: string;
+  className?: string;
 }
 
 export default function MenuFiltre(props: FiltresProps) {
   return (
-    <div className={props.altClassName}>
+    <div className={props.className}>
       <span>Menu Filtre test</span>
       <span>Menu</span>
       <span>Filtre</span>
-      <span>Menu_______Filtre</span>
+      <span>Menu__ xxxxx  __  sssssssssssss ___Filtre</span>
     </div>
   );
 }

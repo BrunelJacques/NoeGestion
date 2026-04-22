@@ -1,12 +1,12 @@
 //src/stocks/components/CardFiltre/index.tsx
 
 export interface CardFiltreProps  {
-  altClassName?: string;
+  className?: string;
 }
 
 export default function CardFiltre(props: CardFiltreProps) {
   return (
-    <div className={props.altClassName}>
+    <div className={props.className}>
       <span>Card Filtre  ___________________ ___________</span>
       <span>AAAA AA</span>
       <span>bbbb bbb</span>

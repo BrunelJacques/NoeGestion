@@ -6,8 +6,8 @@ import * as s from "./index.css";
 export default function Filtres () {
   return (
     <div className={s.filtres}>
-      <MenuFiltre altClassName={`${s.menu}`}  />
-      <CardFiltre altClassName={`${s.card}`} />
+      <MenuFiltre className={`${s.menu}`}  />
+      <CardFiltre className={`${s.card}`} />
     </div>
   );
 } 

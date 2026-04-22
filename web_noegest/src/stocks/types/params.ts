@@ -1,5 +1,5 @@
 
-export const  PARAMS0: Params= {
+export const  FILTRES0: TpFiltres= {
   id: 0,
   jour: new Date(2022,8,17),//valeur pour démo, provisoire
   origine: "repas",
@@ -10,7 +10,7 @@ export const  PARAMS0: Params= {
   modif: new Date()
 }
 
-export type Params = {
+export type TpFiltres = {
   id: number;
   jour: Date;
   origine: string;
