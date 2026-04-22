@@ -30,8 +30,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
-    '192.168.1.54',
-    '192.168.1.98',
+    '192.168.1.29',
 ]
 
 # Application definition
@@ -155,7 +154,7 @@ SIMPLE_JWT = {
 }
 
 CORS_ORIGIN_ALLOW_ALL = True
-CORS_ALLOW_CREDENTIALS = False
+CORS_ALLOW_CREDENTIALS = True
 
 # ajouté pour test de google qui bloque internet
 SECURE_SSL_REDIRECT = False

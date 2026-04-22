@@ -24,20 +24,5 @@ export default function ProtectedRoute() {
   return <Outlet />;
 }
 
-/* 
-// original version Auth
-
-import type { JSX } from "react";
-
-const ProtectedRoute: React.FC<{ children: JSX.Element }> = ({ children }) => {
-  const { user, loading } = useAuth();
-
-  if (loading) return <div>Loading...</div>;
-  
-  return user ? children : <Navigate to="/login" replace />;
-};
-export default ProtectedRoute;
- */
-
 
 

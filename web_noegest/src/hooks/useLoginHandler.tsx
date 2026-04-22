@@ -24,13 +24,14 @@ export function useLoginHandler() {
         ]
           .filter(Boolean)
           .join(" - ")   
-        );
+      );
+
       return;
     }
 
     setError(""); // Clear any previous error
 
-    console.log("WWW  useLoginHandler SUCCESS, navigate to:", to)
+    console.log("useLoginHandler SUCCESS, navigate to:", to)
 
     navigate(to, { replace: true });
   }
