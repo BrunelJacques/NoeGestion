@@ -10,10 +10,10 @@ import Galery from './pages/Galery'
 import Hello from './pages/Hello'
 import Error404 from './pages/Error404'
 import Register from './pages/Register'
-import StFiltres from './stocks/pages/Filtres'
-import StMouvements from './stocks/pages/Mouvements'
-import StOneMvt from './stocks/pages/OneMvt'
-import StLayout from './stocks/StLayout'
+import StFiltres from './ap_stocks/components/FiltreMvt'
+import StMouvements from './ap_stocks/pages/Mouvements'
+import StOneMvt from './ap_stocks/pages/OneMvt'
+import StLayout from './ap_stocks/StLayout'
 
 export const router = createBrowserRouter([
   {

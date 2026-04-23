@@ -3,7 +3,7 @@ import { RouterProvider } from 'react-router-dom'
 import { router } from './router'
 import { AuthProvider } from './providers/AuthProvider'
 import { ThemeProvider } from './providers/ThemeProvider'
-import { ErrorProvider } from './contexts/ErrorContext'
+import { ErrorProvider } from './providers/ErrorProvider'
 
 
 function App() {

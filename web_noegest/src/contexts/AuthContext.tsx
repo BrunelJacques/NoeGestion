@@ -15,6 +15,8 @@ export interface LoginResponse extends Tokens {
   email: string;
   firstName: string;
   lastName: string;
+  bday: string;
+  phone: string;
   groups: string[];
   isStaff: boolean;
   isActive: boolean;

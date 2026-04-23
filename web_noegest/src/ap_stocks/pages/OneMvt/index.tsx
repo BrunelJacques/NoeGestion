@@ -1,4 +1,4 @@
-//src/stocks/pages/OneMvt/index.tsx
+//src/ap_stocks/pages/OneMvt/index.tsx
 /* 
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"

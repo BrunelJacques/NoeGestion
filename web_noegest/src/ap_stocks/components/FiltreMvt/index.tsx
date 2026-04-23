@@ -1,10 +1,10 @@
-//src/stocks/pages/Filtres/index.tsx
+//src/ap_stocks/components/FiltreMvt/index.tsx
 import * as s from "./index.css";
 
-export default function Filtres () {
+export default function FiltreMvt() {
   return (
     <div className={s.card}>
-      <span>Card Filtre  ___________________ ___________</span>
+      <span>Filtres mouvements</span>
       <span>AAAA AA</span>
       <span>bbbb bbb</span>
       <span>aaaaa a_______bb bbbbb</span>

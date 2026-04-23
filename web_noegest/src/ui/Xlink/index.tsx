@@ -1,6 +1,5 @@
 // src/ui/Xlink.tsx
-
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { xLinkRecipe } from './index.css'
 
 type StyledLinkProps = {
@@ -17,14 +16,17 @@ export default function Xlink({
   $isFullLink,
 }: StyledLinkProps) {
   return (
-    <Link
+    <NavLink
       to={to}
-      className={xLinkRecipe({
-        theme: $theme,
-        isFullLink: $isFullLink,
-      })}
+      className={({ isActive }) =>
+        xLinkRecipe({
+          theme: $theme,
+          isFullLink: $isFullLink,
+          isActive, // 👈 on passe l’état actif à la recette
+        })
+      }
     >
       {children}
-    </Link>
+    </NavLink>
   )
 }

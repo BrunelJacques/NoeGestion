@@ -3,6 +3,7 @@
 import { recipe } from '@vanilla-extract/recipes'
 import { style } from '@vanilla-extract/css'
 import { colors } from '../../assets/styles/colors.css'
+import { vars } from '../../assets/styles/themes.css'
 
 export const baseLink = style({
   textDecoration: 'none',
@@ -38,10 +39,21 @@ export const xLinkRecipe = recipe({
         background: colors.bgLink,
         color: colors.txt_lesslight,
         ':hover': { 
-            background: colors.bgHeader,
+            background: colors.bgInput,
             color: colors.txtGray
-
           },
+      },
+      false: {},
+    },
+
+    isActive: {
+      true: {
+        background: colors.bgInput,
+        color: colors.txtGray,
+        fontWeight: "bold",
+        border: `1px solid ${vars.color.border}`,
+        borderRadius: '8px',
+        boxShadow: `0 0 5px -1px ${vars.color.primary}`,
       },
       false: {},
     },

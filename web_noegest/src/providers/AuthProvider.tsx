@@ -8,8 +8,8 @@ import { apiUrl } from "../constants/api.Constants";
 
 import { api, setAuthTokens, setRefreshHandler, setLogoutHandler } from "./apiAxios"; 
 
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   // --- STATE INIT ---
   const [tokens, setTokens] = useState<Tokens | null>(() => {
@@ -143,6 +143,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         email: res.data.email,
         firstName: res.data.firstName,
         lastName: res.data.lastName,
+        bday: res.data.bday || "",
+        phone: res.data.phone ||  "",
         groups: res.data.groups,
         isStaff: res.data.isStaff,
         isActive: res.data.isActive,

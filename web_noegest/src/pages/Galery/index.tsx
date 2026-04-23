@@ -2,7 +2,7 @@ import { Xbutton } from '../../ui/Xbutton';
 import { Xinput}      from '../../ui/Xinput';
 import Hello from '../Hello';
 import { useState } from 'react';
-import { useError } from '../../contexts/ErrorContext';
+import { useError } from '../../hooks/useError.tsx';
 import { Card } from "../../ui/Card";
 import { useTheme } from "../../hooks/useTheme.tsx";
 import { hrstyle, localStyle } from "./index.css.ts";

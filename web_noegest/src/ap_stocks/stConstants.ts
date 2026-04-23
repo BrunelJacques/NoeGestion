@@ -1,7 +1,18 @@
-export class stConstants {
+  // src/ap_stocks/stCconstants.ts
 
-  // pour Stocks
-  static LSTSERVICE = [
+export interface IService {
+  id: number;
+  code: string;
+  libelle: string;
+}
+
+export interface IOrigine {
+  code: string;
+  libelle: string;
+}
+
+
+export const  Services: IService[] = [
     { id: 0, code: '-',  libelle: 'Non précisé 1-5' },
     { id: 1, code: 'matin', libelle: '1 Service du matin' },
     { id: 2, code: 'midi', libelle: '2 Service de midi' },
@@ -10,19 +21,16 @@ export class stConstants {
     { id: 5, code: 'tous', libelle: '5 Tout service' },
   ]
 
-  static LSTORIGINE_SORTIES = [
+export const  OriginesSorties: IOrigine[] = [
     { code:  'repas', libelle: 'Repas en cuisine' },
     { code:  'camp', libelle: 'Camp Extérieur' },
     { code:  'od_out', libelle: 'Régularisation' },
     { code:  'tout', libelle: 'Toute ligne (ss filtre)' },
   ]
 
-  static LSTORIGINE_ENTREES = [
+export const  OriginesEntrees: IOrigine[] = [
     { code:  'achat', libelle: 'Achats fournisseur' },
     { code:  'retour', libelle: 'Retour de camp' },
     { code:  'od_in', libelle: 'Régularisation' },
     { code:  'tout', libelle: 'Toute ligne (ss filtre)' },
   ]
-}
-
-export default stConstants 

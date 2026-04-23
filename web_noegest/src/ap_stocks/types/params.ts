@@ -1,26 +1,29 @@
 
 export const  FILTRES0: TypFiltre= {
-  sens: "entrant",
+  page: "sorties",
+  article: null,
   tiers: "tous",
   jour: new Date(2022,8,17),//valeur pour démo, provisoire
-  origine: "repas",
+  periode: null,
+  origine: "cuisine",
   service: 0,
   camp: "00",
-  fournisseur: "",
-  tva: "en TTC",
-  modif: new Date()
+  fournisseur: null,
+  tva: "TTC",
 }
 
 export type TypFiltre = {
-  sens: "entrant" | "sortant";
+
+  page: "entrées" | "sorties" | "article" ;
+  article?: string | null;
   tiers: string;
   jour: Date;
-  origine: string;
+  periode?: { debut: Date; fin: Date } | null;
+  origine : string;
   service: number;
   camp: string;
-  fournisseur: string;
-  tva: string;
-  modif: Date
+  fournisseur?: string | null;
+  tva: "TTC" | "HT";
 }
 
 export type Camp = {

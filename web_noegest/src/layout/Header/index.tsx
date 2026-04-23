@@ -1,3 +1,4 @@
+// src/layout/Header/index.tsx
 import { Link } from 'react-router-dom'
 import { useTheme } from '../../hooks/useTheme.tsx'
 import { useRef, useEffect, useState } from 'react'

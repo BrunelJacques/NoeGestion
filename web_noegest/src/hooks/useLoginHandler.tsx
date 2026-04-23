@@ -1,6 +1,6 @@
 // src/hooks/useLoginHandler.tsx
 import { useLocation, useNavigate } from "react-router-dom";
-import { useError } from "../contexts/ErrorContext.tsx";
+import { useError } from "./useError";
 import { useAuth } from "./useAuth";
 
 export function useLoginHandler() {
@@ -30,8 +30,6 @@ export function useLoginHandler() {
     }
 
     setError(""); // Clear any previous error
-
-    console.log("useLoginHandler SUCCESS, navigate to:", to)
 
     navigate(to, { replace: true });
   }

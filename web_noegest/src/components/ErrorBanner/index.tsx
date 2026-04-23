@@ -1,7 +1,7 @@
 // src/components/Error/index.tsx
 import { useTheme } from '../../hooks/useTheme.tsx';
 import * as s from './index.css.ts';
-import { useError } from '../../contexts/ErrorContext.tsx';
+import { useError } from '../../hooks/useError.tsx';
 import interroge from '../../assets/icons/interroge.png';
 
 
