@@ -4,7 +4,7 @@ import { colors } from "../../assets/styles/colors.css";
 
 
 export const layout = style({
-  display: "flex",
+  display: "block",
   flexDirection: "column", // mobile par défaut
   gap: 5,
   height: "calc(100vh - 78px)",

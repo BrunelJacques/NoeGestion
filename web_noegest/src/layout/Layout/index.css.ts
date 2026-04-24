@@ -1,18 +1,22 @@
+//Layout/index.css.ts
 import { style } from '@vanilla-extract/css'
 import { vars } from '../../assets/styles/themes.css'
 
 
 export const layout = style({
   minHeight: '100vh',
-  display: 'flex',
-  flexDirection: 'column',
-  transition: 'background-color 0.3s ease, color 0.3s ease', // Optionnel : transition douce
+  display: 'block',
+
 })
+
 
 export const outlet = style({
   backgroundColor: vars.color.body,
   color: vars.color.textLower,
   width: '100%',
-  flex: 1,
-  padding: 2
+  padding: "2px 2px 25px 2px", // pour éviter que le contenu soit collé au bord et pour laisser de la place au footer
+  minHeight: 0, // Pour que le scroll reste dans <main>
+  maxHeight: '100vh', 
+  boxSizing: 'border-box',
 })
+

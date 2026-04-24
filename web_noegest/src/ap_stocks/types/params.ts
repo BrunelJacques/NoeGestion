@@ -25,7 +25,6 @@ export type TypFiltreMvts = {
   fournisseur?: string | null;
   tva: "TTC" | "HT";
 }
-
 export type Camp = {
   id: 0;
   nom: string;

@@ -14,7 +14,6 @@ export default function Layout() {
   // On sélectionne la classe de thème générée par Vanilla-Extract
   const themeClass = theme === 'light' ? lightTheme : darkTheme;
 
-  // on wrappe toute l'appli avec le thème pour l'activer
   return (
     <div className={ `${themeClass} ${s.layout}` } >
       <Header />
