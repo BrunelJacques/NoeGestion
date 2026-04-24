@@ -1,5 +1,5 @@
 
-export const  FILTRES0: TypFiltre= {
+export const  FILTRES0: TypFiltreMvts= {
   page: "sorties",
   article: null,
   tiers: "tous",
@@ -12,16 +12,16 @@ export const  FILTRES0: TypFiltre= {
   tva: "TTC",
 }
 
-export type TypFiltre = {
+export type TypFiltreMvts = {
 
-  page: "entrées" | "sorties" | "article" ;
-  article?: string | null;
+  page: "entrees" | "sorties" | "article" ;
+  article?: string[] | null;
   tiers: string;
   jour: Date;
   periode?: { debut: Date; fin: Date } | null;
   origine : string;
   service: number;
-  camp: string;
+  camp?: string;
   fournisseur?: string | null;
   tva: "TTC" | "HT";
 }

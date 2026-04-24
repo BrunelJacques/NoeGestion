@@ -1,12 +1,17 @@
   // src/ap_stocks/stCconstants.ts
 
-export interface IService {
+interface IService {
   id: number;
   code: string;
   libelle: string;
 }
 
-export interface IOrigine {
+enum OrigineSens {
+  Sorties = "sorties",
+  Entrees = "entrees",
+}
+
+interface IOrigine {
   code: string;
   libelle: string;
 }
@@ -21,16 +26,17 @@ export const  Services: IService[] = [
     { id: 5, code: 'tous', libelle: '5 Tout service' },
   ]
 
-export const  OriginesSorties: IOrigine[] = [
+export const  Origines: Record<OrigineSens, IOrigine[]>  = {
+  "sorties": [
     { code:  'repas', libelle: 'Repas en cuisine' },
     { code:  'camp', libelle: 'Camp Extérieur' },
     { code:  'od_out', libelle: 'Régularisation' },
     { code:  'tout', libelle: 'Toute ligne (ss filtre)' },
-  ]
-
-export const  OriginesEntrees: IOrigine[] = [
+  ],
+  "entrees": [
     { code:  'achat', libelle: 'Achats fournisseur' },
     { code:  'retour', libelle: 'Retour de camp' },
     { code:  'od_in', libelle: 'Régularisation' },
     { code:  'tout', libelle: 'Toute ligne (ss filtre)' },
   ]
+}

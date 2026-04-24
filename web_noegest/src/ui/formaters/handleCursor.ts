@@ -1,5 +1,5 @@
 // src/ui/formaters/cursorHandle.ts
-// gère le curseur en modif-saisie pour les entrées reformatées, évite le end posit 
+// gère le curseur en modif-saisie pour les entrees reformatées, évite le end posit 
 
 const getCursorPosition = (formatted: string, digitIndex: number): number => {
   let count = 0;
