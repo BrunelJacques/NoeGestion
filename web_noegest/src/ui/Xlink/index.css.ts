@@ -49,13 +49,17 @@ export const xLinkRecipe = recipe({
     isActive: {
       true: {
         background: colors.bgInput,
-        color: colors.txtGray,
+        color: colors.txtLink,
         fontWeight: "bold",
         border: `1px solid ${vars.color.border}`,
         borderRadius: '8px',
         boxShadow: `0 0 5px -1px ${vars.color.primary}`,
       },
-      false: {},
+      false: {
+        background: colors.bgLink,
+        color: colors.txt_lesslight,
+
+      },
     },
   },
 

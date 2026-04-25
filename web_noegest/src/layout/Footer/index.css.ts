@@ -2,33 +2,23 @@
 import { style } from '@vanilla-extract/css'
 import { colors } from '../../assets/styles/colors.css'
 
-/* export const footer = style({
-  position: 'fixed',
-  bottom: 0,
-  width: '100%',
-  backdropFilter: 'blur(8px)',
-  // pour contenu
+
+
+export const footer = style({
+  // Pour éviter l'espace blanc "fantôme" vérifier minHeight:0 sur tous les parents en flex, 
+  // le passage en position sticky ou relatif est souvent plus sain que fixed en mobile
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  padding: '6px 0',
-  backgroundColor: colors.bgFooter,
-  zIndex: 100,
-})
- */
-
-//vu
-export const footer = style({
-  // Si vous voulez éviter l'espace blanc "fantôme", 
-  // le passage en position sticky ou relatif est souvent plus sain en mobile
-  position: 'sticky', 
-  bottom: 0,
+  //position: 'sticky', 
+  //bottom: '10px', // pour éviter que le footer soit collé au bord de l'écran en mobile
   width: '100%',
-  height: '40px',
-  background: '#333',
+  height: '30px',
   color: '#fff',
   flexShrink: 0,
-  zIndex: 100,
+  zIndex: 1,
+  padding: '6px 0',
+  background: colors.bgFooter,
 });
 
 

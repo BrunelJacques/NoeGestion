@@ -3,21 +3,13 @@
 import { style, styleVariants, type CSSProperties } from '@vanilla-extract/css'
 import { colors } from '../../assets/styles/colors.css'
 
-/* header à intégrer 
-  export const header = style({
+
+export const header = style({
   display: 'flex',
   padding: '0 10px',
   height: '40px',
   alignItems: 'center',
   backgroundColor: colors.bgHeader
-})
- */
-
-//vu
-export const header = style({
-  height: '60px', 
-  background: '#eee',
-  flexShrink: 0 // Empêche le header de s'écraser
 });
 
 export const home = style({
@@ -39,6 +31,7 @@ const desktopCommon: CSSProperties = {
   marginRight: 5,
   marginTop:0,
   padding: 0,
+  backgroundColor: colors.bgHeader
 };
 
 const isWideScreen = 'screen and (min-width: 601px)';// breakpoint pour les écrans plus larges que 600px
@@ -50,7 +43,9 @@ export const nav = styleVariants({
     position: 'absolute',
     top: 40,
     right: 7,
-    //minHeight: '100%',
+    zIndex: 100,
+    minWidth: '150px',
+    padding: 10,
 
     '@media': {
       [isWideScreen]: {

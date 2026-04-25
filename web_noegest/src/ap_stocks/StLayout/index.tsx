@@ -8,9 +8,7 @@ export default function StLayout() {
 
   return (
     <main className={s.domainLayout}>
-      <nav className={s.menu}>
-        <StMenu />
-      </nav>
+      <StMenu className={s.menu} />
       <Outlet />
     </main>
   );  

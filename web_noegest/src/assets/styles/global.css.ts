@@ -10,7 +10,7 @@ globalStyle('html, body', {
   margin: 0,
   padding: 0,
   fontFamily: 'Arial, sans-serif',
-  minHeight: '100vh',
+  minHeight: '100vh',// force à la taille de l'écran de l'écran
   width: '100%',
   maxWidth: 1000,
   transition: 'background-color 1.3s ease, color 1.3s ease'  
