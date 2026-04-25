@@ -11,7 +11,7 @@ export default function ErrorBanner() {
   if (!error) return null;
 
   return (
-    <div className={s.wrapper}>
+    <div className={s.errorBanner}>
       <div className={s.illustration}>
         <img
           src={interroge}

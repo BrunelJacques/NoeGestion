@@ -3,13 +3,17 @@
 import { style, styleVariants, type CSSProperties } from '@vanilla-extract/css'
 import { colors } from '../../assets/styles/colors.css'
 
-export const header = style({
+/* export const header = style({
   display: 'flex',
   padding: '0 10px',
   height: '40px',
   alignItems: 'center',
   backgroundColor: colors.bgHeader
 })
+ */
+export const header = style({
+  gridRow: '1',
+});
 
 export const home = style({
   height: '35px',

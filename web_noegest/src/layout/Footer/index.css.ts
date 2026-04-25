@@ -2,7 +2,7 @@
 import { style } from '@vanilla-extract/css'
 import { colors } from '../../assets/styles/colors.css'
 
-export const footer = style({
+/* export const footer = style({
   position: 'fixed',
   bottom: 0,
   width: '100%',
@@ -15,6 +15,18 @@ export const footer = style({
   backgroundColor: colors.bgFooter,
   zIndex: 100,
 })
+ */
+
+export const footer = style({
+  gridRow: '2',
+  position: 'fixed',
+  bottom: 0,
+  left: 0,
+  width: '100%',
+  height: '60px',
+  background: '#eee',
+  zIndex: 100,
+});
 
 
 

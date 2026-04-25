@@ -1,9 +1,30 @@
 //Layout/index.css.ts
 import { style } from '@vanilla-extract/css'
-import { vars } from '../../assets/styles/themes.css'
 
 
-export const layout = style({
+export const appLayout = style({
+  display: 'grid',
+  //gridTemplateRows: 'auto auto 1fr auto', // header, error, contenu, footer
+  gridTemplateRows: '1fr auto', //  footer fixe seul
+  height: '100vh',
+});
+
+export const scrollArea = style({
+  overflow: 'hidden', 
+  minHeight: 0,
+});
+
+export const domainLayout = style({
+
+  display: 'grid',
+  gridTemplateColumns: '150px 1fr', // menu + contenu
+  overflow: 'auto', 
+  minHeight: 0, // indispensable pour scroll interne
+});
+
+
+// old version à intégrer
+/* export const layout = style({
   minHeight: '100vh',
   display: 'block',
 
@@ -20,3 +41,4 @@ export const outlet = style({
   boxSizing: 'border-box',
 })
 
+ */

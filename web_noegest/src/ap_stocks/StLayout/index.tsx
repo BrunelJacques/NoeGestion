@@ -7,11 +7,11 @@ import { StMenu } from "../../ap_stocks/components/StMenu";
 export default function StLayout() {
 
   return (
-//    <StProvider>
-    <div className={s.layout}>
-      <StMenu className={s.menu} />
+    <div className={s.domainLayout}>
+      <aside className={s.menu}>
+        <StMenu />
+      </aside>
       <Outlet />
     </div>
-//    </StProvider>
   );  
 }

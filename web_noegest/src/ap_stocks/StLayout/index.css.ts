@@ -1,7 +1,16 @@
 // src/ap_stocks/StLayout/index.css.ts
 import { style } from "@vanilla-extract/css";
-import { colors } from "../../assets/styles/colors.css";
+//import { colors } from "../../assets/styles/colors.css";
 
+
+
+export const domainLayout = style({
+  display: 'grid',
+  gridTemplateColumns: '250px 1fr',
+  overflowY: 'auto',   // 🔥 scroll vertical principal
+  minHeight: 0,        // indispensable pour que le scroll fonctionne
+  maxHeight: 'calc(100vh - 78px)', // pour éviter que le contenu dépasse la hauteur de l'écran (78px = header + footer)
+});
 
 export const layout = style({
   display: "block",
@@ -16,8 +25,16 @@ export const layout = style({
     },
   },
 });
+ 
+export const menu = style({
+  gridColumn: '1',
+  overflowY: 'auto',
+  borderRight: '1px solid #ddd',
+  padding: '12px',
+  minHeight: 0,
+});
 
-
+/* 
 export const menu = style({
   display: "flex",
   flexDirection: "row",
@@ -33,3 +50,4 @@ export const menu = style({
     },
   },
 });
+ */

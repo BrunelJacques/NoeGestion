@@ -1,4 +1,4 @@
-// Layout.tsx
+//Layout/index.tsx
 
 import { Outlet } from 'react-router-dom'
 import Header from '../Header/index.tsx'
@@ -15,12 +15,13 @@ export default function Layout() {
   const themeClass = theme === 'light' ? lightTheme : darkTheme;
 
   return (
-    <div className={ `${themeClass} ${s.layout}` } >
-      <Header />
-      <ErrorBanner />
-      <main className={`${s.outlet}`}>
+    <div className={ `${themeClass} ${s.appLayout}` } >
+      <div className={s.scrollArea}>
+        <Header />
+        <ErrorBanner />
         <Outlet />
-      </main>
+      </div>
+
       <Footer />
     </div>
   )

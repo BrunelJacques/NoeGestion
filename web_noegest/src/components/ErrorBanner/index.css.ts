@@ -1,7 +1,7 @@
 import { CSSProperties, style, styleVariants } from '@vanilla-extract/css';
 import { colors } from '../../assets/styles/colors.css';  
 
-export const wrapper = style({
+/* export const wrapper = style({
   backgroundColor: colors.bgRose,
   borderBottom: "1px solid #e0a0a0",
   margin: '0',
@@ -10,6 +10,10 @@ export const wrapper = style({
   alignItems: 'center',
   padding: "4px",
   justifyContent: "space-between",
+});
+ */
+export const errorBanner = style({
+  gridRow: '2',
 });
 
 
