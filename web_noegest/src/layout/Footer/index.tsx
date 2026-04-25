@@ -16,6 +16,7 @@ function Footer() {
       >
         Afficher en mode {theme === 'light' ? 'noir 🌙' : 'clair ☀️'}
       </button>
+      
     </footer>
   )
 }

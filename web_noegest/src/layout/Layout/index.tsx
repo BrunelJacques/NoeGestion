@@ -15,13 +15,10 @@ export default function Layout() {
   const themeClass = theme === 'light' ? lightTheme : darkTheme;
 
   return (
-    <div className={ `${themeClass} ${s.appLayout}` } >
-      <div className={s.scrollArea}>
-        <Header />
-        <ErrorBanner />
-        <Outlet />
-      </div>
-
+    <div className={ `${themeClass} ${s.layoutContainer}` } >
+      <Header />
+      <ErrorBanner />
+      <Outlet />
       <Footer />
     </div>
   )

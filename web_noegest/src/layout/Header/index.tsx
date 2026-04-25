@@ -44,7 +44,7 @@ export default function Header() {
   const  logLabel  = user ? 'Logout' : 'Login';
   
   return (
-    <div ref={menuRef} className={s.header}>
+    <header ref={menuRef} className={s.header}>
       
       <Link to="/home">
         <img title="Home" className={s.home} src={Home} />
@@ -77,6 +77,6 @@ export default function Header() {
             <img title="profile" className={s.profile} src={profile} />
         </Xlink>
       </div>
-    </div>
+    </header>
   )
 }

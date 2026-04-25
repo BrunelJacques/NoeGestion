@@ -17,14 +17,17 @@ import { colors } from '../../assets/styles/colors.css'
 })
  */
 
+//vu
 export const footer = style({
-  gridRow: '2',
-  position: 'fixed',
+  // Si vous voulez éviter l'espace blanc "fantôme", 
+  // le passage en position sticky ou relatif est souvent plus sain en mobile
+  position: 'sticky', 
   bottom: 0,
-  left: 0,
   width: '100%',
-  height: '60px',
-  background: '#eee',
+  height: '40px',
+  background: '#333',
+  color: '#fff',
+  flexShrink: 0,
   zIndex: 100,
 });
 

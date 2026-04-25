@@ -1,6 +1,7 @@
 import { CSSProperties, style, styleVariants } from '@vanilla-extract/css';
 import { colors } from '../../assets/styles/colors.css';  
 
+// à intégrer errorBanner
 /* export const wrapper = style({
   backgroundColor: colors.bgRose,
   borderBottom: "1px solid #e0a0a0",
@@ -12,8 +13,12 @@ import { colors } from '../../assets/styles/colors.css';
   justifyContent: "space-between",
 });
  */
+
+//vu
 export const errorBanner = style({
-  gridRow: '2',
+  height: '40px', 
+  background: '#ffcccc',
+  flexShrink: 0 
 });
 
 

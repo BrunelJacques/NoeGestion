@@ -1,36 +1,17 @@
 //Layout/index.css.ts
 import { style } from '@vanilla-extract/css'
 
-
-export const appLayout = style({
-  display: 'grid',
-  //gridTemplateRows: 'auto auto 1fr auto', // header, error, contenu, footer
-  gridTemplateRows: '1fr auto', //  footer fixe seul
-  height: '100vh',
-});
-
-export const scrollArea = style({
-  overflow: 'hidden', 
-  minHeight: 0,
-});
-
-export const domainLayout = style({
-
-  display: 'grid',
-  gridTemplateColumns: '150px 1fr', // menu + contenu
-  overflow: 'auto', 
-  minHeight: 0, // indispensable pour scroll interne
+//vu
+export const layoutContainer = style({
+  display: 'flex',
+  flexDirection: 'column',
+  // On utilise min-height pour s'assurer que le footer est au moins en bas de l'écran
+  minHeight: '100vh', 
+  width: '100%',
 });
 
 
-// old version à intégrer
-/* export const layout = style({
-  minHeight: '100vh',
-  display: 'block',
-
-})
-
-
+/*  à intégrer pour outlet
 export const outlet = style({
   backgroundColor: vars.color.body,
   color: vars.color.textLower,

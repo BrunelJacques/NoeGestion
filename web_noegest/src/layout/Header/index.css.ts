@@ -3,7 +3,8 @@
 import { style, styleVariants, type CSSProperties } from '@vanilla-extract/css'
 import { colors } from '../../assets/styles/colors.css'
 
-/* export const header = style({
+/* header à intégrer 
+  export const header = style({
   display: 'flex',
   padding: '0 10px',
   height: '40px',
@@ -11,8 +12,12 @@ import { colors } from '../../assets/styles/colors.css'
   backgroundColor: colors.bgHeader
 })
  */
+
+//vu
 export const header = style({
-  gridRow: '1',
+  height: '60px', 
+  background: '#eee',
+  flexShrink: 0 // Empêche le header de s'écraser
 });
 
 export const home = style({

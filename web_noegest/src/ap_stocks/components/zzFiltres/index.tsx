@@ -3,7 +3,7 @@ import { useFiltresStocks } from "../../hooks/useFiltres";
 import { FILTRES0 } from "../../types/params";
 import * as s from "./index.css";
 
-export default function FiltreMvt() {
+export default function Filtres() {
 
   const { filtres, setFiltres } = useFiltresStocks(FILTRES0);
   
