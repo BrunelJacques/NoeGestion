@@ -2,7 +2,6 @@
 import { style } from "@vanilla-extract/css";
 import { colors } from "../../assets/styles/colors.css";
 import { vars } from "../../assets/styles/themes.css";
-//import { colors } from "../../assets/styles/colors.css";
 
 
 export const domainLayout = style({
@@ -39,7 +38,7 @@ export const menu = style({
   '@media': {
     'screen and (min-width: 600px)': {
       flexDirection: "column", // enfants en colonne
-      height: 'calc(100vh - 75px)', // 100% ne prend pastoute la hauteur du conteneur!!
+      height: 'calc(100vh - 70px)', // 100% ne prend pastoute la hauteur du conteneur!!
       width: '150px', // Desktop : largeur fixe
       alignSelf: 'start',
       

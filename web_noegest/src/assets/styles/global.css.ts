@@ -6,7 +6,6 @@ import { globalStyle } from '@vanilla-extract/css';
 
 // Styles globaux
 globalStyle('html, body', {
-  backgroundColor: vars.color.body,
   margin: 0,
   padding: 0,
   fontFamily: 'Arial, sans-serif',
@@ -67,12 +66,28 @@ globalStyle('.discret',{
  background: "transparent",
 })
 
-globalStyle('.container', {
+const baseContainer = {
   marginLeft: 'auto',
   marginRight: 'auto',
   maxWidth: '700px',
-  transition: 'background-color 0.6s ease, color 0.6s ease'  
-})
+  alignItems: 'center',
+  justifyContent: 'center',
+  backgroundColor: vars.color.body,
+  color: vars.color.text,
+  transition: 'background-color 0.6s ease, color 0.6s ease',
+} as const; // "as const" permet de garder un typage strict
+
+globalStyle('.container', {
+  ...baseContainer,
+});
+
+// Style pour .pagecontainer
+globalStyle('.pagecontainer', {
+  ...baseContainer,
+  display: 'flex',
+  flexDirection: 'column',
+  minHeight: 'calc(100vh - 70px)',
+});
 
 globalStyle('.subcontainer', {
   display: 'block',

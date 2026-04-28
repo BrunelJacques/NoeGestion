@@ -3,6 +3,14 @@ import { style } from '@vanilla-extract/css'
 import { vars } from '../../assets/styles/themes.css'
 import { breakpoints } from '../../assets/styles/utilities.css';
 
+
+export const pagecontainer = style({
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  minHeight: 'calc(100vh - 70px)', // retire heights header et footer
+})
+
 export const cardGrid = style({
   display: 'grid',
   margin: '15px 4px',
@@ -17,7 +25,6 @@ export const cardGrid = style({
     },
   },
 });
-
 
 
 export const localCard = style({ 

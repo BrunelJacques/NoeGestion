@@ -4,7 +4,6 @@ import { vars } from '../../assets/styles/themes.css'
 import { colors } from '../../assets/styles/colors.css'
 
 
-
 export const containlink = style({
   display: 'flex',
   marginTop: '10px',
@@ -31,7 +30,7 @@ export const linkStyle = style({
 export const inlineBlock = style({
   display: 'inline-block',
   width: 'fit-content',
-  margin: '5px auto 0 auto',
+  margin: '5px auto 3px auto',
 })
 
 export const marginlink = style({  

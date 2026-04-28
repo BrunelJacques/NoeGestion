@@ -21,7 +21,7 @@ export default function Login() {
   }
 
   return (
-    <div className="container">
+    <div className="pagecontainer">
       <div className="subcontainer">
         <h2>Intranet Matthania</h2>
         <h3>Accès réservé au staff de l'association.</h3>
