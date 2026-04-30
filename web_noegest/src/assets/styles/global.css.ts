@@ -9,7 +9,6 @@ globalStyle('html, body', {
   margin: 0,
   padding: 0,
   fontFamily: 'Arial, sans-serif',
-  minHeight: '100vh',// force à la taille de l'écran de l'écran
   width: '100%',
   maxWidth: 1000,
   transition: 'background-color 1.3s ease, color 1.3s ease'  
@@ -81,15 +80,15 @@ globalStyle('.container', {
   ...baseContainer,
 });
 
-// Style pour .pagecontainer
-globalStyle('.pagecontainer', {
+// Style pour .pageContainer
+globalStyle('.pageContainer', {
   ...baseContainer,
   display: 'flex',
   flexDirection: 'column',
-  minHeight: 'calc(100vh - 70px)',
+  minHeight: 'calc(100vh - 100px)',
 });
 
-globalStyle('.subcontainer', {
+globalStyle('.subContainer', {
   display: 'block',
   marginLeft: 'auto',
   marginRight: 'auto',

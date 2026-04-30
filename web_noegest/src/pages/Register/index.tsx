@@ -23,7 +23,7 @@ export default function Register() {
     }
     
   return (
-  <div className={s.pagecontainer}>
+  <div className={s.pageContainer}>
     <div className="container">
       <h2>Demande de création de compte</h2>
       <h4>Accès réservé au staff de l'association.</h4>
