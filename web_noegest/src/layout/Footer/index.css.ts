@@ -13,11 +13,11 @@ export const footer = style({
   //position: 'sticky', 
   //bottom: '10px', // pour éviter que le footer soit collé au bord de l'écran en mobile
   width: '100%',
-  height: '30px',
+  height: '25px',
   color: '#fff',
   flexShrink: 0,
   zIndex: 1,
-  padding: '6px 0',
+  padding: '0',
   background: colors.bgFooter,
 });
 

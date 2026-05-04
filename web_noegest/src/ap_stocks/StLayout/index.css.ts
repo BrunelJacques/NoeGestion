@@ -11,7 +11,7 @@ export const domainLayout = style({
   padding: '3px 0',
   gap: '3px',
   minHeight: 0, // IMPORTANT pour permettre aux enfants de scroller en flex
-  maxHeight: 'calc(100vh - 70px)', // pour éviter que le contenu dépasse la hauteur de l'écran (78px = header + footer)
+  height: 'calc(100vh - 72px)', // pour éviter que le contenu dépasse la hauteur de l'écran (100vh - header - footer)
   backgroundColor: vars.color.body,
   color: vars.color.textLower,
 
@@ -21,12 +21,11 @@ export const domainLayout = style({
     },
   },});
 
- 
 
 export const menu = style({
   display: "flex",
   flexDirection: "row",
-  width: '100%', // Mobile : prend toute la largeur
+  //width: '100%', // Mobile : prend toute la largeur
   border: `2px solid ${vars.color.border}`, // pour éviter que le menu dépasse la hauteur de l'écran
   position: 'sticky',
   top: 0,

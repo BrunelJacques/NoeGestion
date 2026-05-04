@@ -18,7 +18,9 @@ export default function Layout() {
     <div className={ `${themeClass} ${s.layoutContainer}` } >
       <Header />
       <ErrorBanner />
-      <Outlet />
+      <div className='pageContainer'>
+        <Outlet />
+      </div>
       <Footer />
     </div>
   )

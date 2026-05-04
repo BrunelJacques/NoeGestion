@@ -1,6 +1,7 @@
 // src/ui/variants/XinputDate.tsx
 import { useRef, useState } from "react";
-import { Xinput, XinputProps } from "../Xinput";
+import { Xinput } from "../Xinput";
+import type { XinputProps } from "../Xinput";
 import { formatDateInput as formatValue, isValidDate } from "../formaters/date.ts";
 import * as s from "../Xinput/index.css";
 import { handleCursor } from "../formaters/handleCursor.ts";

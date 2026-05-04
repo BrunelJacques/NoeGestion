@@ -1,7 +1,8 @@
 // src/ap_stocks/hooks/useFiltres.tsx
 
 import { useState, useEffect } from "react";
-import { FILTRES0, TypFiltreMvts } from "../types/params";
+import { FILTRES0 } from "../types/params";
+import type { TypFiltreMvts } from "../types/params";
 
 const STORAGE_KEY = "stocks-filtres";
 

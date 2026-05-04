@@ -10,10 +10,11 @@ export const ligne = style({
 });
 
 export const tableauWrapper = style({
-  flex: 1,
+
   overflow: 'auto', // C'est lui qui permet le scroll 2D
   border: '1px solid #ccc',
   position: 'relative', 
+  height: 'calc(100vh)',
   zIndex: 25, 
   color: vars.color.textLower,
   background: vars.color.body,
@@ -40,13 +41,13 @@ export const columnHeader = style({
   top: 0,
   background: '#fff',
   zIndex: 10,
-  padding: '8px',
+  padding: '0px',
   borderBottom: `1px solid ${vars.color.border}`,
   fontWeight: 'bold', 
 });
 
 export const dataCell = style({
-  padding: '4px',
+  padding: '2px',
   border: `thin solid ${colors.txtLightGray}`,
   
 });

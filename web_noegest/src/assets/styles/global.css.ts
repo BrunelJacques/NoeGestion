@@ -66,11 +66,7 @@ globalStyle('.discret',{
 })
 
 const baseContainer = {
-  marginLeft: 'auto',
-  marginRight: 'auto',
   maxWidth: '700px',
-  alignItems: 'center',
-  justifyContent: 'center',
   backgroundColor: vars.color.body,
   color: vars.color.text,
   transition: 'background-color 0.6s ease, color 0.6s ease',
@@ -78,14 +74,19 @@ const baseContainer = {
 
 globalStyle('.container', {
   ...baseContainer,
+  marginLeft: 'auto',
+  marginRight: 'auto',
+  alignItems: 'center',
 });
 
-// Style pour .pageContainer
+  // Style pour .pageContainer
 globalStyle('.pageContainer', {
   ...baseContainer,
   display: 'flex',
   flexDirection: 'column',
-  minHeight: 'calc(100vh - 100px)',
+  minHeight: 'calc(100vh - 65px)',// retire heights header et footer
+  justifyContent: 'center',
+
 });
 
 globalStyle('.subContainer', {

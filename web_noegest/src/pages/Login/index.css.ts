@@ -7,7 +7,7 @@ import { colors } from '../../assets/styles/colors.css'
 export const containlink = style({
   display: 'flex',
   marginTop: '10px',
-  marginLeft: 'auto',
+  marginLeft: '20px',
   marginRight: 'auto',
   gap: '5px',
   alignContent: 'center',
@@ -30,7 +30,7 @@ export const linkStyle = style({
 export const inlineBlock = style({
   display: 'inline-block',
   width: 'fit-content',
-  margin: '5px auto 3px auto',
+  margin: '5px 10px 3px auto',
 })
 
 export const marginlink = style({  

@@ -1,7 +1,6 @@
 // src/ui/Xinput.tsx
-import { ComponentPropsWithoutRef, RefObject } from "react";
+import type { ComponentPropsWithoutRef, RefObject } from "react";
 import * as s from "./index.css.ts";
-
 
 export interface XinputProps extends Omit<
   ComponentPropsWithoutRef<"input">,

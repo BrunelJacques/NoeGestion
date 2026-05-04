@@ -1,5 +1,6 @@
 
-import  { Xinput, XinputProps } from "../Xinput";
+import  { Xinput } from "../Xinput";
+import type { XinputProps } from "../Xinput"; 
 import { useState } from "react";
 import * as s from "../Xinput/index.css"
 

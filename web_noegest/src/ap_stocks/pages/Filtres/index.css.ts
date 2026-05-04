@@ -6,8 +6,7 @@ import { vars } from '../../../assets/styles/themes.css';
 export const debug = style({
   display: "flex",
   flexDirection: "column",
-  gap: 8,
-  padding: 12,
+  padding: 3,
   color: vars.color.text,
   background: vars.color.card,
   border: `1px solid ${vars.color.border}`,

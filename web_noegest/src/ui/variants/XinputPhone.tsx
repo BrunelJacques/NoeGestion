@@ -1,6 +1,7 @@
 // src/ui/variants/XinputPhone.tsx
 import { useRef, useState } from "react";
-import {  Xinput, XinputProps } from "../Xinput";
+import {  Xinput } from "../Xinput";
+import type { XinputProps } from "../Xinput";
 import { formatPhoneNumber as formatValue } from "../formaters/phone";
 import { handleCursor } from "../formaters/handleCursor";
 

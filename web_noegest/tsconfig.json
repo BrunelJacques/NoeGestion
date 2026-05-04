@@ -9,7 +9,7 @@
     /* Bundler mode */
     "module":"esnext",
     "moduleResolution": "bundler",
-    "verbatimModuleSyntax": false,
+    "verbatimModuleSyntax": true,
     "moduleDetection": "force",
 
     "allowImportingTsExtensions": true,

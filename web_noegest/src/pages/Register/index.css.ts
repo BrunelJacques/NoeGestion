@@ -4,13 +4,6 @@ import { vars } from '../../assets/styles/themes.css'
 import { breakpoints } from '../../assets/styles/utilities.css';
 
 
-export const pageContainer = style({
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  minHeight: 'calc(100vh - 70px)', // retire heights header et footer
-})
-
 export const cardGrid = style({
   display: 'grid',
   margin: '15px 4px',

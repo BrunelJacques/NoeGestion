@@ -5,7 +5,7 @@ import * as s from "./index.css";
 export default function FiltreMvt() {
   // Simulation de données
   const colonnes = Array.from({ length: 10 }, (_, i) => `Col ${i + 1}`);
-  const lignes = Array.from({ length: 50 }, (_, i) => `Ligne ${i + 1}`);
+  const lignes = Array.from({ length: 49 }, (_, i) => `Ligne ${i + 1}`);
 
 return (
 

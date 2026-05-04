@@ -14,8 +14,6 @@ export default function Filtres() {
 return (
 
     <section className={s.wrapper}>
-
-      <div>Filtres lus: {JSON.stringify(filtres)}</div>
       <div className={s.debug}>
         {Object.entries(filtres).map(([id, valeur]) => (
           <div key={id} className={s.ligne}>
