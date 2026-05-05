@@ -7,6 +7,7 @@ import { vars } from "../../assets/styles/themes.css";
 export const domainLayout = style({
   display: 'flex',
   flexDirection: 'column', // Empile Menu et Tableau en mobile
+  position : 'relative',
   flex: 1,
   padding: '3px 0',
   gap: '3px',
@@ -19,7 +20,16 @@ export const domainLayout = style({
     'screen and (min-width: 600px)': {// pour grand écran
       flexDirection: 'row', // Menu à gauche en desktop
     },
-  },});
+  },
+  
+/*   selectors: {
+    '&::after': {
+      content: '""',
+      backgroundColor: 'red',
+    },
+  },
+   */
+});
 
 
 export const menu = style({

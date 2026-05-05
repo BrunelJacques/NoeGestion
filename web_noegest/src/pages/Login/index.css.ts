@@ -4,36 +4,48 @@ import { vars } from '../../assets/styles/themes.css'
 import { colors } from '../../assets/styles/colors.css'
 
 
-export const containlink = style({
+export const containerLinks = style({
   display: 'flex',
-  marginTop: '10px',
-  marginLeft: '20px',
-  marginRight: 'auto',
-  gap: '5px',
-  alignContent: 'center',
-  justifyContent: 'space-evenly'
+  flexWrap: 'wrap', // Permet le passage à la ligne si l'espace est insuffisant
+  gap: '1rem 2rem', // Espace horizontal et vertical entre les blocs
+  justifyContent: 'center', // Centre les blocs sur la ligne
+  marginTop: '0.5rem',
 })
+export const yycontainerLinks = style({
+  display: 'flex',
+  flexWrap: 'wrap', // Permet le passage à la ligne si l'espace est insuffisant
+  gap: '1rem 2rem', // Espace horizontal et vertical entre les blocs
+  justifyContent: 'center', // Centre les blocs sur la ligne
+  alignItems: 'baseline',
+  marginTop: '1.5rem',
+  width: '100%',
+});
+
+export const wrapLink = style({
+  display: 'flex',
+  gap: '0.5rem',
+})
+
+export const yywrapLink = style({
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'baseline',
+  gap: '0.5rem',
+  margin: 0, // Reset de la marge par défaut des h5
+  fontSize: '0.9rem',
+  fontWeight: 400,
+  color: '#4b5563', // Gris neutre (exemple)
+  whiteSpace: 'nowrap', // Empêche le texte interne d'un bloc de se couper
+});
 
 
 export const linkStyle = style({ 
   display: 'inline-block', // Link par défaut inline refuse les marges top et bottom
-  marginTop: '5px',
   background: colors.bgSaisie,
   borderTop: '1px solid currentColor',
   color: colors.txtLink,
   ':hover': {
     color: vars.color.primary,
   },
-})
-
-
-export const inlineBlock = style({
-  display: 'inline-block',
-  width: 'fit-content',
-  margin: '5px 10px 3px auto',
-})
-
-export const marginlink = style({  
-  marginTop: '15px'
 })
 

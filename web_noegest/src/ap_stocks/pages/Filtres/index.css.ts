@@ -22,7 +22,8 @@ export const ligne = style({
 
 export const wrapper = style({
   flex: 1,
-  overflow: 'auto', // C'est lui qui permet le scroll 2D
+  overflow: 'auto',
   border: '1px solid #ccc',
   position: 'relative', 
+  margin: "7px",
 });

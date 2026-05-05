@@ -21,7 +21,7 @@ export default function Login() {
   }
 
   return (
-    <div className="pageContainer">
+    <div>
       <div className="subContainer">
         <h2>Intranet Matthania</h2>
         <h3>Accès réservé au staff de l'association.</h3>
@@ -54,23 +54,24 @@ export default function Login() {
       </div>
       <hr />
 
-      <div className={s.containlink}>
+      <div className={ s.containerLinks }>
         {/* Rendu conditionnel : on vérifie si username n'est pas vide */}
         {username.trim() !== "" && (
-          <h5 className={s.inlineBlock}>
+          <h5 className={s.wrapLink}>
             Changer mot de passe?
             <Link to="/register" className={s.linkStyle}>
               renvoi mot_passe
             </Link>
           </h5>
         )}
-        <h5 className={s.inlineBlock}>
+        <h5 className={s.wrapLink}>
           Membre sans compte?
           <Link to="/register" className={s.linkStyle}>
             créer un compte
           </Link>
         </h5>
       </div>
+
 
     </div>
   );

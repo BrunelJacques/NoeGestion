@@ -65,28 +65,43 @@ globalStyle('.discret',{
  background: "transparent",
 })
 
+globalStyle('.nowrap',{
+ whiteSpace: "nowrap",
+})
+
+
+
 const baseContainer = {
   maxWidth: '700px',
-  backgroundColor: vars.color.body,
   color: vars.color.text,
   transition: 'background-color 0.6s ease, color 0.6s ease',
 } as const; // "as const" permet de garder un typage strict
+
+// Style pour toutes les pages applications
+globalStyle('.pageContainer', {
+  ...baseContainer,
+  display: 'flex',
+  flexDirection: 'column',
+  minHeight: 'calc(100vh - 65px)',// retire heights header et footer
+});
+
+// Le "spacer" du haut (marge top)
+globalStyle('.pageContainer::before', {
+  content: '""',
+  flexGrow: 1, // Prend 1 unité d'espace vide
+});
+
+// Le "spacer" du bas (marge bottom)
+globalStyle('.pageContainer::after', {
+  content: '""',
+  flexGrow: 2, // Prend 2 unités d'espace vide (le double !)
+});
 
 globalStyle('.container', {
   ...baseContainer,
   marginLeft: 'auto',
   marginRight: 'auto',
   alignItems: 'center',
-});
-
-  // Style pour .pageContainer
-globalStyle('.pageContainer', {
-  ...baseContainer,
-  display: 'flex',
-  flexDirection: 'column',
-  minHeight: 'calc(100vh - 65px)',// retire heights header et footer
-  justifyContent: 'center',
-
 });
 
 globalStyle('.subContainer', {
@@ -110,7 +125,7 @@ globalStyle('.form', {
 globalStyle('.card', {
   display: 'flex',
   flexDirection: 'column',
-  margin: "10px auto 0 auto",
+  margin: "10px 7px 0 7px",
   background: vars.color.card, // Utilise la couleur de surface du thème
   color: vars.color.text,             // Utilise le texte du thème
   borderRadius: '8px',
