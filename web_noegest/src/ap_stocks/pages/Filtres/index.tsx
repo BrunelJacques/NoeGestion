@@ -16,7 +16,7 @@ export default function Filtres() {
 
   const pageOrigine = useSelectEnum(PageOrigine, filtres.pageOrigine);
   const service = useSelectObject(Services, filtres.service);
-  //const origine = useSelectObject(Origines[pageOrigine.value], filtres.origine); 
+  const origine = useSelectObject(Origines[pageOrigine.value], "sorties"); 
   
 
   // Fonction de soumission du formulaire par bouton "Validation"
@@ -59,6 +59,17 @@ return (
             options={service.options}
           />
         </div>
+
+        <div className={s.entree}>
+          <Xselect<number|string>
+            label="Origine"
+            name="origine"
+            value={origine.value}
+            onChange={origine.onChange}
+            options={origine.options}
+          />
+        </div>
+ 
 
         {Object.entries(filtres).map(([id, valeur]) => (
           <div className={s.entree} key={id}>
