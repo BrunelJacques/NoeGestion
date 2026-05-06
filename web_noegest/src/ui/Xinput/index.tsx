@@ -38,6 +38,7 @@ export function Xinput({
     <div className={s.wrapperV}>
       <div className={s.wrapperH}>
         {label && <span className={s.label}>{label} :</span>}
+        
         <input
           type={type}
           value={props.value}
@@ -52,6 +53,7 @@ export function Xinput({
           {...props}
         />
       </div>
+
       {error && (
         <p className={s.errorStyle}>{error}</p>
       )}

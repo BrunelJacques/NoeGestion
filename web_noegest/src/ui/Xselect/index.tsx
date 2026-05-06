@@ -1,43 +1,50 @@
 // src/ui/Xselect.tsx
-import type { ComponentPropsWithoutRef, RefObject } from "react";
+import type { ComponentPropsWithoutRef } from "react";
 import * as s from "./index.css.ts";
 
-function noAction() {}
 
 // Type pour une option individuelle
-export interface XselectOption {
-  value: string | number;
+export interface XselectOption<T extends string | number> {
+  value: T;
   label: string;
   disabled?: boolean;
 }
 
-export interface XselectProps extends Omit<
-  ComponentPropsWithoutRef<"select">,
-  "onChange"
+export interface XselectProps<T extends string | number>
+  extends Omit<ComponentPropsWithoutRef<"select">,"onChange"
 > {
-  options: XselectOption[]; //tableau d'options à afficher
-  onChange?: (value: React.ChangeEvent<HTMLSelectElement>) => void;
-  ref?: RefObject<HTMLSelectElement | null>;
+  value: T;
+  options: XselectOption<T>[]; //tableau d'options à afficher
+  onChange?: (value:T) => void;
   altClassName?: string;
   label?: string;
   error?: string | null;
   placeholder?: string; // Utilisé comme première option muette
 }
 
-export function Xselect({
+export function Xselect<T extends string | number>({
+  value,
   options,
-  onChange = noAction,
+  onChange,
   altClassName = "",
   label,
   error = null,
   disabled = false,
   placeholder,
   ...props
-}: XselectProps) {
-
+}: XselectProps<T>
+) {
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     if (disabled) return;
-    onChange?.(e);
+
+    const raw = e.target.value;
+
+    // Convertit automatiquement en number si l’option est un number
+    const typedValue = (typeof value === "number"
+      ? Number(raw)
+      : raw) as T;
+
+    onChange?.(typedValue);
   };
 
   return (

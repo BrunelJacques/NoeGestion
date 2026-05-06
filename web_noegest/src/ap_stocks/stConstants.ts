@@ -1,23 +1,24 @@
   // src/ap_stocks/stCconstants.ts
 
-interface IService {
+interface Service {
   id: number;
   code: string;
   libelle: string;
 }
 
-enum OrigineSens {
+export enum PageOrigine {
   Sorties = "sorties",
   Entrees = "entrees",
+  Article = "article",
 }
 
-interface IOrigine {
+interface Origine {
   code: string;
   libelle: string;
 }
 
 
-export const  Services: IService[] = [
+export const  Services: Service[] = [
     { id: 0, code: '-',  libelle: 'Non précisé 1-5' },
     { id: 1, code: 'matin', libelle: '1 Service du matin' },
     { id: 2, code: 'midi', libelle: '2 Service de midi' },
@@ -26,7 +27,7 @@ export const  Services: IService[] = [
     { id: 5, code: 'tous', libelle: '5 Tout service' },
   ]
 
-export const  Origines: Record<OrigineSens, IOrigine[]>  = {
+export const  Origines: Record<PageOrigine, Origine[]>  = {
   "sorties": [
     { code:  'repas', libelle: 'Repas en cuisine' },
     { code:  'camp', libelle: 'Camp Extérieur' },
@@ -38,5 +39,12 @@ export const  Origines: Record<OrigineSens, IOrigine[]>  = {
     { code:  'retour', libelle: 'Retour de camp' },
     { code:  'od_in', libelle: 'Régularisation' },
     { code:  'tout', libelle: 'Toute ligne (ss filtre)' },
-  ]
+  ],
+    "article": [
+    { code:  'tout', libelle: 'Toute ligne (ss filtre)' },
+    { code:  'achat', libelle: 'Achats fournisseur' },
+    { code:  'repas', libelle: 'Repas en cuisine' },
+    { code:  'od_in', libelle: 'Régularisation' },
+    { code:  'od_out', libelle: 'Régularisation' },
+  ],
 }

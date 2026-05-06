@@ -8,12 +8,11 @@ export const wrapper = style({
   flex: 1,
   //overflow: 'auto',
   position: 'relative', 
-  margin: '5px auto',
+  margin: '5px',
 });
 
 
 export const wrapForm = style({
-  width: '100%',
   padding: '2px',
   margin: '3px',
   color: vars.color.text,

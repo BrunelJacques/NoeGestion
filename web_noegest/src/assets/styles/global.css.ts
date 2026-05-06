@@ -47,7 +47,7 @@ globalStyle('p',{
 })
 
 
-globalStyle('input', {
+globalStyle('input select', {
   all: 'unset',
   maxWidth: '200px',
   padding: '0.5rem',

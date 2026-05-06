@@ -1,6 +1,6 @@
 
 export const  FILTRES0: TypFiltreMvts= {
-  page: "sorties",
+  pageOrigine: "sorties",
   article: null,
   tiers: "tous",
   jour: new Date(2022,8,17),//valeur pour démo, provisoire
@@ -14,7 +14,7 @@ export const  FILTRES0: TypFiltreMvts= {
 
 export type TypFiltreMvts = {
 
-  page: "entrees" | "sorties" | "article" ;
+  pageOrigine: "entrees" | "sorties" | "article" ;
   article?: string[] | null;
   tiers: string;
   jour: Date;
