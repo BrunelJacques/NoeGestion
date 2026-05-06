@@ -16,8 +16,16 @@ export default function Filtres() {
 
   const pageOrigine = useSelectEnum(PageOrigine, filtres.pageOrigine);
   const service = useSelectObject(Services, filtres.service);
-  const origine = useSelectObject(Origines[pageOrigine.value], "sorties"); 
-  
+
+  // Sécurisation
+  const origineItems = Origines[pageOrigine.value] ?? [];
+  const initialOrigineId = origineItems[0]?.id ?? "";
+
+  // Hook dynamique
+  const origine = useSelectObject(
+    origineItems,
+    initialOrigineId
+  );
 
   // Fonction de soumission du formulaire par bouton "Validation"
   function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
@@ -25,7 +33,7 @@ export default function Filtres() {
     e.preventDefault();
     setFiltres({
       ...filtres,
-      service: service.value, // ← ID du service
+
     });
     }
     
