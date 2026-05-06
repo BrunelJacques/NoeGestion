@@ -1,11 +1,13 @@
 //src/ap_stocks/hooks/useSelectObject.tsx
 import { useMemo, useState } from "react";
 
-export function useSelectObject<T extends { id: number; libelle: string }>(
+export function useSelectObject<
+  T extends { id: string | number; libelle: string }
+>(
   items: T[],
-  initialId: number
+  initialId: T["id"]
 ) {
-  const [value, setValue] = useState<number>(initialId);
+  const [value, setValue] = useState<T["id"]>(initialId);
 
   // Génère les options automatiquement
   const options = useMemo(() => {
@@ -15,12 +17,17 @@ export function useSelectObject<T extends { id: number; libelle: string }>(
     }));
   }, [items]);
 
-  // onChange convertit automatiquement en number
+  // Convertit automatiquement la valeur venant du <select>
   const onChange = (raw: string|number) => {
-    setValue(Number(raw));
+    const sample = items[0]?.id;
+
+    const typed =
+      typeof sample === "number" ? Number(raw) : raw;
+
+    setValue(typed as T["id"]);
   };
 
-  // Optionnel : retrouver l’objet complet
+  // Retrouve l'objet complet
   const selectedItem = useMemo(
     () => items.find((s) => s.id === value) ?? null,
     [items, value]

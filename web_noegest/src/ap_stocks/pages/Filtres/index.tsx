@@ -4,7 +4,7 @@ import { Xinput } from "../../../ui/Xinput";
 import * as s from "./index.css";
 import { Xbutton } from "../../../ui/Xbutton";
 import { Form } from "react-router-dom";
-import { PageOrigine, Services } from "../../stConstants";
+import { Origines, PageOrigine, Services } from "../../stConstants";
 import { Xselect } from "../../../ui/Xselect";
 import { useFiltresStocks } from "../../hooks/useFiltres";
 import { useSelectEnum } from "../../hooks/useSelectEnum";
@@ -16,7 +16,7 @@ export default function Filtres() {
 
   const pageOrigine = useSelectEnum(PageOrigine, filtres.pageOrigine);
   const service = useSelectObject(Services, filtres.service);
-  /* const origine = useSelectObject(Origines[pageOrigine.value], filtres.origine); */
+  //const origine = useSelectObject(Origines[pageOrigine.value], filtres.origine); 
   
 
   // Fonction de soumission du formulaire par bouton "Validation"
@@ -51,7 +51,7 @@ return (
           />
         </div>
         <div className={s.entree}>
-          <Xselect<number>
+          <Xselect<number|string>
             label="Service"
             name="service"
             value={service.value}
