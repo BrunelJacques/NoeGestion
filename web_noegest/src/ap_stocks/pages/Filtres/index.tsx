@@ -16,6 +16,7 @@ export default function Filtres() {
 
   const pageOrigine = useSelectEnum(PageOrigine, filtres.pageOrigine);
   const service = useSelectObject(Services, filtres.service);
+  /* const origine = useSelectObject(Origines[pageOrigine.value], filtres.origine); */
   
 
   // Fonction de soumission du formulaire par bouton "Validation"

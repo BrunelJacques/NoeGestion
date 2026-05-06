@@ -13,7 +13,7 @@ export enum PageOrigine {
 }
 
 interface Origine {
-  code: string;
+  id: string;
   libelle: string;
 }
 
@@ -29,22 +29,22 @@ export const  Services: Service[] = [
 
 export const  Origines: Record<PageOrigine, Origine[]>  = {
   "sorties": [
-    { code:  'repas', libelle: 'Repas en cuisine' },
-    { code:  'camp', libelle: 'Camp Extérieur' },
-    { code:  'od_out', libelle: 'Régularisation' },
-    { code:  'tout', libelle: 'Toute ligne (ss filtre)' },
+    { id:  'repas', libelle: 'Repas en cuisine' },
+    { id:  'camp', libelle: 'Camp Extérieur' },
+    { id:  'od_out', libelle: 'Régularisation' },
+    { id:  'tout', libelle: 'Toute ligne (ss filtre)' },
   ],
   "entrees": [
-    { code:  'achat', libelle: 'Achats fournisseur' },
-    { code:  'retour', libelle: 'Retour de camp' },
-    { code:  'od_in', libelle: 'Régularisation' },
-    { code:  'tout', libelle: 'Toute ligne (ss filtre)' },
+    { id:  'achat', libelle: 'Achats fournisseur' },
+    { id:  'retour', libelle: 'Retour de camp' },
+    { id:  'od_in', libelle: 'Régularisation' },
+    { id:  'tout', libelle: 'Toute ligne (ss filtre)' },
   ],
     "article": [
-    { code:  'tout', libelle: 'Toute ligne (ss filtre)' },
-    { code:  'achat', libelle: 'Achats fournisseur' },
-    { code:  'repas', libelle: 'Repas en cuisine' },
-    { code:  'od_in', libelle: 'Régularisation' },
-    { code:  'od_out', libelle: 'Régularisation' },
+    { id:  'tout', libelle: 'Toute ligne (ss filtre)' },
+    { id:  'achat', libelle: 'Achats fournisseur' },
+    { id:  'repas', libelle: 'Repas en cuisine' },
+    { id:  'od_in', libelle: 'Régularisation' },
+    { id:  'od_out', libelle: 'Régularisation' },
   ],
 }
