@@ -2,6 +2,10 @@
 import type { ComponentPropsWithoutRef, RefObject } from "react";
 import * as s from "./index.css.ts";
 
+
+function noAction(){}
+
+
 export interface XinputProps extends Omit<
   ComponentPropsWithoutRef<"input">,
   "onChange"
@@ -16,7 +20,7 @@ export interface XinputProps extends Omit<
 
 export function Xinput({
   type = "text",
-  onChange,
+  onChange = noAction,
   altClassName = "",
   label,
   error = null,
@@ -24,8 +28,6 @@ export function Xinput({
   ...props
 }: XinputProps) {
 
-
-    
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 
     if (disabled) return;

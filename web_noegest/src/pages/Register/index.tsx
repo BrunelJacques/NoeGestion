@@ -14,7 +14,6 @@ export default function Register() {
   const [username] = useState(user?.username);
   const isLogged = user !== null
 
-  function noAction(){}
 
   function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -34,7 +33,6 @@ export default function Register() {
       <form onSubmit={handleSubmit} className={s.cardGrid}>
         <Xinput
           value={user?.email}
-          //onChange={noAction}
           label="Mail identifiant"
           placeholder="adresse mail"
           autoComplete="email"
@@ -43,7 +41,6 @@ export default function Register() {
 
         <Xinput
           value={user?.lastName}
-          onChange={noAction}
           label="Nom"
           placeholder="votre nom"
           autoComplete="family-name"
@@ -52,7 +49,6 @@ export default function Register() {
 
         <Xinput
           value={user?.firstName}
-          onChange={noAction}
           label="Prénom"
           placeholder="votre prénom"
           autoComplete="given-name"
@@ -61,7 +57,6 @@ export default function Register() {
 
         <XinputDate
           value={user?.bday}
-          onChange={noAction}
           label="Date de naissance"
           autoComplete="bday"
           disabled={isLogged}
@@ -69,7 +64,6 @@ export default function Register() {
 
         <XinputPhone
           value={user?user.phone:""}
-          onChange={noAction}
           label="Téléphone"
           placeholder="06xxxxxxxx"
           autoComplete="mobile"
@@ -77,7 +71,6 @@ export default function Register() {
 
         <Xinput
           value=""
-          onChange={noAction}
           label="Nvx mot de passe"
           placeholder="8car+Maj+Min+Chiffre"
           autoComplete="off"

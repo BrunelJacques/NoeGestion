@@ -69,6 +69,12 @@ globalStyle('.nowrap',{
  whiteSpace: "nowrap",
 })
 
+globalStyle('.right',{
+  display: 'flex',
+  justifyContent: 'flex-end',
+  marginLeft: 'auto',
+  marginRight: '20px',
+})
 
 
 const baseContainer = {

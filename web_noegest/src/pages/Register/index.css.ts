@@ -21,15 +21,12 @@ export const cardGrid = style({
 
 
 export const localCard = style({ 
-  maxWidth: '800px',
+  //maxWidth: '800px',
   display: "flex",
   flexDirection: "row",
   margin: '10px auto',
   background: vars.color.card, // Utilise la couleur de surface du thème
   color: vars.color.text,             // Utilise le texte du thème
-  borderRadius: '8px',
-  boxShadow: `0 0 5px -1px ${vars.color.primary}`,
-  transition: 'transform 0.2s ease-in-out, background-color 0.3s ease',
 
  ':hover': {
     transform: 'translateY(-4px)',

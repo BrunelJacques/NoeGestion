@@ -21,14 +21,7 @@ export const domainLayout = style({
       flexDirection: 'row', // Menu à gauche en desktop
     },
   },
-  
-/*   selectors: {
-    '&::after': {
-      content: '""',
-      backgroundColor: 'red',
-    },
-  },
-   */
+
 });
 
 

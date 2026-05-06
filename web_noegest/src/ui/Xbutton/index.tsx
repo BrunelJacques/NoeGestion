@@ -1,6 +1,6 @@
 // src/ui/Xbutton/index.tsx
 
-import { ReactNode,  ButtonHTMLAttributes } from 'react'
+import type { ReactNode,  ButtonHTMLAttributes } from 'react'
 import * as s from './index.css.ts'
 
 
