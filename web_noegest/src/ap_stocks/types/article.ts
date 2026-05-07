@@ -18,17 +18,7 @@ export const ARTICLE0 : Article = {
   nom: "",
 }
 
-export type ArticleNom = {
-  id: number;
-  nom: string;
-}
-
-export type ArtsNomRetour = {
-  count: number;
-  results: ArticleNom[];
-}
-
-export type ArtsRetour = {
+export type Articles = {
   count: number;
   results: Article[];
 }

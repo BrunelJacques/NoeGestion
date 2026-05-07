@@ -1,30 +1,53 @@
-//src/ap_stocks/components/ZZFiltres/index.tsx
-import { useFiltresStocks } from "../../hooks/useFiltres";
-import { FILTRES0 } from "../../types/params";
+//src/ap_stocks/components/Filtres/index.tsx
 import * as s from "./index.css";
+import { Xbutton } from "../../../ui/Xbutton";
+import { Autocomplete } from "../../../ui/Xautocomplete";
+//import { useFetch } from "../../../hooks/useFetch";
+import apiUrl from "../../../constants/api.Constants";
+import type { Article, Articles } from "../../types/article";
 
-export default function ZZFiltres() {
+export default function Filtres() {
 
-  const { filtres, setFiltres } = useFiltresStocks(FILTRES0);  
-  function resetFiltres() {   
-    const filtres0 = FILTRES0;
-    setFiltres(filtres0);
-  }
+  const url = apiUrl.STARTICLE_NOM_URL
+  //const { filtres, setFiltres } = useFetch(url); 
 
+const handleFetch = async (search: string) => {
+  const response = await fetch(`${url}?nom=${search}`);
+  const articles: Articles = await response.json();
+  
+  return articles.results
+    // Remplacement de .name par .nom ici :
+    .filter((u: Article) => u.nom && u.nom.toLowerCase().includes(search.toLowerCase()))
+    .map((u: Article) => ({ 
+      id: u.id, 
+      nom: u.nom 
+    }));
+};
+    
 return (
+  //Titres sous-titres
+  <section className={s.wrapper}>
 
-    <section className={s.wrapper}>
-      <div className={s.debug}>
-        {Object.entries(filtres).map(([id, valeur]) => (
-          <div key={id} className={s.ligne}>
-            <strong>{id}</strong> : {String(valeur)}
-          </div>
-        ))}
+    <div className={s.wrapForm}>
+      <div id="filtresForm" className={s.formStyle}>
+
+          <h1>Recherche d'articles</h1>
+          <Autocomplete 
+            fetchItems={handleFetch} 
+            onSelect={(item) => {
+              
+              console.log('Sélectionné:', item)
+            }}
+            placeholder="Tapez un nom..."
+          />
+
       </div>
-      <div>Jour date: {JSON.stringify(filtres.jour).slice(0, 11)}</div>
-      <button onClick={() => resetFiltres()}>Reset Filtres</button>
+      <Xbutton type="submit" altClassName="right" form="filtresForm">
+        Validation
+      </Xbutton>
+    </div>
 
-    </section>
+  </section>
   );
 }
 

@@ -20,7 +20,6 @@ export default function Filtres() {
 
   const origineItems = Origines[pageOrigine.value] ?? [];
   const initialOrigineId = origineItems[0]?.id ?? "";
-
   const origine = useSelectObject(origineItems, initialOrigineId);
 
 
@@ -30,7 +29,6 @@ export default function Filtres() {
     e.preventDefault();
     setFiltres({
       ...filtres,
-
     });
     }
     

@@ -1,3 +1,4 @@
+// non encore utilisé ni testé, exemple de gestion de l'erreur et d'attente
 import { useState, useEffect } from 'react'
 
 export function useFetch(url: string) {
@@ -24,5 +25,3 @@ export function useFetch(url: string) {
   }, [url])
   return { isLoading, data, error }
 }
-
-export default { useFetch }
