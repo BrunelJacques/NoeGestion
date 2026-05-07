@@ -1,5 +1,5 @@
 //src/ui/Xautocomplete/index.tsx
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import * as styles from './index.css';
 
 interface Item {
@@ -13,18 +13,20 @@ interface Props {
   placeholder?: string;
 }
 
-export const Autocomplete = ({ fetchItems, onSelect, placeholder }: Props) => {
+export const Autocomplete = ({ 
+    fetchItems, onSelect, placeholder 
+  }: Props) => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<Item[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   // Ajout d'un verrou pour empêcher la réouverture après sélection
-  const [isSelecting, setIsSelecting] = useState(false);
+  const isSelecting = useRef(false);
 
   useEffect(() => {
     const loadData = async () => {
       // Si on est en train de sélectionner, on ne fait rien
-      if (isSelecting) {
-        setIsSelecting(false);
+      if (isSelecting.current) {
+        isSelecting.current = false;
         return;
       }
 
@@ -40,10 +42,10 @@ export const Autocomplete = ({ fetchItems, onSelect, placeholder }: Props) => {
 
     const timer = setTimeout(loadData, 300);
     return () => clearTimeout(timer);
-  }, [query, fetchItems]); // On ne met pas isSelecting en dépendance pour éviter les boucles
+  }, [query, fetchItems]); 
 
   const handleSelect = (item: Item) => {
-    setIsSelecting(true); // On verrouille l'effet avant de changer le query
+    isSelecting.current = true; // On verrouille l'effet avant de changer le query
     setQuery(item.nom);
     setIsOpen(false);
     onSelect(item);
@@ -56,7 +58,7 @@ export const Autocomplete = ({ fetchItems, onSelect, placeholder }: Props) => {
         type="text"
         value={query}
         onChange={(e) => {
-          setIsSelecting(false); // Si l'utilisateur retape, on déverrouille
+          isSelecting.current = false; // Si l'utilisateur retape, on déverrouille
           setQuery(e.target.value);
         }}
         placeholder={placeholder}
