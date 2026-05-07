@@ -11,10 +11,9 @@ export default function Filtres() {
   const url = apiUrl.STARTICLE_NOM_URL
   //const { filtres, setFiltres } = useFetch(url); 
 
-const handleFetch = async (search: string) => {
+  const fetchArticles = async (search: string) => {
   const response = await fetch(`${url}?nom=${search}`);
   const articles: Articles = await response.json();
-  
   return articles.results
     // Remplacement de .name par .nom ici :
     .filter((u: Article) => u.nom && u.nom.toLowerCase().includes(search.toLowerCase()))
@@ -29,16 +28,18 @@ return (
   <section className={s.wrapper}>
 
     <div className={s.wrapForm}>
+      
+      
       <div id="filtresForm" className={s.formStyle}>
+          <h5>Recherche d'articles</h5>
 
-          <h1>Recherche d'articles</h1>
           <Autocomplete 
-            fetchItems={handleFetch} 
+            fetchItems={fetchArticles}
+            // traitement après sélection
             onSelect={(item) => {
-              
               console.log('Sélectionné:', item)
             }}
-            placeholder="Tapez un nom..."
+            placeholder="Tapez quelques lettres..."
           />
 
       </div>

@@ -17,29 +17,35 @@ export const Autocomplete = ({ fetchItems, onSelect, placeholder }: Props) => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<Item[]>([]);
   const [isOpen, setIsOpen] = useState(false);
+  // Ajout d'un verrou pour empêcher la réouverture après sélection
+  const [isSelecting, setIsSelecting] = useState(false);
 
-  // Simulation/Appel de la requête à chaque changement de saisie
   useEffect(() => {
     const loadData = async () => {
+      // Si on est en train de sélectionner, on ne fait rien
+      if (isSelecting) {
+        setIsSelecting(false);
+        return;
+      }
+
       if (query.length > 0) {
         const data = await fetchItems(query);
         setResults(data);
         setIsOpen(true);
-        console.log("on ouvre!!")
       } else {
         setResults([]);
         setIsOpen(false);
       }
     };
 
-    const timer = setTimeout(loadData, 300); // Debounce pour éviter trop de requêtes
+    const timer = setTimeout(loadData, 300);
     return () => clearTimeout(timer);
-  }, [query, fetchItems]);
+  }, [query, fetchItems]); // On ne met pas isSelecting en dépendance pour éviter les boucles
 
   const handleSelect = (item: Item) => {
+    setIsSelecting(true); // On verrouille l'effet avant de changer le query
     setQuery(item.nom);
     setIsOpen(false);
-    console.log("on ferme!!")
     onSelect(item);
   };
 
@@ -49,7 +55,10 @@ export const Autocomplete = ({ fetchItems, onSelect, placeholder }: Props) => {
         className={styles.input}
         type="text"
         value={query}
-        onChange={(e) => setQuery(e.target.value)}
+        onChange={(e) => {
+          setIsSelecting(false); // Si l'utilisateur retape, on déverrouille
+          setQuery(e.target.value);
+        }}
         placeholder={placeholder}
         onFocus={() => query.length > 0 && setIsOpen(true)}
       />
@@ -60,7 +69,8 @@ export const Autocomplete = ({ fetchItems, onSelect, placeholder }: Props) => {
             <li 
               key={item.id} 
               className={styles.item}
-              onClick={() => handleSelect(item)}
+              // Utiliser onMouseDown au lieu de onClick évite parfois des conflits de focus
+              onMouseDown={() => handleSelect(item)} 
             >
               {item.nom}
             </li>
