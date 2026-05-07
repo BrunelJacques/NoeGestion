@@ -7,10 +7,9 @@ export function useSelectObject<
   items: T[] | undefined,
   initialId: T["id"]
 ) {
-  // 1) State interne
   const [value, setValue] = useState<T["id"]>(initialId);
 
-  // 2) Options sécurisées
+  // Options sécurisées
   const options = useMemo(() => {
     return items?.map((item) => ({
       value: item.id,
@@ -18,14 +17,15 @@ export function useSelectObject<
     })) ?? [];
   }, [items]);
 
-  // 3) Valeur dérivée : si value n'existe plus → fallback sur items[0]
+  // Valeur dérivée : si value n'existe plus → fallback
   const safeValue = useMemo(() => {
     if (!items || items.length === 0) return value;
+
     const exists = items.some((i) => i.id === value);
     return exists ? value : items[0].id;
   }, [items, value]);
 
-  // 4) Conversion automatique depuis <select>
+  // Conversion automatique
   const onChange = (raw: string|number) => {
     const sample = items?.[0]?.id ?? initialId;
     const typed =
@@ -33,7 +33,6 @@ export function useSelectObject<
     setValue(typed as T["id"]);
   };
 
-  // 5) Objet sélectionné
   const selectedItem = useMemo(() => {
     return items?.find((s) => s.id === safeValue) ?? null;
   }, [items, safeValue]);
