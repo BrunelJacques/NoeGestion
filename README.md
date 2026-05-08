@@ -11,6 +11,6 @@ le projet django est project
 l'appli django est noegestion
 
 frontend:
-web-noegest est le projet angular
+web-noegest est le projet React + Vite + TypeScript + VanillaExtract
 
 
