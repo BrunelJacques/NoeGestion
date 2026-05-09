@@ -1,27 +1,22 @@
-//src/ap_stocks/components/Filtres/index.tsx
+//src/ap_stocks/pages/Filtres/index.tsx
 import { FILTRES0 } from "../../types/params";
-import { Xinput } from "../../../ui/Xinput";
+
 import * as s from "./index.css";
 import { Xbutton } from "../../../ui/Xbutton";
 import { Form } from "react-router-dom";
-import { Origines, PageOrigine, Services } from "../../stConstants";
+import { PageOrigineValues } from "../../stConstants";
 import { Xselect } from "../../../ui/Xselect";
 import { useFiltresStocks } from "../../hooks/useFiltres";
 import { useSelectEnum } from "../../hooks/useSelectEnum";
-import { useSelectObject } from "../../hooks/useSelectObject";
+import FiltreService from "../../components/FiltreService";
+import FiltreOrigine from "../../components/FiltreOrigine";
+import { Xinput } from "../../../ui/Xinput";
+
 
 export default function Filtres() {
 
   const { filtres, setFiltres } = useFiltresStocks(FILTRES0); 
-
-  const pageOrigine = useSelectEnum(PageOrigine, filtres.pageOrigine);
-
-  const service = useSelectObject(Services, filtres.service);
-
-  const origineItems = Origines[pageOrigine.value] ?? [];
-  const initialOrigineId = origineItems[0]?.id ?? "";
-  const origine = useSelectObject(origineItems, initialOrigineId);
-
+  const pageOrigine = useSelectEnum(PageOrigineValues, filtres.pageOrigine);
 
   // Fonction de soumission du formulaire par bouton "Validation"
   function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
@@ -44,6 +39,7 @@ return (
     {/* zone de saisie des filtres */}
     <div className={s.wrapForm}>
       <Form id="filtresForm" onSubmit={handleSubmit} className={s.formStyle}>
+
         <div className={s.entree}>
           <Xselect
             label="Page Origine"
@@ -53,29 +49,20 @@ return (
             options={pageOrigine.options}
           />
         </div>
+
         <div className={s.entree}>
-          <Xselect<number|string>
-            label="Service"
-            name="service"
-            value={service.value}
-            onChange={service.onChange}
-            options={service.options}
-          />
+          <FiltreService {...filtres} />
         </div>
 
         <div className={s.entree}>
-          <Xselect<number|string>
-            label="Origine"
-            name="origine"
-            value={origine.value}
-            onChange={origine.onChange}
-            options={origine.options}
-          />
+          <FiltreOrigine 
+          filtres={filtres} 
+          pageOrigine={pageOrigine.value} />
         </div>
  
 
         {Object.entries(filtres).map(([id, valeur]) => (
-          <div className={s.entree} key={id}>
+          <div className={s.zzentree} key={id}>
             <Xinput
             value={String(valeur)}
             label={id}
@@ -83,6 +70,10 @@ return (
             />
         </div>
         ))}
+		
+		
+
+
       </Form>
       <Xbutton type="submit" altClassName="right" form="filtresForm">
         Validation

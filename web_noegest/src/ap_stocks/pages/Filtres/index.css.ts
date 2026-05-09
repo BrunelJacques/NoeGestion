@@ -45,3 +45,8 @@ export const entree = style({
   margin: '3px',
 });
 
+export const zzentree = style({
+  padding: "2px 0",
+  margin: '3px',
+  backgroundColor: vars.color.secondary
+});

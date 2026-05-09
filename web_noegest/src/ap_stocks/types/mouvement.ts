@@ -1,4 +1,4 @@
-import { Article, ARTICLE0 } from './article';
+import { type Article, ARTICLE0 } from './article';
 
 export type Mouvement = {
     id: number;

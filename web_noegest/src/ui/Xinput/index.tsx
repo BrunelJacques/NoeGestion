@@ -3,7 +3,7 @@ import type { ComponentPropsWithoutRef } from "react";
 import * as sc from "../xcommon.css.ts";
 
 
-interface XinputProps extends Omit<
+export interface XinputProps extends Omit<
   ComponentPropsWithoutRef<"input">,
   "onChange"
 > {

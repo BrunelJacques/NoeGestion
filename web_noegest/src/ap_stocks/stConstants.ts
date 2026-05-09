@@ -6,13 +6,15 @@ interface Service {
   libelle: string;
 }
 
-export enum PageOrigine {
-  Sorties = "sorties",
-  Entrees = "entrees",
-  Article = "article",
-}
+export type PageOrigine = "sorties" | "entrees" | "article"
 
-interface Origine {
+export const PageOrigineValues = {
+  Sorties: "sorties",
+  Entrees: "entrees",
+  Article: "article",
+} as const;
+
+export interface Origine {
   id: string;
   libelle: string;
 }

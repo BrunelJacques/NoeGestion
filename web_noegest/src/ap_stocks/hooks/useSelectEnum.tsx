@@ -3,7 +3,7 @@ import { useMemo, useState } from "react";
 
 export function useSelectEnum<T extends string | number>(
   enumObj: Record<string, T>,
-  initial: T
+  initial: T 
 ) {
   const [value, setValue] = useState<T>(initial);
 

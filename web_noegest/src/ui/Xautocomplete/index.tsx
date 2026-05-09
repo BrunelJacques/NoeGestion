@@ -85,6 +85,7 @@ export function Xautocomplete ({
           }}
           placeholder={props.placeholder}
           onFocus={() => query.length > 0 && setIsOpen(true)}
+          onBlur={() => query.length > 0 && setIsOpen(false)}// perte focus
         />
         
         {isOpen && results.length > 0 && (

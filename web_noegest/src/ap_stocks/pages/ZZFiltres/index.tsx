@@ -21,7 +21,6 @@ export default function Filtres() {
 
   //articles
   const url = apiUrl.STARTICLE_NOM_URL
-  //const { filtres, setFiltres } = useFetch(url); 
 
   const fetchArticles = async (search: string) => {
   const response = await fetch(`${url}?nom=${search}`);
