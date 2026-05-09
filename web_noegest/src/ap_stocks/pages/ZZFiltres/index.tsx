@@ -1,13 +1,25 @@
 //src/ap_stocks/components/Filtres/index.tsx
+import { Services } from "../../stConstants";
+
+
 import * as s from "./index.css";
 import { Xbutton } from "../../../ui/Xbutton";
-import { Autocomplete } from "../../../ui/Xautocomplete";
+import { Xautocomplete } from "../../../ui/Xautocomplete";
 //import { useFetch } from "../../../hooks/useFetch";
 import apiUrl from "../../../constants/api.Constants";
 import type { Article, Articles } from "../../types/article";
+import { Xselect } from "../../../ui/Xselect";
+import { useSelectObject } from "../../hooks/useSelectObject";
+import { useFiltresStocks } from "../../hooks/useFiltres";
+import { FILTRES0 } from "../../types/params";
 
 export default function Filtres() {
+  // services
+  const { filtres } = useFiltresStocks(FILTRES0); 
+  const service = useSelectObject(Services, filtres.service);
 
+
+  //articles
   const url = apiUrl.STARTICLE_NOM_URL
   //const { filtres, setFiltres } = useFetch(url); 
 
@@ -30,12 +42,11 @@ return (
     <div className={s.wrapForm}>
       
       
-      <div id="filtresForm" className={s.formStyle}>
-          <h5>Recherche d'articles</h5>
-
-          <Autocomplete 
+      <div className={s.entree}>
+          <Xautocomplete 
+            label="Article"
+            name="article"
             fetchItems={fetchArticles}
-            // traitement après sélection
             onSelect={(item) => {
               console.log('Sélectionné:', item)
             }}
@@ -43,6 +54,17 @@ return (
           />
 
       </div>
+
+      <div className={s.entree}>
+        <Xselect<number|string>
+          label="Service"
+          name="service"
+          value={service.value}
+          onChange={service.onChange}
+          options={service.options}
+        />
+      </div>
+
       <Xbutton type="submit" altClassName="right" form="filtresForm">
         Validation
       </Xbutton>

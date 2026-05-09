@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 import { Xinput } from "../Xinput";
 import type { XinputProps } from "../Xinput";
 import { formatDateInput as formatValue, isValidDate } from "../formaters/date.ts";
-import * as s from "../Xinput/index.css";
+import * as sc from "../xcommon.css.ts";
 import { handleCursor } from "../formaters/handleCursor.ts";
 
 
@@ -14,7 +14,7 @@ export function XinputDate(props: XinputProps) {
   const valid = isValidDate(value);
 
   return (
-    <div className={s.wrapperV}>
+    <div className={sc.wrapperV}>
       
       <Xinput
         {...props}

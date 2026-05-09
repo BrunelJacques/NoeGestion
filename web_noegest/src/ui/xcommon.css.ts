@@ -1,7 +1,7 @@
-//src/ui/Xselect.css.ts
+//src/ui/xcommon.css.ts
 import { style } from '@vanilla-extract/css'
-import { colors } from '../../assets/styles/colors.css'
-import { vars } from '../../assets/styles/themes.css'
+import { colors } from '../assets/styles/colors.css'
+import { vars } from '../assets/styles/themes.css'
 
 export const wrapperV = style({
   display: "flex",
@@ -82,7 +82,7 @@ export const toggleVisibilityStyle = style({
 })
 
 
-export const DateInputStyle = style({
+export const dateInput = style({
   padding: '8px 12px',
   borderRadius: '4px',
   border: '1px solid #ccc',
@@ -95,6 +95,37 @@ export const DateInputStyle = style({
     },
   },
 });
+
+
+export const combo = style({
+  position: 'absolute',
+  top: '100%',
+  left: 0,
+  right: 0,
+  background: vars.color.cardTitle,
+  color: vars.color.textLower,
+  fontSize: '14px',
+  fontWeight: "lighter",
+  border: '2px solid #ccc',
+  borderRadius: '6px',
+  margin: 0,
+  padding: 0,
+  listStyle: 'none',
+  maxHeight: '300px',
+  overflowY: 'auto',
+  zIndex: 10,
+  boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+});
+
+export const item = style({
+  padding: '10px',
+  cursor: 'pointer',
+  transition: 'background 0.2s ease',
+  ':hover': {
+    color: vars.color.primary,
+    backgroundColor: vars.color.body
+  },
+})
 
 export const errorStyle = style({
   color: 'red',

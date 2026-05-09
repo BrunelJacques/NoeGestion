@@ -1,17 +1,14 @@
 // src/ui/Xinput.tsx
-import type { ComponentPropsWithoutRef, RefObject } from "react";
-import * as s from "./index.css.ts";
+import type { ComponentPropsWithoutRef } from "react";
+import * as sc from "../xcommon.css.ts";
 
 
-function noAction(){}
-
-
-export interface XinputProps extends Omit<
+interface XinputProps extends Omit<
   ComponentPropsWithoutRef<"input">,
   "onChange"
 > {
   onChange?: (value: React.ChangeEvent<HTMLInputElement>) => void;
-  ref?: RefObject<HTMLInputElement | null>;
+  //ref?: RefObject<HTMLInputElement | null>;
   altClassName?: string;
   label?: string;
   error?: string | null;
@@ -19,8 +16,8 @@ export interface XinputProps extends Omit<
 
 
 export function Xinput({
-  type = "text",
-  onChange = noAction,
+  //type = "text",
+  onChange,
   altClassName = "",
   label,
   error = null,
@@ -29,24 +26,23 @@ export function Xinput({
 }: XinputProps) {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-
     if (disabled) return;
     onChange?.(e);
   };
 
   return (
-    <div className={s.wrapperV}>
-      <div className={s.wrapperH}>
-        {label && <span className={s.label}>{label} :</span>}
-        
+    <div className={sc.wrapperV}>
+      <div className={sc.wrapperH}>
+        {label && <span className={sc.label}> {label} :</span>}
+
         <input
-          type={type}
+          type={props.type}
           value={props.value}
           disabled={disabled}
           onChange={handleChange}
           className={[
-            s.baseInput,
-            disabled && s.disabledInput,
+            sc.baseInput,
+            disabled && sc.disabledInput,
             altClassName
           ].filter(Boolean).join(" ")}
           placeholder={props.placeholder ?? " "} // force un placeholder non vide
@@ -55,7 +51,7 @@ export function Xinput({
       </div>
 
       {error && (
-        <p className={s.errorStyle}>{error}</p>
+        <p className={sc.errorStyle}>{error}</p>
       )}
     </div>
   );

@@ -1,21 +1,34 @@
 //src/ui/Xautocomplete/index.tsx
-import { useState, useEffect, useRef } from 'react';
-import * as styles from './index.css';
+import { useState, useEffect, useRef, type ComponentPropsWithoutRef } from 'react';
+import * as sc from '../xcommon.css';
 
 interface Item {
   id: string | number;
   nom: string;
 }
 
-interface Props {
+interface Props extends Omit<
+  ComponentPropsWithoutRef<"input">, 
+  "onSelect"
+> {  
   fetchItems: (query: string) => Promise<Item[]>;
   onSelect: (item: Item) => void;
-  placeholder?: string;
+  altClassName?: string;
+  label?: string;
+  error?: string | null;
+  disabled?: boolean
 }
 
-export const Autocomplete = ({ 
-    fetchItems, onSelect, placeholder 
-  }: Props) => {
+export function Xautocomplete ({ 
+    fetchItems, 
+    onSelect,
+    altClassName = "",
+    label,
+    error = null,
+    disabled = false,
+    ...props 
+  }: Props) {
+
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<Item[]>([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -45,6 +58,7 @@ export const Autocomplete = ({
   }, [query, fetchItems]); 
 
   const handleSelect = (item: Item) => {
+    if (disabled) return;
     isSelecting.current = true; // On verrouille l'effet avant de changer le query
     setQuery(item.nom);
     setIsOpen(false);
@@ -52,32 +66,44 @@ export const Autocomplete = ({
   };
 
   return (
-    <div className={styles.container}>
-      <input
-        className={styles.input}
-        type="text"
-        value={query}
-        onChange={(e) => {
-          isSelecting.current = false; // Si l'utilisateur retape, on déverrouille
-          setQuery(e.target.value);
-        }}
-        placeholder={placeholder}
-        onFocus={() => query.length > 0 && setIsOpen(true)}
-      />
-      
-      {isOpen && results.length > 0 && (
-        <ul className={styles.dropdown}>
-          {results.map((item) => (
-            <li 
-              key={item.id} 
-              className={styles.item}
-              // Utiliser onMouseDown au lieu de onClick évite parfois des conflits de focus
-              onMouseDown={() => handleSelect(item)} 
-            >
-              {item.nom}
-            </li>
-          ))}
-        </ul>
+    <div className={sc.wrapperV}>
+      <div className={sc.wrapperH}>
+        {label && <span className={sc.label}> {label} :</span>}
+        <input
+          {...props}
+          type="text"
+          disabled={disabled}
+          className={[
+            sc.baseInput,
+            disabled && sc.disabledInput,
+            altClassName
+          ].filter(Boolean).join(" ")}
+          value={query}
+          onChange={(e) => {
+            isSelecting.current = false; // Si l'utilisateur retape, on déverrouille
+            setQuery(e.target.value);
+          }}
+          placeholder={props.placeholder}
+          onFocus={() => query.length > 0 && setIsOpen(true)}
+        />
+        
+        {isOpen && results.length > 0 && (
+          <ul className={`${sc.combo}`}>
+            {results.map((item) => (
+              <li 
+                key={item.id} 
+                className={sc.item}
+                // Utiliser onMouseDown au lieu de onClick évite parfois des conflits de focus
+                onMouseDown={() => handleSelect(item)} 
+              >
+                {item.nom}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+      {error && (
+        <p className={sc.errorStyle}>{error}</p>
       )}
     </div>
   );

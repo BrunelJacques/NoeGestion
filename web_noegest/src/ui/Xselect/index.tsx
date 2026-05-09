@@ -1,6 +1,6 @@
 // src/ui/Xselect.tsx
 import type { ComponentPropsWithoutRef } from "react";
-import * as s from "./index.css.ts";
+import * as sc from "../xcommon.css.ts";
 
 
 // Type pour une option individuelle
@@ -48,17 +48,17 @@ export function Xselect<T extends string | number>({
   };
 
   return (
-    <div className={s.wrapperV}>
-      <div className={s.wrapperH}>
-        {label && <span className={s.label}>{label} :</span>}
+    <div className={sc.wrapperV}>
+      <div className={sc.wrapperH}>
+        {label && <span className={sc.label}>{label} :</span>}
         
         <select
           {...props}
           disabled={disabled}
           onChange={handleChange}
           className={[
-            s.baseInput, 
-            disabled && s.disabledInput,
+            sc.baseInput, 
+            disabled && sc.disabledInput,
             altClassName
           ].filter(Boolean).join(" ")}
         >
@@ -78,7 +78,7 @@ export function Xselect<T extends string | number>({
       </div>
       
       {error && (
-        <p className={s.errorStyle}>{error}</p>
+        <p className={sc.errorStyle}>{error}</p>
       )}
     </div>
   );

@@ -2,7 +2,7 @@
 import  { Xinput } from "../Xinput";
 import type { XinputProps } from "../Xinput"; 
 import { useState } from "react";
-import * as s from "../Xinput/index.css"
+import * as s from "../xcommon.css"
 
 export function XinputPassword(props: XinputProps) {
   const [isVisible, setIsVisible] = useState(false);
