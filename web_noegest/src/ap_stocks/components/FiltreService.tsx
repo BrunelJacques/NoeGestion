@@ -8,18 +8,18 @@ import { useSelectObject } from "../hooks/useSelectObject";
 
 export default function FiltreService(filtres:TypFiltreMvts) {
 
-const service = useSelectObject(Services, filtres.service);
+  const service = useSelectObject(Services, filtres.service);
 
-return (
-      <>
-        <Xselect<string|number>
-          label="Service"
-          name="service"
-          value={service.value}
-          onChange={service.onChange}
-          options={service.options}
-        />
-      </>
+  return (
+    <>
+      <Xselect<string|number>
+        label="Service"
+        name="service"
+        value={service.value}
+        onChange={service.onChange}
+        options={service.options}
+      />
+    </>
   );
 }
 

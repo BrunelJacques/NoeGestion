@@ -10,7 +10,8 @@ import { useFiltresStocks } from "../../hooks/useFiltres";
 import { useSelectEnum } from "../../hooks/useSelectEnum";
 import FiltreService from "../../components/FiltreService";
 import FiltreOrigine from "../../components/FiltreOrigine";
-import { Xinput } from "../../../ui/Xinput";
+import FiltreArticle from "../../components/FiltreArticle";
+import FiltreFournisseur from "../../components/FiltreFournisseur";
 
 
 export default function Filtres() {
@@ -20,7 +21,7 @@ export default function Filtres() {
 
   // Fonction de soumission du formulaire par bouton "Validation"
   function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
-    console.log("Filtres Submitted!")
+    console.log("Filtres Submitted!", filtres)
     e.preventDefault();
     setFiltres({
       ...filtres,
@@ -55,26 +56,32 @@ return (
         </div>
 
         <div className={s.entree}>
+          <FiltreFournisseur {...filtres} />
+        </div>
+
+        <div className={s.entree}>
+          <FiltreArticle />
+        </div>
+
+        <div className={s.entree}>
           <FiltreOrigine 
           filtres={filtres} 
           pageOrigine={pageOrigine.value} />
         </div>
  
 
-        {Object.entries(filtres).map(([id, valeur]) => (
+{/*         {Object.entries(filtres).map(([id, valeur]) => (
           <div className={s.zzentree} key={id}>
             <Xinput
             value={String(valeur)}
             label={id}
             id={id}
             />
-        </div>
-        ))}
-		
-		
-
+          </div>
+        ))} */}
 
       </Form>
+
       <Xbutton type="submit" altClassName="right" form="filtresForm">
         Validation
       </Xbutton>

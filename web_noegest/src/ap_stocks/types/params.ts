@@ -22,19 +22,28 @@ export type TypFiltreMvts = {
   origine : string;
   service: number;
   camp?: string;
-  fournisseur?: string | null;
+  fournisseur?: string|null;
   tva: "TTC" | "HT";
 }
+
 export type Camp = {
   id: 0;
   nom: string;
   abrege: string;
   params: unknown;
 }
+export type Camps = {
+  count: number;
+  results: Camp;
+}
 
 export type Fournisseur = {
   id: 0;
   nom: string;
+}
+export type Fournisseurs = {
+  count: number;
+  results: Fournisseur[];
 }
 
 export type Rayon = {
@@ -42,11 +51,19 @@ export type Rayon = {
   nom: string;
   position: number;
 }
+export type Rayons = {
+  count: number;
+  results: Rayon;
+}
 
 export type Magasin = {
   id: 0;
   nom: string;
   position: number;
+}
+export type Magasins = {
+  count: number;
+  results: Magasin;
 }
 
 export type FormField = {
@@ -56,4 +73,3 @@ export type FormField = {
   visible?: boolean;
   options?: string[]; // For select fields
 }
-
