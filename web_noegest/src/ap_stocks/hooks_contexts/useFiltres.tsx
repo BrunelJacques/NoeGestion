@@ -2,8 +2,7 @@
 import { createContext } from "react";
 
 
-export const StFiltresContext = createContext({
+export const zzStFiltresContext = createContext({
   typeMvt: '',
-  setTypeMvt: (x: string) => {typeMvt = x},    
-
+  setTypeMvt: (x: string) => x,
 });

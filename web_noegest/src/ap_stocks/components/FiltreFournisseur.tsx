@@ -5,6 +5,10 @@ import type  { TypFiltreMvts } from "../types/params";
 import apiUrl from "../../constants/api.Constants";
 import { Xautocomplete } from "../../ui/Xautocomplete";
 
+interface Props {
+  id: number;
+  updateField: (value: number) => void;
+}
 
 export default function FiltreFournisseur(filtres:TypFiltreMvts) {
   const url = apiUrl.STFOURNISSEUR_URL

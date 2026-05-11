@@ -1,3 +1,4 @@
+//src/ap_stocks/types/params.ts
 
 export const  FILTRES0: TypFiltreMvts= {
   pageOrigine: "sorties",

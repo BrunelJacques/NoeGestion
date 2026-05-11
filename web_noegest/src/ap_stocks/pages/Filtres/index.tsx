@@ -6,7 +6,7 @@ import { Xbutton } from "../../../ui/Xbutton";
 import { Form } from "react-router-dom";
 import { PageOrigineValues } from "../../stConstants";
 import { Xselect } from "../../../ui/Xselect";
-import { useFiltresStocks } from "../../hooks/useFiltres";
+import { useDraftFiltresStocks, useFiltresStocks } from "../../hooks/useFiltres";
 import { useSelectEnum } from "../../hooks/useSelectEnum";
 import FiltreService from "../../components/FiltreService";
 import FiltreOrigine from "../../components/FiltreOrigine";
@@ -15,18 +15,23 @@ import FiltreFournisseur from "../../components/FiltreFournisseur";
 
 
 export default function Filtres() {
-
   const { filtres, setFiltres } = useFiltresStocks(FILTRES0); 
-  const pageOrigine = useSelectEnum(PageOrigineValues, filtres.pageOrigine);
+
+  const { draft, updateField } = useDraftFiltresStocks(filtres)
+
+
+  const pageOrigine = useSelectEnum(PageOrigineValues, draft.pageOrigine);
 
   // Fonction de soumission du formulaire par bouton "Validation"
   function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
-    console.log("Filtres Submitted!", filtres)
     e.preventDefault();
-    setFiltres({
-      ...filtres,
-    });
+    const finalFiltre = {
+      ...draft,
+      pageOrigine: pageOrigine.value
     }
+    setFiltres(finalFiltre)
+    console.log("Filtres Submitted!", draft)
+  }
     
 return (
   //Titres sous-titres
@@ -51,9 +56,10 @@ return (
           />
         </div>
 
-        <div className={s.entree}>
-          <FiltreService {...filtres} />
-        </div>
+          <FiltreService 
+            id={draft.service} 
+            updateField={(val) => updateField('service', val)}
+          />
 
         <div className={s.entree}>
           <FiltreFournisseur {...filtres} />
@@ -69,17 +75,6 @@ return (
           pageOrigine={pageOrigine.value} />
         </div>
  
-
-{/*         {Object.entries(filtres).map(([id, valeur]) => (
-          <div className={s.zzentree} key={id}>
-            <Xinput
-            value={String(valeur)}
-            label={id}
-            id={id}
-            />
-          </div>
-        ))} */}
-
       </Form>
 
       <Xbutton type="submit" altClassName="right" form="filtresForm">

@@ -35,3 +35,16 @@ export function useFiltresStocks(defaults: TypFiltreMvts = FILTRES0) {
 
   return { filtres, setFiltres };
 }
+
+// Ce hook draft crée simplement un état local pour manipuler 
+
+export function useDraftFiltresStocks(initialValues: TypFiltreMvts) {
+  const [draft, setDraft] = useState<TypFiltreMvts>(initialValues);
+  
+  // Fonction utilitaire pour mettre à jour un seul champ facilement
+  const updateField = (field: keyof TypFiltreMvts, value: TypFiltreMvts[keyof TypFiltreMvts]) => {
+    setDraft(prev => ({ ...prev, [field]: value }));
+  };
+
+  return { draft, setDraft, updateField };
+}
