@@ -76,11 +76,15 @@ export function Xautocomplete ({
           ].filter(Boolean).join(" ")}
           value={query}
           onChange={(e) => {
+            console.log("onChange Xautocomplete", e)
             isSelecting.current = false; // Si l'utilisateur retape, on déverrouille
             setQuery(e.target.value);
           }}
           onFocus={() => query.length > 0 && setIsOpen(true)}
-          onBlur={() => query.length > 0 && setIsOpen(false)}// perte focus
+          onBlur={() => {
+            if (query.length > 0) {setIsOpen(false);}
+            console.log("onBlur isOpen",isOpen)
+          }}
         />
         
         {isOpen && results.length > 0 && (

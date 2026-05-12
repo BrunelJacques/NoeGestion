@@ -72,7 +72,10 @@ return (
         </div>
 
         <div className={s.entree}>
-          <FiltreArticle />
+          <FiltreArticle
+            nom={draft.article} 
+            updateField={(val) => updateField('article', val)}
+          />
         </div>
 
         <div className={s.entree}>

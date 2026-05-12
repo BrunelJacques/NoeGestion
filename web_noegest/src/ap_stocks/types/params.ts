@@ -16,7 +16,7 @@ export const  FILTRES0: TypFiltreMvts= {
 export type TypFiltreMvts = {
 
   pageOrigine: "entrees" | "sorties" | "article" ;
-  article?: string[] | null;
+  article?: string | null;
   tiers: string;
   jour: Date;
   periode?: { debut: Date; fin: Date } | null;
