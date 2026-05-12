@@ -10,7 +10,7 @@ export interface XselectOption<T extends string | number> {
   disabled?: boolean;
 }
 
-export interface XselectProps<T extends string | number>
+export interface Props<T extends string | number>
   extends Omit<ComponentPropsWithoutRef<"select">,"onChange"
 > {
   value: T;
@@ -23,34 +23,28 @@ export interface XselectProps<T extends string | number>
 }
 
 export function Xselect<T extends string | number>({
-  value,
-  options,
-  onChange,
   altClassName = "",
-  label,
-  error = null,
   disabled = false,
-  placeholder,
   ...props
-}: XselectProps<T>
+}: Props<T>
 ) {
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     if (disabled) return;
 
     const raw = e.target.value;
-
+    
     // Convertit automatiquement en number si l’option est un number
-    const typedValue = (typeof value === "number"
+    const typedValue = (typeof props.value === "number"
       ? Number(raw)
       : raw) as T;
 
-    onChange?.(typedValue);
+    props.onChange?.(typedValue);
   };
 
   return (
     <div className={sc.wrapperV}>
       <div className={sc.wrapperH}>
-        {label && <span className={sc.label}>{label} :</span>}
+        {props.label && <span className={sc.label}>{props.label} :</span>}
         
         <select
           {...props}
@@ -63,13 +57,13 @@ export function Xselect<T extends string | number>({
           ].filter(Boolean).join(" ")}
         >
           {/* Gestion du placeholder comme option par défaut */}
-          {placeholder && (
+          {props.placeholder && (
             <option value="" disabled hidden={!props.required}>
-              {placeholder}
+              {props.placeholder}
             </option>
           )}
 
-          {options.map((opt) => (
+          {props.options.map((opt) => (
             <option key={opt.value} value={opt.value} disabled={opt.disabled}>
               {opt.label}
             </option>
@@ -77,8 +71,8 @@ export function Xselect<T extends string | number>({
         </select>
       </div>
       
-      {error && (
-        <p className={sc.errorStyle}>{error}</p>
+      {props.error && (
+        <p className={sc.errorStyle}>{props.error}</p>
       )}
     </div>
   );

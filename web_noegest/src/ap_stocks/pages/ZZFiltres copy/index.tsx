@@ -1,11 +1,11 @@
 //src/ap_stocks/components/FiltreMvt/index.tsx
-import { useFiltresStocks } from "../../hooks/useFiltres";
+import { useFiltres } from "../../hooks/useFiltres";
 import { FILTRES0 } from "../../types/params";
 import * as s from "../Filtres/index.css";
 
 export default function Filtres() {
 
-  const { filtres, setFiltres } = useFiltresStocks(FILTRES0);  
+  const { filtres, setFiltres } = useFiltres(FILTRES0);  
   function resetFiltres() {   
     const filtres0 = FILTRES0;
     setFiltres(filtres0);

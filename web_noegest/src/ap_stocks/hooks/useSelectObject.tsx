@@ -18,12 +18,15 @@ export function useSelectObject<
   }, [items]);
 
   // Valeur dérivée : si value n'existe plus → fallback
-  const safeValue = useMemo(() => {
-    if (!items || items.length === 0) return value;
+  const safeValue = useMemo(
+    () => {
+      if (!items || items.length === 0) return value;
 
-    const exists = items.some((i) => i.id === value);
-    return exists ? value : items[0].id;
-  }, [items, value]);
+      const exists = items.some((i) => i.id === value);
+      return exists ? value : items[0].id;
+    }, 
+    [items, value]
+  );
 
   // Conversion automatique
   const onChange = (raw: string|number) => {

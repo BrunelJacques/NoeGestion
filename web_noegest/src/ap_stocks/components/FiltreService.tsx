@@ -1,17 +1,19 @@
 //src/ap_stocks/components/FiltreService.tsx
 import { Services } from "../stConstants";
-
 import { Xselect } from "../../ui/Xselect";
 import { useSelectObject } from "../hooks/useSelectObject";
+
 
 interface Props {
   id: number;
   updateField: (value: number) => void;
 }
 
-export default function FiltreService({ id: serviceId, updateField }: Props) {
 
-  const service = useSelectObject(Services, serviceId);
+//un seul param pour une fonction donc on encadre {}
+export default function FiltreService({ id: T, updateField }: Props) {
+
+  const service = useSelectObject(Services, T);
  
   // On intercepte le changement pour notifier le parent
   const handleChange = (newValue: string | number) => {

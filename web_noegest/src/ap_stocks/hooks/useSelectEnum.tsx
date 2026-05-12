@@ -5,6 +5,7 @@ export function useSelectEnum<T extends string | number>(
   enumObj: Record<string, T>,
   initial: T 
 ) {
+  
   const [value, setValue] = useState<T>(initial);
 
   // Génère automatiquement les options à partir de l’enum

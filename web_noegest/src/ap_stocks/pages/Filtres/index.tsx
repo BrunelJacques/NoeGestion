@@ -4,9 +4,9 @@ import { FILTRES0 } from "../../types/params";
 import * as s from "./index.css";
 import { Xbutton } from "../../../ui/Xbutton";
 import { Form } from "react-router-dom";
-import { PageOrigineValues } from "../../stConstants";
+import { Origines, PageOrigineValues } from "../../stConstants";
 import { Xselect } from "../../../ui/Xselect";
-import { useDraftFiltresStocks, useFiltresStocks } from "../../hooks/useFiltres";
+import { useDraftFiltres, useFiltres } from "../../hooks/useFiltres";
 import { useSelectEnum } from "../../hooks/useSelectEnum";
 import FiltreService from "../../components/FiltreService";
 import FiltreOrigine from "../../components/FiltreOrigine";
@@ -15,22 +15,23 @@ import FiltreFournisseur from "../../components/FiltreFournisseur";
 
 
 export default function Filtres() {
-  const { filtres, setFiltres } = useFiltresStocks(FILTRES0); 
+  const { filtres, setFiltres } = useFiltres(FILTRES0); 
 
-  const { draft, updateField } = useDraftFiltresStocks(filtres)
-
+  const { draft, updateField } = useDraftFiltres(filtres)
 
   const pageOrigine = useSelectEnum(PageOrigineValues, draft.pageOrigine);
+
+  const origineItems = Origines[pageOrigine.value] ?? [];
+
 
   // Fonction de soumission du formulaire par bouton "Validation"
   function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
-    const finalFiltre = {
+    const finalFiltres = {
       ...draft,
       pageOrigine: pageOrigine.value
     }
-    setFiltres(finalFiltre)
-    console.log("Filtres Submitted!", draft)
+    setFiltres(finalFiltres)
   }
     
 return (
@@ -56,13 +57,18 @@ return (
           />
         </div>
 
+       <div className={s.entree}>
           <FiltreService 
             id={draft.service} 
             updateField={(val) => updateField('service', val)}
           />
+        </div>
 
         <div className={s.entree}>
-          <FiltreFournisseur {...filtres} />
+          <FiltreFournisseur 
+            nom={draft.fournisseur} 
+            updateField={(val) => updateField('fournisseur', val)}
+          />
         </div>
 
         <div className={s.entree}>
@@ -71,8 +77,10 @@ return (
 
         <div className={s.entree}>
           <FiltreOrigine 
-          filtres={filtres} 
-          pageOrigine={pageOrigine.value} />
+            filtres={draft}
+            updateField={(val) => updateField('origine', val)}
+            origineItems={origineItems}
+        />
         </div>
  
       </Form>

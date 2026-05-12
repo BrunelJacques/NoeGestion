@@ -3,7 +3,7 @@ import { useState, useEffect, useRef, type ComponentPropsWithoutRef } from 'reac
 import * as sc from '../xcommon.css';
 
 interface Item {
-  id: string | number;
+  id: number ;
   nom: string;
 }
 
@@ -23,13 +23,13 @@ export function Xautocomplete ({
     fetchItems, 
     onSelect,
     altClassName = "",
-    label,
     error = null,
-    disabled = false,
     ...props 
   }: Props) {
 
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState<string>(
+    typeof props.value === "string" ? props.value : ""
+  );
   const [results, setResults] = useState<Item[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   // Ajout d'un verrou pour empêcher la réouverture après sélection
@@ -58,7 +58,7 @@ export function Xautocomplete ({
   }, [query, fetchItems]); 
 
   const handleSelect = (item: Item) => {
-    if (disabled) return;
+    if (props.disabled) return;
     isSelecting.current = true; // On verrouille l'effet avant de changer le query
     setQuery(item.nom);
     setIsOpen(false);
@@ -68,14 +68,12 @@ export function Xautocomplete ({
   return (
     <div className={sc.wrapperV}>
       <div className={sc.wrapperH}>
-        {label && <span className={sc.label}> {label} :</span>}
+        {props.label && <span className={sc.label}> {props.label} :</span>}
         <input
           {...props}
-          type="text"
-          disabled={disabled}
           className={[
             sc.baseInput,
-            disabled && sc.disabledInput,
+            props.disabled && sc.disabledInput,
             altClassName
           ].filter(Boolean).join(" ")}
           value={query}
@@ -83,7 +81,6 @@ export function Xautocomplete ({
             isSelecting.current = false; // Si l'utilisateur retape, on déverrouille
             setQuery(e.target.value);
           }}
-          placeholder={props.placeholder}
           onFocus={() => query.length > 0 && setIsOpen(true)}
           onBlur={() => query.length > 0 && setIsOpen(false)}// perte focus
         />

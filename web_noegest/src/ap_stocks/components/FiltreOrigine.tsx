@@ -1,30 +1,34 @@
 //src/ap_stocks/components/FiltreOrigine.tsx
-import type { PageOrigine } from "../stConstants";
-import { Origines } from "../stConstants";
-
+import {type Origine } from "../stConstants";
 import { Xselect } from "../../ui/Xselect";
-import type  { TypFiltreMvts } from "../types/params";
 import { useSelectObject } from "../hooks/useSelectObject";
+import type { TypFiltreMvts } from "../types/params";
 
-type Props = {
+
+interface Props {
   filtres: TypFiltreMvts;
-  pageOrigine:PageOrigine;
-};
+  updateField: (value: string) => void;
+  origineItems: Origine[]
+}
 
-//un seul param pour une fonction donc on encadre {}
-export default function FiltreOrigine({ filtres, pageOrigine }: Props) {
 
-  const origineItems = Origines[pageOrigine] ?? [];
+export default function FiltreOrigine({ filtres, updateField, origineItems }: Props) {
+
   const initialOrigineId = origineItems[0]?.id ?? "";
   const origine = useSelectObject(origineItems, initialOrigineId);
 
+  const handleChange = (newValue: string | number) => {
+    origine.onChange(newValue); // Met à jour l'affichage local du select
+    updateField(String(newValue)); // Remonte l'info au parent
+  };
+  
 return (
       <>
         <Xselect<number|string>
           label="Origine"
           name="origine"
           value={filtres.origine}
-          onChange={origine.onChange}
+          onChange={handleChange}
           options={origine.options}
         />
       </>
