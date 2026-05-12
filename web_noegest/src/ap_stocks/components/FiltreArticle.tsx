@@ -1,5 +1,6 @@
 //src/ap_stocks/components/FiltreArticle/index.tsx
 
+import { useCallback } from "react";
 import { Xautocomplete } from "../../ui/Xautocomplete";
 import apiUrl from "../../constants/api.Constants";
 import type { Article, Articles } from "../types/article";
@@ -13,7 +14,8 @@ interface Props {
 export default function FiltreArticle({ nom, updateField }: Props) {
   const url = apiUrl.STARTICLE_NOM_URL
 
-  const fetchArticles = async (search: string) => {
+// Utiliser useCallback pour figer la référence de la fonction
+  const fetchArticles = useCallback(async (search: string) => {
     const response = await fetch(`${url}?nom=${search}`);
     const articles: Articles = await response.json();
     return articles.results
@@ -22,7 +24,7 @@ export default function FiltreArticle({ nom, updateField }: Props) {
         id: u.id, 
         nom: u.nom 
       }));
-  };
+  }, [url]); // Ne change que si l'URL change
     
   const handleChange = (item: { id: number; nom: string } | string | number) => {
     const value =

@@ -32,10 +32,10 @@ export function Xautocomplete ({
   const [isOpen, setIsOpen] = useState(false);
   // Ajout d'un verrou pour empêcher la réouverture après sélection
   const isSelecting = useRef(false);
+  const inputRef = useRef<HTMLInputElement>(null)
 
-  useEffect(() => {
+useEffect(() => {
     const loadData = async () => {
-      // Si on est en train de sélectionner, on ne fait rien
       if (isSelecting.current) {
         isSelecting.current = false;
         return;
@@ -44,7 +44,11 @@ export function Xautocomplete ({
       if (query.length > 0) {
         const data = await fetchItems(query);
         setResults(data);
-        setIsOpen(true);
+        
+        // On n'ouvre que si l'utilisateur est réellement en train de saisir
+        if (document.activeElement === inputRef.current) {
+          setIsOpen(true);
+        }
       } else {
         setResults([]);
         setIsOpen(false);
@@ -74,6 +78,7 @@ export function Xautocomplete ({
             props.disabled && sc.disabledInput,
             altClassName
           ].filter(Boolean).join(" ")}
+          ref={inputRef} //des refs distinctes pour éviter éffets collatéraux
           value={query}
           onChange={(e) => {
             console.log("onChange Xautocomplete", e)
