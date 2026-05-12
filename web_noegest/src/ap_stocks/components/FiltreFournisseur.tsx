@@ -15,12 +15,16 @@ export default function FiltreFournisseur({ nom, updateField }: Props) {
   const fetchFournisseurs = async (search: string) => {
     const response = await fetch(`${url}?nom=${search}`);
     const fournisseurs: Fournisseurs = await response.json();
-    return fournisseurs.results
-      .filter((u: Fournisseur) => u.nom && u.nom.toLowerCase().includes(search.toLowerCase()))
-      .map((u: Fournisseur) => ({
-        id: u.id,
-        nom: u.nom
-      }));
+    return [
+      { id: 0, nom: "Tous" },
+      ...fournisseurs.results
+        .filter((u: Fournisseur) => u.nom && u.nom.toLowerCase().includes(search.toLowerCase())
+        )
+        .map((u: Fournisseur) => ({
+          id: u.id,
+          nom: u.nom
+        }))
+    ];
   };
 
   const handleChange = (item: { id: number; nom: string } | string | number) => {

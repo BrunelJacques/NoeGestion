@@ -1,11 +1,8 @@
 //src/ui/Xautocomplete/index.tsx
 import { useState, useEffect, useRef, type ComponentPropsWithoutRef } from 'react';
 import * as sc from '../xcommon.css';
+import type { Item } from '../../ap_stocks/types/params';
 
-interface Item {
-  id: number ;
-  nom: string;
-}
 
 interface Props extends Omit<
   ComponentPropsWithoutRef<"input">, 
@@ -18,6 +15,7 @@ interface Props extends Omit<
   error?: string | null;
   disabled?: boolean
 }
+
 
 export function Xautocomplete ({ 
     fetchItems, 

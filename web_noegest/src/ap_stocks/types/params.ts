@@ -74,3 +74,9 @@ export type FormField = {
   visible?: boolean;
   options?: string[]; // For select fields
 }
+
+// générique d'appels noms_xxx
+export type Item = {
+  id: number ;
+  nom: string;
+}
