@@ -12,6 +12,7 @@ import FiltreService from "../../components/FiltreService";
 import FiltreOrigine from "../../components/FiltreOrigine";
 import FiltreArticle from "../../components/FiltreArticle";
 import FiltreFournisseur from "../../components/FiltreFournisseur";
+import { useEffect, useMemo } from "react";
 
 
 export default function Filtres() {
@@ -21,8 +22,31 @@ export default function Filtres() {
 
   const pageOrigine = useSelectEnum(PageOrigineValues, draft.pageOrigine);
 
-  const origineItems = Origines[pageOrigine.value] ?? [];
+  const origineItems = useMemo(
+    () => Origines[pageOrigine.value] ?? [],
+    [pageOrigine.value]
+  );
 
+  // Effet de synchronisation de draft.origine, sans clic sur origine
+  useEffect(() => {
+    /*  écriture verbeuse pour doc
+    const idx = origineItems.findIndex(a => a.id === draft.origine)
+        if (idx !== -1) { 
+          updateField("origine", origineItems[idx].id)
+        } else {
+          if (origineItems.length > 0) {
+            updateField("origine", origineItems[0].id)
+          } else {
+            updateField("origine", ""); // reset si aucun item
+          }
+    } */
+    updateField( // équivalent de ci-dessus en compact
+      "origine",
+      origineItems.find(a => a.id === draft.origine)?.id // recherche l'item de oldOrigine
+        ?? origineItems[0]?.id // oldOrigine pas trouvée dans les items rafraichis
+          ?? "" // aucun item trouvé
+    );
+  }, [pageOrigine.value, updateField, draft.origine,origineItems]);
 
   // Fonction de soumission du formulaire par bouton "Validation"
   function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {

@@ -1,6 +1,6 @@
 // src/ap_stocks/hooks/useFiltres.tsx
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { FILTRES0 } from "../types/params";
 import type { TypFiltreMvts } from "../types/params";
 
@@ -45,9 +45,12 @@ export function useFiltres(defaults: TypFiltreMvts = FILTRES0) {
 export function useDraftFiltres(initialValues: TypFiltreMvts) {
   const [draft, setDraft] = useState<TypFiltreMvts>(initialValues);
   // Fonction utilitaire pour mettre à jour un seul champ facilement
-  const updateField = (field: keyof TypFiltreMvts, value: TypFiltreMvts[keyof TypFiltreMvts]) => {
+  const updateField = useCallback((field: keyof TypFiltreMvts, value: TypFiltreMvts[keyof TypFiltreMvts]) => {
     setDraft(prev => ({ ...prev, [field]: value }));
-  };
+    if (field == "pageOrigine"){
+      console.log("ok pour Origines")
+    }
+  },[]);
 
   return { draft, setDraft, updateField };
 }
