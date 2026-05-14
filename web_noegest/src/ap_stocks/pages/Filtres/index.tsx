@@ -13,6 +13,8 @@ import FiltreOrigine from "../../components/FiltreOrigine";
 import FiltreArticle from "../../components/FiltreArticle";
 import FiltreFournisseur from "../../components/FiltreFournisseur";
 import { useEffect, useMemo } from "react";
+import FiltreMagasin from "../../components/FiltreMagasin";
+import FiltreRayon from "../../components/FiltreRayon";
 
 
 export default function Filtres() {
@@ -84,6 +86,20 @@ return (
           <FiltreFournisseur 
             nom={draft.fournisseur} 
             updateField={(val) => updateField('fournisseur', val)}
+          />
+        </div>
+
+        <div className={s.entree}>
+          <FiltreMagasin 
+            nom={draft.magasin} 
+            updateField={(val) => updateField('magasin', val)}
+          />
+        </div>
+
+        <div className={s.entree}>
+          <FiltreRayon 
+            nom={draft.rayon} 
+            updateField={(val) => updateField('rayon', val)}
           />
         </div>
 

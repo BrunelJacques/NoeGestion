@@ -1,30 +1,30 @@
 //src/ap_stocks/types/params.ts
 
-export const  FILTRES0: TypFiltreMvts= {
-  pageOrigine: "sorties",
-  article: null,
-  tiers: "tous",
-  jour: new Date(2022,8,17),//valeur pour démo, provisoire
-  periode: null,
-  origine: "cuisine",
-  service: 0,
-  camp: "00",
-  fournisseur: null,
-  tva: "TTC",
-}
-
 export type TypFiltreMvts = {
 
   pageOrigine: "entrees" | "sorties" | "article" ;
   article?: string | null;
-  tiers: string;
   jour: Date;
   periode?: { debut: Date; fin: Date } | null;
   origine : string;
   service: number;
-  camp?: string;
-  fournisseur?: string|null;
-  tva: "TTC" | "HT";
+  camp?: string|null;
+  fournisseur?: string;
+  magasin?: string;
+  rayon?: string;
+  tva: string;
+}
+
+export const  FILTRES0: TypFiltreMvts= {
+  pageOrigine: "sorties",
+  article: null,
+  jour: new Date(2022,8,17),//valeur pour démo, provisoire
+  periode: null,
+  origine: "cuisine",
+  service: 0,
+  camp: "",
+  fournisseur: "",
+  tva: "TTC",
 }
 
 export type Camp = {
@@ -50,11 +50,11 @@ export type Fournisseurs = {
 export type Rayon = {
   id: 0;
   nom: string;
-  position: number;
 }
+
 export type Rayons = {
   count: number;
-  results: Rayon;
+  results: Rayon[];
 }
 
 export type Magasin = {
@@ -64,7 +64,7 @@ export type Magasin = {
 }
 export type Magasins = {
   count: number;
-  results: Magasin;
+  results: Magasin[];
 }
 
 export type FormField = {
@@ -75,7 +75,7 @@ export type FormField = {
   options?: string[]; // For select fields
 }
 
-// générique d'appels noms_xxx
+// générique d'appels items
 export type Item = {
   id: number ;
   nom: string;

@@ -63,24 +63,6 @@ export const baseInput = style({
 
 })
 
-export const toggleVisibilityStyle = style({
-  position: 'absolute',
-  right: '0.6rem',
-  top: '50%',
-  transform: 'translateY(-50%)',
-  background: 'none',
-  color: colors.txtDarkGray,
-  border: 'none',
-  cursor: 'pointer',
-  fontSize: '14px',
-  opacity: 0.7,
-  transition: 'opacity 120ms ease-out',
-
-  ':hover': {
-    opacity: 1,
-  },
-})
-
 
 export const dateInput = style({
   padding: '8px 12px',
@@ -127,9 +109,45 @@ export const item = style({
   },
 })
 
+
 export const errorStyle = style({
   color: 'red',
   background: colors.bglight_card,
   fontSize: '12px',
   margin: '0 auto 0 44%',
 });
+
+
+export const resetButton = style({
+  position: "absolute",
+  right: "0",
+  top: "30%",
+  transform: "translateY(-20%)",
+  background: "transparent",
+  border: "none",
+  cursor: "pointer",
+  fontSize: "1rem",
+  opacity: 0.6,
+  selectors: {
+    "&:hover": { opacity: 1 },
+  },
+});
+
+
+export const toggleVoir = style({
+  position: 'absolute',
+  right: '1.2rem',
+  top: '40%',
+  transform: 'translateY(-40%)',
+  background: 'none',
+  color: colors.txtDarkGray,
+  border: 'none',
+  cursor: 'pointer',
+  fontSize: '14px',
+  opacity: 0.7,
+  transition: 'opacity 120ms ease-out',
+
+  ':hover': {
+    opacity: 1,
+  },
+})

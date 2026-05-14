@@ -1,6 +1,7 @@
 //src/hooks/useUrl.tsx
 import { useLocation } from "react-router-dom";
 
+// tient à jour la page appelée
 export function useUrl() {
   const { pathname, search, hash } = useLocation();
 

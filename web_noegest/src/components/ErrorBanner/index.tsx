@@ -3,6 +3,7 @@ import { useTheme } from '../../hooks/useTheme.tsx';
 import * as s from './index.css.ts';
 import { useError } from '../../hooks/useError.tsx';
 import interroge from '../../assets/icons/interroge.png';
+import croix from "../../assets/icons/croix.png"
 
 
 export default function ErrorBanner() {
@@ -24,7 +25,9 @@ export default function ErrorBanner() {
           Nous avons un problème !
         </h4>
         {error}
-        <button className={s.closeButton} onClick={clearError}>X</button>
+        <button className={s.closeButton} onClick={clearError}>
+          <img title={"croix"} src={croix} />
+        </button>
       </div>
     </div>
   );

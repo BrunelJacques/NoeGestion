@@ -2,7 +2,7 @@
 import  { Xinput } from "../Xinput";
 import type { XinputProps } from "../Xinput"; 
 import { useState } from "react";
-import * as s from "../xcommon.css"
+import * as sc from "../xcommon.css"
 
 export function XinputPassword(props: XinputProps) {
   const [isVisible, setIsVisible] = useState(false);
@@ -10,7 +10,7 @@ export function XinputPassword(props: XinputProps) {
     setIsVisible(!isVisible);
   };
   return (
-    <div  className={s.wrapperV}>
+    <div  className={sc.wrapperV}>
       <Xinput
         // Transmet les props en paquet
         {...props}
@@ -19,7 +19,7 @@ export function XinputPassword(props: XinputProps) {
         autoComplete={props.autoComplete || "current-password"}
       />
        <button
-        className={s.toggleVisibilityStyle}
+        className={sc.toggleVoir}
         type="button" // Important pour ne pas soumettre le formulaire par erreur
         onClick={toggleVisibility}
         aria-label={isVisible ? "Masquer le mot de passe" : "Afficher le mot de passe"}

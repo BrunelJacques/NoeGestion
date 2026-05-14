@@ -1,5 +1,6 @@
 // src/ui/Xinput.tsx
 import type { ComponentPropsWithoutRef } from "react";
+import croix from "../../assets/icons/croix.png"
 import * as sc from "../xcommon.css.ts";
 
 
@@ -8,26 +9,33 @@ export interface XinputProps extends Omit<
   "onChange"
 > {
   onChange?: (value: React.ChangeEvent<HTMLInputElement>) => void;
-  //ref?: RefObject<HTMLInputElement | null>;
   altClassName?: string;
   label?: string;
   error?: string | null;
+  showReset?:boolean;
 }
 
 
 export function Xinput({
-  //type = "text",
   onChange,
   altClassName = "",
   label,
   error = null,
-  disabled = false,
+  showReset = true,
   ...props
 }: XinputProps) {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (disabled) return;
+    if (props.disabled) return;
     onChange?.(e);
+  };
+
+  const handleReset = () => {
+    if (props.disabled) return;
+    const event = {
+      target: { value: "" },
+    } as React.ChangeEvent<HTMLInputElement>;
+    onChange?.(event);
   };
 
   return (
@@ -36,18 +44,25 @@ export function Xinput({
         {label && <span className={sc.label}> {label} :</span>}
 
         <input
-          type={props.type}
           value={props.value}
-          disabled={disabled}
           onChange={handleChange}
           className={[
             sc.baseInput,
-            disabled && sc.disabledInput,
+            props.disabled && sc.disabledInput,
             altClassName
           ].filter(Boolean).join(" ")}
-          placeholder={props.placeholder ?? " "} // force un placeholder non vide
+          //placeholder={props.placeholder ?? " "} // force un placeholder non vide
           {...props}
         />
+        {showReset && props.value && (
+          <button
+            type="button"
+            className={sc.resetButton}
+            onClick={handleReset}
+          >
+            <img title={"croix"} src={croix} />
+          </button>
+          )}
       </div>
 
       {error && (
