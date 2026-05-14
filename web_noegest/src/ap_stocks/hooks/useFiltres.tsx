@@ -1,6 +1,6 @@
 // src/ap_stocks/hooks/useFiltres.tsx
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { FILTRES0 } from "../types/params";
 import type { TypFiltreMvts } from "../types/params";
 
@@ -22,13 +22,12 @@ export function useFiltres(defaults: TypFiltreMvts = FILTRES0) {
     }
 
     const parsed = JSON.parse(saved);
-    console.log("useFiltres.parsed",parsed)
 
     // Si la date stockée n'est pas celle du jour → reset complet
     if (parsed.jour !== today()) {
       return { ...FILTRES0, jour: today() };
     }
-
+    console.log("useFiltres.getLocalStorage",parsed)
     return parsed;
   });
 
@@ -37,20 +36,24 @@ export function useFiltres(defaults: TypFiltreMvts = FILTRES0) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(filtres));
   }, [filtres]);
 
-  return { filtres, setFiltres };
+  return useMemo(() => ({ 
+    filtres, 
+    setFiltres
+  }), [filtres]);
 }
 
 
-// Ce hook draft crée simplement un état local pour manipuler 
+// Ce hook crée le brouillon des modifs de filtres, un état local avant validation
 export function useDraftFiltres(initialValues: TypFiltreMvts) {
   const [draft, setDraft] = useState<TypFiltreMvts>(initialValues);
   // Fonction utilitaire pour mettre à jour un seul champ facilement
   const updateField = useCallback((field: keyof TypFiltreMvts, value: TypFiltreMvts[keyof TypFiltreMvts]) => {
     setDraft(prev => ({ ...prev, [field]: value }));
-    if (field == "pageOrigine"){
-      console.log("ok pour Origines")
-    }
   },[]);
-
-  return { draft, setDraft, updateField };
+// On mémoïse l'objet retourné pour qu'il ne change que si 'draft' change
+  return useMemo(() => ({ 
+    draft, 
+    setDraft, 
+    updateField 
+  }), [draft, updateField]);
 }

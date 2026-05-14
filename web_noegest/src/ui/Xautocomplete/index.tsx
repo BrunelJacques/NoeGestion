@@ -81,14 +81,13 @@ useEffect(() => {
           ref={inputRef} //des refs distinctes pour éviter éffets collatéraux
           value={query}
           onChange={(e) => {
-            console.log("onChange Xautocomplete", e)
+            console.log("Xautocomplete.onChange", e)
             isSelecting.current = false; // Si l'utilisateur retape, on déverrouille
             setQuery(e.target.value);
           }}
           onFocus={() => query.length > 0 && setIsOpen(true)}
           onBlur={() => {
             if (query.length > 0) {setIsOpen(false);}
-            console.log("onBlur isOpen",isOpen)
           }}
         />
         

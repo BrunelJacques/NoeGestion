@@ -29,25 +29,17 @@ export default function Filtres() {
 
   // Effet de synchronisation de draft.origine, sans clic sur origine
   useEffect(() => {
-    /*  écriture verbeuse pour doc
-    const idx = origineItems.findIndex(a => a.id === draft.origine)
-        if (idx !== -1) { 
-          updateField("origine", origineItems[idx].id)
-        } else {
-          if (origineItems.length > 0) {
-            updateField("origine", origineItems[0].id)
-          } else {
-            updateField("origine", ""); // reset si aucun item
-          }
-    } */
-    updateField( // équivalent de ci-dessus en compact
-      "origine",
-      origineItems.find(a => a.id === draft.origine)?.id // recherche l'item de oldOrigine
-        ?? origineItems[0]?.id // oldOrigine pas trouvée dans les items rafraichis
-          ?? "" // aucun item trouvé
-    );
-  }, [pageOrigine.value, updateField, draft.origine,origineItems]);
-
+    const newOrigine = 
+      origineItems.find(a => a.id === draft.origine)?.id //recherche l'item de oldOrigine
+      ?? origineItems[0]?.id //oldOrigine pas trouvée dans les items rafraichis
+      ?? "" // aucun item trouvé
+    ;
+    // Ne mettre à jour que si la valeur calculée est différente de l'actuelle
+    if (newOrigine !== draft.origine) {
+      updateField("origine",newOrigine);
+    }
+  }, [pageOrigine.value,draft.origine, updateField,origineItems]);
+  
   // Fonction de soumission du formulaire par bouton "Validation"
   function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -67,7 +59,7 @@ return (
         filtrées sur les paramètres ci-dessous:</p>
     </div>
 
-    {/* zone de saisie des filtres */}
+    {/* zone de saisie fltres */}
     <div className={s.wrapForm}>
       <Form id="filtresForm" onSubmit={handleSubmit} className={s.formStyle}>
 
