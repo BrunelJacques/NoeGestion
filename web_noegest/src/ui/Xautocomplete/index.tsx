@@ -61,7 +61,7 @@ useEffect(() => {
     return () => clearTimeout(timer);
   }, [query, isOpen, fetchItems]); 
 
-  const handleSelect = (item: Item) => {
+  const handleSelect = (item: Item) => { // action select un item
     if (props.disabled) return;
     isSelecting.current = true; // On verrouille l'effet avant de changer le query
     setQuery(item.nom);
@@ -69,10 +69,11 @@ useEffect(() => {
     onSelect(item);
   };
 
-  const handleReset = () => {
+  const handleReset = () => { // action bouton croix
     if (props.disabled) return;
     setQuery("");
     setIsOpen(!isOpen);
+    onSelect({id:0, nom:""})
   };
 
   return (
@@ -120,7 +121,7 @@ useEffect(() => {
           onClick={handleReset}
           onBlur={() => {if (isOpen) {setIsOpen(false);}}}
         >
-          <img title={"croix"} src={croix} />
+          <img className={sc.small} title={"croix"} src={croix} />
         </button>
       )}
       {error && (

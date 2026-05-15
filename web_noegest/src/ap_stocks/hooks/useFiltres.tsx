@@ -47,10 +47,17 @@ export function useFiltres(defaults: TypFiltreMvts = FILTRES0) {
 export function useDraftFiltres(initialValues: TypFiltreMvts) {
   const [draft, setDraft] = useState<TypFiltreMvts>(initialValues);
   // Fonction utilitaire pour mettre à jour un seul champ facilement
-  const updateField = useCallback((field: keyof TypFiltreMvts, value: TypFiltreMvts[keyof TypFiltreMvts]) => {
-    setDraft(prev => ({ ...prev, [field]: value }));
-  },[]);
-// On mémoïse l'objet retourné pour qu'il ne change que si 'draft' change
+  
+  const updateField = useCallback(
+    (field: keyof TypFiltreMvts, value: TypFiltreMvts[keyof TypFiltreMvts] 
+    ) => {
+      setDraft(prev => ({ ...prev, [field]: value }));
+      console.log(`setDraft ${field} value:`,value)
+    },
+    []
+  );
+  
+  // On mémoïse l'objet retourné pour qu'il ne change que si 'draft' change
   return useMemo(() => ({ 
     draft, 
     setDraft, 

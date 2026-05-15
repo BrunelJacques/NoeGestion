@@ -151,3 +151,8 @@ export const toggleVoir = style({
     opacity: 1,
   },
 })
+
+export const small = style({
+  width: "10px",
+  height: "10px",
+});

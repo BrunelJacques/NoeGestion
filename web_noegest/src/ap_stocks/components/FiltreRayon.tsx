@@ -27,11 +27,12 @@ export default function FiltreRayon({ nom, updateField }: Props) {
         ];
       };
   const handleChange = (item: { id: number; nom: string } | string | number) => {
+    console.log("Rayon updatefield1 /",nom,"/")
     const value =
       typeof item === "object" && item !== null && "nom" in item
         ? (item.nom)
         : String(item);
-
+    console.log("Rayon updatefield2 /",value,"/")
     updateField(value);
   }
 
