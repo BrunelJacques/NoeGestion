@@ -1,6 +1,6 @@
-//src/ap_stocks/components/FiltreFournisseur.tsx
+//src/ap_stocks/components/FiltreMagasin.tsx
 
-import type { Fournisseur, Fournisseurs } from "../types/params";
+import type { Magasin, Magasins } from "../types/params";
 import apiUrl from "../../constants/api.Constants";
 import { Xautocomplete } from "../../ui/Xautocomplete";
 
@@ -9,18 +9,18 @@ interface Props {
   updateField: (value: string) => void;
 }
 
-export default function FiltreFournisseur({ nom, updateField }: Props) {
-  const url = apiUrl.STFOURNISSEUR_URL
+export default function FiltreMagasin({ nom, updateField }: Props) {
+  const url = apiUrl.STMAGASIN_URL
 
-  const fetchFournisseurs = async (search: string) => {
+  const fetchMagasins = async (search: string) => {
     const response = await fetch(`${url}?nom=${search}`);
-    const fournisseurs: Fournisseurs = await response.json();
+    const magasins: Magasins = await response.json();
     return [
       //{ id: 0, nom: "Tous" },
-      ...fournisseurs.results
-        .filter((u: Fournisseur) => u.nom && u.nom.toLowerCase().includes(search.toLowerCase())
+      ...magasins.results
+        .filter((u: Magasin) => u.nom && u.nom.toLowerCase().includes(search.toLowerCase())
         )
-        .map((u: Fournisseur) => ({
+        .map((u: Magasin) => ({
           id: u.id,
           nom: u.nom
         }))
@@ -39,10 +39,10 @@ export default function FiltreFournisseur({ nom, updateField }: Props) {
   return (
     <>
       <Xautocomplete
-        label="Fournisseur"
-        name="fournisseur"
+        label="Magasin"
+        name="magasin"
         value={nom ?? ""}
-        fetchItems={fetchFournisseurs}
+        fetchItems={fetchMagasins}
         onSelect={handleChange}
       />
     </>

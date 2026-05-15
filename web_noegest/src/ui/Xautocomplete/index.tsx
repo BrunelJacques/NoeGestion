@@ -37,9 +37,8 @@ export function Xautocomplete ({
   const isSelecting = useRef(false);
   const divRef = useRef<HTMLDivElement>(null);
 
-
 useEffect(() => {
-    console.log("effect ref",divRef.current,isOpen)
+
     const loadData = async () => {
       if (isSelecting.current) {
         isSelecting.current = false;
@@ -51,10 +50,9 @@ useEffect(() => {
 
       // cette ref est active: en train de saisir
       if (divRef.current?.contains(document.activeElement)) {
-        setIsOpen(true);
+        //setIsOpen(true);
       } else { // ferme les autres
         setResults([]);
-        console.log("effect open",isOpen)
         if (isOpen) setIsOpen(false);
       }
     };
@@ -74,7 +72,7 @@ useEffect(() => {
   const handleReset = () => {
     if (props.disabled) return;
     setQuery("");
-    setIsOpen(true);
+    setIsOpen(!isOpen);
   };
 
   return (
@@ -93,9 +91,10 @@ useEffect(() => {
             isSelecting.current = false; // Si l'utilisateur retape, on déverrouille
             setQuery(e.target.value);
           }}
-          onFocus={() => !isOpen && setIsOpen(true)}
+          onClick={() => setIsOpen(!isOpen)}
           onBlur={() => {
-            if (isOpen) {setIsOpen(false);}
+            if (isOpen && !divRef.current?.contains(document.activeElement)) 
+              {setIsOpen(false);}
           }}
         />
         
@@ -119,6 +118,7 @@ useEffect(() => {
           type="button"
           className={sc.resetButton}
           onClick={handleReset}
+          onBlur={() => {if (isOpen) {setIsOpen(false);}}}
         >
           <img title={"croix"} src={croix} />
         </button>

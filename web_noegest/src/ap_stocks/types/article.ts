@@ -15,7 +15,7 @@ export type Article = {
 
 export const ARTICLE0 : Article = {
   id: 0,
-  nom: "Tous les articles",
+  nom: "",
 }
 
 export type Articles = {
