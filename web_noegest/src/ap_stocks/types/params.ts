@@ -13,6 +13,7 @@ export type TypFiltreMvts = {
   magasin?: string;
   rayon?: string;
   tva: string;
+  dateModif?: Date;
 }
 
 export const  FILTRES0: TypFiltreMvts= {
@@ -25,6 +26,7 @@ export const  FILTRES0: TypFiltreMvts= {
   camp: "",
   fournisseur: "",
   tva: "TTC",
+  dateModif: new Date(),
 }
 
 export type Camp = {

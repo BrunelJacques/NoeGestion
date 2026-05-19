@@ -46,11 +46,14 @@ export default function Filtres() {
   // Fonction de soumission du formulaire par bouton "Validation"
   function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
+    const today = new Date();
+    updateField('dateModif', today) // date du jour
     const finalFiltres = {
       ...draft,
       pageOrigine: pageOrigine.value
     }
     setFiltres(finalFiltres)
+    console.log("Filtres validés:", finalFiltres)
   }
     
 return (

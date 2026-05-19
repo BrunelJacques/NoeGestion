@@ -4,12 +4,10 @@ import { XinputDate } from "../../ui/variants/XinputDate";
 
 interface Props {
   value: Date | null;
-  updateField: (value: Date) => void;
+  updateField: (value: Date |null) => void;
 }
 
 export default function FiltreDate({ updateField }: Props) {
-
-
   return (
     <>
       <XinputDate

@@ -26,7 +26,7 @@ export function XinputDate({
 
   const [dateTxt, setValue] = useState(dt.dateToString(jour));
 
-  const valid = dateTxt === "" || dt.isValidDate(dateTxt);
+  const valid = dateTxt === "" || dt.isValidDateFr(dateTxt);
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (props.disabled) return;
@@ -39,7 +39,7 @@ export function XinputDate({
     handleCursor({ event: e, inputRef,formatValue, setValue })
 
     const currentTxt = e.target.value;
-    const isValid = dt.isValidDate(currentTxt)
+    const isValid = dt.isValidDateFr(currentTxt)
     console.log("hanleChange:",dateTxt)
 
     if (isValid && onChange) {

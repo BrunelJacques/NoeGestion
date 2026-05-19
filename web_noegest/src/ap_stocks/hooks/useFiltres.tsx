@@ -3,11 +3,12 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { FILTRES0 } from "../types/params";
 import type { TypFiltreMvts } from "../types/params";
+import { stringToDate } from "../../utils/dates";
 
 const STORAGE_KEY = "stocks-filtres";
 
 function today() {
-  return new Date().toISOString().slice(0, 11); // "YYYY-MM-DD"
+  return new Date()
 }
 
 
@@ -22,15 +23,18 @@ export function useFiltres() {
 
     const data = JSON.parse(saved);
 
-    // Retransforme le string en correct type
-    if (data.jour) { data.jour = new Date(data.jour) }
+    data.jour = stringToDate(data.jour)
+    data.dateModif = stringToDate(data.dateModif)
+    const aujourdhui = today();
 
-    // Si la date stockée n'est pas celle du jour → reset complet
-    if (data.jour !== today()) {
+    if (!data.jour || !data.dateModif) {
       return { ...FILTRES0, jour: today() };
     }
-     
-    console.log("useFiltres.getLocalStorage",data)
+    // Si la date de modif de la dernière sauvegarde est ancienne, on reset les filtres
+    if (data.dateModif.toISOString().slice(0, 10) != aujourdhui.toISOString().slice(0, 10)) {
+      return { ...FILTRES0, jour: today() };
+    }
+ 
     return data;
   });
 
