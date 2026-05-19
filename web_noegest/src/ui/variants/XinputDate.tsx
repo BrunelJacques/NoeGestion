@@ -1,30 +1,64 @@
 // src/ui/variants/XinputDate.tsx
-import { useRef, useState } from "react";
 import { Xinput } from "../Xinput";
-import type { XinputProps } from "../Xinput";
-import { formatDateInput as formatValue, isValidDate } from "../formaters/date.ts";
+import  * as dt from "../../utils/dates.ts";
 import * as sc from "../xcommon.css.ts";
-import { handleCursor } from "../formaters/handleCursor.ts";
+import { handleCursor } from "../../utils/handleCursor.ts";
+import { useRef, useState } from "react";
 
 
-export function XinputDate(props: XinputProps) {
+interface Props  {
+  jour: Date|null;
+  onChange?: (value: Date|null) => void;
+  altClassName?: string;
+  label?: string;
+  error?: string | null;
+  showReset?:boolean;
+  disabled?:boolean
+}
+
+export function XinputDate({
+  jour,
+  onChange,  
+  ...props
+}: Props) {
+
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const [dateTxt, setValue] = useState(dt.dateToString(jour));
+
+  const valid = dateTxt === "" || dt.isValidDate(dateTxt);
   
-  const [value, setValue] = useState("");
-  const inputRef = useRef<HTMLInputElement | null>(null);
-  const valid = isValidDate(value);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (props.disabled) return;
+
+    function formatValue(txt:string) {
+      return dt.stringToFormatted(txt)
+    }
+
+    // Met à jour le texte dans l'input
+    handleCursor({ event: e, inputRef,formatValue, setValue })
+
+    const currentTxt = e.target.value;
+    const isValid = dt.isValidDate(currentTxt)
+    console.log("hanleChange:",dateTxt)
+
+    if (isValid && onChange) {
+      console.log("date valide OK!")
+      onChange(dt.stringToDate(currentTxt)) // todo newJour
+    } else if (currentTxt === "" && onChange) {
+      onChange(null);
+    }
+  };
 
   return (
     <div className={sc.wrapperV}>
       
       <Xinput
         {...props}
-        ref={inputRef} // sans ref, inputRef reste null
-        value={value}
+        value={dateTxt}
         maxLength={10}
-        onChange={(e:React.ChangeEvent<HTMLInputElement>) => {
-          handleCursor({ event: e, inputRef, formatValue, setValue })
-        }}
-        placeholder="jj/mm/aaaa"
+        onChange={handleChange}
+        placeholder="jjmmaaaa"
         error={!valid ? "Date invalide" : null}
       />
     </div>

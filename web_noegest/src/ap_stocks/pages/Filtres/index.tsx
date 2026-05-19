@@ -1,5 +1,4 @@
 //src/ap_stocks/pages/Filtres/index.tsx
-import { FILTRES0 } from "../../types/params";
 
 import * as s from "./index.css";
 import { Xbutton } from "../../../ui/Xbutton";
@@ -15,10 +14,12 @@ import FiltreFournisseur from "../../components/FiltreFournisseur";
 import { useEffect, useMemo } from "react";
 import FiltreMagasin from "../../components/FiltreMagasin";
 import FiltreRayon from "../../components/FiltreRayon";
+import FiltreDate from "../../components/FiltreDate";
+import { XinputDate } from "../../../ui/variants/XinputDate";
 
 
 export default function Filtres() {
-  const { filtres, setFiltres } = useFiltres(FILTRES0); 
+  const { filtres, setFiltres } = useFiltres(); 
 
   const { draft, updateField } = useDraftFiltres(filtres)
 
@@ -64,6 +65,19 @@ return (
     {/* zone de saisie fltres */}
     <div className={s.wrapForm}>
       <Form id="filtresForm" onSubmit={handleSubmit} className={s.formStyle}>
+
+{/*        <div className={s.entree}>
+          <FiltreDate 
+            value={draft.jour} 
+            updateField={(val) => updateField('jour', val)}
+          />
+        </div> */}
+
+        <XinputDate
+          jour={draft.jour}
+          label="Date jour"
+          onChange={(val:Date|null) => updateField('jour', val)}
+        />
 
         <div className={s.entree}>
           <Xselect

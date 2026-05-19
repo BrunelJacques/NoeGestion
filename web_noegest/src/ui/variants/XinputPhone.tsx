@@ -1,11 +1,11 @@
 // src/ui/variants/XinputPhone.tsx
 import { useRef, useState } from "react";
 import {  Xinput } from "../Xinput";
-import type { XinputProps } from "../Xinput";
-import { formatPhoneNumber as formatValue } from "../formaters/phone";
-import { handleCursor } from "../formaters/handleCursor";
+import type { Props } from "../Xinput";
+import { formatPhoneNumber as formatValue } from "../../utils/phone";
+import { handleCursor } from "../../utils/handleCursor";
 
-export function XinputPhone(props: XinputProps) {
+export function XinputPhone(props: Props) {
   const [value, setValue] = useState("");
   const inputRef = useRef<HTMLInputElement | null>(null);
 

@@ -42,6 +42,8 @@ export const handleCursor = ({
 
   const formatted = formatValue(rawValue);
 
+  console.log("handleCursor:",formatted, setValue)
+
   setValue(formatted);
 
   requestAnimationFrame(() => {

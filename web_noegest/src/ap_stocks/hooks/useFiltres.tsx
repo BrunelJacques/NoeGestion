@@ -11,31 +11,35 @@ function today() {
 }
 
 
-export function useFiltres(defaults: TypFiltreMvts = FILTRES0) {
+export function useFiltres() {
 
   const [filtres, setFiltres] = useState<TypFiltreMvts>(() => {
 
     const saved = localStorage.getItem(STORAGE_KEY);
-
     if (!saved) {
-      return { ...defaults, jour: today() };
-    }
-
-    const parsed = JSON.parse(saved);
-
-    // Si la date stockée n'est pas celle du jour → reset complet
-    if (parsed.jour !== today()) {
       return { ...FILTRES0, jour: today() };
     }
-    console.log("useFiltres.getLocalStorage",parsed)
-    return parsed;
+
+    const data = JSON.parse(saved);
+
+    // Retransforme le string en correct type
+    if (data.jour) { data.jour = new Date(data.jour) }
+
+    // Si la date stockée n'est pas celle du jour → reset complet
+    if (data.jour !== today()) {
+      return { ...FILTRES0, jour: today() };
+    }
+     
+    console.log("useFiltres.getLocalStorage",data)
+    return data;
   });
 
-  // Sauvegarde automatique
+  // Sauvegarde automatique en localStorage à chaque changement de filtres
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(filtres));
   }, [filtres]);
 
+  // Conserve en mémoire le pointeur state, pour éviter les re-renders inutiles
   return useMemo(() => ({ 
     filtres, 
     setFiltres
@@ -43,11 +47,11 @@ export function useFiltres(defaults: TypFiltreMvts = FILTRES0) {
 }
 
 
-// Ce hook crée le brouillon des modifs de filtres, un état local avant validation
+// Ce hook crée le brouillon des modifs de filtres, un état avant validation
 export function useDraftFiltres(initialValues: TypFiltreMvts) {
   const [draft, setDraft] = useState<TypFiltreMvts>(initialValues);
+
   // Fonction utilitaire pour mettre à jour un seul champ facilement
-  
   const updateField = useCallback(
     (field: keyof TypFiltreMvts, value: TypFiltreMvts[keyof TypFiltreMvts] 
     ) => {
@@ -57,7 +61,7 @@ export function useDraftFiltres(initialValues: TypFiltreMvts) {
     []
   );
   
-  // On mémoïse l'objet retourné pour qu'il ne change que si 'draft' change
+  // On mémoïse pour qu'il ne renderise que si changement de valeurs ou fonction
   return useMemo(() => ({ 
     draft, 
     setDraft, 

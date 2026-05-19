@@ -4,7 +4,7 @@ import croix from "../../assets/icons/croix.png"
 import * as sc from "../xcommon.css.ts";
 
 
-export interface XinputProps extends Omit<
+export interface Props extends Omit<
   ComponentPropsWithoutRef<"input">,
   "onChange"
 > {
@@ -23,7 +23,7 @@ export function Xinput({
   error = null,
   showReset = true,
   ...props
-}: XinputProps) {
+}: Props) {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (props.disabled) return;

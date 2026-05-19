@@ -1,7 +1,7 @@
 // src/ap_stocks/components/StocksMenu.tsx
 import { useUrl } from "../../../hooks/useUrl";
 import Xlink from "../../../ui/Xlink";
-import { capitalize } from "../../../utils";
+import { capitalize } from "../../../utils/string"
 
 export interface FiltresProps  {
   className?: string;

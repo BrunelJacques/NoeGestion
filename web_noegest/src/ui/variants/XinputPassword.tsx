@@ -1,10 +1,10 @@
 
 import  { Xinput } from "../Xinput";
-import type { XinputProps } from "../Xinput"; 
+import type { Props } from "../Xinput"; 
 import { useState } from "react";
 import * as sc from "../xcommon.css"
 
-export function XinputPassword(props: XinputProps) {
+export function XinputPassword(props: Props) {
   const [isVisible, setIsVisible] = useState(false);
   function toggleVisibility() {
     setIsVisible(!isVisible);

@@ -5,10 +5,9 @@ import * as s from "../Filtres/index.css";
 
 export default function Filtres() {
 
-  const { filtres, setFiltres } = useFiltres(FILTRES0);  
+  const { filtres, setFiltres } = useFiltres();  
   function resetFiltres() {   
-    const filtres0 = FILTRES0;
-    setFiltres(filtres0);
+    setFiltres(FILTRES0);
   }
 
 return (
