@@ -9,16 +9,18 @@ interface Props {
   updateField: (value: string) => void;
 }
 
+// Paramétrage de l'autocomplete pour les magasins
 export default function FiltreMagasin({ nom, updateField }: Props) {
   const url = apiUrl.STMAGASIN_URL
 
-  const fetchMagasins = async (search: string) => {
-    const response = await fetch(`${url}?nom=${search}`);
+  const fetchMagasins = async (search?: string) => {
+    const query = search || "";
+    const response = await fetch(`${url}?nom=${query}`);
     const magasins: Magasins = await response.json();
     return [
       //{ id: 0, nom: "Tous" },
       ...magasins.results
-        .filter((u: Magasin) => u.nom && u.nom.toLowerCase().includes(search.toLowerCase())
+        .filter((u: Magasin) => u.nom && u.nom.toLowerCase().includes(query.toLowerCase())
         )
         .map((u: Magasin) => ({
           id: u.id,

@@ -9,16 +9,18 @@ interface Props {
   updateField: (value: string) => void;
 }
 
+// Paramétrage de l'autocomplete pour les fournisseurs
 export default function FiltreFournisseur({ nom, updateField }: Props) {
   const url = apiUrl.STFOURNISSEUR_URL
 
-  const fetchFournisseurs = async (search: string) => {
-    const response = await fetch(`${url}?nom=${search}`);
+  const fetchFournisseurs = async (search?: string) => {
+    const query = search ?? "";
+    const response = await fetch(`${url}?nom=${query}`);
     const fournisseurs: Fournisseurs = await response.json();
     return [
       //{ id: 0, nom: "Tous" },
       ...fournisseurs.results
-        .filter((u: Fournisseur) => u.nom && u.nom.toLowerCase().includes(search.toLowerCase())
+        .filter((u: Fournisseur) => u.nom && u.nom.toLowerCase().includes(query.toLowerCase())
         )
         .map((u: Fournisseur) => ({
           id: u.id,
@@ -27,7 +29,7 @@ export default function FiltreFournisseur({ nom, updateField }: Props) {
     ];
   };
 
-  const handleChange = (item: { id: number; nom: string } | string | number) => {
+  const handleChange = (item: { id: number|string; nom: string } | string | number) => {
     const value =
       typeof item === "object" && item !== null && "nom" in item
         ? (item.nom)

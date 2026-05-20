@@ -79,6 +79,6 @@ export type FormField = {
 
 // générique d'appels items
 export type Item = {
-  id: number ;
+  id: number|string; 
   nom: string;
 }

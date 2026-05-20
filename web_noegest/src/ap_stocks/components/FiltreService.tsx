@@ -10,8 +10,8 @@ interface Props {
 }
 
 
-//un seul param pour une fonction donc on encadre {}
-export default function FiltreService({ id: T, updateField }: Props) {
+// Paramétrage du select pour les services
+export default function FiltreService({ id: T, updateField }: Props) { //on embrasse {} car deux éléments
 
   const service = useSelectObject(Services, T);
  

@@ -1,8 +1,7 @@
 //src/ap_stocks/components/FiltreOrigine.tsx
 import {type Origine } from "../stConstants";
-import { Xselect } from "../../ui/Xselect";
-import { useSelectObject } from "../hooks/useSelectObject";
-import type { TypFiltreMvts } from "../types/params";
+import type { Item, TypFiltreMvts } from "../types/params";
+import { Xautocomplete } from "../../ui/Xautocomplete";
 
 
 interface Props {
@@ -12,24 +11,29 @@ interface Props {
 }
 
 
+// Paramétrage du select pour les origines
 export default function FiltreOrigine({ filtres, updateField, origineItems }: Props) {
 
-  const initialOrigineId = origineItems[0]?.id ?? "";
-  const origine = useSelectObject(origineItems, initialOrigineId);
+const getOrigineItems = async (): Promise<Item[]> => {
+    return origineItems.map((o) => ({
+      id: o.id, 
+      nom: o.libelle
+    }));
+  };
 
-  const handleChange = (newValue: string | number) => {
-    origine.onChange(newValue); // Met à jour l'affichage local du select
-    updateField(String(newValue)); // Remonte l'info au parent
+const handleChange = (item: Item) => {
+    updateField(String(item.id));
   };
   
 return (
       <>
-        <Xselect<number|string>
+        <Xautocomplete
           label="Origine"
           name="origine"
           value={filtres.origine}
-          onChange={handleChange}
-          options={origine.options}
+          fetchItems={getOrigineItems}
+          onSelect={handleChange}
+
         />
       </>
   );

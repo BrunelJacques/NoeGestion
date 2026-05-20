@@ -5,7 +5,8 @@ import { Xbutton } from "../../../ui/Xbutton";
 import { Form } from "react-router-dom";
 import { Origines, PageOrigineValues } from "../../stConstants";
 import { Xselect } from "../../../ui/Xselect";
-import { useDraftFiltres, useFiltres } from "../../hooks/useFiltres";
+import { useFiltres } from "../../hooks/useFiltres";
+import { useDraftFiltres } from "../../hooks/useDraftFiltres";
 import { useSelectEnum } from "../../hooks/useSelectEnum";
 import FiltreService from "../../components/FiltreService";
 import FiltreOrigine from "../../components/FiltreOrigine";
@@ -14,7 +15,6 @@ import FiltreFournisseur from "../../components/FiltreFournisseur";
 import { useEffect, useMemo } from "react";
 import FiltreMagasin from "../../components/FiltreMagasin";
 import FiltreRayon from "../../components/FiltreRayon";
-import FiltreDate from "../../components/FiltreDate";
 import { XinputDate } from "../../../ui/variants/XinputDate";
 
 
@@ -30,6 +30,13 @@ export default function Filtres() {
     [pageOrigine.value]
   );
 
+
+  const isPageArticle = useMemo(
+    () => pageOrigine.value === "article" ,
+    [pageOrigine.value]
+  );
+
+  
   // Effet de synchronisation de draft.origine, sans clic sur origine
   useEffect(() => {
     const newOrigine = 
@@ -41,8 +48,10 @@ export default function Filtres() {
     if (newOrigine !== draft.origine) {
       updateField("origine",newOrigine);
     }
+
   }, [pageOrigine.value,draft.origine, updateField,origineItems]);
   
+
   // Fonction de soumission du formulaire par bouton "Validation"
   function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -69,22 +78,17 @@ return (
     <div className={s.wrapForm}>
       <Form id="filtresForm" onSubmit={handleSubmit} className={s.formStyle}>
 
-{/*        <div className={s.entree}>
-          <FiltreDate 
-            value={draft.jour} 
-            updateField={(val) => updateField('jour', val)}
+        <div className={s.entree}>
+          <XinputDate
+            jour={draft.jour}
+            label="Date jour"
+            onChange={(val:Date|null) => updateField('jour', val)}
           />
-        </div> */}
-
-        <XinputDate
-          jour={draft.jour}
-          label="Date jour"
-          onChange={(val:Date|null) => updateField('jour', val)}
-        />
-
+        </div>
+        
         <div className={s.entree}>
           <Xselect
-            label="Page Origine"
+            label="Mouvements" // pageOrigine
             name="pageOrigine"
             value={pageOrigine.value}
             onChange={pageOrigine.onChange}
@@ -92,7 +96,15 @@ return (
           />
         </div>
 
-       <div className={s.entree}>
+        <div className={s.entree}>
+          <FiltreOrigine 
+            filtres={draft}
+            updateField={(val) => updateField('origine', val)}
+            origineItems={origineItems}
+        />
+        </div>
+
+        <div className={s.entree}>
           <FiltreService 
             id={draft.service} 
             updateField={(val) => updateField('service', val)}
@@ -121,18 +133,12 @@ return (
         </div>
 
         <div className={s.entree}>
-          <FiltreArticle
-            nom={draft.article} 
-            updateField={(val) => updateField('article', val)}
-          />
-        </div>
-
-        <div className={s.entree}>
-          <FiltreOrigine 
-            filtres={draft}
-            updateField={(val) => updateField('origine', val)}
-            origineItems={origineItems}
-        />
+          {isPageArticle && (
+            <FiltreArticle
+              nom={draft.article} 
+              updateField={(val) => updateField('article', val)}
+            />
+          )}
         </div>
  
       </Form>

@@ -10,11 +10,11 @@ interface Props {
   updateField: (value: string) => void;
 }
 
-
+// paramétrage de la saisie d'article avec autocomplétion
 export default function FiltreArticle({ nom, updateField }: Props) {
   const url = apiUrl.STARTICLE_NOM_URL
 
-// Utiliser useCallback pour figer la référence de la fonction
+  // Utiliser useCallback pour figer la référence de la fonction
   const fetchArticles = useCallback(async (search: string) => {
     const response = await fetch(`${url}?nom=${search}`);
     const articles: Articles = await response.json();

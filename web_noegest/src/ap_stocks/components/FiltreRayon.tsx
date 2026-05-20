@@ -9,6 +9,8 @@ interface Props {
   updateField: (value: string) => void;
 }
 
+
+// paramétrage de la saisie du rayon
 export default function FiltreRayon({ nom, updateField }: Props) {
   const url = apiUrl.STRAYON_URL
 

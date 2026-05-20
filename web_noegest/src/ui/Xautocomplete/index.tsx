@@ -9,7 +9,7 @@ interface Props extends Omit<
   ComponentPropsWithoutRef<"input">, 
   "onSelect"
 > {  
-  fetchItems: (query: string) => Promise<Item[]>;
+  fetchItems: (query?: string) => Promise<Item[]>;
   onSelect: (item: Item) => void;
   altClassName?: string;
   label?: string;
