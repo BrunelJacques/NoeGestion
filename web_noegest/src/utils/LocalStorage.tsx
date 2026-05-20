@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from "react";
 
-import type { Theme } from "./ThemeContext";
+import type { Theme } from "../contexts/ThemeContext";
 
 interface LocalStorageProps {
   defaultTheme?: Theme;
