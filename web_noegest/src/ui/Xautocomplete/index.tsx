@@ -28,16 +28,26 @@ export function Xautocomplete ({
     ...props 
   }: Props) {
 
-  const [query, setQuery] = useState<string>(
-    typeof props.value === "string" ? props.value : ""
-  );
+  // mise à jour targetValue si la props.value change suite à changement du parent
+  const targetValue = typeof props.value === "string" ? props.value : "";
+
+  const [query, setQuery] = useState<string>(targetValue);
+  const [prevValue, setPrevValue] = useState<string>(targetValue);
+  
+  // pour éviter une boucle dans un useEffect
+  if (targetValue !== prevValue) {
+    setQuery(targetValue);
+    setPrevValue(targetValue);
+  }
+
   const [results, setResults] = useState<Item[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   // Ajout d'un verrou pour empêcher la réouverture après sélection
   const isSelecting = useRef(false);
   const divRef = useRef<HTMLDivElement>(null);
 
-useEffect(() => {
+
+  useEffect(() => {
 
     const loadData = async () => {
       if (isSelecting.current) {

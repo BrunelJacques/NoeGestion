@@ -21,16 +21,24 @@ const getOrigineItems = async (): Promise<Item[]> => {
     }));
   };
 
+const getOrigine = (id: string): string => {
+  const origine = origineItems.find((o) => o.id === id);
+  console.log(`getOrigine: id=${id} -> ${origine ? origine.libelle : "non trouvé"}`);
+  return origine ? origine.libelle : "";
+}
+
+
 const handleChange = (item: Item) => {
     updateField(String(item.id));
   };
   
+
 return (
       <>
         <Xautocomplete
           label="Origine"
           name="origine"
-          value={filtres.origine}
+          value={getOrigine(filtres.origine)}
           fetchItems={getOrigineItems}
           onSelect={handleChange}
 

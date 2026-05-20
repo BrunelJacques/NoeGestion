@@ -46,6 +46,7 @@ export default function Filtres() {
     ;
     // Ne mettre à jour que si la valeur calculée est différente de l'actuelle
     if (newOrigine !== draft.origine) {
+      console.log(`Mise à jour de l'origine: ${draft.origine} -> ${newOrigine}`);
       updateField("origine",newOrigine);
     }
 
