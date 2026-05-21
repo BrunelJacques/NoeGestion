@@ -43,7 +43,6 @@ export function XinputDate({
     console.log("hanleChange:",dateTxt)
 
     if (isValid && onChange) {
-      console.log("date valide OK!")
       onChange(dt.stringToDate(currentTxt)) // todo newJour
     } else if (currentTxt === "" && onChange) {
       onChange(null);

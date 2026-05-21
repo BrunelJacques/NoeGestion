@@ -11,7 +11,6 @@ import Hello from './pages/Hello'
 import Error404 from './pages/Error404'
 import Register from './pages/Register'
 import StFiltres from './ap_stocks/pages/Filtres'
-import StZZFiltres from './ap_stocks/pages/ZZFiltres copy'
 import StMouvements from './ap_stocks/pages/Mouvements'
 import StOneMvt from './ap_stocks/pages/OneMvt'
 import StLayout from './ap_stocks/StLayout'
@@ -42,7 +41,6 @@ export const router = createBrowserRouter([
             element: <StLayout />,   // <== providers métier ici
             children: [
               { path: 'filtres', element: <StFiltres /> },
-              { path: 'zzfiltres', element: <StZZFiltres /> },
               { path: 'mouvements', element: <StMouvements /> },
               { path: 'one-mvt/:id', element: <StOneMvt /> },
             ],

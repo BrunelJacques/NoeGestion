@@ -1,6 +1,6 @@
 //src/ap_stocks/components/FiltreMagasin.tsx
 
-import type { Magasin, Magasins } from "../types/params";
+import type { Item, Magasin, Magasins } from "../types/params";
 import apiUrl from "../../constants/api.Constants";
 import { Xautocomplete } from "../../ui/Xautocomplete";
 
@@ -29,7 +29,7 @@ export default function FiltreMagasin({ nom, updateField }: Props) {
     ];
   };
 
-  const handleChange = (item: { id: number; nom: string } | string | number) => {
+  const handleChange = (item: Item | string | number) => {
     const value =
       typeof item === "object" && item !== null && "nom" in item
         ? (item.nom)

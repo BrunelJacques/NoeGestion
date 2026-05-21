@@ -3,7 +3,8 @@
 import { useCallback } from "react";
 import { Xautocomplete } from "../../ui/Xautocomplete";
 import apiUrl from "../../constants/api.Constants";
-import type { Article, Articles } from "../types/article";
+import type { Articles } from "../types/article";
+import type { Item } from "../types/params";
 
 interface Props {
   nom: string | null | undefined;
@@ -18,15 +19,10 @@ export default function FiltreArticle({ nom, updateField }: Props) {
   const fetchArticles = useCallback(async (search: string) => {
     const response = await fetch(`${url}?nom=${search}`);
     const articles: Articles = await response.json();
-    return articles.results
-      .filter((u: Article) => u.nom && u.nom.toLowerCase().includes(search.toLowerCase()))
-      .map((u: Article) => ({ 
-        id: u.id, 
-        nom: u.nom 
-      }));
+    return articles.results;
   }, [url]); // Ne change que si l'URL change
     
-  const handleChange = (item: { id: number; nom: string } | string | number) => {
+  const handleChange = (item: Item | string | number) => {
     const value =
       typeof item === "object" && item !== null && "nom" in item
         ? (item.nom)

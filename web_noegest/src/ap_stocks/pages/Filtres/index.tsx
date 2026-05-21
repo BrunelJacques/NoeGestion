@@ -12,10 +12,10 @@ import FiltreService from "../../components/FiltreService";
 import FiltreOrigine from "../../components/FiltreOrigine";
 import FiltreArticle from "../../components/FiltreArticle";
 import FiltreFournisseur from "../../components/FiltreFournisseur";
-import { useEffect, useMemo } from "react";
 import FiltreMagasin from "../../components/FiltreMagasin";
 import FiltreRayon from "../../components/FiltreRayon";
 import { XinputDate } from "../../../ui/variants/XinputDate";
+import { useMemo } from "react";
 
 
 export default function Filtres() {
@@ -30,13 +30,12 @@ export default function Filtres() {
     [pageOrigine.value]
   );
 
-
   const isPageArticle = useMemo(
     () => pageOrigine.value === "article" ,
     [pageOrigine.value]
   );
 
-  
+/*   
   // Effet de synchronisation de draft.origine, sans clic sur origine
   useEffect(() => {
     const newOrigine = 
@@ -51,7 +50,7 @@ export default function Filtres() {
     }
 
   }, [pageOrigine.value,draft.origine, updateField,origineItems]);
-  
+   */
 
   // Fonction de soumission du formulaire par bouton "Validation"
   function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
