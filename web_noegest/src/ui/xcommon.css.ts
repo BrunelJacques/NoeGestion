@@ -99,6 +99,26 @@ export const combo = style({
   boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
 });
 
+export const lstAuto = style({
+  position: 'absolute',
+  left: 0,
+  right: 0,
+  background: vars.color.cardTitle,
+  color: vars.color.textLower,
+  fontSize: '14px',
+  fontWeight: "lighter",
+  border: '2px solid #ccc',
+  borderRadius: '6px',
+  margin: 0,
+  padding: 0,
+  listStyle: 'none',
+  maxHeight: '300px',
+  overflowY: 'auto',
+  zIndex: 10,
+  boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+});
+
+
 export const item = style({
   padding: '10px',
   cursor: 'pointer',
@@ -122,7 +142,7 @@ export const resetButton = style({
   position: "absolute",
   right: "0",
   top: "30%",
-  transform: "translateY(-20%)",
+  transform: "translateY(-30%)",
   background: "transparent",
   border: "none",
   cursor: "pointer",

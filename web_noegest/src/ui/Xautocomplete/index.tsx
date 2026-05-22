@@ -1,6 +1,5 @@
 //src/ui/Xautocomplete/index.tsx
 import { useState, useEffect, useRef, type ComponentPropsWithoutRef, useMemo } from 'react';
-import croix from "../../assets/icons/croix.png"
 import * as sc from '../xcommon.css';
 import type { Item } from '../../ap_stocks/types/params';
 import { Xinput } from '../Xinput';
@@ -25,7 +24,6 @@ export function Xautocomplete ({
     onSelect,
     altClassName = "",
     error = null,
-    showReset = true,
     ...props 
   }: Props) {
 
@@ -107,11 +105,6 @@ export function Xautocomplete ({
     onSelect(item);
   };
 
-  const handleReset = () => { // action bouton croix
-    if (props.disabled) return;
-    setQuery("");
-    onSelect({id:0, nom:""})
-  };
 
   const onChange = ((e: { target: { value: string } }) => {
       setQuery(e.target.value);
@@ -136,6 +129,7 @@ export function Xautocomplete ({
         {...props}
         value={query}
         onChange={onChange}
+        onReset={() => setOpenList(true)}
         error={!valid ? `${props.label} invalide` : null}
         className={[
           sc.baseInput,
@@ -147,7 +141,7 @@ export function Xautocomplete ({
       />
       
       {openList  && (
-        <ul className={`${sc.combo}`} >
+        <ul className={`${sc.lstAuto}`} >
           {results.map((item) => (
             <li 
               key={item.id} 
@@ -160,15 +154,7 @@ export function Xautocomplete ({
           ))}
         </ul>
       )}
-      {showReset && props.value && (
-        <button
-          type="button"
-          className={sc.resetButton}
-          onClick={handleReset}
-        >
-          <img className={sc.small} title={"croix"} src={croix} />
-        </button>
-      )}
+
       {error && (
         <p className={sc.errorStyle}>{error}</p>
       )}

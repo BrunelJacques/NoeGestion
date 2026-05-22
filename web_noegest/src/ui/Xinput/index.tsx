@@ -9,6 +9,7 @@ export interface Props extends Omit<
   "onChange"
 > {
   onChange?: (value: React.ChangeEvent<HTMLInputElement>) => void;
+  onReset?: () => void;
   altClassName?: string;
   label?: string;
   error?: string | null;
@@ -18,6 +19,7 @@ export interface Props extends Omit<
 
 export function Xinput({
   onChange,
+  onReset,
   altClassName = "",
   label,
   error = null,
@@ -35,7 +37,8 @@ export function Xinput({
     const event = {
       target: { value: "" },
     } as React.ChangeEvent<HTMLInputElement>;
-    onChange?.(event);
+    onChange?.(event); // renvoie l'event au parent props.onChange
+    onReset?.(); // action supplémentaire déclenchée chez parent si besoin
   };
 
   return (
