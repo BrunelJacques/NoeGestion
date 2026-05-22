@@ -35,23 +35,6 @@ export default function Filtres() {
     [pageOrigine.value]
   );
 
-/*   
-  // Effet de synchronisation de draft.origine, sans clic sur origine
-  useEffect(() => {
-    const newOrigine = 
-      origineItems.find(a => a.id === draft.origine)?.id //recherche l'item de oldOrigine
-      ?? origineItems[0]?.id //oldOrigine pas trouvée dans les items rafraichis
-      ?? "" // aucun item trouvé
-    ;
-    // Ne mettre à jour que si la valeur calculée est différente de l'actuelle
-    if (newOrigine !== draft.origine) {
-      console.log(`Mise à jour de l'origine: ${draft.origine} -> ${newOrigine}`);
-      updateField("origine",newOrigine);
-    }
-
-  }, [pageOrigine.value,draft.origine, updateField,origineItems]);
-   */
-
   // Fonction de soumission du formulaire par bouton "Validation"
   function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();

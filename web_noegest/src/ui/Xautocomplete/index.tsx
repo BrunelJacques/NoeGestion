@@ -69,7 +69,7 @@ export function Xautocomplete ({
 
           console.log(`Résultat unique ou aucun pour "${txt}" -> ${uniqueItem ? unique : "aucun"}`);
 
-          // met à jour l'input QUE si item unique ET que l'utilisateur et saisie incomplete 
+          // met à jour l'input.value QUE si item unique ET que l'utilisateur et saisie incomplete 
           if (uniqueItem && query !== unique) {
             setQuery(unique);
             onSelect(uniqueItem); // Informe le parent de l'élément est sélectionné !
@@ -89,8 +89,6 @@ export function Xautocomplete ({
 
       const items =  await getItems(data, search);
 
-      console.log(`fetchItems("${search}") -> ${data.length} résultats`);
-      
       setResults( items );
     };
 
