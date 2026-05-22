@@ -13,8 +13,6 @@ export const altDefault = style({
 export const btnStyle = style({ 
   marginLeft: 'auto',
   minWidth: '110px',
-  backgroundColor: vars.color.primary,
-  color: vars.color.textPrimary,
   border: `1px solid ${vars.color.border}`,
 })
 

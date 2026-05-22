@@ -172,7 +172,7 @@ export const toggleVoir = style({
   },
 })
 
-export const small = style({
+export const small10 = style({
   width: "10px",
   height: "10px",
 });

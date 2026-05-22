@@ -1,6 +1,8 @@
 //src/ap_stocks/pages/Filtres/index.tsx
 
 import * as s from "./index.css";
+import * as sc from "../../../ui/xcommon.css";
+import goBack from "../../../assets/icons/goBack.png"
 import { Xbutton } from "../../../ui/Xbutton";
 import { Form } from "react-router-dom";
 import { Origines, PageOrigineValues } from "../../stConstants";
@@ -16,6 +18,7 @@ import FiltreMagasin from "../../components/FiltreMagasin";
 import FiltreRayon from "../../components/FiltreRayon";
 import { XinputDate } from "../../../ui/variants/XinputDate";
 import { useMemo } from "react";
+import BackButton from "../../../ui/BackButton";
 
 
 export default function Filtres() {
@@ -126,6 +129,10 @@ return (
  
       </Form>
 
+      <BackButton>
+        retour
+      </BackButton>
+      
       <Xbutton type="submit" altClassName="right" form="filtresForm">
         Validation
       </Xbutton>

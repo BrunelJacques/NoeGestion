@@ -63,7 +63,7 @@ export function Xinput({
             className={sc.resetButton}
             onClick={handleReset}
           >
-            <img className={sc.small} title={"croix"} src={croix} />
+            <img className={sc.small10} title={"croix"} src={croix} />
           </button>
           )}
       </div>

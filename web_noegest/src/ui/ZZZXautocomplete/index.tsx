@@ -147,7 +147,7 @@ export function Xautocomplete ({
           onClick={handleReset}
           //onBlur={() => {if (isOpen) {setIsOpen(false);}}}
         >
-          <img className={sc.small} title={"croix"} src={croix} />
+          <img className={sc.small10} title={"croix"} src={croix} />
         </button>
       )}
       {error && (
