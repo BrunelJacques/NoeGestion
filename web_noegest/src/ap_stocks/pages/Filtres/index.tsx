@@ -1,9 +1,8 @@
 //src/ap_stocks/pages/Filtres/index.tsx
 
 import * as s from "./index.css";
-import * as sc from "../../../ui/xcommon.css";
-import goBack from "../../../assets/icons/goBack.png"
 import { Xbutton } from "../../../ui/Xbutton";
+import goBack from "../../../assets/icons/goBack.png"
 import { Form } from "react-router-dom";
 import { Origines, PageOrigineValues } from "../../stConstants";
 import { Xselect } from "../../../ui/Xselect";
@@ -130,6 +129,7 @@ return (
       </Form>
 
       <BackButton>
+        <img className={s.goBack} title={"fleche"} src={goBack} />
         retour
       </BackButton>
       

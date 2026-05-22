@@ -45,6 +45,12 @@ export const entree = style({
   margin: '3px',
 });
 
+export const goBack = style({
+  width: "24px",
+  height: "24px",
+  marginRight: "5px",
+});
+
 export const zzentree = style({
   padding: "2px 0",
   margin: '3px',

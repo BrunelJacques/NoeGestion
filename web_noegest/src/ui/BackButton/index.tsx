@@ -11,7 +11,6 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 function BackButton({
   children,
-  altClassName = "",
   ...props}: Props
 
 ) {
@@ -19,7 +18,7 @@ function BackButton({
   const location = useLocation();
 
   // On récupère le nom de la page précédente, ou une valeur par défaut
-  const previousPageName = location.state?.fromPageName || "Page précédente";
+  const previousPageName = location.state?.fromPageName || "";
 
   const handleBack = () => {
     // Le paramètre -1 indique à React Router de reculer d'une page dans l'historique
@@ -31,7 +30,6 @@ function BackButton({
     {...props}
       onClick={handleBack}
     >
-      
       {children} 
       {previousPageName}
     </Xbutton>
