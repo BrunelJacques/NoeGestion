@@ -17,12 +17,24 @@ function BackButton({
   const navigate = useNavigate();
   const location = useLocation();
 
-  // On récupère le nom de la page précédente, ou une valeur par défaut
-  const previousPageName = location.state?.fromPageName || "";
+  const pageStack = location.state?.pageStack || [];
+
+  // La page juste avant (la fin du tableau)
+
+  const previousPage = pageStack[pageStack.length - 1]?? {'name': 'Accueil', 'url': '/home'};
+  // La page encore avant (l'avant-dernière)
+  //const pageAfterNextBack = pageStack[pageStack.length - 2];
 
   const handleBack = () => {
-    // Le paramètre -1 indique à React Router de reculer d'une page dans l'historique
-    navigate(-1);
+    // Au lieu de faire navigate(-1), on navigue vers l'URL exacte 
+    // en lui passant la pile amputée de son dernier élément
+    if (previousPage) {
+      navigate(previousPage.url, { 
+        state: { pageStack: pageStack.slice(0, -1) } 
+      });
+    } else {
+      navigate('/home'); // Repli si l'historique est vide
+    }
   };
 
   return (
@@ -31,7 +43,7 @@ function BackButton({
       onClick={handleBack}
     >
       {children} 
-      {previousPageName}
+      {previousPage?.name}
     </Xbutton>
   );
 }

@@ -37,7 +37,6 @@ export const formStyle = style({
     },
   },
   padding: '2px',
-
 });
 
 export const entree = style({
@@ -51,8 +50,14 @@ export const goBack = style({
   marginRight: "5px",
 });
 
-export const zzentree = style({
-  padding: "2px 0",
-  margin: '3px',
-  backgroundColor: vars.color.secondary
+export const boutons = style({
+  display: 'flex',
+  justifyContent: 'flex-end',
+  marginTop: '10px',
 });
+
+export const altButton = style({
+  backgroundColor: vars.color.secondary,
+  color: vars.color.text,
+  border: `1px solid ${vars.color.border}`,
+})

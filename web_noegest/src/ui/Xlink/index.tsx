@@ -1,6 +1,7 @@
 // src/ui/Xlink.tsx
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
 import { xLinkRecipe } from './index.css'
+
 
 type StyledLinkProps = {
   to: string
@@ -10,14 +11,24 @@ type StyledLinkProps = {
 }
 
 export default function Xlink({
-  to,
-  children,
   $theme = 'light',
   $isFullLink,
+  ...props
 }: StyledLinkProps) {
+
+  const location = useLocation();
+  // On récupère la pile existante ou on en crée une vide
+  const currentStack = location.state?.pageStack || [];
+
+  const nextStack = [
+    ...currentStack, 
+    { name: location.pathname, url: location.pathname }
+  ];
+
   return (
     <NavLink
-      to={to}
+      to={props.to}
+      state={{ pageStack: nextStack }} // On passe la pile mise à jour à la prochaine page
       className={({ isActive }) =>
         xLinkRecipe({
           theme: $theme,
@@ -26,7 +37,7 @@ export default function Xlink({
         })
       }
     >
-      {children}
+      {props.children}
     </NavLink>
   )
 }

@@ -16,7 +16,7 @@ export function Xbutton({
 ) {
 
   const btnStyle = altClassName ? `${s.baseStyle} ${altClassName}`.trim() :  `${s.baseStyle} ${s.altDefault}`.trim();
-
+  console.log("Style altclass bouton:", altClassName);
   return (
     <button  
     className={btnStyle} 

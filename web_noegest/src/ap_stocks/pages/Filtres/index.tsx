@@ -128,14 +128,17 @@ return (
  
       </Form>
 
-      <BackButton>
-        <img className={s.goBack} title={"fleche"} src={goBack} />
-        retour
-      </BackButton>
-      
-      <Xbutton type="submit" altClassName="right" form="filtresForm">
-        Validation
-      </Xbutton>
+      <div className={s.boutons}>
+        <BackButton altClassName={s.altButton}>
+          <img className={s.goBack} title={"fleche"} src={goBack} />
+          <span>Abandon</span>
+        </BackButton>
+        
+        <Xbutton type="submit" altClassName="" form="filtresForm">
+          <img className={s.goBack} title={"fleche"} src={goBack} />
+          Validation
+        </Xbutton>
+      </div>
     </div>
 
   </section>

@@ -24,8 +24,9 @@ export const baseStyle = style({
   backgroundColor: vars.color.primary,
   color: vars.color.textPrimary,
   border: `1px solid ${vars.color.border}`,
-  padding: '7px 10px',
+  padding: '1px 10px',
   borderRadius: '10px',
+  alignContent: 'center',
   
   fontSize: '0.95rem',
   fontWeight: 500,
