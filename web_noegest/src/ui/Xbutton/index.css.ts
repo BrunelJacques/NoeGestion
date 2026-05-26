@@ -6,24 +6,18 @@ import { vars } from '../../assets/styles/themes.css'
 export const altDefault = style({
   backgroundColor: vars.color.primary,
   color: vars.color.textPrimary,
-  border: `3px solid ${vars.color.text}`,
-})
-
-
-export const btnStyle = style({ 
-  marginLeft: 'auto',
-  minWidth: '110px',
-  border: `1px solid ${vars.color.border}`,
+  border: `1px solid ${vars.color.text}`,
 })
 
 
 
 export const baseStyle = style({
-// On attache le style au layer 'base', il n'aura pas priorité sur les styles d'altClassName
+  display: 'flex', // Flexbox pour aligner l'image et le texte 
+  justifyContent: 'center',// Centre verticalement l'image et le texte 
+  alignItems: 'center', // Centre horizontalement l'image et le texte
+  gap: '6px',
   margin: '5px 20px 5px auto',
-  backgroundColor: vars.color.primary,
-  color: vars.color.textPrimary,
-  border: `1px solid ${vars.color.border}`,
+
   padding: '1px 10px',
   borderRadius: '10px',
   alignContent: 'center',

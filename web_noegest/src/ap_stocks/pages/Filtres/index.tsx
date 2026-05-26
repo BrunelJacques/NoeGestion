@@ -136,7 +136,7 @@ return (
         
         <Xbutton type="submit" altClassName="" form="filtresForm">
           <img className={s.goBack} title={"fleche"} src={goBack} />
-          Validation
+          
         </Xbutton>
       </div>
     </div>
