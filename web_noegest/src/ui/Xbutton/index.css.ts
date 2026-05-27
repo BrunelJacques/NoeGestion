@@ -23,7 +23,7 @@ export const baseStyle = style({
   alignContent: 'center',
   
   fontSize: '0.95rem',
-  fontWeight: 500,
+  fontWeight: 550,
   letterSpacing: '0.03em',
 
   // behavior
@@ -40,6 +40,7 @@ export const baseStyle = style({
       transform: 'translateY(-6px)',
       boxShadow: '0 6px 16px rgba(15, 23, 42, 0.35)',
       background: 'linear-gradient(135deg, #4338ca, #4f46e5)',
+      color: vars.color.textPrimary,
       borderColor: vars.color.border,
     },
 

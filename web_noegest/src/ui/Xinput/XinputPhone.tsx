@@ -18,7 +18,7 @@ export function XinputPhone(props: Props) {
         inputRef.current = e.currentTarget;
         handleCursor({ event: e, inputRef, formatValue, setValue });
       }}
-      placeholder="06wwXinputPhone"
+      placeholder="06..."
     />
   );
 }
