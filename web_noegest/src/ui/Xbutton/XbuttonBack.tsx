@@ -1,16 +1,18 @@
-//src/ui/BackButton/index.tsx
+// src/ui/Xbutton/XbuttonBack.tsx
 
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Xbutton } from '../Xbutton';
+import { Xbutton } from './index';
 import type { ButtonHTMLAttributes, ReactNode } from 'react';
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
   altClassName?: string;
+  displayPrevious?: boolean;
 }
 
-function BackButton({
+function XbuttonBack({
   children,
+  displayPrevious = true,
   ...props}: Props
 
 ) {
@@ -43,9 +45,9 @@ function BackButton({
       onClick={handleBack}
     >
       {children} 
-      {previousPage?.name}
+      {displayPrevious && previousPage?.name}
     </Xbutton>
   );
 }
 
-export default BackButton;
+export default XbuttonBack;

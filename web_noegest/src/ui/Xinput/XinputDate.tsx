@@ -1,5 +1,5 @@
 // src/ui/variants/XinputDate.tsx
-import { Xinput } from "../Xinput";
+import { Xinput } from "./index.tsx";
 import  * as dt from "../../utils/dates.ts";
 import * as sc from "../xcommon.css.ts";
 import { handleCursor } from "../../utils/handleCursor.ts";

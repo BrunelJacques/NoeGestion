@@ -5,8 +5,8 @@ import { Xinput } from "../../ui/Xinput/index.tsx";
 import  { Xbutton } from "../../ui/Xbutton/index.tsx";
 import * as s from "./index.css.ts"
 import { useAuth } from "../../hooks/useAuth.tsx";
-import { XinputDate } from "../../ui/variants/XinputDate.tsx";
-import { XinputPhone } from "../../ui/variants/XinputPhone.tsx";
+import { XinputDate } from "../../ui/Xinput/XinputDate.tsx";
+import { XinputPhone } from "../../ui/Xinput/XinputPhone.tsx";
 
 
 export default function Register() {

@@ -6,7 +6,7 @@ import { Xbutton } from "../../ui/Xbutton";
 import * as s from "./index.css.ts";
 import { useLoginHandler } from "../../hooks/useLoginHandler.tsx";
 import { Link } from "react-router";
-import { XinputPassword } from "../../ui/variants/XinputPassword.tsx";
+import { XinputPassword } from "../../ui/Xinput/XinputPassword.tsx";
 
 
 export default function Login() {

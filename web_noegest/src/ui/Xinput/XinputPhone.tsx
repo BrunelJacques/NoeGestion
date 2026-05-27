@@ -1,7 +1,7 @@
 // src/ui/variants/XinputPhone.tsx
 import { useRef, useState } from "react";
-import {  Xinput } from "../Xinput";
-import type { Props } from "../Xinput";
+import {  Xinput } from ".";
+import type { Props } from ".";
 import { formatPhoneNumber as formatValue } from "../../utils/phone";
 import { handleCursor } from "../../utils/handleCursor";
 
@@ -12,12 +12,12 @@ export function XinputPhone(props: Props) {
   return (
     <Xinput
       {...props}
-      ref={inputRef}  // sans ref, inputRef reste null
       type="tel"
       value={value}
-      onChange={(e:React.ChangeEvent<HTMLInputElement>) =>
-        handleCursor({ event: e, inputRef, formatValue, setValue })
-      }
+      onChange={(e) => {
+        inputRef.current = e.currentTarget;
+        handleCursor({ event: e, inputRef, formatValue, setValue });
+      }}
       placeholder="06wwXinputPhone"
     />
   );

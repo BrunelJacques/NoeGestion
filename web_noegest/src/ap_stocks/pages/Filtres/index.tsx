@@ -15,22 +15,22 @@ import FiltreArticle from "../../components/FiltreArticle";
 import FiltreFournisseur from "../../components/FiltreFournisseur";
 import FiltreMagasin from "../../components/FiltreMagasin";
 import FiltreRayon from "../../components/FiltreRayon";
-import { XinputDate } from "../../../ui/variants/XinputDate";
-import { useMemo } from "react";
-import BackButton from "../../../ui/BackButton";
-import { FILTRES0 } from "../../types/params";
+import { XinputDate } from "../../../ui/Xinput/XinputDate";
+import { useMemo, useState } from "react";
+import XbuttonBack from "../../../ui/Xbutton/XbuttonBack";
 
 
 export default function Filtres() {
   const { filtres, setFiltres } = useFiltres();
 
-  const { draft,setDraft, updateField } = useDraftFiltres(filtres)
+  const { draft, setDraft, updateField } = useDraftFiltres(filtres)
+  
+  const [formKey, setFormKey] = useState(0);
 
   function resetFiltres() {
-    const filtres0 = FILTRES0;
-    console.log("Réinitialisation des filtres à:", filtres0)
-    setDraft(filtres0);
-    setFiltres(filtres0);
+    setDraft(filtres)
+    setFormKey(prevKey => prevKey + 1); // Incrémente la clé pour forcer le re-render
+    console.log("ResetFiltres:", filtres)  
   }
 
   const pageOrigine = useSelectEnum(PageOrigineValues, draft.pageOrigine);
@@ -69,7 +69,7 @@ return (
 
     {/* zone de saisie fltres */}
     <div className={s.wrapForm}>
-      <Form id="filtresForm" onSubmit={handleSubmit} className={s.formStyle}>
+      <Form id="filtresForm" key={formKey} onSubmit={handleSubmit} className={s.formStyle}>
 
         <div className={s.entree}>
           <XinputDate
@@ -137,15 +137,17 @@ return (
       </Form>
 
       <div className={s.boutons}>
-        <BackButton altClassName={s.altButton}>
+        <XbuttonBack altClassName={s.altButton} displayPrevious={false}>
           <img className={s.goBack} title={"fleche"} src={goBack} />
           <span>Abandon</span>
-        </BackButton>
+        </XbuttonBack>
 
-      <button onClick={() =>  resetFiltres()
+      <Xbutton altClassName={s.altButton}
+      type="button" 
+      onClick={() =>  resetFiltres()
       }>
         Reset Filtres
-      </button>
+      </Xbutton>
 
         <Xbutton type="submit" altClassName="" form="filtresForm">
           <img className={s.goBack} title={"fleche"} src={goBack} />

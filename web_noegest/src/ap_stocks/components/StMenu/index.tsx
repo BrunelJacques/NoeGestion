@@ -1,6 +1,6 @@
 // src/ap_stocks/components/StocksMenu.tsx
 import { useUrl } from "../../../hooks/useUrl";
-import BackButton from "../../../ui/BackButton";
+import XbuttonBack from "../../../ui/Xbutton/XbuttonBack";
 import Xlink from "../../../ui/Xlink";
 import { capitalize } from "../../../utils/string";
 import * as s from "./index.css.ts";
@@ -32,9 +32,9 @@ export function StMenu(props: FiltresProps) {
         Mouvements
       </Xlink>
 
-      <BackButton altClassName={s.altButton}>
+      <XbuttonBack altClassName={s.altButton}>
         <img className={s.goBack} title={"fleche"} src={goBack} />
-      </BackButton>
+      </XbuttonBack>
     </nav>
   </>);
 }
