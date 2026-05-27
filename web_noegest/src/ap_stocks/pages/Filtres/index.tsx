@@ -18,12 +18,20 @@ import FiltreRayon from "../../components/FiltreRayon";
 import { XinputDate } from "../../../ui/variants/XinputDate";
 import { useMemo } from "react";
 import BackButton from "../../../ui/BackButton";
+import { FILTRES0 } from "../../types/params";
 
 
 export default function Filtres() {
-  const { filtres, setFiltres } = useFiltres(); 
+  const { filtres, setFiltres } = useFiltres();
 
-  const { draft, updateField } = useDraftFiltres(filtres)
+  const { draft,setDraft, updateField } = useDraftFiltres(filtres)
+
+  function resetFiltres() {
+    const filtres0 = FILTRES0;
+    console.log("Réinitialisation des filtres à:", filtres0)
+    setDraft(filtres0);
+    setFiltres(filtres0);
+  }
 
   const pageOrigine = useSelectEnum(PageOrigineValues, draft.pageOrigine);
 
@@ -133,10 +141,15 @@ return (
           <img className={s.goBack} title={"fleche"} src={goBack} />
           <span>Abandon</span>
         </BackButton>
-        
+
+      <button onClick={() =>  resetFiltres()
+      }>
+        Reset Filtres
+      </button>
+
         <Xbutton type="submit" altClassName="" form="filtresForm">
           <img className={s.goBack} title={"fleche"} src={goBack} />
-          
+          Validation
         </Xbutton>
       </div>
     </div>
