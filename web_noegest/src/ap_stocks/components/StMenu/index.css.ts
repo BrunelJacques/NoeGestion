@@ -9,6 +9,8 @@ export const goBack = style({
 });
 
 export const altButton = style({
+  marginTop: "auto",
+  minWidth: "100px",
   backgroundColor: vars.color.secondary,
   color: vars.color.text,
   border: `1px solid ${vars.color.border}`,

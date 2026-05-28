@@ -1,6 +1,7 @@
 // src/ui/Xlink.tsx
 import { NavLink, useLocation } from 'react-router-dom'
 import { xLinkRecipe } from './index.css'
+import { capitalize } from '../../utils/string'
 
 
 type StyledLinkProps = {
@@ -19,10 +20,11 @@ export default function Xlink({
   const location = useLocation();
   // On récupère la pile existante ou on en crée une vide
   const currentStack = location.state?.pageStack || [];
-
+  const nameLocation = capitalize(location.pathname.split('/').slice(-1)[0] || 'Accueil');
+  
   const nextStack = [
     ...currentStack, 
-    { name: location.pathname, url: location.pathname }
+    { name: nameLocation, url: location.pathname }
   ];
 
   return (

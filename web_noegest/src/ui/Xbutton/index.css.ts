@@ -10,21 +10,21 @@ export const altDefault = style({
 })
 
 
-
 export const baseStyle = style({
   display: 'flex', // Flexbox pour aligner l'image et le texte 
   justifyContent: 'center',// Centre verticalement l'image et le texte 
   alignItems: 'center', // Centre horizontalement l'image et le texte
-  gap: '6px',
-  margin: '5px 20px 5px auto',
+  gap: '3px',
+  margin: '5px 5px',
+  minWidth: '80px',
 
-  padding: '1px 10px',
+  padding: '1px 2px',
   borderRadius: '10px',
   alignContent: 'center',
   
   fontSize: '0.95rem',
   fontWeight: 550,
-  letterSpacing: '0.03em',
+  letterSpacing: '0.003rem',
 
   // behavior
   cursor: 'pointer',
@@ -34,10 +34,11 @@ export const baseStyle = style({
   // subtle shadow
   boxShadow: '0 4px 10px rgba(15, 23, 42, 0.25)',
 
-  // hover
+  // label inside button
   selectors: {
+
     '&:hover:not(:disabled)': {
-      transform: 'translateY(-6px)',
+      transform: 'translateY(-1px)',
       boxShadow: '0 6px 16px rgba(15, 23, 42, 0.35)',
       background: 'linear-gradient(135deg, #4338ca, #4f46e5)',
       color: vars.color.textPrimary,
@@ -46,7 +47,7 @@ export const baseStyle = style({
 
     // active
     '&:active:not(:disabled)': {
-      transform: 'translateY(-3px)',
+      transform: 'translateY(-1px)',
       boxShadow: '0 2px 6px rgba(15, 23, 42, 0.3)',
       filter: 'brightness(1.1)'
     },
@@ -67,4 +68,17 @@ export const baseStyle = style({
       borderColor: vars.color.border,
     },
   },
+})
+
+export const label = style({
+  display: 'flex',
+  alignItems: 'center',
+  minWidth: 0,
+  fontSize: '14px',
+})
+
+export const ellipsis = style({
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
 })

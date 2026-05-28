@@ -69,6 +69,12 @@ export type Magasins = {
   results: Magasin[];
 }
 
+// générique d'appels items
+export type Item = {
+  id: number|string; 
+  nom: string;
+}
+
 export type FormField = {
   label: string;
   type: string; // 'text', 'number', 'date', 'select', etc.
@@ -77,8 +83,6 @@ export type FormField = {
   options?: string[]; // For select fields
 }
 
-// générique d'appels items
-export type Item = {
-  id: number|string; 
-  nom: string;
+export type FormFields = {
+  [key: string]: FormField[];
 }

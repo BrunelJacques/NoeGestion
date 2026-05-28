@@ -35,7 +35,7 @@ export const menu = style({
   zIndex: 20,
   background: colors.bgFooter,
   color: colors.txtFooter,
-  padding: 5,
+  padding: 1,
 
   '@media': {
     'screen and (min-width: 600px)': {

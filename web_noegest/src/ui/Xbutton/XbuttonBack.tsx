@@ -2,7 +2,10 @@
 
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Xbutton } from './index';
+import * as s from './index.css.ts';
+
 import type { ButtonHTMLAttributes, ReactNode } from 'react';
+
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
@@ -44,8 +47,10 @@ function XbuttonBack({
     {...props}
       onClick={handleBack}
     >
-      {children} 
-      {displayPrevious && previousPage?.name}
+      {children}
+      <div className={s.label}>
+        {displayPrevious && previousPage?.name}
+      </div>
     </Xbutton>
   );
 }

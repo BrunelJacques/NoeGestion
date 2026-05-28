@@ -21,17 +21,18 @@ export function StMenu(props: FiltresProps) {
     <nav className={props.className}>
       <h5>{page}</h5>
       <hr></hr>
-      <Xlink 
+      {page != "Filtres" && <Xlink 
       to="/stocks/filtres" 
       $isFullLink={true}>
         Filtres
-      </Xlink>
-      <Xlink 
+      </Xlink>}
+
+      {page != "Mouvements" && <Xlink 
       to="/stocks/mouvements" 
       $isFullLink={true}>
         Mouvements
-      </Xlink>
-
+      </Xlink>}
+      
       <XbuttonBack altClassName={s.altButton}>
         <img className={s.goBack} title={"fleche"} src={goBack} />
       </XbuttonBack>
