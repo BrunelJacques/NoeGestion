@@ -74,15 +74,3 @@ export type Item = {
   id: number|string; 
   nom: string;
 }
-
-export type FormField = {
-  label: string;
-  type: string; // 'text', 'number', 'date', 'select', etc.
-  value?: unknown;
-  visible?: boolean;
-  options?: string[]; // For select fields
-}
-
-export type FormFields = {
-  [key: string]: FormField[];
-}
