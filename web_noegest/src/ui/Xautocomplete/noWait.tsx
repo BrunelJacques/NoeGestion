@@ -9,7 +9,7 @@ interface Props extends Omit<
   ComponentPropsWithoutRef<"input">, 
   "onSelect"
 > {  
-  fetchItems: (query: string) => Promise<Item[]>;
+  fetchItems: (query: string) => Item[];
   onSelect: (item: Item) => void;
   altClassName?: string;
   label?: string;
@@ -26,7 +26,7 @@ export function Xautocomplete ({
     altClassName = "",
     error = null,
     required = false,
-    ...props
+    ...props 
   }: Props) {
 
   const [results, setResults] = useState<Item[]>([]);
@@ -36,12 +36,12 @@ export function Xautocomplete ({
   const [query, setQuery] = useState<string>(
     typeof props.value === "string" ? props.value : ""
   );
-
+  
   function isValid() {
     // traitement pralable
     if (!query && !required) { // si pas de saisie et pas requis, on valide
       return true
-    };
+    };      
     if (!results || results.length === 0) {
       return false; // si pas de résultats, on invalide
     };
@@ -53,12 +53,12 @@ export function Xautocomplete ({
 
 
   useEffect(() => {
-    const loadData = async () => {
+    const loadData = () => {
       // Condition de filtrage : si la saisie a plus de 1 caractère, on filtre.
       const search = query.length > 1 ? query : ""; //query vide = sans filtre
-      const data = await fetchItems(search);
+      const data = fetchItems(search);
     
-      const getItems = async (items: Item[], txt: string) => {
+      const getItems =  (items: Item[], txt: string) => {
         // Calcule la liste filtrée selon la saisie courante (insensible à la casse / inclusions)
         const filtered = items.filter(u => u.nom && u.nom.toLowerCase().includes(txt.toLowerCase()));
 
@@ -77,7 +77,7 @@ export function Xautocomplete ({
             setOpenList(false);   // On peut fermer la liste puisque le choix est fait
           } 
           // Si pas de résultat ou 1 résultat, on affiche tout pour aider à la sélection
-          const allItems = await fetchItems("");
+          const allItems =  fetchItems("");
           
           return allItems.map((u: Item) => ({
             id: u.id,
@@ -86,14 +86,10 @@ export function Xautocomplete ({
         }
       };
 
-
-      const items =  await getItems(data, search);
-
+      const items =  getItems(data, search);
       setResults( items );
     };
-
-    const timer = setTimeout(loadData, 300);
-    return () => clearTimeout(timer);
+    loadData();
   }, [query, fetchItems, onSelect]); 
 
   const handleSelect = (item: Item) => { // action select un item
@@ -109,7 +105,7 @@ export function Xautocomplete ({
     if (!openList) setOpenList(true); // ouvre la liste au début de la saisie
   });
 
-// Gestion de la perte de focus globale du composant
+  // Gestion de la perte de focus globale du composant
   const handleBlur = (e: React.FocusEvent) => {
     // nouvel élément focus (relatedTarget) est-il à l'intérieur du div
     if (divRef.current && !divRef.current.contains(e.relatedTarget as Node)) {

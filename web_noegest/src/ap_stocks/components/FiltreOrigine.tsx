@@ -1,7 +1,7 @@
 //src/ap_stocks/components/FiltreOrigine.tsx
 import {type Origine } from "../stConstants";
 import type { Item, TypFiltreMvts } from "../types/params";
-import { Xautocomplete } from "../../ui/Xautocomplete";
+import { Xautocomplete } from "../../ui/Xautocomplete/noWait";
 
 
 interface Props {
@@ -15,7 +15,7 @@ interface Props {
 export default function FiltreOrigine({ filtres, updateField, origineItems }: Props) {
 
 
-  const fetchOrigines = async (search?: string) => {
+  const fetchOrigines =  (search?: string) => {
     const query = search ?? ""; // search si null ou undefined, sinon ""
     return [
       //{ id: 0, nom: "Tous" },
@@ -30,19 +30,12 @@ export default function FiltreOrigine({ filtres, updateField, origineItems }: Pr
   };
 
 
-/* 
-  const getOrigine = (id: string): string => {
-    const origine = origineItems.find((o) => o.id === id);
-    console.log(`getOrigine: id=${id} -> ${origine ? origine.libelle : "non trouvé"}`);
-    return origine ? origine.libelle : "";
-  }
- */
-
   const handleChange = (item: Item | string) => {
       const value =
         typeof item === "object" && item !== null && "id" in item
           ? String(item.nom)
           : String(item);
+      
       updateField(value);
     };
     
@@ -54,6 +47,7 @@ export default function FiltreOrigine({ filtres, updateField, origineItems }: Pr
           value={filtres.origine ?? ""}
           fetchItems={fetchOrigines}
           onSelect={handleChange}
+          required={true}
 
         />
       </>

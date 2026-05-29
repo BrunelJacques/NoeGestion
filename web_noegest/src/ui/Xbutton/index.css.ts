@@ -14,11 +14,11 @@ export const baseStyle = style({
   display: 'flex', // Flexbox pour aligner l'image et le texte 
   justifyContent: 'center',// Centre verticalement l'image et le texte 
   alignItems: 'center', // Centre horizontalement l'image et le texte
-  gap: '3px',
-  margin: '5px 5px',
+  gap: '3px', // Espace entre l'image et le texte
+  margin: '5px 5px 5px auto',
   minWidth: '80px',
 
-  padding: '1px 2px',
+  padding: '1px 5px',
   borderRadius: '10px',
   alignContent: 'center',
   

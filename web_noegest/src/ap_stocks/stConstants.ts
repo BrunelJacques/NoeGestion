@@ -34,16 +34,13 @@ export const  Origines: Record<PageOrigine, Origine[]>  = {
     { id:  'repas', libelle: 'Repas en cuisine' },
     { id:  'camp', libelle: 'Camp Extérieur' },
     { id:  'od_out', libelle: 'Régularisation' },
-    { id:  'tout', libelle: 'Toute ligne (ss filtre)' },
   ],
   "entrees": [
     { id:  'achat', libelle: 'Achats fournisseur' },
     { id:  'retour', libelle: 'Retour de camp' },
     { id:  'od_in', libelle: 'Régularisation' },
-    { id:  'tout', libelle: 'Toute ligne (ss filtre)' },
   ],
     "article": [
-    { id:  'tout', libelle: 'Toute ligne (ss filtre)' },
     { id:  'achat', libelle: 'Achats fournisseur' },
     { id:  'repas', libelle: 'Repas en cuisine' },
     { id:  'od_in', libelle: 'Régularisation' },
