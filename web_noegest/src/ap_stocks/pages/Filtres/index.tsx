@@ -25,7 +25,7 @@ export default function Filtres() {
 
   const { draft, setDraft, updateField } = useDraftFiltres(filtres)
   
-  const [formKey, setFormKey] = useState(0);
+  const [formKey, setFormKey] = useState(0); // contrôle du re-render du formulaire
 
   function resetFiltres() {
     setDraft(filtres)
@@ -72,7 +72,7 @@ return (
       <Form id="filtresForm" key={formKey} onSubmit={handleSubmit} className={s.formStyle}>
 
         <div className={s.entree}>
-          <XinputDate
+          <XinputDate           // jour
             jour={draft.jour}
             label="Date jour"
             onChange={(val:Date|null) => updateField('jour', val)}
@@ -90,7 +90,7 @@ return (
         </div>
 
         <div className={s.entree}>
-          <FiltreOrigine 
+          <FiltreOrigine        // origine
             filtres={draft}
             updateField={(val) => updateField('origine', val)}
             origineItems={origineItems}
@@ -98,28 +98,28 @@ return (
         </div>
 
         <div className={s.entree}>
-          <FiltreService 
+          <FiltreService        // service
             id={draft.service} 
             updateField={(val) => updateField('service', val)}
           />
         </div>
 
         <div className={s.entree}>
-          <FiltreFournisseur 
+          <FiltreFournisseur     // fournisseur
             nom={draft.fournisseur} 
             updateField={(val) => updateField('fournisseur', val)}
           />
         </div>
 
         <div className={s.entree}>
-          <FiltreMagasin 
+          <FiltreMagasin        // magasin
             nom={draft.magasin} 
             updateField={(val) => updateField('magasin', val)}
           />
         </div>
 
         <div className={s.entree}>
-          <FiltreRayon 
+          <FiltreRayon            // rayon
             nom={draft.rayon} 
             updateField={(val) => updateField('rayon', val)}
           />

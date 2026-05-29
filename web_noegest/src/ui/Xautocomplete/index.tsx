@@ -40,17 +40,18 @@ export function Xautocomplete ({
     typeof props.value === "string" ? props.value : ""
   );
 
-    const valid = useMemo(() => {
-    // Si le champ est vide au départ, on valide
-    if (!query) return true;
 
-    // Valide true si un des résultats affichés OU props.value
-    return results.some(item => item.nom.toLowerCase() === query.toLowerCase()) ||
-         (targetValue.toLowerCase() === query.toLowerCase() && targetValue !== "");
+  const valid = useMemo(() => {
+  // Si le champ est vide au départ, on valide
+  if (!query) return true;
+
+  // Valide true si un des résultats affichés OU props.value
+  return results.some(item => item.nom.toLowerCase() === query.toLowerCase()) ||
+        (targetValue.toLowerCase() === query.toLowerCase() && targetValue !== "");
   }, [query, results, targetValue]);
 
-  useEffect(() => {
 
+  useEffect(() => {
     const loadData = async () => {
       // Condition de filtrage : si la saisie a plus de 1 caractère, on filtre.
       const search = query.length > 1 ? query : ""; //query vide = sans filtre
@@ -74,8 +75,7 @@ export function Xautocomplete ({
             setQuery(unique);
             onSelect(uniqueItem); // Informe le parent de l'élément est sélectionné !
             setOpenList(false);   // On peut fermer la liste puisque le choix est fait
-          }
-
+          } 
           // Si pas de résultat ou 1 résultat, on affiche tout pour aider à la sélection
           const allItems = await fetchItems("");
           
