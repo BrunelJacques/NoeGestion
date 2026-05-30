@@ -4,6 +4,14 @@ import { vars } from '../../../assets/styles/themes.css';
 import { colors } from '../../../assets/styles/colors.css';
 
 
+export const flexLigne = style({
+  display: 'flex',
+  gap: 10,
+  alignItems: 'center',
+  padding: '4px 0',
+  borderBottom: `1px solid ${colors.txtLightGray}`,
+});
+
 
 export const ligne = style({
   padding: "4px 0",

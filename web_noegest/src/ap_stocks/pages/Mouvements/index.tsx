@@ -1,6 +1,7 @@
 //src/ap_stocks/components/Mouvements/index.tsx
 import React from "react";
 import * as s from "./index.css";
+import { DisplayValue } from "../../../ui/DisplayValue";
 
 export default function FiltreMvt() {
   // Simulation de données
@@ -10,6 +11,20 @@ export default function FiltreMvt() {
 return (
 
     <section className={s.tableauWrapper}>
+      <div className={s.flexLigne}>
+        <DisplayValue
+          value="Tableau des Mouvements"
+          justify="center"
+          width={300}
+        />  
+        
+        <DisplayValue
+          value={256.4567}
+          numberDecimals={3}
+          justify="right"
+          width={200}
+        />  
+      </div>      
 
       <div className={s.table}>
         {/* Entêtes colonnes : Sticky au scroll vertical */}
