@@ -15,14 +15,14 @@ return (
         <DisplayValue
           value="Tableau des Mouvements"
           justify="center"
-          width={300}
+          width={250}
         />  
         
         <DisplayValue
           value={256.4567}
-          numberDecimals={3}
+          nbDecimals={3}
           justify="right"
-          width={200}
+          width={140}
         />  
       </div>      
 

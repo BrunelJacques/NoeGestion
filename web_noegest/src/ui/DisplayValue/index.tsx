@@ -11,12 +11,12 @@ interface BaseProps {
 // Props spécifiques selon le type de la valeur
 type NumberProps = BaseProps & {
   value: number;
-  numberDecimals?: number;
+  nbDecimals?: number;
 };
 
 type OtherProps = BaseProps & {
   value: string | Date;
-  numberDecimals?: never; // Interdit l'usage de cette prop si non nombre
+  nbDecimals?: never; // Interdit l'usage de cette prop si non nombre
 };
 
 type FieldProps = NumberProps | OtherProps;
@@ -24,7 +24,7 @@ type FieldProps = NumberProps | OtherProps;
 
 export const DisplayValue: React.FC<FieldProps> = ({ 
   value,
-  numberDecimals, 
+  nbDecimals, 
   justify = 'left',
   width
 }) => {
@@ -35,16 +35,15 @@ export const DisplayValue: React.FC<FieldProps> = ({
       return value.toLocaleDateString(); // À adapter (ex: Intl.DateTimeFormat)
     }
     if (typeof value === 'number') {
-      return value.toFixed(numberDecimals ?? 2); // 2 décimales par défaut si omit
+      return value.toFixed(nbDecimals ?? 2); // 2 décimales par défaut si omit
     }
     return value;
   };
 
   return (
-    <span
-      className={ `${s.displayRecipe({ justify })} ${s.widthStyle} ` }
-      style={assignInlineVars({ 
-        [s.widthVar]: width ? `${width}px` : "100px" })}
+    <span 
+    style={assignInlineVars({[s.widthVar]: width ? `${width}px` : "83px" })}
+    className={ `${s.displayRecipe({ justify })} ${s.widthStyle}` }
     >
       {formatValue()}
     </span>

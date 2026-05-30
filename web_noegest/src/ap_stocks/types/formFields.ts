@@ -6,42 +6,44 @@ export type FormField = {
   label: string;
   type: string; // 'text', 'number', 'date', 'select', etc.
   fieldName?: string|null; // le champ de mouvement BD ciblé
-  default?: number|null;
-  visible?: boolean;
   width?: number; // pour ajuster la largeur de la colonne
+  justify?: 'left' | 'center' | 'right'; // alignement du contenu
+  nbDecimals?: number; // pour les champs numériques, nombre de décimales à afficher
+  noDisplay?: boolean;
+  default?: number | string | Date; // valeur par défaut si non liée à un champ de mouvement
 }
 
 
 export const lstMvtFields: Record<PageOrigine, FormField[]> = {
   "sorties": [
-    { label: "Article", type: "text", fieldName: "article", width: 200 },
-    { label: "Qte", type: "number", fieldName: "qtemouvement", width: 100 },
-    { label: "PxUn", type: "number", fieldName: "prixunitaire", width: 100 },
-    { label: "Rations", type: "number", fieldName: "nbrations", width: 100 },
-    { label: "Coût Un", type: "number", fieldName: null, width: 100 },
-    { label: "Coût Tot", type: "number", fieldName: null, width: 100 },
-    { label: "Qte Stock", type: "number", fieldName: null, width: 100 },
-    { label: "Px Stock", type: "number", fieldName: null, width: 100 },
+    { label: "Article", type: "text", fieldName: "article", width: 200, justify: 'left'},
+    { label: "Qte", type: "number", fieldName: "qtemouvement", width: 100, justify: 'right', nbDecimals: 2 },
+    { label: "PxUn", type: "number", fieldName: "prixunitaire", width: 100, justify: 'right', nbDecimals: 3 },
+    { label: "Rations", type: "number", fieldName: "nbrations", width: 100, justify: 'right', nbDecimals: 0 },
+    { label: "Coût Un", type: "number", fieldName: null, width: 100, justify: 'right', nbDecimals: 2 },
+    { label: "Coût Tot", type: "number", fieldName: null, width: 100, justify: 'right', nbDecimals: 0 },
+    { label: "Qte Stock", type: "number", fieldName: null, width: 100, justify: 'right', nbDecimals: 0 },
+    { label: "Px Stock", type: "number", fieldName: null, width: 100, justify: 'right', nbDecimals: 2 },
   ],
   "entrees": [
-      { label: "Article", type: "text", fieldName: "article", width: 200 },
-      { label: "Nb Colis", type: "number", fieldName: "nbcolis", width: 100 },
-      { label: "Par Colis", type: "number", fieldName: null, default: 1, width: 100 },
-      { label: "Qte Fact", type: "number", fieldName: "qtemouvement", width: 100 },
-      { label: "PxUn", type: "number", fieldName: "prixunitaire", width: 100 },
-      { label: "Coût Tot", type: "number", fieldName: null, width: 100 },
-      { label: "Qte Stock", type: "number", fieldName: null, width: 100 },
-      { label: "Px Stock", type: "number", fieldName: null, width: 100 },
+      { label: "Article", type: "text", fieldName: "article", width: 200, justify: 'left' },
+      { label: "Nb Colis", type: "number", fieldName: "nbcolis", width: 100, justify: 'right', nbDecimals: 0 },
+      { label: "Par Colis", type: "number", fieldName: null, default: 1, width: 100, justify: 'right', nbDecimals: 0 },
+      { label: "Qte Fact", type: "number", fieldName: "qtemouvement", width: 100, justify: 'right', nbDecimals: 2 },
+      { label: "PxUn", type: "number", fieldName: "prixunitaire", width: 100, justify: 'right', nbDecimals: 3 },
+      { label: "Coût Tot", type: "number", fieldName: null, width: 100, justify: 'right', nbDecimals: 2 },
+      { label: "Qte Stock", type: "number", fieldName: null, width: 100, justify: 'right', nbDecimals: 0 },
+      { label: "Px Stock", type: "number", fieldName: null, width: 100, justify: 'right', nbDecimals: 2 },
     ],
   "article": [
     { label: "Date", type: "date", fieldName: "jour", width: 100 },
     { label: "Origine", type: "string", fieldName: "origine", width: 100 },
-    { label: "Qte", type: "number", fieldName: "qtemouvement", width: 100 },
-    { label: "PxUn", type: "number", fieldName: "prixunitaire", width: 100 },
-    { label: "Rations", type: "number", fieldName: "nbrations", width: 100 },
-    { label: "CoûtUn", type: "number", fieldName: null, width: 100 },
-    { label: "CoûtTot", type: "number", fieldName: null, width: 100 },
-    { label: "QteStock", type: "number", fieldName: null, width: 100 },
-    { label: "PxStock", type: "number", fieldName: null, width: 100 },
+    { label: "Qte", type: "number", fieldName: "qtemouvement", width: 100, justify: 'right', nbDecimals: 2 },
+    { label: "PxUn", type: "number", fieldName: "prixunitaire", width: 100, justify: 'right', nbDecimals: 3 },
+    { label: "Rations", type: "number", fieldName: "nbrations", width: 100, justify: 'right', nbDecimals: 0 },
+    { label: "CoûtUn", type: "number", fieldName: null, width: 100, justify: 'right', nbDecimals: 2 },
+    { label: "CoûtTot", type: "number", fieldName: null, width: 100, justify: 'right', nbDecimals: 2 },
+    { label: "QteStock", type: "number", fieldName: null, width: 100, justify: 'right', nbDecimals: 0 },
+    { label: "PxStock", type: "number", fieldName: null, width: 100, justify: 'right', nbDecimals: 2 },
   ],
 }

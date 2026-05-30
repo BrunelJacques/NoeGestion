@@ -5,8 +5,8 @@ import { colors } from '../../../assets/styles/colors.css';
 
 
 export const flexLigne = style({
-  display: 'flex',
-  gap: 10,
+  display: 'inline-flex', //width = somme des width des enfants + gap
+  gap: 5,
   alignItems: 'center',
   padding: '4px 0',
   borderBottom: `1px solid ${colors.txtLightGray}`,
