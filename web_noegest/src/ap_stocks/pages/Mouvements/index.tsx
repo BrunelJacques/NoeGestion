@@ -1,9 +1,34 @@
 //src/ap_stocks/components/Mouvements/index.tsx
-import React from "react";
+import React, { useCallback } from "react";
 import * as s from "./index.css";
 import { DisplayValue } from "../../../ui/DisplayValue";
+import { useFiltres } from "../../hooks/useFiltres";
+import { apiUrl } from "../../../constants/api.Constants";
+import type { MvtsRetour } from "../../types/mouvement";
 
 export default function FiltreMvt() {
+  
+  const { filtres } = useFiltres();
+
+  const urlParams = () => {
+    if (!filtres) return "";
+    const jourStr = `jour=${filtres.jour.toISOString().split('T')[0]}`; // Format YYYY-MM-DD
+    const origine = filtres.origine ? `&origine=${filtres.origine}` : "";
+    const params = [jourStr, origine].filter(Boolean).join('&');
+    return `?${params}`;
+  }
+
+  const url = apiUrl.STMOUVEMENT_URL + urlParams();
+  const fetchMouvements = useCallback(async () => {
+    const response = await fetch(url);
+    const mvts: MvtsRetour = await response.json();
+    return mvts.results;
+  }, [url]); // Ne change que si l'URL change
+ 
+  const mouvements = fetchMouvements(); 
+  console.log("Mouvements fetched:", mouvements);
+
+
   // Simulation de données
   const colonnes = Array.from({ length: 10 }, (_, i) => `Col ${i + 1}`);
   const lignes = Array.from({ length: 49 }, (_, i) => `Ligne ${i + 1}`);

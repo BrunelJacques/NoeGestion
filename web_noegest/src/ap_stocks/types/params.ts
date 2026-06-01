@@ -5,15 +5,15 @@ export type TypFiltreMvts = {
   pageOrigine: "entrees" | "sorties" | "article" ;
   article?: string | null;
   jour: Date;
-  periode?: { debut: Date; fin: Date } | null;
-  origine : string;
+  periode?: { debut: Date; fin: Date } | null; //se substitue à jour pour élagrir la recherche
+  origine : string; // Attention : peut être à blanc
   service: number;
-  camp?: string|null;
+  camp?: string|null; // uniquement géré lors d'origine camp in ou out
   fournisseur?: string;
   magasin?: string;
   rayon?: string;
-  tva: string;
-  dateModif?: Date;
+  tva: string; // sera géré dans la page de saisie d'un mouvement achat
+  dateModif?: Date; // sert de repère pour remise à zéro auto des filtres anciens
 }
 
 export const  FILTRES0: TypFiltreMvts= {
