@@ -69,13 +69,12 @@ export function Xautocomplete ({
           const uniqueItem = filtered[0]; 
           const unique = uniqueItem?.nom ?? "";
 
-
           // met à jour l'input.value QUE si item unique ET que l'utilisateur et saisie incomplete 
           if (uniqueItem && query !== unique) {
-            setQuery(unique);
+            setQuery(unique); // Met à jour l'input pour afficher unique item
             onSelect(uniqueItem); // Informe le parent de l'élément est sélectionné !
             setOpenList(false);   // On peut fermer la liste puisque le choix est fait
-          } 
+          }
           // Si pas de résultat ou 1 résultat, on affiche tout pour aider à la sélection
           const allItems = await fetchItems("");
           
@@ -85,8 +84,6 @@ export function Xautocomplete ({
           }));
         }
       };
-
-
       const items =  await getItems(data, search);
 
       setResults( items );
@@ -106,7 +103,13 @@ export function Xautocomplete ({
 
   const onChange = ((e: { target: { value: string } }) => {
     setQuery(e.target.value);
-    if (!openList) setOpenList(true); // ouvre la liste au début de la saisie
+    const present = results.find(item => item.nom === e.target.value); 
+    if (present) {
+      onSelect(present); // si même saisie, on réémet l'item sélectionné 
+      if (openList) setOpenList(false); // ferme la liste
+      return; // si pas de changement, on ne fait rien
+    }
+    if (!openList) setOpenList(true); // ouvre la liste
   });
 
 // Gestion de la perte de focus globale du composant
