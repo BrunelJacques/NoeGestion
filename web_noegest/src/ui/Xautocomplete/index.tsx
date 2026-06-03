@@ -29,15 +29,16 @@ export function Xautocomplete ({
     ...props
   }: Props) {
 
-  const [results, setResults] = useState<Item[]>([]);
-  const [openList, setOpenList] = useState(false);
-  const divRef = useRef<HTMLDivElement>(null);
+  const [allresults, setAllResults] = useState<Item[]>([]); // stockage tous items possibles
+  const [results, setResults] = useState<Item[]>([]); // stockage des items filtrés selon la saisie
+  const [openList, setOpenList] = useState(false); // contrôle de l'affichage de la liste déroulante
+  const divRef = useRef<HTMLDivElement>(null); // référence du composant pour gestion focus
 
-  const [query, setQuery] = useState<string>(
+  const [query, setQuery] = useState<string>( // raducal pour filtrer les items selon la saisie
     typeof props.value === "string" ? props.value : ""
   );
 
-  function isValid() {
+  function isValid() { // validation de la saisie : doit correspondre à un item de la liste ou être vide si pas requis
     // traitement pralable
     if (!query && !required) { // si pas de saisie et pas requis, on valide
       return true
@@ -52,7 +53,7 @@ export function Xautocomplete ({
   };
 
 
-  useEffect(() => {
+  useEffect(() => { // automate de recherche des items et traitements subséquents
     const loadData = async () => {
       // Condition de filtrage : si la saisie a plus de 1 caractère, on filtre.
       const search = query.length > 1 ? query : ""; //query vide = sans filtre
@@ -77,6 +78,7 @@ export function Xautocomplete ({
           }
           // Si pas de résultat ou 1 résultat, on affiche tout pour aider à la sélection
           const allItems = await fetchItems("");
+          setAllResults(allItems);
           
           return allItems.map((u: Item) => ({
             id: u.id,
@@ -103,7 +105,7 @@ export function Xautocomplete ({
 
   const onChange = ((e: { target: { value: string } }) => {
     setQuery(e.target.value);
-    const present = results.find(item => item.nom === e.target.value); 
+    const present = allresults.find(item => item.nom === e.target.value); 
     if (present) {
       onSelect(present); // si même saisie, on réémet l'item sélectionné 
       if (openList) setOpenList(false); // ferme la liste
