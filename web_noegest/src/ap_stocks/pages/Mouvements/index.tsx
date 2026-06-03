@@ -1,15 +1,15 @@
 //src/ap_stocks/components/Mouvements/index.tsx
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as s from "./index.css";
 import { DisplayValue } from "../../../ui/DisplayValue";
 import { useFiltres } from "../../hooks/useFiltres";
 import { apiUrl } from "../../../constants/api.Constants";
-import type { MvtsRetour } from "../../types/mouvement";
+import type { Mouvement, MvtsRetour } from "../../types/mouvement";
 
 export default function Mouvements() {
   
   const { filtres } = useFiltres();
-  const [mouvements, setMouvements] = useState<MvtsRetour>({count: 0, results: []});
+  const [mouvements, setMouvements] = useState<Mouvement[]>([]);
 
   const urlParams = () => {
     if (!filtres) return "";
@@ -21,23 +21,33 @@ export default function Mouvements() {
 
   const url = apiUrl.STMOUVEMENT_URL + urlParams();
 
-  const fetchMouvements = useCallback(async () => {
-    try {
-      const response = await fetch(url);
-      const mvts: MvtsRetour = await response.json();
-      setMouvements(mvts);
-    } catch (error) {
-      console.error("Erreur lors du fetch :", error);
-    }
-  }, [url]); // Ne change que si l'URL change
- 
-  // Déclenche le fetch quand l'URL change dans fetchMouvements)
   useEffect(() => {
-    fetchMouvements();
-  }, [fetchMouvements]);
+    // On crée une variable pour éviter de mettre à jour l'état si le composant est démonté
+    let isMounted = true;
 
-  console.log("Mouvements fetched:", url, mouvements.results.length);
+    const executeFetch = async () => {
+      try {
+        const response = await fetch(url);
+        const mvts: MvtsRetour = await response.json();
+        
+        // On ne met à jour l'état que si le composant est toujours actif
+        if (isMounted) {
+          setMouvements(mvts.results);
+        }
+      } catch (error) {
+        console.error("Erreur lors du fetch :", error);
+      }
+    };
 
+    executeFetch();
+
+    // Fonction de nettoyage (cleanup)
+    return () => {
+      isMounted = false;
+    };
+  }, [url]); // L'effet se déclenche dès que l'URL change
+
+  console.log("Mouvements fetched:", url, mouvements.length);
 
   // Simulation de données
   const colonnes = Array.from({ length: 10 }, (_, i) => `Col ${i + 1}`);

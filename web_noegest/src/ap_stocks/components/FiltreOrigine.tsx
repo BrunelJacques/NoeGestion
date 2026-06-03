@@ -1,19 +1,20 @@
 //src/ap_stocks/components/FiltreOrigine.tsx
 import {type Origine } from "../stConstants";
-import type { Item, TypFiltreMvts } from "../types/params";
+import type { Item } from "../types/params";
 import { Xautocomplete } from "../../ui/Xautocomplete/noWait";
 
 
 interface Props {
-  filtres: TypFiltreMvts;
+  id: string | null | undefined;
   updateField: (value: string) => void;
   origineItems: Origine[]
 }
 
 
 // Paramétrage du select pour les origines
-export default function FiltreOrigine({ filtres, updateField, origineItems }: Props) {
+export default function FiltreOrigine({ id, updateField, origineItems }: Props) {
 
+  const nom = id ?? String(id) ;
 
   const fetchOrigines =  (search?: string) => {
     const query = search ?? ""; // search si null ou undefined, sinon ""
@@ -31,12 +32,12 @@ export default function FiltreOrigine({ filtres, updateField, origineItems }: Pr
 
 
   const handleChange = (item: Item | string) => {
-      const value =
+      const id =
         typeof item === "object" && item !== null && "id" in item
-          ? String(item.nom)
+          ? String(item.id)
           : String(item);
       
-      updateField(value);
+      updateField(id);
     };
     
   return (
@@ -44,7 +45,7 @@ export default function FiltreOrigine({ filtres, updateField, origineItems }: Pr
         <Xautocomplete
           label="Origine"
           name="origine"
-          value={filtres.origine ?? ""}
+          value={nom ?? ""}
           fetchItems={fetchOrigines}
           onSelect={handleChange}
           required={true}

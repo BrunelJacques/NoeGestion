@@ -42,11 +42,20 @@ export function useFiltres() {
   const updateFiltres = useCallback((newValue: TypFiltreMvts | ((prev: TypFiltreMvts) => TypFiltreMvts)) => {
     setFiltres((prev) => {
       const nextState = typeof newValue === "function" ? newValue(prev) : newValue;
-      
+
       // On injecte automatiquement la date du jour de la modification
       const updatedState = { ...nextState, dateModif: new Date() };
-      
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedState));
+
+      // On prépare une copie pour le localStorage
+      const dataToStore = {
+        ...updatedState,
+        // Si .jour est un objet Date, on extrait proprement sa partie locale YYYY-MM-DD
+        jour: updatedState.jour instanceof Date 
+          ? `${updatedState.jour.getFullYear()}-${String(updatedState.jour.getMonth() + 1).padStart(2, '0')}-${String(updatedState.jour.getDate()).padStart(2, '0')}`
+          : updatedState.jour
+      };
+    
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(dataToStore));
       return updatedState;
     });
   }, []);

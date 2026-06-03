@@ -91,7 +91,7 @@ return (
 
         <div className={s.entree}>
           <FiltreOrigine        // origine
-            filtres={draft}
+            id={draft.origine}
             updateField={(val) => updateField('origine', val)}
             origineItems={origineItems}
         />

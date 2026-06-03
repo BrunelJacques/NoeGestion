@@ -1,5 +1,5 @@
 // src/ui/Xinput.tsx
-import type { ComponentPropsWithoutRef } from "react";
+import { useRef, type ComponentPropsWithoutRef } from "react";
 import croix from "../../assets/icons/croix.png"
 import * as sc from "../xcommon.css.ts";
 
@@ -10,6 +10,7 @@ export interface Props extends Omit<
 > {
   onChange?: (value: React.ChangeEvent<HTMLInputElement>) => void;
   onReset?: () => void;
+  onBlur?: () => void;
   altClassName?: string;
   label?: string;
   error?: string | null;
@@ -20,12 +21,15 @@ export interface Props extends Omit<
 export function Xinput({
   onChange,
   onReset,
+  onBlur,
   altClassName = "",
   label,
   error = null,
   showReset = true,
   ...props
 }: Props) {
+
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (props.disabled) return;
@@ -34,11 +38,14 @@ export function Xinput({
 
   const handleReset = () => {
     if (props.disabled) return;
+
     const event = {
       target: { value: "" },
     } as React.ChangeEvent<HTMLInputElement>;
     onChange?.(event); // renvoie l'event au parent props.onChange
     onReset?.(); // action supplémentaire déclenchée chez parent si besoin
+    onBlur?.(); // déclenchement du onBlur pour fermer les listes déroulantes
+    inputRef.current?.focus(); // remet le focus sur l'input après reset
   };
 
   return (
@@ -47,6 +54,7 @@ export function Xinput({
         {label && <span className={sc.label}> {label} :</span>}
 
         <input
+          ref={inputRef}
           value={props.value}
           onChange={handleChange}
           className={[
@@ -54,14 +62,13 @@ export function Xinput({
             props.disabled && sc.disabledInput,
             altClassName
           ].filter(Boolean).join(" ")}
-          //placeholder={props.placeholder ?? " "} // force un placeholder non vide
           {...props}
         />
         {showReset && props.value && (
           <button
             type="button"
             className={sc.resetButton}
-            onClick={handleReset}
+            onClick={handleReset} 
           >
             <img className={sc.small10} title={"croix"} src={croix} />
           </button>
