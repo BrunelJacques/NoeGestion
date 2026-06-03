@@ -14,6 +14,7 @@ export default function FiltreMagasin({ id, updateField }: Props) {
   const url = apiUrl.STMAGASIN_URL
   const nom = id ?? String(id) ;
 
+  
   const fetchMagasins = async (search?: string) => {
     const query = search || "";
     const response = await fetch(`${url}?nom=${query}`);

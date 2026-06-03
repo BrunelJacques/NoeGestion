@@ -1,32 +1,42 @@
 //src/ap_stocks/components/Mouvements/index.tsx
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import * as s from "./index.css";
 import { DisplayValue } from "../../../ui/DisplayValue";
 import { useFiltres } from "../../hooks/useFiltres";
 import { apiUrl } from "../../../constants/api.Constants";
 import type { MvtsRetour } from "../../types/mouvement";
 
-export default function FiltreMvt() {
+export default function Mouvements() {
   
   const { filtres } = useFiltres();
+  const [mouvements, setMouvements] = useState<MvtsRetour>({count: 0, results: []});
 
   const urlParams = () => {
     if (!filtres) return "";
     const jourStr = `jour=${filtres.jour.toISOString().split('T')[0]}`; // Format YYYY-MM-DD
-    const origine = filtres.origine ? `&origine=${filtres.origine}` : "";
+    const origine = filtres.origine ? `origine=${filtres.origine}` : "";
     const params = [jourStr, origine].filter(Boolean).join('&');
     return `?${params}`;
   }
 
   const url = apiUrl.STMOUVEMENT_URL + urlParams();
+
   const fetchMouvements = useCallback(async () => {
-    const response = await fetch(url);
-    const mvts: MvtsRetour = await response.json();
-    return mvts.results;
+    try {
+      const response = await fetch(url);
+      const mvts: MvtsRetour = await response.json();
+      setMouvements(mvts);
+    } catch (error) {
+      console.error("Erreur lors du fetch :", error);
+    }
   }, [url]); // Ne change que si l'URL change
  
-  const mouvements = fetchMouvements(); 
-  console.log("Mouvements fetched:", mouvements);
+  // Déclenche le fetch quand l'URL change dans fetchMouvements)
+  useEffect(() => {
+    fetchMouvements();
+  }, [fetchMouvements]);
+
+  console.log("Mouvements fetched:", url, mouvements.results.length);
 
 
   // Simulation de données
