@@ -1,41 +1,32 @@
 //src/ap_stocks/components/FiltreMagasin.tsx
 
-import type { Item, Magasin, Magasins } from "../types/params";
+import type { Item, Magasins } from "../types/params";
 import apiUrl from "../../constants/api.Constants";
 import { Xautocomplete } from "../../ui/Xautocomplete";
 
 interface Props {
-  nom: string | null | undefined;
-  updateField: (value: string) => void;
+  id: string | null | undefined;
+  updateField: (id: string) => void;
 }
 
 // Paramétrage de l'autocomplete pour les magasins
-export default function FiltreMagasin({ nom, updateField }: Props) {
+export default function FiltreMagasin({ id, updateField }: Props) {
   const url = apiUrl.STMAGASIN_URL
+  const nom = id ?? String(id) ;
 
   const fetchMagasins = async (search?: string) => {
     const query = search || "";
     const response = await fetch(`${url}?nom=${query}`);
     const magasins: Magasins = await response.json();
-    return [
-      //{ id: 0, nom: "Tous" },
-      ...magasins.results
-        .filter((u: Magasin) => u.nom && u.nom.toLowerCase().includes(query.toLowerCase())
-        )
-        .map((u: Magasin) => ({
-          id: u.id,
-          nom: u.nom
-        }))
-    ];
+    return magasins.results;
   };
 
   const handleChange = (item: Item | string | number) => {
-    const value =
-      typeof item === "object" && item !== null && "nom" in item
-        ? (item.nom)
+    const id =
+      typeof item === "object" && item !== null && "id" in item
+        ? String(item.id)
         : String(item);
-
-    updateField(value);
+    updateField(id);
   }
 
   return (

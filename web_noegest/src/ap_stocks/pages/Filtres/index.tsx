@@ -113,14 +113,14 @@ return (
 
         <div className={s.entree}>
           <FiltreMagasin        // magasin
-            nom={draft.magasin} 
+            id={draft.magasin} 
             updateField={(val) => updateField('magasin', val)}
           />
         </div>
 
         <div className={s.entree}>
           <FiltreRayon            // rayon
-            nom={draft.rayon} 
+            id={draft.rayon} 
             updateField={(val) => updateField('rayon', val)}
           />
         </div>

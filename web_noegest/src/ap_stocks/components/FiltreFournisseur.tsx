@@ -17,10 +17,7 @@ export default function FiltreFournisseur({ nom, updateField }: Props) {
     const query = search ?? ""; // search si null ou undefined, sinon ""
     const response = await fetch(`${url}?nom=${query}`);
     const fournisseurs: Fournisseurs = await response.json();
-    return [
-      //{ id: 0, nom: "Tous" },
-      ...fournisseurs.results
-    ];
+    return fournisseurs.results;
   };
 
   const handleChange = (item: Item | string | number) => {

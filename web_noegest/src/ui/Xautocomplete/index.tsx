@@ -33,6 +33,7 @@ export function Xautocomplete ({
   const [results, setResults] = useState<Item[]>([]); // stockage des items filtrés selon la saisie
   const [openList, setOpenList] = useState(false); // contrôle de l'affichage de la liste déroulante
   const divRef = useRef<HTMLDivElement>(null); // référence du composant pour gestion focus
+  const [newFocus, setNewFocus] = useState(false);
 
   const [query, setQuery] = useState<string>( // raducal pour filtrer les items selon la saisie
     typeof props.value === "string" ? props.value : ""
@@ -49,7 +50,7 @@ export function Xautocomplete ({
     // test proprement dit
     const test1 = results.some(item => item.nom.toLowerCase() === query.toLowerCase());
     const test2 =  query == "" && !required;
-    return test1||test2;
+    return test1 || test2;
   };
 
 
@@ -60,9 +61,11 @@ export function Xautocomplete ({
       const data = await fetchItems(search);
     
       const getItems = async (items: Item[], txt: string) => {
-        // Calcule la liste filtrée selon la saisie courante (insensible à la casse / inclusions)
-        const filtered = items.filter(u => u.nom && u.nom.toLowerCase().includes(txt.toLowerCase()));
-
+        // filtrage local sur id ou nom de l'item
+        const filtered = items.filter(u => u.nom && 
+          (u.nom.toLowerCase().includes(txt.toLowerCase()))
+          || String(u.id).toLowerCase().includes(query.toLowerCase()) 
+        );
         if (filtered.length > 1) {
           return filtered.map((u: Item) => ({ id: u.id, nom: u.nom }));
         } else {
@@ -87,13 +90,12 @@ export function Xautocomplete ({
         }
       };
       const items =  await getItems(data, search);
-
       setResults( items );
     };
-
     const timer = setTimeout(loadData, 300);
     return () => clearTimeout(timer);
   }, [query, fetchItems, onSelect]); 
+
 
   const handleSelect = (item: Item) => { // action select un item
     if (props.disabled) return;
@@ -115,22 +117,27 @@ export function Xautocomplete ({
   });
 
 // Gestion de la perte de focus globale du composant
-  const handleBlur = (e: React.FocusEvent) => {
-    // nouvel élément focus (relatedTarget) est-il à l'intérieur du div
-    if (divRef.current && !divRef.current.contains(e.relatedTarget as Node)) {
-      setOpenList(false);
-    }
-  };
-
+  const handleBlur = () => {
+    console.log("Blur du composant");
+    setOpenList(false);
+    setNewFocus(false);
+  }
   return (
     <div 
     ref={divRef}
     onBlur={handleBlur} // onBlur global sur le div
+    onFocus={(e) => {
+      if (document.activeElement !== e.currentTarget) {
+        setNewFocus(true)
+        setOpenList(true);
+      }
+    }} // onFocus global pour réouvrir la liste
     > 
       <Xinput
         {...props}
         value={query}
         onChange={onChange}
+        onBlur={handleBlur}
         onReset={() => setOpenList(true)}
         error={!isValid() ? `${props.label} invalide` : null}
         className={[
@@ -138,8 +145,14 @@ export function Xautocomplete ({
           props.disabled && sc.disabledInput,
           altClassName
         ].filter(Boolean).join(" ")}
-        onFocus={() => setOpenList(true)} // S'ouvre dès qu'on focus l'input
-        onClick={() => setOpenList(!openList)} // toggle au click
+        onClick={() => {
+          if (newFocus ) {
+            setOpenList(true); // Si focus via click, on ouvre la liste
+            setNewFocus(false); // Reset du flag de focus
+          } else {
+            setOpenList(!openList); // Si déjà focus, on toggle la liste
+            }
+        }}  
       />
       
       {openList  && (
