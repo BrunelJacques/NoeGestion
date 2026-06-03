@@ -10,18 +10,15 @@ export interface Props extends Omit<
 > {
   onChange?: (value: React.ChangeEvent<HTMLInputElement>) => void;
   onReset?: () => void;
-  onBlur?: () => void;
   altClassName?: string;
   label?: string;
   error?: string | null;
   showReset?:boolean;
 }
 
-
 export function Xinput({
   onChange,
   onReset,
-  onBlur,
   altClassName = "",
   label,
   error = null,
@@ -37,15 +34,20 @@ export function Xinput({
   };
 
   const handleReset = () => {
+    console.log("Xinput handleReset triggered")
     if (props.disabled) return;
 
     const event = {
       target: { value: "" },
     } as React.ChangeEvent<HTMLInputElement>;
+    console.log("Xinput handleReset onChange event:", event)
     onChange?.(event); // renvoie l'event au parent props.onChange
-    onReset?.(); // action supplémentaire déclenchée chez parent si besoin
-    onBlur?.(); // déclenchement du onBlur pour fermer les listes déroulantes
-    inputRef.current?.focus(); // remet le focus sur l'input après reset
+    onReset?.(); // action optionnelle déclenchée chez le parent 
+
+    if (inputRef && typeof inputRef !== "function") {
+      inputRef.current?.focus(); // remet le focus sur l'input après reset
+    }
+    
   };
 
   return (
@@ -57,6 +59,7 @@ export function Xinput({
           ref={inputRef}
           value={props.value}
           onChange={handleChange}
+          onBlur={handleChange}
           className={[
             sc.baseInput,
             props.disabled && sc.disabledInput,

@@ -10,7 +10,7 @@ interface Props extends Omit<
   "onSelect"
 > {  
   fetchItems: (query: string) => Promise<Item[]>;
-  onSelect: (item: Item) => void;
+  onSelect: (item: Item|string) => void;
   altClassName?: string;
   label?: string;
   error?: string | null;
@@ -56,6 +56,7 @@ export function Xautocomplete ({
 
   useEffect(() => { // automate de recherche des items et traitements subséquents
     const loadData = async () => {
+
       // Condition de filtrage : si la saisie a plus de 1 caractère, on filtre.
       const search = query.length > 1 ? query : ""; //query vide = sans filtre
       const data = await fetchItems(search);
@@ -79,11 +80,8 @@ export function Xautocomplete ({
             onSelect(uniqueItem); // Informe le parent de l'élément est sélectionné !
             setOpenList(false);   // On peut fermer la liste puisque le choix est fait
           }
-          // Si pas de résultat ou 1 résultat, on affiche tout pour aider à la sélection
-          const allItems = await fetchItems("");
-          setAllResults(allItems);
-          
-          return allItems.map((u: Item) => ({
+          // Si pas de résultat ou 1 résultat, on affiche tout pour aider à la sélection  
+          return allresults.map((u: Item) => ({
             id: u.id,
             nom: u.nom
           }));
@@ -91,10 +89,16 @@ export function Xautocomplete ({
       };
       const items =  await getItems(data, search);
       setResults( items );
+
+      if (allresults.length === 0) {
+        const allitems = await fetchItems(""); // Récupère tous les items sans filtre pour le stockage local
+        setAllResults(allitems); // Stocke tous les items possibles pour filtrage local        
+      }
+
     };
     const timer = setTimeout(loadData, 300);
     return () => clearTimeout(timer);
-  }, [query, fetchItems, onSelect]); 
+  }, [query, fetchItems, allresults, onSelect]); 
 
 
   const handleSelect = (item: Item) => { // action select un item
@@ -107,38 +111,46 @@ export function Xautocomplete ({
 
   const onChange = ((e: { target: { value: string } }) => {
     setQuery(e.target.value);
-    const present = allresults.find(item => item.nom === e.target.value); 
-    if (present) {
-      onSelect(present); // si même saisie, on réémet l'item sélectionné 
+    const item = allresults.find(u => u.nom === e.target.value); 
+    if (item) {
+      onSelect(item); // si même saisie, on réémet l'item sélectionné 
       if (openList) setOpenList(false); // ferme la liste
       return; // si pas de changement, on ne fait rien
+    } else {
+        onSelect(""); 
     }
     if (!openList) setOpenList(true); // ouvre la liste
   });
 
 // Gestion de la perte de focus globale du composant
   const handleBlur = () => {
-    console.log("Blur du composant");
     setOpenList(false);
     setNewFocus(false);
   }
+
+  const handleReset = () => { // action reset Xinput pour affichage de liste
+    divRef.current?.focus();
+    setOpenList(true);
+    setNewFocus(true);
+  };
+
   return (
     <div 
     ref={divRef}
     onBlur={handleBlur} // onBlur global sur le div
     onFocus={(e) => {
       if (document.activeElement !== e.currentTarget) {
-        setNewFocus(true)
+        setNewFocus(true);
         setOpenList(true);
       }
+      console.log("Xautocomplete onFocus ", openList, newFocus)
     }} // onFocus global pour réouvrir la liste
     > 
       <Xinput
         {...props}
         value={query}
         onChange={onChange}
-        onBlur={handleBlur}
-        onReset={() => setOpenList(true)}
+        onReset={handleReset}
         error={!isValid() ? `${props.label} invalide` : null}
         className={[
           sc.baseInput,
@@ -152,6 +164,7 @@ export function Xautocomplete ({
           } else {
             setOpenList(!openList); // Si déjà focus, on toggle la liste
             }
+          console.log("Xautocomplete onClick ", openList, newFocus)
         }}  
       />
       

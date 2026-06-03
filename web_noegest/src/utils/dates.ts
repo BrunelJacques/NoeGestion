@@ -1,19 +1,14 @@
 //src/utils/dates.ts
 
-export function dateToString(jour:Date|null): string{
+export function dateToStringFr(jour:Date|null): string{
 
-  if (!jour) {return ""}
-
-  // Sécurité : Si 'jour' est un string (ex: "2026-05-18"), on l'instancie en Date
-  const dateObj = jour instanceof Date ? jour : null
-
-  if (!dateObj){
+  if (!jour){
     console.log("dateToString jour NON date:",jour, typeof(jour))
     return ""
   }
 
   // On vérifie que la date créée est valide (évite les "Invalid Date")
-  if (isNaN(dateObj.getTime())) {
+  if (isNaN(jour.getTime())) {
     console.error("XinputDate: La prop 'jour' fournie n'est pas une date valide", jour);
     return "";
   }
@@ -23,6 +18,21 @@ export function dateToString(jour:Date|null): string{
     year: "numeric",
   });
   return dateFr;
+}
+
+export function dateToISO(jour:Date|null): string{
+
+  if (!jour){
+    console.log("dateToString jour NON date:",jour, typeof(jour))
+    return ""
+  }
+  const dateIso = `${
+    jour.getFullYear()
+  }-${
+    String(jour.getMonth() + 1).padStart(2, '0')
+  }-${
+    String(jour.getDate()).padStart(2, '0')}`
+    return dateIso;
 }
 
 export function stringToDate(txt: string): Date | null {

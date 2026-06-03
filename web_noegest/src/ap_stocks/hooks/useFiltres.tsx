@@ -2,7 +2,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { FILTRES0 } from "../types/params";
 import type { TypFiltreMvts } from "../types/params";
-import { stringToDate } from "../../utils/dates";
+import { dateToISO, stringToDate } from "../../utils/dates";
 
 const STORAGE_KEY = "stocks-filtres";
 
@@ -44,19 +44,17 @@ export function useFiltres() {
       const nextState = typeof newValue === "function" ? newValue(prev) : newValue;
 
       // On injecte automatiquement la date du jour de la modification
-      const updatedState = { ...nextState, dateModif: new Date() };
+      //const updatedState = { ...nextState, dateModif: new Date() };
 
       // On prépare une copie pour le localStorage
       const dataToStore = {
-        ...updatedState,
-        // Si .jour est un objet Date, on extrait proprement sa partie locale YYYY-MM-DD
-        jour: updatedState.jour instanceof Date 
-          ? `${updatedState.jour.getFullYear()}-${String(updatedState.jour.getMonth() + 1).padStart(2, '0')}-${String(updatedState.jour.getDate()).padStart(2, '0')}`
-          : updatedState.jour
-      };
-    
+        ...nextState,
+        jour: dateToISO(nextState.jour), // jour stocké en YYYY-MM-DD
+        dateModif: new Date() //dateTime du jour en dateModif au format UTC internationale par string ISO 8601 (ex: "2026-05-18T10:30:00.000Z")
+        };
+      
       localStorage.setItem(STORAGE_KEY, JSON.stringify(dataToStore));
-      return updatedState;
+      return nextState; 
     });
   }, []);
 
