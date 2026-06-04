@@ -47,17 +47,17 @@ export function XinputDate({
 
     const el = e.target;
 
-    // 1. Sauvegarde de la position du curseur
+    // Sauvegarde de la position du curseur
     cursorPosRef.current = el.selectionStart ?? null;
 
-    // 2. Formatage
+    // Formatage
     const formatted = dt.stringToFormatted(el.value);
 
 
-    // 3. Mise à jour du state pour input.value
+    // Mise à jour du state pour input.value
     setDateFr(formatted);
 
-    // 4. Validation + callback parent
+    // Validation + callback parent
     const isValid = dt.isValidDateFr(formatted);
     if (isValid && onChange) {
       onChange(dt.stringToDate(formatted));
@@ -66,20 +66,21 @@ export function XinputDate({
     }
   };
 
-  // 5. Restauration du curseur après rerender
+  // Restauration du curseur après rerender
   useLayoutEffect(() => {
     const el = inputRef.current;
     let pos = cursorPosRef.current;
-    console.log("Restauration du curseur à la position:", cursorPosRef.current);
     if ( !el || !pos) return;
    
-
     // Ajustement si curseur derrière un "/" ajouté automatiquement
     if (dateFr[pos - 1] === "/"  && [2, 5].includes(pos) ) {
       pos -= 1;
+      console.log("Ajustement  -1:", pos, dateFr[pos], dateFr);
+    } else { if (dateFr[pos] === "/"|| [3, 6].includes(pos) ) {
+        pos += 1;
+      }
     }
     el.setSelectionRange(pos, pos);
-    console.log("Curseur restauré à la position:", pos);
   }, [dateFr]);
 
   return (
