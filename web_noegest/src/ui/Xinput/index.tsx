@@ -16,6 +16,7 @@ export interface Props extends Omit<
   showReset?:boolean;
 }
 
+
 export function Xinput({
   onChange,
   onReset,
@@ -34,13 +35,11 @@ export function Xinput({
   };
 
   const handleReset = () => {
-    console.log("Xinput handleReset triggered")
     if (props.disabled) return;
 
     const event = {
       target: { value: "" },
     } as React.ChangeEvent<HTMLInputElement>;
-    console.log("Xinput handleReset onChange event:", event)
     onChange?.(event); // renvoie l'event au parent props.onChange
     onReset?.(); // action optionnelle déclenchée chez le parent 
 

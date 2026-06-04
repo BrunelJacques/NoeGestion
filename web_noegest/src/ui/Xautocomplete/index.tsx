@@ -122,11 +122,12 @@ export function Xautocomplete ({
     if (!openList) setOpenList(true); // ouvre la liste
   });
 
-// Gestion de la perte de focus globale du composant
-  const handleBlur = () => {
+
+  const handleBlur = () => { // Gestion de la perte de focus globale du composant
     setOpenList(false);
     setNewFocus(false);
   }
+
 
   const handleReset = () => { // action reset Xinput pour affichage de liste
     divRef.current?.focus();
@@ -143,7 +144,6 @@ export function Xautocomplete ({
         setNewFocus(true);
         setOpenList(true);
       }
-      console.log("Xautocomplete onFocus ", openList, newFocus)
     }} // onFocus global pour réouvrir la liste
     > 
       <Xinput
@@ -164,7 +164,6 @@ export function Xautocomplete ({
           } else {
             setOpenList(!openList); // Si déjà focus, on toggle la liste
             }
-          console.log("Xautocomplete onClick ", openList, newFocus)
         }}  
       />
       
