@@ -13,7 +13,6 @@
   },
   "dependencies": {
     "@vanilla-extract/dynamic": "^2.1.5",
-    "@vanilla-extract/recipes": "^0.5.7",
     "axios": "^1.13.5",
     "jwt-decode": "^4.0.0",
     "react": "^19.2.0",
@@ -28,6 +27,7 @@
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "@vanilla-extract/vite-plugin": "^5.1.4",
+    "@vanilla-extract/recipes": "^0.5.7",
     "@vitejs/plugin-react": "^5.1.1",
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",

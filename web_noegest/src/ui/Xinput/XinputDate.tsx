@@ -2,9 +2,7 @@
 import { Xinput } from "./index.tsx";
 import  * as dt from "../../utils/dates.ts";
 import * as sc from "../xcommon.css.ts";
-import { handleCursor } from "../../utils/handleCursor.ts";
-import { useRef, useState } from "react";
-
+import { useLayoutEffect, useRef, useState } from "react";
 
 
 interface Props  {
@@ -17,48 +15,82 @@ interface Props  {
   disabled?:boolean
 }
 
+
 export function XinputDate({
   jour,
-  onChange,  
+  onChange,
   ...props
 }: Props) {
 
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const [dateTxt, setValue] = useState(dt.dateToStringFr(jour));
+  const cursorPosRef = useRef<number | null>(null);
 
-  const valid = dateTxt === "" || dt.isValidDateFr(dateTxt);
-  
+  const [dateFr, setDateFr] = useState(dt.dateToStringFr(jour));
+
+  const valid = dateFr === "" || dt.isValidDateFr(dateFr);
+
+
+  const handleBackSpace = () => {  // Sauter le slash automatiquement sinon il sera remis par le formatage
+    const pos = cursorPosRef.current ?? 0;
+    const carAtPos = dateFr.charAt(pos);
+    console.log("Backspace détecté, actuelle:", dateFr,pos,"/",carAtPos,"/")
+    if (carAtPos === "/") {
+      setDateFr(dateFr.slice(0,carAtPos === "/" ? pos - 1 : pos) + dateFr.slice(pos));
+      console.log("Backspace setDateFr:", dateFr)
+    }
+    ;
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (props.disabled) return;
 
-    function formatValue(txt:string) {
-      return dt.stringToFormatted(txt)
-    }
+    const el = e.target;
 
-    // Met à jour le texte dans l'input
-    handleCursor({ event: e, inputRef,formatValue, setValue })
-    console.log("handleChange saisie:",e.currentTarget)
+    // 1. Sauvegarde de la position du curseur
+    cursorPosRef.current = el.selectionStart ?? null;
 
-    const currentTxt = e.target.value;
-    const isValid = dt.isValidDateFr(currentTxt)
-    console.log("handleChange value:",dateTxt, "isValid:", isValid)
+    // 2. Formatage
+    const formatted = dt.stringToFormatted(el.value);
 
+
+    // 3. Mise à jour du state pour input.value
+    setDateFr(formatted);
+
+    // 4. Validation + callback parent
+    const isValid = dt.isValidDateFr(formatted);
     if (isValid && onChange) {
-      onChange(dt.stringToDate(currentTxt)) // todo newJour
-    } else if (currentTxt === "" && onChange) {
+      onChange(dt.stringToDate(formatted));
+    } else if (formatted === "" && onChange) {
       onChange(null);
     }
   };
 
+  // 5. Restauration du curseur après rerender
+  useLayoutEffect(() => {
+    const el = inputRef.current;
+    let pos = cursorPosRef.current;
+    console.log("Restauration du curseur à la position:", cursorPosRef.current);
+    if ( !el || !pos) return;
+   
+
+    // Ajustement si curseur derrière un "/" ajouté automatiquement
+    if (dateFr[pos - 1] === "/"  && [2, 5].includes(pos) ) {
+      pos -= 1;
+    }
+    el.setSelectionRange(pos, pos);
+    console.log("Curseur restauré à la position:", pos);
+  }, [dateFr]);
+
   return (
     <div className={sc.wrapperV}>
-      
       <Xinput
         {...props}
-        value={dateTxt}
+        ref={inputRef}
+        value={dateFr}
         maxLength={10}
         onChange={handleChange}
+        onBackSpace={handleBackSpace}
         placeholder="jjmmaaaa"
         error={!valid ? "Date invalide" : null}
       />

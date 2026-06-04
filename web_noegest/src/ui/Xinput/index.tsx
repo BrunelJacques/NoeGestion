@@ -1,5 +1,5 @@
 // src/ui/Xinput.tsx
-import { useRef, type ComponentPropsWithoutRef } from "react";
+import { forwardRef, useRef, type ComponentPropsWithoutRef } from "react";
 import croix from "../../assets/icons/croix.png"
 import * as sc from "../xcommon.css.ts";
 
@@ -9,29 +9,48 @@ export interface Props extends Omit<
   "onChange"
 > {
   onChange?: (value: React.ChangeEvent<HTMLInputElement>) => void;
+  onBackSpace?: () => void;
   onReset?: () => void;
   altClassName?: string;
   label?: string;
   error?: string | null;
-  showReset?:boolean;
+  showReset?: boolean;
 }
 
 
-export function Xinput({
-  onChange,
-  onReset,
-  altClassName = "",
-  label,
-  error = null,
-  showReset = true,
-  ...props
-}: Props) {
+export const Xinput = forwardRef<HTMLInputElement, Props>(({
+    onChange,
+    onBackSpace,
+    onReset,
+    altClassName = "",
+    label,
+    error = null,
+    showReset = true,
+    ...props
+ }, ref) => {
 
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null); // retour focus après reset
+
+  const isBackspacePressed = useRef(false); // La dernière touche pressée était Backspace
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    // Si la touche est Backspace ou Delete, on l'enregistre
+    if (["Backspace", "Delete"].find(k => k === e.key)) {
+      isBackspacePressed.current = true;
+    } else {
+      isBackspacePressed.current = false;
+    }
+    // props.onKeyDown?.(e);     // Propagation possiblede l'événement onKeyDown au parent
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (props.disabled) return;
     onChange?.(e);
+    
+    if (isBackspacePressed.current) { // déclenche l'action dédiée Backspace 
+      onBackSpace?.();
+      isBackspacePressed.current = false; // Reset après exécution
+    }
   };
 
   const handleReset = () => {
@@ -46,7 +65,6 @@ export function Xinput({
     if (inputRef && typeof inputRef !== "function") {
       inputRef.current?.focus(); // remet le focus sur l'input après reset
     }
-    
   };
 
   return (
@@ -55,10 +73,11 @@ export function Xinput({
         {label && <span className={sc.label}> {label} :</span>}
 
         <input
-          ref={inputRef}
+          ref={ref}
           value={props.value}
           onChange={handleChange}
           onBlur={handleChange}
+          onKeyDown={handleKeyDown} // handler pour backspace
           className={[
             sc.baseInput,
             props.disabled && sc.disabledInput,
@@ -74,7 +93,7 @@ export function Xinput({
           >
             <img className={sc.small10} title={"croix"} src={croix} />
           </button>
-          )}
+        )}
       </div>
 
       {error && (
@@ -82,4 +101,4 @@ export function Xinput({
       )}
     </div>
   );
-}
+});
