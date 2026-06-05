@@ -130,10 +130,24 @@ export function Xautocomplete ({
 
 
   const handleReset = () => { // action reset Xinput pour affichage de liste
+    console.log("Reset avant Xautocomplete newFocus:",newFocus,"openList:", openList);
     divRef.current?.focus();
-    setOpenList(true);
+    setOpenList(false);
     setNewFocus(true);
+    console.log("Reset après Xautocomplete newFocus:",newFocus,"openList:", openList);
   };
+
+
+  const handleClick = () => { // action click sur l'input
+          console.log("Click avant Xautocomplete newFocus:",newFocus,"openList:", openList);
+          if (newFocus ) {
+            setOpenList(true); // Si focus via click, on ouvre la liste
+            setNewFocus(false); // Reset du flag de focus
+          } else {
+            setOpenList(!openList); // Si déjà focus, on toggle la liste
+            }
+          console.log("Click après Xautocomplete newFocus:",newFocus,"openList:", openList);
+        }
 
   return (
     <div 
@@ -157,14 +171,7 @@ export function Xautocomplete ({
           props.disabled && sc.disabledInput,
           altClassName
         ].filter(Boolean).join(" ")}
-        onClick={() => {
-          if (newFocus ) {
-            setOpenList(true); // Si focus via click, on ouvre la liste
-            setNewFocus(false); // Reset du flag de focus
-          } else {
-            setOpenList(!openList); // Si déjà focus, on toggle la liste
-            }
-        }}  
+        onClick={handleClick}  
       />
       
       {openList  && (
