@@ -30,12 +30,8 @@ export const tableauWrapper = style({
 
 export const table = style({
   display: 'grid',
-  // On définit explicitement les colonnes. 
-  // Même en mobile, on veut par exemple 10 colonnes de 150px.
-  gridTemplateColumns: 'repeat(10, 150px)', 
-
-  //"je ne retrécirai pas !"
-  width: 'max-content', // Force la grille à prendre la largeur de ses colonnes, 
+  // gridTemplateColumns est calculé dynamiquement depuis formFields (voir index.tsx)
+  width: 'max-content', //"je ne retrécirai pas !"
 });
 
 // ligne entêtes tableau

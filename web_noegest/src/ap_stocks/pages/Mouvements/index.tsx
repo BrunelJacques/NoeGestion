@@ -6,7 +6,7 @@ import { useFiltres } from "../../hooks/useFiltres";
 import { apiUrl } from "../../../constants/api.Constants";
 import type { Mouvement, MvtsRetour } from "../../types/mouvement";
 import { useError } from "../../../hooks/useError";
-import { lstMvtFields } from "../../types/formFields";
+import { lstMvtFields, type FormField } from "../../types/formFields";
 
 export default function Mouvements() {
   
@@ -65,9 +65,17 @@ export default function Mouvements() {
 
   console.log("Mouvements fetched:", url, mouvements.length);
 
-  // Simulation de données
-  const colonnes =  formFields.map((field) => field.label);
-  const lignes = Array.from({ length: 5 }, (_, i) => `Ligne ${i}`);
+  const colonnes = formFields.filter((field) => !field.noDisplay);
+  const gridTemplateColumns = colonnes.map((f) => `${f.width ?? 150}px`).join(' ');
+
+  const getCellValue = (mvt: Mouvement, field: FormField): string | number => {
+    if (!field.fieldName) return "";
+    if (field.fieldName === "article") return mvt.article.nom;
+    if (field.fieldName === "prixunitaire") return mvt.prixunit;
+    const val = mvt[field.fieldName as keyof Mouvement];
+    if (val == null || typeof val === "object") return "";
+    return val as string | number;
+  };
 
 return (
 
@@ -87,24 +95,30 @@ return (
         />  
       </div>      
 
-      <div className={s.table}>
+      <div className={s.table} style={{ gridTemplateColumns }}>
         {/* Entêtes colonnes : Sticky au scroll vertical */}
         <div className={s.headerRow}>
           {colonnes.map((col) => (
-            <div key={col} className={s.columnHeader}>
-              {col}
+            <div key={col.label} className={s.columnHeader}>
+              {col.label}
             </div>
           ))}
         </div>
 
-        {/* Données : Scrolled par tableauWrapper */}
-        {lignes.map((ligne) => (
-          <React.Fragment key={ligne}>
-            {colonnes.map((col) => (
-              <div key={`${ligne}-${col}`} className={s.dataCell}>
-                {ligne}, {col}
-              </div>
-            ))}
+        {/* Données */}
+        {mouvements.map((mvt) => (
+          <React.Fragment key={mvt.id}>
+            {colonnes.map((col) => {
+              const val = getCellValue(mvt, col);
+              return (
+                <div key={col.label} className={s.dataCell}>
+                  {typeof val === "number"
+                    ? <DisplayValue value={val} justify={col.justify} nbDecimals={col.nbDecimals} />
+                    : <DisplayValue value={val} justify={col.justify} />
+                  }
+                </div>
+              );
+            })}
           </React.Fragment>
         ))}
       </div>
