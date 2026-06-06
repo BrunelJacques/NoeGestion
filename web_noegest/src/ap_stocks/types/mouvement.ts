@@ -8,11 +8,11 @@ export type Mouvement = {
     sens: number;
     origine: string;
     article: Article;
-    nbcolis?: number;
-    qtemouvement: number;
-    prixunit: number;
+    nb_colis?: number;
+    qte_mouvement: number;
+    prix_unit: number;
     service: number;
-    nbrations?: number;
+    rations?: number;
     analytique: number;
     fournisseur?: string;
     ordi: string;
@@ -26,8 +26,8 @@ export const MVT0: Mouvement =  {
     sens: -1,
     origine: "",
     article: ARTICLE0,
-    qtemouvement: 1,
-    prixunit: 1,
+    qte_mouvement: 1,
+    prix_unit: 1,
     service: 0,
     analytique: 0,
     ordi: "",

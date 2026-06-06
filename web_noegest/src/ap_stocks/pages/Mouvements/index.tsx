@@ -73,7 +73,7 @@ export default function Mouvements() {
     if (!field.fieldName) return field.default?.toString() || ""; 
     
     if (field.fieldName === "article") {
-      return mvt.article?.nom || "";
+      return mvt.article?.nom_court || "";
     }
     
     const val = mvt[field.fieldName];
