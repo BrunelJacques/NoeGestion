@@ -68,16 +68,20 @@ export default function Mouvements() {
   const colonnes = formFields.filter((field) => !field.noDisplay);
   const gridTemplateColumns = colonnes.map((f) => `${f.width ?? 150}px`).join(' ');
 
+  // Récupération de la valeur à afficher
   const getCellValue = (mvt: Mouvement, field: FormField): string | number => {
-    if (!field.fieldName) return "";
-    if (field.fieldName === "article") return mvt.article.nom;
-    if (field.fieldName === "prixunitaire") return mvt.prixunit;
-    const val = mvt[field.fieldName as keyof Mouvement];
+    if (!field.fieldName) return field.default?.toString() || ""; 
+    
+    if (field.fieldName === "article") {
+      return mvt.article?.nom || "";
+    }
+    
+    const val = mvt[field.fieldName];
     if (val == null || typeof val === "object") return "";
-    return val as string | number;
+    return val;
   };
 
-return (
+  return (
 
     <section className={s.tableauWrapper}>
       <div className={s.flexLigne}>
@@ -96,26 +100,25 @@ return (
       </div>      
 
       <div className={s.table} style={{ gridTemplateColumns }}>
-        {/* Entêtes colonnes : Sticky au scroll vertical */}
-        <div className={s.headerRow}>
-          {colonnes.map((col) => (
-            <div key={col.label} className={s.columnHeader}>
-              {col.label}
-            </div>
-          ))}
-        </div>
+        {/* Entêtes colonnes */}
+        {colonnes.map((col) => (
+          <div key={`head-${col.label}`} className={s.columnHeader} style={{ position: 'sticky', top: 0 }}>
+            {col.label}
+          </div>
+        ))}
 
-        {/* Données */}
+        {/* Lignes de Données */}
         {mouvements.map((mvt) => (
           <React.Fragment key={mvt.id}>
             {colonnes.map((col) => {
               const val = getCellValue(mvt, col);
               return (
-                <div key={col.label} className={s.dataCell}>
-                  {typeof val === "number"
-                    ? <DisplayValue value={val} justify={col.justify} nbDecimals={col.nbDecimals} />
-                    : <DisplayValue value={val} justify={col.justify} />
-                  }
+                <div key={`cell-${mvt.id}-${col.label}`} className={s.dataCell}>
+                  {typeof val === "number" ? (
+                    <DisplayValue value={val} justify={col.justify} nbDecimals={col.nbDecimals} />
+                  ) : (
+                    <DisplayValue value={val} justify={col.justify} />
+                  )}
                 </div>
               );
             })}

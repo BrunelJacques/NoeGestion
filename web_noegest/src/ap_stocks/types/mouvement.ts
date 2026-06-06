@@ -1,3 +1,5 @@
+// types/mouvement.ts
+
 import { type Article, ARTICLE0 } from './article';
 
 export type Mouvement = {

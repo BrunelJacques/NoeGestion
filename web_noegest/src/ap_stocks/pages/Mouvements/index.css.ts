@@ -32,13 +32,14 @@ export const table = style({
   display: 'grid',
   // gridTemplateColumns est calculé dynamiquement depuis formFields (voir index.tsx)
   width: 'max-content', //"je ne retrécirai pas !"
+  overflow: 'auto', // les cellules peuvent dépasser si elles sont plus larges que leur largeur définie
+  maxHeight: '500px', // hauteur pour activer le scroll vertical
 });
 
 // ligne entêtes tableau
 export const headerRow = style({
   display: 'contents', // Permet aux enfants d'être placés dans la grille du parent
 });
-
 
 export const columnHeader = style({
   position: 'sticky',
@@ -52,6 +53,6 @@ export const columnHeader = style({
 
 export const dataCell = style({
   padding: '2px',
-  border: `thin solid ${colors.txtLightGray}`,
+  borderBottom: `thin solid ${colors.txtLightGray}`,
   
 });
