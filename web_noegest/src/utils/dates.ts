@@ -3,7 +3,6 @@
 export function dateToStringFr(jour:Date|null): string{
 
   if (!jour){
-    console.log("dateToString jour NON date:",jour, typeof(jour))
     return ""
   }
 
@@ -23,7 +22,6 @@ export function dateToStringFr(jour:Date|null): string{
 export function dateToISO(jour:Date|null): string{
 
   if (!jour){
-    console.log("dateToString jour NON date:",jour, typeof(jour))
     return ""
   }
   const dateIso = `${

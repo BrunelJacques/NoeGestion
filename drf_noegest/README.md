@@ -18,4 +18,5 @@ py manage.py init_local_dev # Alimente la base avec un jeu d'essai et crée user
 # raz d'une base en supprimant db.sqlite3 et le contenu de noegestion/migrations
 
 # lancer le backend
-py manage.py runserver
+py manage.py runserver 0.0.0.0:8000 #ouvre à toutes les provenances
+py manage.py runserver # ne reçoit que les adresses settings.ALLOWED_HOSTS
