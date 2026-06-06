@@ -19,12 +19,14 @@ export type TypFiltreMvts = {
 export const  FILTRES0: TypFiltreMvts= {
   pageOrigine: "sorties",
   article: null,
-  jour: new Date(2022,8,17),//valeur pour démo, provisoire
+  jour: new Date(2022,9,17),//valeur pour démo, provisoire
   periode: null,
   origine: "cuisine",
   service: 0,
   camp: "",
   fournisseur: "",
+  magasin: "",
+  rayon: "",
   tva: "TTC",
   dateModif: new Date(),
 }

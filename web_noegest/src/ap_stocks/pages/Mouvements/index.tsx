@@ -5,9 +5,12 @@ import { DisplayValue } from "../../../ui/DisplayValue";
 import { useFiltres } from "../../hooks/useFiltres";
 import { apiUrl } from "../../../constants/api.Constants";
 import type { Mouvement, MvtsRetour } from "../../types/mouvement";
+import { useError } from "../../../hooks/useError";
+import { lstMvtFields } from "../../types/formFields";
 
 export default function Mouvements() {
   
+  const { setError } = useError();
   const { filtres } = useFiltres();
   const [mouvements, setMouvements] = useState<Mouvement[]>([]);
 
@@ -20,6 +23,8 @@ export default function Mouvements() {
   }
 
   const url = apiUrl.STMOUVEMENT_URL + urlParams();
+
+  const formFields = lstMvtFields[filtres?.pageOrigine || "sorties"]; // Champs correspondant à pageOrigine sélectionnée
 
   useEffect(() => {
     // On crée une variable pour éviter de mettre à jour l'état si le composant est démonté
@@ -36,6 +41,17 @@ export default function Mouvements() {
         }
       } catch (error) {
         console.error("Erreur lors du fetch :", error);
+        if (isMounted) {       
+          setError( // affichage de l'erreur à l'écran
+            [
+              "Échec d'appel à l'API des mouvements.",
+              error && `Détails : ${error}` || `Erreur inconnue.`
+            ]
+              .filter(Boolean) // pour éviter les éléments  undefined, null, 0, ""
+              .join(" - ")   
+          );
+        }
+      return;
       }
     };
 
@@ -45,13 +61,13 @@ export default function Mouvements() {
     return () => {
       isMounted = false;
     };
-  }, [url]); // L'effet se déclenche dès que l'URL change
+  }, [setError, url]); // L'effet se déclenche dès que l'URL change
 
   console.log("Mouvements fetched:", url, mouvements.length);
 
   // Simulation de données
-  const colonnes = Array.from({ length: 10 }, (_, i) => `Col ${i + 1}`);
-  const lignes = Array.from({ length: 49 }, (_, i) => `Ligne ${i + 1}`);
+  const colonnes =  formFields.map((field) => field.label);
+  const lignes = Array.from({ length: 5 }, (_, i) => `Ligne ${i}`);
 
 return (
 
