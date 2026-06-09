@@ -47,12 +47,15 @@ export const columnHeader = style({
   background: '#fff',
   zIndex: 10,
   padding: '0px',
-  borderBottom: `1px solid ${vars.color.border}`,
+  borderLeft: `thin solid ${colors.txtLightGray}`,
   fontWeight: 'bold', 
+  fontSize: '14px',
+
+  textAlign:'center',
+  alignContent:'center',
 });
 
 export const dataCell = style({
-  padding: '2px',
+  padding: '1px',
   borderBottom: `thin solid ${colors.txtLightGray}`,
-  
 });

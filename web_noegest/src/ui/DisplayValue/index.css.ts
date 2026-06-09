@@ -5,19 +5,19 @@ import { createVar, style } from '@vanilla-extract/css';
 export const widthVar = createVar();
 
 export const widthStyle = style({
-  minWidth: 80,
-  width: widthVar,
+  minWidth: "33px",
+  //width: widthVar,
 });
 
 
-
 export const baseDisplayValue = style({
-  display: 'inline-flex', // remplace inline-flex pour widthVar
+  display: 'inline-flex', 
   alignItems: 'center',
-  fontFamily: 'sans-serif', 
+  fontFamily: 'serif', 
+  fontSize: '12px',
 
-  padding: 2,
-  margin: 3,
+  padding: 0,
+  margin: 0,
   borderRadius: '8px',
   fontWeight: 300,
   transition: '0.2s ease',

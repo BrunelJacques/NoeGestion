@@ -84,20 +84,6 @@ export default function Mouvements() {
   return (
 
     <section className={s.tableauWrapper}>
-      <div className={s.flexLigne}>
-        <DisplayValue
-          value="Tableau des Mouvements"
-          justify="center"
-          width={250}
-        />  
-        
-        <DisplayValue
-          value={256.4567}
-          nbDecimals={3}
-          justify="right"
-          width={140}
-        />  
-      </div>      
 
       <div className={s.table} style={{ gridTemplateColumns }}>
         {/* Entêtes colonnes */}
@@ -115,9 +101,9 @@ export default function Mouvements() {
               return (
                 <div key={`cell-${mvt.id}-${col.label}`} className={s.dataCell}>
                   {typeof val === "number" ? (
-                    <DisplayValue value={val} justify={col.justify} nbDecimals={col.nbDecimals} />
+                    <DisplayValue value={val} justify={col.justify} nbDecimals={col.nbDecimals} width={col.width} />
                   ) : (
-                    <DisplayValue value={val} justify={col.justify} />
+                    <DisplayValue value={val} justify={col.justify} width={col.width} />
                   )}
                 </div>
               );
