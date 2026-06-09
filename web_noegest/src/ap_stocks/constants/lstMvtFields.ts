@@ -10,7 +10,7 @@ export const lstMvtFields: Record<PageOrigine, MvtFormField[]> = {
     { label: "PxUn", type: "number", fieldName: "prix_unit", width: 55, justify: 'right', nbDecimals: 3 },
     { label: "Rations", type: "number", fieldName: "rations", width: 55, justify: 'right', nbDecimals: 0 },
     { label: "Coût Un", type: "number", calcul: "coutUn", width: 55, justify: 'right', nbDecimals: 2 },
-    { label: "Coût Tot", type: "number", calcul: "coutTot", width: 55, justify: 'right', nbDecimals: 0 },
+    { label: "Coût Tot", type: "number", calcul: "coutTotal", width: 55, justify: 'right', nbDecimals: 0 },
     { label: "Px Stock", type: "number", fieldName: "article", subFieldName: "prix_moyen", width: 55, justify: 'right', nbDecimals: 2 },
   ],
   "entrees": [

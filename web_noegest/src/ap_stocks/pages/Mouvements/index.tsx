@@ -1,6 +1,7 @@
 //src/ap_stocks/components/Mouvements/index.tsx
 import React, { useEffect, useState } from "react";
 import * as s from "./index.css";
+import { dicCalculs }  from "../Mouvements/calculs"
 import { DisplayValue } from "../../../ui/DisplayValue";
 import { useFiltres } from "../../hooks/useFiltres";
 import { apiUrl } from "../../../constants/api.Constants";
@@ -10,8 +11,9 @@ import type { MvtFormField } from "../../types/mvtFormFields";
 import { lstMvtFields } from "../../constants/lstMvtFields";
 
 
+
 export default function Mouvements() {
-  
+
   const { setError } = useError();
   const { filtres } = useFiltres();
   const [mouvements, setMouvements] = useState<Mouvement[]>([]);
@@ -70,12 +72,23 @@ export default function Mouvements() {
   const colonnes = formFields.filter((field) => !field.noDisplay);
   const gridTemplateColumns = colonnes.map((f) => `${f.width ?? 150}px`).join(' ');
 
+
   // Récupération de la valeur à afficher
   const getCellValue = (mvt: Mouvement, field: MvtFormField): string | number => {
-    if (field.calcul) {
-      console.log(`calculer: ${field.calcul}`)
-      return "calculer"
+    
+  if (field.calcul) {
+    console.log(`calculer: ${field.calcul} avec le paramètre ${mvt}`);
+    
+    // On récupère la fonction grâce à sa clé en string
+    const fonctionAExecuter = dicCalculs[field.calcul];
+    
+    if (fonctionAExecuter) {
+      return fonctionAExecuter(mvt); // On l'appelle ici
+    } else {
+      console.error(`La fonction ${field.calcul} n'existe pas.`);
+      return "";
     }
+  }
 
     if (!field.fieldName) return field.default?.toString() || "mvt.pbParam"; 
 
@@ -92,6 +105,7 @@ export default function Mouvements() {
     return val;
   };
 
+  
   return ( // grille liste des mouvements
 
     <section className={s.tableauWrapper}>
