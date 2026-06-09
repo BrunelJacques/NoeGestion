@@ -4,7 +4,7 @@ import * as s from "./index.css";
 import { Xbutton } from "../../../ui/Xbutton";
 import goBack from "../../../assets/icons/goBack.png"
 import { Form } from "react-router-dom";
-import { Origines, PageOrigineValues } from "../../stConstants";
+import { Origines, PageOrigineValues } from "../../constants/origines";
 import { Xselect } from "../../../ui/Xselect";
 import { useFiltres } from "../../hooks/useFiltres";
 import { useDraftFiltres } from "../../hooks/useDraftFiltres";

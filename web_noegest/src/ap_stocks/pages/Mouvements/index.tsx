@@ -6,7 +6,9 @@ import { useFiltres } from "../../hooks/useFiltres";
 import { apiUrl } from "../../../constants/api.Constants";
 import type { Mouvement, MvtsRetour } from "../../types/mouvement";
 import { useError } from "../../../hooks/useError";
-import { lstMvtFields, type FormField } from "../../types/formFields";
+import type { MvtFormField } from "../../types/mvtFormFields";
+import { lstMvtFields } from "../../constants/lstMvtFields";
+
 
 export default function Mouvements() {
   
@@ -69,19 +71,28 @@ export default function Mouvements() {
   const gridTemplateColumns = colonnes.map((f) => `${f.width ?? 150}px`).join(' ');
 
   // Récupération de la valeur à afficher
-  const getCellValue = (mvt: Mouvement, field: FormField): string | number => {
-    if (!field.fieldName) return field.default?.toString() || ""; 
-    
-    if (field.fieldName === "article") {
-      return mvt.article?.nom_court || "";
+  const getCellValue = (mvt: Mouvement, field: MvtFormField): string | number => {
+    if (field.calcul) {
+      console.log(`calculer: ${field.calcul}`)
+      return "calculer"
     }
-    
-    const val = mvt[field.fieldName];
-    if (val == null || typeof val === "object") return "";
+
+    if (!field.fieldName) return field.default?.toString() || "mvt.pbParam"; 
+
+    if (field.fieldName === "article" && field.subFieldName) { // appel avec clé externe ex: article.nom_court
+      const subKey = field.subFieldName
+      const article = mvt.article
+      return article && subKey in article ? (article[subKey] ?? "mvt.pbParam2") : "";
+    } 
+
+    const val = mvt[field.fieldName]; // cas d'un champ direct ds mouvement
+    if (val == null || typeof val === "object") { 
+      return "mvt.pbParam3"
+    };
     return val;
   };
 
-  return (
+  return ( // grille liste des mouvements
 
     <section className={s.tableauWrapper}>
 

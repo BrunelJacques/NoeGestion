@@ -1,5 +1,5 @@
 //src/ap_stocks/components/FiltreService.tsx
-import { Services } from "../stConstants";
+import { Services } from "../constants/services";
 import { Xselect } from "../../ui/Xselect";
 import { useSelectObject } from "../hooks/useSelectObject";
 

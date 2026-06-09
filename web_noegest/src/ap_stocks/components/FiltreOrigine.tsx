@@ -1,5 +1,5 @@
 //src/ap_stocks/components/FiltreOrigine.tsx
-import {type Origine } from "../stConstants";
+import {type Origine } from "../constants/services";
 import type { Item } from "../types/params";
 import { Xautocomplete } from "../../ui/Xautocomplete/noWait";
 
