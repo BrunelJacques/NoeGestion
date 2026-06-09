@@ -28,7 +28,7 @@ export const tableauWrapper = style({
   background: vars.color.body,
 });
 
-export const table = style({
+export const grid = style({
   display: 'grid',
   // gridTemplateColumns est calculé dynamiquement depuis formFields (voir index.tsx)
   width: 'max-content', //"je ne retrécirai pas !"
@@ -36,10 +36,6 @@ export const table = style({
   maxHeight: '500px', // hauteur pour activer le scroll vertical
 });
 
-// ligne entêtes tableau
-export const headerRow = style({
-  display: 'contents', // Permet aux enfants d'être placés dans la grille du parent
-});
 
 export const columnHeader = style({
   position: 'sticky',

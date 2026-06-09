@@ -85,10 +85,10 @@ export default function Mouvements() {
 
     <section className={s.tableauWrapper}>
 
-      <div className={s.table} style={{ gridTemplateColumns }}>
+      <div className={s.grid} style={{ gridTemplateColumns }}>
         {/* Entêtes colonnes */}
         {colonnes.map((col) => (
-          <div key={`head-${col.label}`} className={s.columnHeader} style={{ position: 'sticky', top: 0 }}>
+          <div key={`head-${col.label}`} className={s.columnHeader}>
             {col.label}
           </div>
         ))}

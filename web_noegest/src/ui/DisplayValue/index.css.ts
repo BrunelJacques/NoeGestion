@@ -6,17 +6,17 @@ export const widthVar = createVar();
 
 export const widthStyle = style({
   minWidth: "33px",
-  //width: widthVar,
+  width: widthVar,
 });
 
 
 export const baseDisplayValue = style({
   display: 'inline-flex', 
-  alignItems: 'center',
+  justifySelf: 'center',
   fontFamily: 'serif', 
   fontSize: '12px',
 
-  padding: 0,
+  paddingRight: 6,
   margin: 0,
   borderRadius: '8px',
   fontWeight: 300,
