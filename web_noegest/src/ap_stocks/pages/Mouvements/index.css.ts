@@ -31,7 +31,8 @@ export const tableauWrapper = style({
 export const grid = style({
   display: 'grid',
   // gridTemplateColumns est calculé dynamiquement depuis formFields (voir index.tsx)
-  width: 'max-content', //"je ne retrécirai pas !"
+  width: 'max(100%, min-content)',
+
   overflow: 'auto', // les cellules peuvent dépasser si elles sont plus larges que leur largeur définie
   maxHeight: 'calc(100% - 65px )', // hauteur pour activer le scroll vertical
   marginLeft: 5,
@@ -42,7 +43,7 @@ export const columnHeader = style({
   display: 'flex',
   position: 'sticky',
   top: 0,
-  background: '#fff',
+  background: vars.color.body,
   zIndex: 10,
   padding: '0px',
   borderLeft: `thin solid ${colors.txtLightGray}`,

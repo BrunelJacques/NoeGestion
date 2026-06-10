@@ -70,7 +70,9 @@ export default function Mouvements() {
   console.log("Mouvements fetched:", url, mouvements.length);
 
   const colonnes = formFields.filter((field) => !field.noDisplay);
-  const gridTemplateColumns = colonnes.map((f) => `${f.width ?? 150}px`).join(' ');
+  const gridTemplateColumns = colonnes
+    .map((f) => `minmax(${f.width ?? 50}px, 1fr)`)
+    .join(' ');
 
 
   // Récupération de la valeur à afficher

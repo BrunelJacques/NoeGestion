@@ -8,7 +8,7 @@ export const lstMvtFields: Record<PageOrigine, MvtFormField[]> = {
     { label: "Qte Stock", type: "number", fieldName: "article", subFieldName: "qte_stock", width: 45, justify: 'right', nbDecimals: 0 },
     { label: "Qte", type: "number", fieldName: "qte_mouvement", width: 55, justify: 'right', nbDecimals: 2 },
     { label: "PxUn", type: "number", fieldName: "prix_unit", width: 55, justify: 'right', nbDecimals: 3 },
-    { label: "Rat- ions", type: "number", fieldName: "rations", width: 55, justify: 'right', nbDecimals: 0 },
+    { label: "Rat ions", type: "number", fieldName: "rations", width: 55, justify: 'right', nbDecimals: 0 },
     { label: "Coût Un", type: "number", calcul: "coutUn", width: 55, justify: 'right', nbDecimals: 2 },
     { label: "Coût Tot", type: "number", calcul: "coutTotal", width: 55, justify: 'right', nbDecimals: 0 },
     { label: "Px Stock", type: "number", fieldName: "article", subFieldName: "prix_moyen", width: 55, justify: 'right', nbDecimals: 2 },
