@@ -14,7 +14,7 @@ export const baseDisplayValue = style({
   display: 'inline-flex', 
   justifySelf: 'center',
   fontFamily: 'serif', 
-  fontSize: '12px',
+  fontSize: '14px',
 
   paddingRight: 6,
   margin: 0,

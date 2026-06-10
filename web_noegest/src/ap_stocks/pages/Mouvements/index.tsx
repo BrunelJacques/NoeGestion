@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import * as s from "./index.css";
 import { dicCalculs }  from "../Mouvements/calculs"
 import { DisplayValue } from "../../../ui/DisplayValue";
-import { useFiltres } from "../../hooks/useFiltres";
+import { useFiltres } from "../../hooks/contextFiltres/useFiltres";
 import { apiUrl } from "../../../constants/api.Constants";
 import type { Mouvement, MvtsRetour } from "../../types/mouvement";
 import { useError } from "../../../hooks/useError";
@@ -77,7 +77,6 @@ export default function Mouvements() {
   const getCellValue = (mvt: Mouvement, field: MvtFormField): string | number => {
     
   if (field.calcul) {
-    console.log(`calculer: ${field.calcul} avec le paramètre ${mvt}`);
     
     // On récupère la fonction grâce à sa clé en string
     const fonctionAExecuter = dicCalculs[field.calcul];
@@ -105,7 +104,7 @@ export default function Mouvements() {
     return val;
   };
 
-  
+
   return ( // grille liste des mouvements
 
     <section className={s.tableauWrapper}>

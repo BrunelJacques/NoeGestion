@@ -78,7 +78,7 @@ globalStyle('.right',{
 
 
 const baseContainer = {
-  maxWidth: '700px',
+  maxWidth: '100%',
   color: vars.color.text,
   transition: 'background-color 0.6s ease, color 0.6s ease',
 } as const; // "as const" permet de garder un typage strict
@@ -100,7 +100,7 @@ globalStyle('.pageContainer::before', {
 // Le "spacer" du bas (marge bottom)
 globalStyle('.pageContainer::after', {
   content: '""',
-  flexGrow: 2, // Prend 2 unités d'espace vide (le double !)
+  flexGrow: 4, // Prend 2 unités d'espace vide (le double !)
 });
 
 globalStyle('.container', {

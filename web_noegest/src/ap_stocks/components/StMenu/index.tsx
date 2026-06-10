@@ -5,6 +5,7 @@ import Xlink from "../../../ui/Xlink";
 import { capitalize } from "../../../utils/string";
 import * as s from "./index.css.ts";
 import goBack from "../../../assets/icons/goBack.png";
+import { AfficheFiltres } from "./AfficheFiltres.tsx";
 
 export interface FiltresProps  {
   className?: string;
@@ -12,15 +13,20 @@ export interface FiltresProps  {
 
 export function StMenu(props: FiltresProps) {
 
-  const { segments } = useUrl();
+  const { segments } = useUrl(); // récup du nom de la page selon l'url
   const page = capitalize( segments[1] || segments[0] );
-
-
 
   return (<>
     <nav className={props.className}>
-      <h5>{page}</h5>
+            
+      <XbuttonBack altClassName={s.altButton} displayPrevious={false}>
+        <img className={s.goBack} title={"fleche"} src={goBack} />
+      </XbuttonBack>
+
+      <h5 className={s.page}>Filtres actifs</h5>
       <hr></hr>
+      <AfficheFiltres />
+
       {page != "Filtres" && <Xlink 
       to="/stocks/filtres" 
       $isFullLink={true}>
@@ -32,10 +38,7 @@ export function StMenu(props: FiltresProps) {
       $isFullLink={true}>
         Mouvements
       </Xlink>}
-      
-      <XbuttonBack altClassName={s.altButton}>
-        <img className={s.goBack} title={"fleche"} src={goBack} />
-      </XbuttonBack>
+
     </nav>
   </>);
 }

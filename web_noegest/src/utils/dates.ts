@@ -38,22 +38,19 @@ export function stringToDate(txt: string): Date | null {
   if (typeof(txt) !== "string") {
     return null;
   }
+
+  if (txt.length < 10) {
+    return null;
+  }
+
   // Format ISO / standard: 2026-05-18,  2026-05-18T10:30:00
   const txt10 = txt.substring(0, 10);
   if (/^\d{4}-\d{2}-\d{2}/.test(txt10)) {
     const date = new Date(txt10);
     return isNaN(date.getTime()) ? null : date;
   }
-  if (/^\d{4}-\d{2}-\d{2}/.test(txt.substring(0, 10))) {
-    const date = new Date(txt);
-    return isNaN(date.getTime()) ? null : date;
-  }
 
   // Format français: 18/05/2026, 18-05-2026, 18052026
-  if (txt.length < 10) {
-    return null;
-  }
-
   const cleanDigits = txt.replace(/\D/g, "");
   const day = parseInt(cleanDigits.substring(0, 2), 10);
   const month = parseInt(cleanDigits.substring(2, 4), 10) - 1;

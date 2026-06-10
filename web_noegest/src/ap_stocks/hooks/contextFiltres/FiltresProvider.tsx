@@ -1,13 +1,14 @@
-// src/ap_stocks/hooks/useFiltres.tsx
-import { useState, useEffect, useCallback } from "react";
-import { FILTRES0 } from "../types/params";
-import type { TypFiltreMvts } from "../types/params";
-import { dateToISO, stringToDate } from "../../utils/dates";
+import { useCallback, useEffect, useState } from "react";
+import type { MvtFiltres } from "../../types/mvtFiltres";
+import { FiltresContext } from "./FiltresContext";
+import { FILTRES0 } from "../../types/mvtFiltres";
+import { dateToISO, stringToDate } from "../../../utils/dates";
+
 
 const STORAGE_KEY = "stocks-filtres";
 
 // Fonction utilitaire pour charger et valider les données proprement
-const getSavedFiltres = (): TypFiltreMvts => {
+const getSavedFiltres = (): MvtFiltres => {
   if (typeof window === "undefined") return { ...FILTRES0, jour: new Date() };
 
   try {
@@ -35,11 +36,17 @@ const getSavedFiltres = (): TypFiltreMvts => {
   }
 };
 
-export function useFiltres() {
-  const [filtres, setFiltres] = useState<TypFiltreMvts>(getSavedFiltres);
+
+
+export function FiltresProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const [filtres, setFiltres] = useState<MvtFiltres>(getSavedFiltres);
 
   // Sauvegarde automatique avec mise à jour de la date de modification
-  const updateFiltres = useCallback((newValue: TypFiltreMvts | ((prev: TypFiltreMvts) => TypFiltreMvts)) => {
+  const updateFiltres = useCallback((newValue: MvtFiltres | ((prev: MvtFiltres) => MvtFiltres)) => {
     setFiltres((prev) => {
       const nextState = typeof newValue === "function" ? newValue(prev) : newValue;
 
@@ -71,9 +78,15 @@ export function useFiltres() {
     return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
 
-  // On retourne un objet stable. Les composants ne re-renderont que si 'filtres' change visuellement.
-  return {
-    filtres,
-    setFiltres: updateFiltres
-  };
+  
+  return (
+    <FiltresContext.Provider
+      value={{
+        filtres,
+        setFiltres: updateFiltres,
+      }}
+    >
+      {children}
+    </FiltresContext.Provider>
+  );
 }

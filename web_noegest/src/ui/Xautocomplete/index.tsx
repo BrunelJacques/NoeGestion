@@ -1,7 +1,7 @@
 //src/ui/Xautocomplete/index.tsx
 import { useState, useEffect, useRef, type ComponentPropsWithoutRef } from 'react';
 import * as sc from '../xcommon.css';
-import type { Item } from '../../ap_stocks/types/params';
+import type { Item } from '../../ap_stocks/types/mvtFiltres';
 import { Xinput } from '../Xinput';
 
 

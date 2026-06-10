@@ -18,7 +18,7 @@ export const ligne = style({
 });
 
 export const tableauWrapper = style({
-
+  display: 'flex',
   overflow: 'auto', // C'est lui qui permet le scroll 2D
   border: '1px solid #ccc',
   position: 'relative', 
@@ -33,11 +33,13 @@ export const grid = style({
   // gridTemplateColumns est calculé dynamiquement depuis formFields (voir index.tsx)
   width: 'max-content', //"je ne retrécirai pas !"
   overflow: 'auto', // les cellules peuvent dépasser si elles sont plus larges que leur largeur définie
-  maxHeight: '500px', // hauteur pour activer le scroll vertical
+  maxHeight: 'calc(100% - 65px )', // hauteur pour activer le scroll vertical
+  marginLeft: 5,
 });
 
 
 export const columnHeader = style({
+  display: 'flex',
   position: 'sticky',
   top: 0,
   background: '#fff',
@@ -55,3 +57,4 @@ export const dataCell = style({
   padding: '1px',
   borderBottom: `thin solid ${colors.txtLightGray}`,
 });
+

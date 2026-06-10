@@ -1,6 +1,6 @@
 //src/ap_stocks/components/FiltreFournisseur.tsx
 
-import type { Fournisseurs, Item } from "../types/params";
+import type { Fournisseurs, Item } from "../types/mvtFiltres";
 import apiUrl from "../../constants/api.Constants";
 import { Xautocomplete } from "../../ui/Xautocomplete";
 

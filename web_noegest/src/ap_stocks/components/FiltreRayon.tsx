@@ -1,6 +1,6 @@
 //src/ap_stocks/components/FiltreRayon.tsx
 
-import type { Item, Rayons } from "../types/params";
+import type { Item, Rayons } from "../types/mvtFiltres";
 import apiUrl from "../../constants/api.Constants";
 import { Xautocomplete } from "../../ui/Xautocomplete";
 

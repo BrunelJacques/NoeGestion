@@ -4,7 +4,7 @@ import { useCallback } from "react";
 import { Xautocomplete } from "../../ui/Xautocomplete";
 import apiUrl from "../../constants/api.Constants";
 import type { Articles } from "../types/article";
-import type { Item } from "../types/params";
+import type { Item } from "../types/mvtFiltres";
 
 interface Props {
   nom: string | null | undefined;

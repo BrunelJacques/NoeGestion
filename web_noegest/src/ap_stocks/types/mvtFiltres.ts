@@ -1,6 +1,6 @@
-//src/ap_stocks/types/params.ts
+//src/ap_stocks/types/mvtFiltres.ts
 
-export type TypFiltreMvts = {
+export type MvtFiltres = {
 
   pageOrigine: "entrees" | "sorties" | "article" ;
   article?: string | null;
@@ -16,7 +16,7 @@ export type TypFiltreMvts = {
   dateModif?: Date; // sert de repère pour remise à zéro auto des filtres anciens
 }
 
-export const  FILTRES0: TypFiltreMvts= {
+export const  FILTRES0: MvtFiltres= {
   pageOrigine: "sorties",
   article: null,
   jour: new Date(2022,9,17),//valeur pour démo, provisoire

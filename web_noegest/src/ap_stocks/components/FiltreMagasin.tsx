@@ -1,6 +1,6 @@
 //src/ap_stocks/components/FiltreMagasin.tsx
 
-import type { Item, Magasins } from "../types/params";
+import type { Item, Magasins } from "../types/mvtFiltres";
 import apiUrl from "../../constants/api.Constants";
 import { Xautocomplete } from "../../ui/Xautocomplete";
 

@@ -2,14 +2,18 @@
 import { Outlet } from "react-router-dom";
 import * as s from "./index.css";
 import { StMenu } from "../../ap_stocks/components/StMenu";
+import { FiltresProvider } from "../hooks/contextFiltres/FiltresProvider";
 
 
 export default function StLayout() {
 
   return (
-    <main className={s.domainLayout}>
-      <StMenu className={s.menu} />
-      <Outlet />
-    </main>
+    <FiltresProvider>
+      <main className={s.domainLayout}>
+        <StMenu className={s.menu} />
+        <Outlet />
+      </main>
+    </FiltresProvider>
+
   );  
 }
