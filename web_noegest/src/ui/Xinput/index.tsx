@@ -36,7 +36,6 @@ export const Xinput = forwardRef<HTMLInputElement, Props>(({
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     // Si la touche est Backspace ou Delete, on l'enregistre
     isBackspacePressed.current = !!["Backspace", "Delete"].find(k => k === e.key);
-    // props.onKeyDown?.(e);     // Propagation possiblede l'événement onKeyDown au parent
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -87,7 +86,7 @@ export const Xinput = forwardRef<HTMLInputElement, Props>(({
             className={sc.resetButton}
             onClick={handleReset} 
           >
-            <img className={sc.small10} title={"croix"} src={croix} />
+            <img className={sc.small10} title={"croix"} src={croix} alt="reset" />
           </button>
         )}
       </div>
