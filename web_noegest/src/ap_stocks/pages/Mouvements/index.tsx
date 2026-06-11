@@ -11,7 +11,6 @@ import type { MvtFormField } from "../../types/mvtFormFields";
 import { lstMvtFields } from "../../constants/lstMvtFields";
 
 
-
 function Mouvements() {
 
   const {setError} = useError();
@@ -20,7 +19,7 @@ function Mouvements() {
 
   const urlParams = () => {
     if (!filtres) return "";
-    const jourStr = `jour=${filtres.jour.toISOString().split('T')[0]}`; // Format YYYY-MM-DD
+    const jourStr = `jour=${filtres.jour.toISOString().split(`T`)[0]}`; // Format YYYY-MM-DD
     const origine = filtres.origine ? `origine=${filtres.origine}` : "";
     const params = [jourStr, origine].filter(Boolean).join('&');
     return `?${params}`;
@@ -68,7 +67,9 @@ function Mouvements() {
     };
   }, [setError, url]); // L'effet se déclenche dès que l'URL change
 
-  console.log("Mouvements fetched:", url, mouvements.length);
+  console.log(`Mouvements fetched:`,
+    url,
+    mouvements.length);
 
   const colonnes = formFields.filter((field) => !field.noDisplay);
   const gridTemplateColumns = colonnes

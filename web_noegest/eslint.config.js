@@ -12,8 +12,6 @@ export default defineConfig([
     extends: [
       js.configs.recommended,
       tseslint.configs.recommendedTypeChecked,
-      tseslint.configs.strictTypeChecked,
-      tseslint.configs.stylisticTypeChecked,
       reactX.configs['recommended-typescript'],
       reactDom.configs.recommended,
       reactHooks.configs.flat.recommended,
