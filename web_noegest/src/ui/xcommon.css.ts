@@ -15,6 +15,7 @@ export const wrapperH = style({
   alignItems: "center",
   gap: "8px",
   width: "100%",
+  position: "relative"
 })
 
 export const label = style({
@@ -141,13 +142,15 @@ export const errorStyle = style({
 export const resetButton = style({
   position: "absolute",
   right: "0",
+  marginRight: "2px",
   top: "30%",
   transform: "translateY(-30%)",
-  background: "transparent",
+  zIndex: 2,
+  background: colors.bgSaisie,
   border: "none",
   cursor: "pointer",
   fontSize: "1rem",
-  opacity: 0.6,
+  opacity: 1,
   selectors: {
     "&:hover": { opacity: 1 },
   },

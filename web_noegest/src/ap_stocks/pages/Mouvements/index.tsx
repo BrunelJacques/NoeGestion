@@ -67,11 +67,10 @@ function Mouvements() {
     };
   }, [setError, url]); // L'effet se déclenche dès que l'URL change
 
-  console.log(`Mouvements fetched:`,
-    url,
-    mouvements.length);
+  console.log(`Mouvements fetched:`, url, mouvements.length);
 
   const colonnes = formFields.filter((field) => !field.noDisplay);
+
   const gridTemplateColumns = colonnes
     .map((f) => `minmax(${f.width ?? 50}px, 1fr)`)
     .join(' ');

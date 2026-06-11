@@ -1,4 +1,4 @@
-// src/ui/Xinput.tsx
+// src/ui/Xinput.index.tsx
 import { forwardRef, useRef, type ComponentPropsWithoutRef } from "react";
 import croix from "../../assets/icons/croix.png"
 import * as sc from "../xcommon.css.ts";
@@ -35,11 +35,7 @@ export const Xinput = forwardRef<HTMLInputElement, Props>(({
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     // Si la touche est Backspace ou Delete, on l'enregistre
-    if (["Backspace", "Delete"].find(k => k === e.key)) {
-      isBackspacePressed.current = true;
-    } else {
-      isBackspacePressed.current = false;
-    }
+    isBackspacePressed.current = !!["Backspace", "Delete"].find(k => k === e.key);
     // props.onKeyDown?.(e);     // Propagation possiblede l'événement onKeyDown au parent
   };
 
