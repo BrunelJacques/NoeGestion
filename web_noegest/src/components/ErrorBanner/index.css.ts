@@ -1,4 +1,5 @@
-import { CSSProperties, style, styleVariants } from '@vanilla-extract/css';
+import type  { CSSProperties }  from '@vanilla-extract/css';
+import { style, styleVariants } from '@vanilla-extract/css';
 import { colors } from '../../assets/styles/colors.css';  
 
 

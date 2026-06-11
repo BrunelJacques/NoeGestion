@@ -7,18 +7,33 @@ export const page = style({
   alignSelf: "center",
 })
 
-export const goBack = style({
-  width: "24px",
-  height: "24px",
-  marginRight: "5px",
-});
+export const entete = style({
+  display: "flex",
+  alignItems: "center",
+})
 
 export const altButton = style({
-  marginTop: "auto",
-  minWidth: "1px",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: 'center',
+  minWidth: "37px",
   backgroundColor: vars.color.secondary,
   color: vars.color.text,
   border: `1px solid ${vars.color.border}`,
+  margin: '0 5px',
+  padding: 0,
+})
+
+export const goBack = style({
+  alignSelf: "center",
+  width: "30px",
+  height: "25px",
+});
+
+export const fltOrigine = style({
+  fontWeight: "bold",
+  textTransform: "uppercase",
+  fontSize: 16,
 })
 
 
@@ -26,28 +41,28 @@ export const altButton = style({
 export const fltWrap = style({
   display: "flex", 
   flexWrap: "wrap", 
-  gap: "4px", 
+  gap: "0px",
   padding: "2px",
   fontSize: "14px",
 })
 
-export const fltOrigine = style({
-  fontWeight: "bold", 
-  textTransform: "uppercase",
-  fontSize: 16, 
-})
-
 export const fltKey = style({
   fontWeight: "bold", 
-  textTransform: "capitalize" 
+  textTransform: "capitalize",
+  color: vars.color.textLower,
 })
 
-export const fltValue = style({
+export const fltItem = style({
   border: "1px solid #ccc",
   borderRadius: "3px",
   padding: "1px 4px",
   margin: "1px",
-  backgroundColor: "#f5f5f5",
-  whiteSpace: "nowrap"
+  whiteSpace: "nowrap",
 })
 
+export const xlink = style({
+  display: "flex",
+  margin: "auto",
+  fontSize: "13px",
+  height: "28px"
+})

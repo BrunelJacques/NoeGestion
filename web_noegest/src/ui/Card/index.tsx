@@ -1,6 +1,6 @@
 // Card.tsx
 
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 import * as s from "./index.css"
 
 interface CardProps {

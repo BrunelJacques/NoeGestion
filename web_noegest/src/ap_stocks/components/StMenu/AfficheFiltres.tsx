@@ -52,20 +52,13 @@ export function AfficheFiltres() { // affichage d'un résumé des filtres actifs
     if (exclusions.includes(cle)) return false;
     
     // Exclure 'jour' si 'periode' est présent et valide
-    if (cle === "jour" && filtres.periode) return false;
+    return !(cle === "jour" && filtres.periode);
 
-    return true;
+
   });
 
   return (
     <div className={s.fltWrap}>
-      <div
-        key="pageOrigine"
-        className={s.fltOrigine}
-      >
-        {filtres.pageOrigine}
-      </div>
-
 
       {filtresAffichables.map(([cle, valeur]) => {
         const texteAffiche = formatValeur(cle as keyof MvtFiltres, valeur);
@@ -74,9 +67,9 @@ export function AfficheFiltres() { // affichage d'un résumé des filtres actifs
         return (
           <div
             key={cle}
-            className={s.fltKey}
+            className={s.fltItem}
           >
-            <span className={s.fltValue}>{cle}</span>: {texteAffiche}
+            <span className={s.fltKey}>{cle}</span>: {texteAffiche}
           </div>
         );
       })}

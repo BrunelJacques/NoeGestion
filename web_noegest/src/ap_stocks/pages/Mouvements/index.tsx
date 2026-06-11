@@ -1,7 +1,7 @@
 //src/ap_stocks/components/Mouvements/index.tsx
 import React, { useEffect, useState } from "react";
 import * as s from "./index.css";
-import { dicCalculs }  from "../Mouvements/calculs"
+import { dicCalculs }  from "./calculs.tsx"
 import { DisplayValue } from "../../../ui/DisplayValue";
 import { useFiltres } from "../../hooks/contextFiltres/useFiltres";
 import { apiUrl } from "../../../constants/api.Constants";
@@ -12,10 +12,10 @@ import { lstMvtFields } from "../../constants/lstMvtFields";
 
 
 
-export default function Mouvements() {
+function Mouvements() {
 
-  const { setError } = useError();
-  const { filtres } = useFiltres();
+  const {setError} = useError();
+  const {filtres} = useFiltres();
   const [mouvements, setMouvements] = useState<Mouvement[]>([]);
 
   const urlParams = () => {
@@ -34,32 +34,33 @@ export default function Mouvements() {
     // On crée une variable pour éviter de mettre à jour l'état si le composant est démonté
     let isMounted = true;
 
-    const executeFetch = async () => {
+    const executeFetch: () => Promise<void> = async ():Promise<void> => {
       try {
         const response = await fetch(url);
         const mvts: MvtsRetour = await response.json();
-        
+
         // On ne met à jour l'état que si le composant est toujours actif
         if (isMounted) {
           setMouvements(mvts.results);
         }
       } catch (error) {
         console.error("Erreur lors du fetch :", error);
-        if (isMounted) {       
+        if (isMounted) {
           setError( // affichage de l'erreur à l'écran
             [
               "Échec d'appel à l'API des mouvements.",
               error && `Détails : ${error}` || `Erreur inconnue.`
             ]
               .filter(Boolean) // pour éviter les éléments  undefined, null, 0, ""
-              .join(" - ")   
+              .join(" - ")
           );
         }
-      return;
+        return;
       }
     };
 
-    executeFetch();
+    executeFetch().then(() => {
+    });
 
     // Fonction de nettoyage (cleanup)
     return () => {
@@ -77,32 +78,32 @@ export default function Mouvements() {
 
   // Récupération de la valeur à afficher
   const getCellValue = (mvt: Mouvement, field: MvtFormField): string | number => {
-    
-  if (field.calcul) {
-    
-    // On récupère la fonction grâce à sa clé en string
-    const fonctionAExecuter = dicCalculs[field.calcul];
-    
-    if (fonctionAExecuter) {
-      return fonctionAExecuter(mvt); // On l'appelle ici
-    } else {
-      console.error(`La fonction ${field.calcul} n'existe pas.`);
-      return "";
-    }
-  }
 
-    if (!field.fieldName) return field.default?.toString() || "mvt.pbParam"; 
+    if (field.calcul) {
+
+      // On récupère la fonction grâce à sa clé en string
+      const fonctionAExecuter = dicCalculs[field.calcul];
+
+      if (fonctionAExecuter) {
+        return fonctionAExecuter(mvt); // On l'appelle ici
+      } else {
+        console.error(`La fonction ${field.calcul} n'existe pas.`);
+        return "";
+      }
+    }
+
+    if (!field.fieldName) return field.default?.toString() || "mvt.pbParam";
 
     if (field.fieldName === "article" && field.subFieldName) { // appel avec clé externe ex: article.nom_court
       const subKey = field.subFieldName
       const article = mvt.article
       return article && subKey in article ? (article[subKey] ?? "mvt.pbParam2") : "";
-    } 
+    }
 
-    const val = mvt[field.fieldName]; // cas d'un champ direct ds mouvement
-    if (val == null || typeof val === "object") { 
+    const val = mvt[field.fieldName]; // cas d'un champ direct dans mouvement
+    if (val == null || typeof val === "object") {
       return "mvt.pbParam3"
-    };
+    }
     return val;
   };
 
@@ -111,7 +112,7 @@ export default function Mouvements() {
 
     <section className={s.tableauWrapper}>
 
-      <div className={s.grid} style={{ gridTemplateColumns }}>
+      <div className={s.grid} style={{gridTemplateColumns}}>
         {/* Entêtes colonnes */}
         {colonnes.map((col) => (
           <div key={`head-${col.label}`} className={s.columnHeader}>
@@ -127,9 +128,10 @@ export default function Mouvements() {
               return (
                 <div key={`cell-${mvt.id}-${col.label}`} className={s.dataCell}>
                   {typeof val === "number" ? (
-                    <DisplayValue value={val} justify={col.justify} nbDecimals={col.nbDecimals} width={col.width} />
+                    <DisplayValue value={val} justify={col.justify}
+                                  nbDecimals={col.nbDecimals} width={col.width}/>
                   ) : (
-                    <DisplayValue value={val} justify={col.justify} width={col.width} />
+                    <DisplayValue value={val} justify={col.justify} width={col.width}/>
                   )}
                 </div>
               );
@@ -140,4 +142,6 @@ export default function Mouvements() {
     </section>
   );
 }
+
+export default Mouvements
 

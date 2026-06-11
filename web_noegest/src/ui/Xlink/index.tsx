@@ -9,16 +9,18 @@ type StyledLinkProps = {
   children?: React.ReactNode
   $theme?: 'light' | 'dark'
   $isFullLink?: boolean
+  altClassName?: string
 }
 
 export default function Xlink({
   $theme = 'light',
   $isFullLink,
+  altClassName = '',
   ...props
 }: StyledLinkProps) {
 
   const location = useLocation();
-  // On récupère la pile existante ou on en crée une vide
+  // use pile existante ou crée une vide
   const currentStack = location.state?.pageStack || [];
   const nameLocation = capitalize(location.pathname.split('/').slice(-1)[0] || 'Accueil');
   
@@ -32,11 +34,11 @@ export default function Xlink({
       to={props.to}
       state={{ pageStack: nextStack }} // On passe la pile mise à jour à la prochaine page
       className={({ isActive }) =>
-        xLinkRecipe({
+        `${xLinkRecipe({
           theme: $theme,
           isFullLink: $isFullLink,
-          isActive, // 👈 on passe l’état actif à la recette
-        })
+          isActive,
+        })} ${altClassName}`.trim()
       }
     >
       {props.children}
