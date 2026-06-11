@@ -2,9 +2,13 @@
 import type { MvtFormField } from "../types/mvtFormFields";
 import type { PageOrigine } from "./origines";
 
+/* Liste des champs possibles selon la pageOrigine. 
+c */
+
 export const lstMvtFields: Record<PageOrigine, MvtFormField[]> = {
   "sorties": [
     { label: "Article", type: "text", fieldName: "article", subFieldName: "nom_court",width:135, justify: 'left'},
+    { noDisplay:true, label: "Nom long", type: "text", fieldName: "article", subFieldName: "nom",width:165, justify: 'left'},
     { label: "Qte Stock", type: "number", fieldName: "article", subFieldName: "qte_stock", width: 45, justify: 'right', nbDecimals: 0 },
     { label: "Qte", type: "number", fieldName: "qte_mouvement", width: 55, justify: 'right', nbDecimals: 2 },
     { label: "PxUn", type: "number", fieldName: "prix_unit", width: 55, justify: 'right', nbDecimals: 3 },
