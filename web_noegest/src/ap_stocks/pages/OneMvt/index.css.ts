@@ -2,6 +2,7 @@
 import { style } from '@vanilla-extract/css';
 import { vars } from '../../../assets/styles/themes.css';
 import { colors } from '../../../assets/styles/colors.css';
+import { breakpoints } from '../../../assets/styles/utilities.css';
 
 
 export const wrapper = style({
@@ -50,7 +51,14 @@ export const goBack = style({
   marginRight: "5px",
 });
 
+
 export const boutons = style({
+  display: 'flex',
+  justifyContent: 'flex-end',
+  marginTop: '10px',
+});
+
+export const columnHeader = style({
   display: 'flex',
   justifyContent: 'flex-end',
   marginTop: '10px',

@@ -35,20 +35,21 @@ export function StMenu(props: FiltresProps) {
 
       <AfficheFiltres />
 
-      {page != "Filtres" && <Xlink 
-      to="/stocks/filtres" 
-      $isFullLink={true}
-      altClassName={s.xlink}>
-        Filtres
-      </Xlink>}
+      <div className={s.boutons}>
+        {page != "Filtres" && <Xlink
+        to="/stocks/filtres"
+        $isFullLink={true}
+        altClassName={s.xlink}>
+          Filtres
+        </Xlink>}
 
-      {page != "Mouvements" && <Xlink 
-      to="/stocks/mouvements" 
-      $isFullLink={true}
-      altClassName={s.xlink}>
-        Mouvements
-      </Xlink>}
-
+        {page != "Mouvements" && <Xlink
+        to="/stocks/mouvements"
+        $isFullLink={true}
+        altClassName={s.xlink}>
+          Mouvements
+        </Xlink>}
+      </div>
     </nav>
   </>);
 }

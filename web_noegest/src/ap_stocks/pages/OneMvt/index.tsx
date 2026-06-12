@@ -119,9 +119,9 @@ function OneMvt() {
     //Titres sous-titres
     <section className={s.wrapper}>
       <div className="container">
-        <h2>Saisie des Filtres</h2>
+        <h2>Saisie d'un mouvement</h2>
         <p>Les données appelées après validation seront
-          filtrées sur les paramètres ci-dessous:</p>
+          filtrées selon les choix affichés</p>
       </div>
 
       {/* zone de saisie */}

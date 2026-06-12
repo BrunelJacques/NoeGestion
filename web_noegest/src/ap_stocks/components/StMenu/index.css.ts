@@ -1,6 +1,7 @@
 //src/ap_stocks/components/StMenu/index.css.ts
 import { style } from '@vanilla-extract/css';
 import { vars } from '../../../assets/styles/themes.css';
+import { colors } from '../../../assets/styles/colors.css.ts';
 
 export const page = style({
   margin: "3px 0 0 3px",
@@ -11,6 +12,11 @@ export const entete = style({
   display: "flex",
   alignItems: "center",
 })
+
+export const boutons = style({
+    display: "flexWrap",
+    alignItems: "center",
+  })
 
 export const altButton = style({
   display: "flex",
@@ -49,7 +55,7 @@ export const fltWrap = style({
 export const fltKey = style({
   fontWeight: "bold", 
   textTransform: "capitalize",
-  color: vars.color.textLower,
+  color: colors.txtDarkGray,
 })
 
 export const fltItem = style({
@@ -62,7 +68,7 @@ export const fltItem = style({
 
 export const xlink = style({
   display: "flex",
-  margin: "auto",
+  margin: "5px auto",
   fontSize: "13px",
   height: "28px"
 })
