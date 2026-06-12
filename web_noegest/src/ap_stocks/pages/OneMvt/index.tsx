@@ -1,144 +1,117 @@
 //src/ap_stocks/pages/OneMvt/index.tsx
 import React, { useEffect, useState } from "react";
-import * as s from "../Mouvements/index.css";
-import { dicCalculs }  from "../../utils/calculs.tsx"
-import { DisplayValue } from "../../../ui/DisplayValue";
+import * as s from "./index.css.ts";
+import { dicCalculs } from "../../utils/calculs.tsx";
+import { SpanCell } from "../../../ui/SpanCell";
 import { useFiltres } from "../../hooks/contextFiltres/useFiltres";
 import { apiUrl } from "../../../constants/api.Constants";
-import type { Mouvement, MvtsRetour } from "../../types/mouvement";
+import {MVT0, type Mouvement, type MvtsRetour } from "../../types/mouvement";
 import { useError } from "../../../hooks/useError";
-import type { MvtFormField } from "../../types/mvtFormFields";
 import { lstMvtFields } from "../../constants/lstMvtFields";
+import { useNavigate, useParams } from "react-router-dom";
+import { getCellValue } from "../../../utils/getCellValue";
 
-export default function  OneMvt() {
 
-  const {setError} = useError();
-  const {filtres} = useFiltres();
-  const [mouvements, setMouvements] = useState<Mouvement[]>([]);
+function OneMvt() {
+  const navigate = useNavigate();
+  const { setError } = useError();
+  const { filtres } = useFiltres();
 
-  const urlParams = () => {
-    if (!filtres) return "";
-    const jourStr = `jour=${filtres.jour.toISOString().split(`T`)[0]}`; // Format YYYY-MM-DD
-    const origine = filtres.origine ? `origine=${filtres.origine}` : "";
-    const params = [jourStr, origine].filter(Boolean).join('&');
-    return `?${params}`;
+  const [mouvement, setMouvement] = useState<Mouvement>(MVT0);
+
+  const { id: queryId } = useParams()
+  const queryParams = new URLSearchParams();
+  if (queryId) {
+    queryParams.append('id', queryId);
   }
+  const url = `${apiUrl.STMOUVEMENT_URL}?${queryParams.toString()}`;
 
-  const url = apiUrl.STMOUVEMENT_URL + urlParams();
+  const formFields = lstMvtFields[filtres?.pageOrigine || "sorties"];
+  const colonnes = formFields.filter((field) => !field.noDisplay);
 
-  const formFields = lstMvtFields[filtres?.pageOrigine || "sorties"]; // Champs correspondant à pageOrigine sélectionnée
+  const gridColumns = colonnes
+    .map((f) => `minmax(${f.width ?? 50}px, 1fr)`)
+    .join(" ");
 
   useEffect(() => {
-    // On crée une variable pour éviter de mettre à jour l'état si le composant est démonté
     let isMounted = true;
 
-    const executeFetch: () => Promise<void> = async ():Promise<void> => {
+    const executeFetch = async () => {
       try {
         const response = await fetch(url);
+        if (!response.ok) {
+          setError("Échec api mouvement: no response.");
+        }
         const mvts: MvtsRetour = await response.json();
 
-        // On ne met à jour l'état que si le composant est toujours actif
-        if (isMounted) {
-          setMouvements(mvts.results);
-        }
+        if (isMounted) setMouvement(mvts.results[0] || undefined);
       } catch (error) {
         console.error("Erreur lors du fetch :", error);
         if (isMounted) {
-          setError( // affichage de l'erreur à l'écran
-            [
-              "Échec d'appel à l'API des mouvements.",
-              error && `Détails : ${error}` || `Erreur inconnue.`
-            ]
-              .filter(Boolean) // pour éviter les éléments  undefined, null, 0, ""
-              .join(" - ")
-          );
+          setError(["Échec d'appel à l'API des mouvement.", error instanceof Error ? error.message : String(error)].filter(Boolean).join(" - "));
         }
-        return;
       }
     };
 
-    executeFetch().then(() => {
-    });
+    executeFetch().then(() => {});
 
-    // Fonction de nettoyage (cleanup)
-    return () => {
-      isMounted = false;
-    };
-  }, [setError, url]); // L'effet se déclenche dès que l'URL change
+    return () => { isMounted = false; };
+  }, [url, setError]);
 
-  console.log(`Mouvements fetched:`, url, mouvements.length);
-
-  const colonnes = formFields.filter((field) => !field.noDisplay);
-
-  const gridTemplateColumns = colonnes
-    .map((f) => `minmax(${f.width ?? 50}px, 1fr)`)
-    .join(' ');
-
-
-  // Récupération de la valeur à afficher
-  const getCellValue = (mvt: Mouvement, field: MvtFormField): string | number => {
-
-    if (field.calcul) {
-
-      // On récupère la fonction grâce à sa clé en string
-      const fonctionAExecuter = dicCalculs[field.calcul];
-
-      if (fonctionAExecuter) {
-        return fonctionAExecuter(mvt); // On l'appelle ici
-      } else {
-        console.error(`La fonction ${field.calcul} n'existe pas.`);
-        return "";
-      }
-    }
-
-    if (!field.fieldName) return field.default?.toString() || "mvt.pbParam";
-
-    if (field.fieldName === "article" && field.subFieldName) { // appel avec clé externe ex: article.nom_court
-      const subKey = field.subFieldName
-      const article = mvt.article
-      return article && subKey in article ? (article[subKey] ?? "mvt.pbParam2") : "";
-    }
-
-    const val = mvt[field.fieldName]; // cas d'un champ direct dans mouvement
-    if (val == null || typeof val === "object") {
-      return "mvt.pbParam3"
-    }
-    return val;
+  const handleCellClick = (mvtId: Mouvement["id"]) => {
+    navigate(`/stocks/one-mvt/${mvtId}`);
   };
 
-
-  return ( // grille liste des mouvements
-
+  return (
     <section className={s.tableauWrapper}>
+      <div className={s.grid} style={{ gridTemplateColumns: gridColumns }}>
 
-      <div className={s.grid} style={{gridTemplateColumns}}>
-        {/* Entêtes colonnes */}
+        {/* Entêtes */}
         {colonnes.map((col) => (
           <div key={`head-${col.label}`} className={s.columnHeader}>
             {col.label}
           </div>
         ))}
 
-        {/* Lignes de Données */}
-        {mouvements.map((mvt) => (
-          <React.Fragment key={mvt.id}>
-            {colonnes.map((col) => {
-              const val = getCellValue(mvt, col);
-              return (
-                <div key={`cell-${mvt.id}-${col.label}`} className={s.dataCell}>
-                  {typeof val === "number" ? (
-                    <DisplayValue value={val} justify={col.justify}
-                                  nbDecimals={col.nbDecimals} width={col.width}/>
-                  ) : (
-                    <DisplayValue value={val} justify={col.justify} width={col.width}/>
-                  )}
-                </div>
-              );
-            })}
-          </React.Fragment>
-        ))}
+        {/* Données */}
+        <React.Fragment key={mouvement.id}>
+          {colonnes.map((col) => {
+            const val = getCellValue(mouvement, col, dicCalculs);
+            return (
+              <div
+                key={`cell-${mouvement.id}-${col.label}`}
+                className={s.dataCell}
+                role="button"
+                tabIndex={0}
+                onClick={() => handleCellClick(mouvement.id)}
+                onKeyDown={(evt) => {
+                  if (evt.key === "Enter" || evt.key === " ") {
+                    handleCellClick(mouvement.id);
+                  }
+                }}
+              >
+                {typeof val === "number" ? (
+                  <SpanCell
+                    value={val} // Ici TypeScript sait que val est STRICTEMENT un number
+                    justify={col.justify}
+                    nbDecimals={col.nbDecimals}
+                    width={col.width}
+                  />
+                ) : (
+                  <SpanCell
+                    value={String(val)} // Ici TypeScript sait que val est un string
+                    justify={col.justify}
+                    width={col.width}
+                    // Pas de nbDecimals ici, donc il matche parfaitement OtherProps
+                  />
+                )}
+              </div>
+            );
+          })}
+        </React.Fragment>
       </div>
     </section>
   );
 }
 
+export default OneMvt;
