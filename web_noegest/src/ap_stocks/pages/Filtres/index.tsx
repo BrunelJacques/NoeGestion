@@ -69,8 +69,12 @@ return (
 
     {/* zone de saisie fltres */}
     <div className={s.wrapForm}>
-      <Form id="filtresForm" key={formKey} onSubmit={handleSubmit} className={s.formStyle}>
-
+      <Form
+        id="filtresForm"
+        key={formKey}
+        onSubmit={handleSubmit}
+        className={s.formStyle}
+      >
         <div className={s.entree}>
           <XinputDate           // jour
             jour={draft.jour}
@@ -133,12 +137,11 @@ return (
             />
           )}
         </div>
- 
       </Form>
 
       <div className={s.boutons}>
         <XbuttonBack altClassName={s.altButton} displayPrevious={false}>
-          <img className={s.goBack} title={"fleche"} src={goBack} />
+          <img className={s.goBack} title={"fleche"} src={goBack} alt={"fleche"} />
           <span>Abandon</span>
         </XbuttonBack>
 
@@ -150,7 +153,7 @@ return (
       </Xbutton>
 
         <Xbutton type="submit" altClassName="" form="filtresForm">
-          <img className={s.goBack} title={"fleche"} src={goBack} />
+          <img className={s.goBack} title={"fleche"} src={goBack} alt={"fleche"}/>
           Validation
         </Xbutton>
       </div>

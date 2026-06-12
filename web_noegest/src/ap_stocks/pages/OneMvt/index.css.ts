@@ -3,44 +3,61 @@ import { style } from '@vanilla-extract/css';
 import { vars } from '../../../assets/styles/themes.css';
 import { colors } from '../../../assets/styles/colors.css';
 
-export const tableauWrapper = style({
-  display: 'flex',
-  overflow: 'auto', // C'est lui qui permet le scroll 2D
-  border: '1px solid #ccc',
-  position: 'relative', 
-  height: 'calc(100vh)',
-  zIndex: 25, 
-  color: vars.color.textLower,
-  background: vars.color.body,
+
+export const wrapper = style({
+  flex: 1,
+  //overflow: 'auto',
+  position: 'relative',
+  margin: '5px',
 });
 
-export const grid = style({
+
+export const wrapForm = style({
+  padding: '2px',
+  margin: '3px',
+  color: vars.color.text,
+  background: vars.color.card,
+  border: `1px solid ${vars.color.border}`,
+  borderRadius: 6,
+  boxShadow: `0 0 5px -1px ${vars.color.primary}`,
+  fontFamily: "monospace",
+  fontSize: 14,
+});
+
+
+export const formStyle = style({
   display: 'grid',
-  // gridTemplateColumns est calculé dynamiquement depuis formFields (voir index.tsx)
-
-  overflow: 'auto', // les cellules peuvent dépasser si elles sont plus larges que leur largeur définie
-  maxHeight: 'calc(100% - 65px )', // hauteur pour activer le scroll vertical
-  marginLeft: 5,
-  gridAutoRows: 'max-content',
-  justifyContent: 'center'
+  width: '100%',
+  gap: '1px',
+  alignContent: 'center',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  '@media': {
+    [`screen and (max-width: ${breakpoints.mobile})`]: {
+      gridTemplateColumns: '1fr',
+    },
+  },
+  padding: '2px',
 });
 
-export const columnHeader = style({
+export const entree = style({
+  padding: "2px 0",
+  margin: '3px',
+});
+
+export const goBack = style({
+  width: "24px",
+  height: "24px",
+  marginRight: "5px",
+});
+
+export const boutons = style({
   display: 'flex',
-  justifyContent: 'center', // pour un nom court
-  textAlign: 'center', // pour un nom fractionné sur deux lignes
-  position: 'sticky',
-  top: 0,
-  background: vars.color.body,
-  zIndex: 10,
-  padding: '0px',
-  borderLeft: `thin solid ${colors.txtLightGray}`,
-  fontWeight: 'bold', 
-  fontSize: '14px',
+  justifyContent: 'flex-end',
+  marginTop: '10px',
 });
 
-export const dataCell = style({
-  padding: '1px',
-  borderBottom: `thin solid ${colors.txtLightGray}`,
-});
-
+export const altButton = style({
+  backgroundColor: vars.color.secondary,
+  color: vars.color.text,
+  border: `1px solid ${vars.color.border}`,
+})
