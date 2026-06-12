@@ -1,7 +1,7 @@
 //src/ap_stocks/components/Mouvements/index.tsx
 import React, { useEffect, useState } from "react";
 import * as s from "./index.css";
-import { dicCalculs }  from "./calculs.tsx"
+import { dicCalculs }  from "../../utils/calculs.tsx"
 import { DisplayValue } from "../../../ui/DisplayValue";
 import { useFiltres } from "../../hooks/contextFiltres/useFiltres";
 import { apiUrl } from "../../../constants/api.Constants";
@@ -9,10 +9,11 @@ import type { Mouvement, MvtsRetour } from "../../types/mouvement";
 import { useError } from "../../../hooks/useError";
 import type { MvtFormField } from "../../types/mvtFormFields";
 import { lstMvtFields } from "../../constants/lstMvtFields";
+import {useNavigate} from "react-router-dom";
 
 
 function Mouvements() {
-
+  const navigate = useNavigate();
   const {setError} = useError();
   const {filtres} = useFiltres();
   const [mouvements, setMouvements] = useState<Mouvement[]>([]);
@@ -75,6 +76,10 @@ function Mouvements() {
     .map((f) => `minmax(${f.width ?? 50}px, 1fr)`)
     .join(' ');
 
+  const handleCellClick = (mvtId: Mouvement["id"]) => {
+    navigate(`/stocks/one-mvt/${mvtId}`);
+  };
+
 
   // Récupération de la valeur à afficher
   const getCellValue = (mvt: Mouvement, field: MvtFormField): string | number => {
@@ -113,6 +118,7 @@ function Mouvements() {
     <section className={s.tableauWrapper}>
 
       <div className={s.grid} style={{gridTemplateColumns}}>
+
         {/* Entêtes colonnes */}
         {colonnes.map((col) => (
           <div key={`head-${col.label}`} className={s.columnHeader}>
@@ -120,13 +126,24 @@ function Mouvements() {
           </div>
         ))}
 
-        {/* Lignes de Données */}
+        {/* Lignes de Données, constituées à partir de mouvements */}
         {mouvements.map((mvt) => (
           <React.Fragment key={mvt.id}>
             {colonnes.map((col) => {
               const val = getCellValue(mvt, col);
               return (
-                <div key={`cell-${mvt.id}-${col.label}`} className={s.dataCell}>
+                <div
+                  key={`cell-${mvt.id}-${col.label}`}
+                  className={s.dataCell}
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => handleCellClick(mvt.id)}
+                  onKeyDown={(evt) => {
+                    if (evt.key === "Enter" || evt.key === " ") {
+                      handleCellClick(mvt.id);
+                    }
+                  }}
+                >
                   {typeof val === "number" ? (
                     <DisplayValue value={val} justify={col.justify}
                                   nbDecimals={col.nbDecimals} width={col.width}/>
