@@ -22,7 +22,7 @@ type OtherProps = BaseProps & {
 type FieldProps = NumberProps | OtherProps;
  
 
-export const DisplayValue: React.FC<FieldProps> = ({ 
+export const SpanCell: React.FC<FieldProps> = ({
   value,
   nbDecimals, 
   justify = 'left',
