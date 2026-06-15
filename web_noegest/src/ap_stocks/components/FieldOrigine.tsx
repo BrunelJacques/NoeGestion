@@ -1,7 +1,7 @@
 //src/ap_stocks/components/FieldOrigine.tsx
-import { type Origine } from "../constants/origines"; 
-import type { Item } from "../types/mvtFiltres";
-import { Xautocomplete } from "../../ui/Xautocomplete";
+import { type Origine } from '../constants/origines';
+import type { Item } from '../types/mvtFiltres';
+import { Xautocomplete } from '../../ui/Xautocomplete';
 
 
 interface Props {

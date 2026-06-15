@@ -102,6 +102,15 @@ return (
         </div>
 
         <div className={s.entree}>
+          {isPageArticle && (
+            <FieldArticle
+              nom={draft.article}
+              updateField={(val) => updateField('article', val)}
+            />
+          )}
+        </div>
+
+        <div className={s.entree}>
           <FieldService        // service
             id={draft.service} 
             updateField={(val) => updateField('service', val)}
@@ -127,15 +136,6 @@ return (
             id={draft.rayon} 
             updateField={(val) => updateField('rayon', val)}
           />
-        </div>
-
-        <div className={s.entree}>
-          {isPageArticle && (
-            <FieldArticle
-              nom={draft.article} 
-              updateField={(val) => updateField('article', val)}
-            />
-          )}
         </div>
       </Form>
 
