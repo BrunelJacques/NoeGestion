@@ -1,4 +1,4 @@
-//src/ap_stocks/components/FiltreArticle/index.tsx
+//src/ap_stocks/components/FieldArticle/index.tsx
 
 import { useCallback } from "react";
 import { Xautocomplete } from "../../ui/Xautocomplete";
@@ -12,7 +12,7 @@ interface Props {
 }
 
 // paramétrage de la saisie d'article avec autocomplétion
-export default function FiltreArticle({ nom, updateField }: Props) {
+export default function FieldArticle({ nom, updateField }: Props) {
   const url = apiUrl.STARTICLE_NOM_URL
 
   // Utiliser useCallback pour figer la référence de la fonction

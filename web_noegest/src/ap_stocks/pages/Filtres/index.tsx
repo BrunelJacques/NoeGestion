@@ -9,12 +9,12 @@ import { Xselect } from "../../../ui/Xselect";
 import { useFiltres } from "../../hooks/contextFiltres/useFiltres";
 import { useDraftFiltres } from "../../hooks/useDraftFiltres";
 import { useSelectEnum } from "../../hooks/useSelectEnum";
-import FiltreService from "../../components/FiltreService";
-import FiltreOrigine from "../../components/FiltreOrigine";
-import FiltreArticle from "../../components/FiltreArticle";
-import FiltreFournisseur from "../../components/FiltreFournisseur";
-import FiltreMagasin from "../../components/FiltreMagasin";
-import FiltreRayon from "../../components/FiltreRayon";
+import FieldService from "../../components/FieldService.tsx";
+import FieldOrigine from "../../components/FieldOrigine.tsx";
+import FieldArticle from "../../components/FieldArticle.tsx";
+import FieldFournisseur from "../../components/FieldFournisseur.tsx";
+import FieldMagasin from "../../components/FieldMagasin.tsx";
+import FieldRayon from "../../components/FieldRayon.tsx";
 import { XinputDate } from "../../../ui/Xinput/XinputDate";
 import { useMemo, useState } from "react";
 import XbuttonBack from "../../../ui/Xbutton/XbuttonBack";
@@ -94,7 +94,7 @@ return (
         </div>
 
         <div className={s.entree}>
-          <FiltreOrigine        // origine
+          <FieldOrigine        // origine
             id={draft.origine}
             updateField={(val) => updateField('origine', val)}
             origineItems={origineItems}
@@ -102,28 +102,28 @@ return (
         </div>
 
         <div className={s.entree}>
-          <FiltreService        // service
+          <FieldService        // service
             id={draft.service} 
             updateField={(val) => updateField('service', val)}
           />
         </div>
 
         <div className={s.entree}>
-          <FiltreFournisseur     // fournisseur
+          <FieldFournisseur     // fournisseur
             nom={draft.fournisseur} 
             updateField={(val) => updateField('fournisseur', val)}
           />
         </div>
 
         <div className={s.entree}>
-          <FiltreMagasin        // magasin
+          <FieldMagasin        // magasin
             id={draft.magasin} 
             updateField={(val) => updateField('magasin', val)}
           />
         </div>
 
         <div className={s.entree}>
-          <FiltreRayon            // rayon
+          <FieldRayon            // rayon
             id={draft.rayon} 
             updateField={(val) => updateField('rayon', val)}
           />
@@ -131,7 +131,7 @@ return (
 
         <div className={s.entree}>
           {isPageArticle && (
-            <FiltreArticle
+            <FieldArticle
               nom={draft.article} 
               updateField={(val) => updateField('article', val)}
             />

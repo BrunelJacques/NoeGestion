@@ -1,4 +1,4 @@
-//src/ap_stocks/components/FiltreFournisseur.tsx
+//src/ap_stocks/components/FieldFournisseur.tsx
 
 import type { Fournisseurs, Item } from "../types/mvtFiltres";
 import apiUrl from "../../constants/api.Constants";
@@ -10,7 +10,7 @@ interface Props {
 }
 
 // Paramétrage de l'autocomplete pour les fournisseurs
-export default function FiltreFournisseur({ nom, updateField }: Props) {
+export default function FieldFournisseur({ nom, updateField }: Props) {
   const url = apiUrl.STFOURNISSEUR_URL
 
   const fetchFournisseurs = async (search?: string) => {

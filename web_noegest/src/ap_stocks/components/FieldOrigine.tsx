@@ -1,7 +1,7 @@
-//src/ap_stocks/components/FiltreOrigine.tsx
+//src/ap_stocks/components/FieldOrigine.tsx
 import { type Origine } from "../constants/origines"; 
 import type { Item } from "../types/mvtFiltres";
-import { Xautocomplete } from "../../ui/Xautocomplete/noWait";
+import { Xautocomplete } from "../../ui/Xautocomplete";
 
 
 interface Props {
@@ -12,7 +12,7 @@ interface Props {
 
 
 // Paramétrage du select pour les origines
-export default function FiltreOrigine({ id, updateField, origineItems }: Props) {
+export default function FieldOrigine({ id, updateField, origineItems }: Props) {
 
   const nom = id ?? String(id) ;
 

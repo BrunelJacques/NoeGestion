@@ -1,4 +1,4 @@
-//src/ap_stocks/components/FiltreService.tsx
+//src/ap_stocks/components/FieldService.tsx
 import { Services } from "../constants/services";
 import { Xselect } from "../../ui/Xselect";
 import { useSelectObject } from "../hooks/useSelectObject";
@@ -11,7 +11,7 @@ interface Props {
 
 
 // Paramétrage du select pour les services
-export default function FiltreService({ id: T, updateField }: Props) { //on embrasse {} car deux éléments
+export default function FieldService({ id: T, updateField }: Props) { //on embrasse {} car deux éléments
 
   const service = useSelectObject(Services, T);
  

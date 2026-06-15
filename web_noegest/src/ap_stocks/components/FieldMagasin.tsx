@@ -1,6 +1,6 @@
-//src/ap_stocks/components/FiltreRayon.tsx
+//src/ap_stocks/components/FieldeMagasin.tsx
 
-import type { Item, Rayons } from "../types/mvtFiltres";
+import type { Item, Magasins } from "../types/mvtFiltres";
 import apiUrl from "../../constants/api.Constants";
 import { Xautocomplete } from "../../ui/Xautocomplete";
 
@@ -9,17 +9,17 @@ interface Props {
   updateField: (id: string) => void;
 }
 
-
-// paramétrage de la saisie du rayon
-export default function FiltreRayon({ id, updateField }: Props) {
-  const url = apiUrl.STRAYON_URL
+// Paramétrage de l'autocomplete pour les magasins
+export default function FieldMagasin({ id, updateField }: Props) {
+  const url = apiUrl.STMAGASIN_URL
   const nom = id ?? String(id) ;
 
-  const fetchRayons = async (search?: string) => {
+  
+  const fetchMagasins = async (search?: string) => {
     const query = search || "";
     const response = await fetch(`${url}?nom=${query}`);
-    const rayons: Rayons = await response.json();
-    return rayons.results;
+    const magasins: Magasins = await response.json();
+    return magasins.results;
   };
 
   const handleChange = (item: Item | string | number) => {
@@ -33,10 +33,10 @@ export default function FiltreRayon({ id, updateField }: Props) {
   return (
     <>
       <Xautocomplete
-        label="Rayon"
-        name="rayon"
+        label="Magasin"
+        name="magasin"
         value={nom ?? ""}
-        fetchItems={fetchRayons}
+        fetchItems={fetchMagasins}
         onSelect={handleChange}
       />
     </>

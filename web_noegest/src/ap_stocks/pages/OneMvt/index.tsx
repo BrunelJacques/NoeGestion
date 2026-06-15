@@ -132,6 +132,7 @@ function OneMvt() {
           onSubmit={handleSubmit}
         >
           <div className={s.formStyle}>
+            {/* ------- déroulé des champs par map ------- */}
             {fields.map((fld) => {
               const val = getCellValue(draft, fld, dicCalculs);
               const isEditable = Boolean(
