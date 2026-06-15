@@ -7,19 +7,19 @@ import { Xautocomplete } from '../../ui/Xautocomplete';
 interface Props {
   id: string | null | undefined;
   updateField: (value: string) => void;
-  origineItems: Origine[]
+  origineItems: Origine[];
+  allowNull: boolean
 }
 
 
 // Paramétrage du select pour les origines
-export default function FieldOrigine({ id, updateField, origineItems }: Props) {
+export default function FieldOrigine({ id, updateField, origineItems, allowNull }: Props) {
 
   const nom = id ?? String(id) ;
 
   const fetchOrigines =  (search?: string) => {
     const query = search ?? ""; // search si null ou undefined, sinon ""
     return [
-      //{ id: 0, nom: "Tous" },
       ...origineItems
         .filter((u: Origine) => u.libelle && u.libelle.toLowerCase().includes(query.toLowerCase())
         )
@@ -39,7 +39,7 @@ export default function FieldOrigine({ id, updateField, origineItems }: Props) {
       
       updateField(id);
     };
-    
+
   return (
       <>
         <Xautocomplete
@@ -49,6 +49,7 @@ export default function FieldOrigine({ id, updateField, origineItems }: Props) {
           fetchItems={fetchOrigines}
           onSelect={handleChange}
           required={true}
+          allowNull={allowNull}
 
         />
       </>

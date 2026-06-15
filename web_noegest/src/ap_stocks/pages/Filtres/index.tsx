@@ -98,6 +98,7 @@ return (
             id={draft.origine}
             updateField={(val) => updateField('origine', val)}
             origineItems={origineItems}
+            allowNull={pageOrigine.value === "article"}
         />
         </div>
 

@@ -17,6 +17,7 @@ interface XautocompleteProps extends Omit<ComponentPropsWithoutRef<"input">, "on
   disabled?: boolean;
   showReset?: boolean;
   required?: boolean;
+  allowNull?: boolean
 }
 
 export function Xautocomplete({
@@ -25,6 +26,7 @@ export function Xautocomplete({
                                 altClassName = "",
                                 error = null,
                                 required = false,
+                                allowNull = false,
                                 ...props
                               }: XautocompleteProps) {
 
@@ -44,7 +46,7 @@ export function Xautocomplete({
     handleFocus
   } = useAutocomplete({ fetchItems, onSelect, initialValue, disabled: props.disabled });
 
-  const isValid = checkIsValid(query, results, required);
+  const isValid = checkIsValid(query, results, required, allowNull);
 
   return (
     <div

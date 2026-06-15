@@ -2,12 +2,21 @@
 import type { Item } from '../../ap_stocks/types/mvtFiltres';
 
 // Valide si la saisie correspond à un item existant ou respecte la contrainte "required"
-export function checkIsValid(query: string, results: Item[], required: boolean): boolean {
+export function checkIsValid(
+  query: string,
+  results: Item[],
+  required: boolean,
+  allowNull: boolean): boolean
+{
   if (!query && !required) {
     return true;
   }
-  if (!results || results.length === 0) {
+  console.log("checkValid allowNull test", allowNull,  !query);
+  if (!allowNull && (!results || results.length === 0)) {
     return false;
+  }
+  if (allowNull && !query) {
+    return true;
   }
   const test1 = results.some(item => item.nom.toLowerCase() === query.toLowerCase());
   const test2 = query === "" && !required;
