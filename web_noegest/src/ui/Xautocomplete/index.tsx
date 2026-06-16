@@ -1,10 +1,11 @@
 // src/ui/Xautocomplete/index.tsx
-import type { ComponentPropsWithoutRef } from "react";
+import {useEffect, useRef, useState, type ComponentPropsWithoutRef } from "react";
 import * as sc from '../xcommon.css';
 import { Xinput } from '../Xinput';
 import { checkIsValid } from './checkIsValid.tsx';
 import { useAutocomplete } from './useAutocomplete.tsx';
 import type { Item } from "../../ap_stocks/types/mvtFiltres.ts";
+import { useFormValidation } from "../../contexts/FormContext.tsx";
 
 
 interface XautocompleteProps extends Omit<ComponentPropsWithoutRef<"input">, "onSelect"> {
@@ -47,19 +48,40 @@ export function Xautocomplete({
   } = useAutocomplete({ fetchItems, onSelect, initialValue, disabled: props.disabled });
 
   const isValid = checkIsValid(query, results, required, allowNull);
+  const isValidRef = useRef(isValid);
+
+  useEffect(() => {
+    isValidRef.current = isValid;
+  }, [isValid]);
+
+  // État local pour savoir si on doit forcer l'affichage de l'erreur (ex: après un submit raté)
+  const [isTouched, setIsTouched] = useState(false);
+
+  // Connexion au système de validation parent
+  const validation = useFormValidation();
+
+  useEffect(() => {
+    if (!validation || !props.name) return;
+
+    // On retourne la fonction qui sera exécutée lors du Submit global
+    return  validation.registerValidator(props.name, () => {
+      setIsTouched(true); // Force le composant à afficher son erreur s'il est invalide
+      return isValid;
+    });
+
+  }, [validation, props.name, isValid]); // Recalculé si isValid change
+
+  // On affiche l'erreur si le champ est invalide ET (qu'il a été touché OU qu'on a tenté de soumettre)
+  const displayError = !isValid && isTouched;
 
   return (
-    <div
-      ref={divRef}
-      onBlur={handleBlur}
-      onFocus={handleFocus}
-    >
+    <div ref={divRef} onBlur={() => { handleBlur(); setIsTouched(true); }} onFocus={handleFocus}>
       <Xinput
         {...props}
         value={query}
-        onChange={onChange}
+        onChange={(e) => { onChange(e); setIsTouched(false); }} // Masque l'erreur pendant la saisie
         onReset={handleReset}
-        error={!isValid ? `${props.label} invalide` : null}
+        error={displayError ? `${props.label} invalide` : null}
         className={[
           sc.baseInput,
           props.disabled && sc.disabledInput,

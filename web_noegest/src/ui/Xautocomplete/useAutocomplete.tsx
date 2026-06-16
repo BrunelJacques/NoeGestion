@@ -1,6 +1,11 @@
 // src/ui/Xautocomplete/useAutocomplete.tsx
 import { useState, useEffect, useRef } from 'react';
-import type { Item } from '../../ap_stocks/types/mvtFiltres';
+
+// générique d'appels items
+export type Item = {
+  id: number|string;
+  nom: string;
+}
 
 interface UseAutocompleteProps {
   // Compatibilité synchrone / asynchrone
@@ -9,6 +14,7 @@ interface UseAutocompleteProps {
   initialValue: string;
   disabled?: boolean;
 }
+
 
 export function useAutocomplete({ fetchItems, onSelect, initialValue, disabled }: UseAutocompleteProps) {
   const [allResults, setAllResults] = useState<Item[]>([]);

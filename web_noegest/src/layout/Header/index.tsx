@@ -47,11 +47,11 @@ export default function Header() {
     <header ref={menuRef} className={s.header}>
       
       <Link to="/home">
-        <img title="Home" className={s.home} src={Home} />
+        <img title="Home" className={s.home} src={Home} alt="home" />
       </Link>
 
       <Link to="/home">
-        <img title="Logo" className={s.logo} src={Logo} />
+        <img title="Logo" className={s.logo} src={Logo} alt="logo" />
       </Link>
 
       <div className={s.burger}
@@ -74,7 +74,7 @@ export default function Header() {
       <div className={s.logout}>
         <Xlink  to="/logout" $isFullLink>
             {logLabel}
-            <img title="profile" className={s.profile} src={profile} />
+            <img title="profile" className={s.profile} src={profile} alt="profile" />
         </Xlink>
       </div>
     </header>

@@ -1,5 +1,4 @@
 //src/ap_stocks/pages/Mouvements/calculs.tsx
-
 import { round } from "../../utils/number.ts";
 import type { Mouvement } from "../types/mouvement.ts";
 

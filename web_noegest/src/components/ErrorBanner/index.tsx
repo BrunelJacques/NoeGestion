@@ -26,7 +26,7 @@ export default function ErrorBanner() {
         </h4>
         {error}
         <button className={s.closeButton} onClick={clearError}>
-          <img title={"croix"} src={croix} />
+          <img title={"croix"} src={croix} alt="croix" />
         </button>
       </div>
     </div>

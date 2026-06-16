@@ -1,7 +1,7 @@
 // src/ui/XlinkAppli.tsx
 import { Link } from "react-router-dom";
 import * as s from "./index.css.ts"
-import { AppCard } from "../AppCard/index.tsx";
+import { AppCard } from "../AppCard";
 
 
 
@@ -29,7 +29,7 @@ export function XlinkAppli({
       //</Card>className={actif ? `card ${s.cardAppli}` : `card ${s.off}`}>
     >
       <AppCard>
-        <img className={s.image} title={title} src={imageSrc} />
+        <img className={s.image} title={title} src={imageSrc} alt={title} />
       </AppCard>
       <div className={s.cardText}>
         <h3>{title}</h3>

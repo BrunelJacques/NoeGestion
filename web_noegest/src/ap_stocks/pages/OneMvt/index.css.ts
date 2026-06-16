@@ -1,7 +1,6 @@
 //src/ap_stocks/pages/OneMvt/index.css.ts
 import { style } from '@vanilla-extract/css';
 import { vars } from '../../../assets/styles/themes.css';
-import { colors } from '../../../assets/styles/colors.css';
 import { breakpoints } from '../../../assets/styles/utilities.css';
 
 

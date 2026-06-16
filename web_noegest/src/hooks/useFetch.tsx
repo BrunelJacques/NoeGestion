@@ -21,7 +21,7 @@ export function useFetch(url: string) {
         setLoading(false)
       }
     }
-    fetchData()
+    fetchData().then(() => {})
   }, [url])
   return { isLoading, data, error }
 }

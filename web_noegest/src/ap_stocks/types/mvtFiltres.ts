@@ -70,9 +70,3 @@ export type Magasins = {
   count: number;
   results: Magasin[];
 }
-
-// générique d'appels items
-export type Item = {
-  id: number|string; 
-  nom: string;
-}

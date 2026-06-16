@@ -1,5 +1,5 @@
 // src/ui/Xautocomplete/checkIsValid.ts
-import type { Item } from '../../ap_stocks/types/mvtFiltres';
+import type { Item } from './useAutocomplete.tsx';
 
 // Valide si la saisie correspond à un item existant ou respecte la contrainte "required"
 export function checkIsValid(
