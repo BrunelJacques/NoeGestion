@@ -11,7 +11,6 @@ export function checkIsValid(
   if (!query && !required) {
     return true;
   }
-  console.log("checkValid allowNull test", allowNull,  !query);
   if (!allowNull && (!results || results.length === 0)) {
     return false;
   }
