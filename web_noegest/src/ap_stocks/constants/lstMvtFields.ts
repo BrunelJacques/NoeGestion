@@ -7,7 +7,7 @@ import type { PageOrigine } from "./origines";
 
 export const lstMvtFields: Record<PageOrigine, MvtFormField[]> = {
   "sorties": [
-    { label: "Article", type: "text", fieldName: "article", subFieldName: "nom_court",width:135, justify: 'left'},
+    { label: "Article", type: "text", fieldName: "article", subFieldName: "nom_court",width:155, justify: 'right'},
     { noDisplay:true, label: "Nom long", type: "text", fieldName: "article", subFieldName: "nom",width:165, justify: 'left'},
     { label: "Qte Stock", type: "number", fieldName: "article", subFieldName: "qte_stock", width: 45, justify: 'right', nbDecimals: 0 },
     { label: "Qte", type: "number", fieldName: "qte_mouvement", width: 55, justify: 'right', nbDecimals: 2 },

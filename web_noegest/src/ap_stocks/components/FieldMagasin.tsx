@@ -1,6 +1,8 @@
 //src/ap_stocks/components/FieldeMagasin.tsx
 
-import type { Item, Magasins } from "../types/mvtFiltres";
+import type { Magasins } from "../types/mvtFiltres";
+import type { Item } from "../../ui/Xautocomplete/useAutocomplete.tsx";
+
 import apiUrl from "../../constants/api.Constants";
 import { Xautocomplete } from "../../ui/Xautocomplete";
 

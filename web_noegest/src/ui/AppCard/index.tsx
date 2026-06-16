@@ -7,7 +7,6 @@ interface AppCardProps {
 }
 
 export const AppCard = ({ children }: AppCardProps) => {
-
   return (
     <div className={`${s.appCard} container`}>
       {children}

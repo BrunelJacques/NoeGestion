@@ -1,18 +1,15 @@
 import React, { useEffect, useState } from "react";
 import * as s from "./index.css.ts";
-import { dicCalculs } from "../../utils/calculs.tsx";
-import { SpanCell } from "../../../ui/SpanCell";
 import { useFiltres } from "../../hooks/contextFiltres/useFiltres";
 import { apiUrl } from "../../../constants/api.Constants";
 import { MVT0, type Mouvement, type MvtsRetour } from "../../types/mouvement";
 import { useError } from "../../../hooks/useError";
 import { lstMvtFields } from "../../constants/lstMvtFields";
-import { getCellValue } from "../../../utils/getCellValue";
-import { Xinput } from "../../../ui/Xinput";
 import { Xbutton } from "../../../ui/Xbutton";
 import XbuttonBack from "../../../ui/Xbutton/XbuttonBack";
 import goBack from "../../../assets/icons/goBack.png";
-import {Form, useParams} from "react-router-dom";
+import { useParams} from "react-router-dom";
+import FormOneMvt from "../../components/StMenu/FormOneMvt.tsx";
 
 function OneMvt() {
   const { setError } = useError();
@@ -124,82 +121,27 @@ function OneMvt() {
           filtrées selon les choix affichés</p>
       </div>
 
-      {/* zone de saisie */}
-      <div className={s.wrapForm}>
-        <Form
-          id="oneMvtForm"
-          key={formKey}
-          onSubmit={handleSubmit}
+      <FormOneMvt formKey={formKey} fields={fields} draft={draft}
+                  updateField={updateField} handleSubmit={handleSubmit}
+      />
+
+      <div className={s.boutons}>
+        <XbuttonBack altClassName={s.altButton} displayPrevious={false}>
+          <img className={s.goBack} title="fleche" src={goBack} alt={'fleche'} />
+          <span>Retour</span>
+        </XbuttonBack>
+
+        <Xbutton
+          type="button"
+          altClassName={s.altButton}
+          onClick={resetMouvement}
         >
-          <div className={s.formStyle}>
-            {/* ------- déroulé des champs par map ------- */}
-            {fields.map((fld) => {
-              const val = getCellValue(draft, fld, dicCalculs);
-              const isEditable = Boolean(
-                fld.fieldName &&
-                !fld.subFieldName &&
-                !fld.calcul
-              );
+          Abandon
+        </Xbutton>
 
-              return (
-                <div
-                  key={`field-${draft.id}-${fld.label}`}
-                >
-                  {isEditable && fld.fieldName ? (
-                    <Xinput
-                      type={fld.type === "number" ? "number" : fld.type === "date" ? "date" : "text"}
-                      value={String(draft[fld.fieldName] ?? "")}
-                      showReset={false}
-                      onChange={(evt) => {
-                        const nextValue =
-                          fld.type === "number"
-                            ? Number(evt.target.value)
-                            : evt.target.value;
-
-                        updateField(
-                          fld.fieldName!,
-                          nextValue as Mouvement[typeof fld.fieldName]
-                        );
-                      }}
-                    />
-                  ) : typeof val === "number" ? (
-                    <SpanCell
-                      value={val}
-                      justify={fld.justify}
-                      nbDecimals={fld.nbDecimals}
-                      width={fld.width}
-                    />
-                  ) : (
-                    <SpanCell
-                      value={String(val)}
-                      justify={fld.justify}
-                      width={fld.width}
-                    />
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        </Form>
-
-        <div className={s.boutons}>
-          <XbuttonBack altClassName={s.altButton} displayPrevious={false}>
-            <img className={s.goBack} title="fleche" src={goBack} alt={'fleche'} />
-            <span>Retour</span>
-          </XbuttonBack>
-
-          <Xbutton
-            type="button"
-            altClassName={s.altButton}
-            onClick={resetMouvement}
-          >
-            Abandon
-          </Xbutton>
-
-          <Xbutton type="submit" altClassName="" form="oneMvtForm">
-            Validation
-          </Xbutton>
-        </div>
+        <Xbutton type="submit" altClassName="" form="oneMvtForm">
+          Validation
+        </Xbutton>
       </div>
     </section>
   );

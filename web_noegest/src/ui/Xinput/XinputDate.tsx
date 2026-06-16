@@ -2,7 +2,8 @@
 import { Xinput } from "./index.tsx";
 import * as dt from "../../utils/dates.ts";
 import * as sc from "../xcommon.css.ts";
-import {useLayoutEffect, useRef, useState} from "react";
+import {useLayoutEffect, useRef, useState, useEffect} from "react";
+import {useFormValidation} from "../../contexts/FormContext.tsx";
 
 
 interface Props {
@@ -24,14 +25,32 @@ export function XinputDate({
                                ...props
                            }: Props) {
 
+    const [dateFr, setDateFr] = useState(dt.dateToStringFr(jour??null));
+
+    const isValid = dateFr === "" || dt.isValidDateFr(dateFr);
+
+    const isValidRef = useRef(isValid); // si plusieurs instances il faut identifier
+
+    useEffect(() => {
+        isValidRef.current = isValid;
+    }, [isValid]);
+
+    // Connexion au système de validation parent
+    const validation = useFormValidation();
+
+    useEffect(() => {
+        if (!validation || !props.label) return;
+
+        // On retourne la fonction qui sera exécutée lors du Submit global
+        return  validation.registerValidator(props.label, () => {
+            return isValid;
+        });
+
+    }, [validation, props.label, isValid]); // Recalculé si isValid change
+
     const inputRef = useRef<HTMLInputElement>(null);
 
     const cursorPosRef = useRef<number | null>(null);
-
-    const [dateFr, setDateFr] = useState(dt.dateToStringFr(jour??null));
-
-    const valid = dateFr === "" || dt.isValidDateFr(dateFr);
-
 
     const handleBackSpace = () => {  // sauter le slash automatiquement sinon il sera remis par le formatage
         const pos = cursorPosRef.current ?? 0;
@@ -41,7 +60,6 @@ export function XinputDate({
             setDateFr(dateFr.slice(0, carAtPos === "/" ? pos - 1 : pos) + dateFr.slice(pos));
             console.log("Backspace setDateFr:", dateFr)
         }
-
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,12 +77,9 @@ export function XinputDate({
         // Mise à jour du state pour input.value
         setDateFr(formatted);
 
-        // Validation + callback parent
-        const isValid = dt.isValidDateFr(formatted);
-        if (isValid && onChange) {
+        // callback parent
+        if (onChange) {
             onChange(dt.stringToDate(formatted));
-        } else if (formatted === "" && onChange) {
-            onChange(null);
         }
     };
 
@@ -96,7 +111,7 @@ export function XinputDate({
                 onChange={handleChange}
                 onBackSpace={handleBackSpace}
                 placeholder="jjmmaaaa"
-                error={!valid ? "Date invalide" : null}
+                error={!isValid ? "Date invalide" : null}
             />
         </div>
     );

@@ -1,8 +1,7 @@
-// src/ui/XlinkAppli.tsx
+// src/ui/XlinkAppli/index.tsx
 import { Link } from "react-router-dom";
-import * as s from "./index.css.ts"
 import { AppCard } from "../AppCard";
-
+import * as s from "./index.css.ts";
 
 
 type XlinkAppliProps = {

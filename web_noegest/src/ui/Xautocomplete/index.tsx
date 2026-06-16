@@ -4,7 +4,7 @@ import * as sc from '../xcommon.css';
 import { Xinput } from '../Xinput';
 import { checkIsValid } from './checkIsValid.tsx';
 import { useAutocomplete } from './useAutocomplete.tsx';
-import type { Item } from "../../ap_stocks/types/mvtFiltres.ts";
+import type { Item } from "./useAutocomplete.tsx";
 import { useFormValidation } from "../../contexts/FormContext.tsx";
 
 

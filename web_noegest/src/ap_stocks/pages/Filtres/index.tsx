@@ -19,15 +19,14 @@ import FieldRayon from "../../components/FieldRayon.tsx";
 import { XinputDate } from "../../../ui/Xinput/XinputDate";
 import { useMemo, useState } from "react";
 import XbuttonBack from "../../../ui/Xbutton/XbuttonBack";
+import { useError} from "../../../hooks/useError.tsx";
 
 
 export default function Filtres() {
   const { filtres, setFiltres } = useFiltres();
   const { draft, setDraft, updateField } = useDraftFiltres(filtres);
   const [formKey, setFormKey] = useState(0);
-  
-  // Ref pour cibler le wrapper de validation
-  //const formRef = useRef<HTMLFormElement>(null);
+  const { setError } = useError();
 
   function resetFiltres() {
     setDraft(filtres);
@@ -45,6 +44,7 @@ export default function Filtres() {
 
     // On interroge directement la ref du validateur pour valider le formulaire
     if (validationRef.current && !validationRef.current.validateAll()) {
+      setError("Validation refusée car présence de champ(s) incorrect(s).")
       console.log("Formulaire invalide, soumission bloquée.");
       return; // On stoppe le submit
     }
