@@ -1,21 +1,21 @@
 // src/ap_stocks/components/StMenu/FormOneMvt.tsx
-import * as s from "../../pages/OneMvt/index.css.ts";
+import * as s from "../pages/OneMvt/index.css.ts";
 import {Form} from "react-router-dom";
-import type { MvtFormField } from "../../types/mvtFormFields.ts";
-import type { Mouvement } from "../../types/mouvement.ts";
-import {Xinput} from "../../../ui/Xinput";
-import {SpanCell} from "../../../ui/SpanCell";
+import type { MvtFormField } from "../types/mvtFormFields.ts";
+import type { Mouvement } from "../types/mouvement.ts";
+import {Xinput} from "../../ui/Xinput";
+import {SpanCell} from "../../ui/SpanCell";
 import type { SyntheticEvent } from "react";
-import {getCellValue} from "../../../utils/getCellValue.tsx";
-import {dicCalculs} from "../../utils/calculs.tsx";
-import FieldArticle from "../FieldArticle.tsx";
+import {getCellValue} from "../../utils/getCellValue.tsx";
+import {dicCalculs} from "../utils/calculs.tsx";
+import FieldArticle from "./FieldArticle.tsx";
 //import { getProp } from "../../../utils/getProp.tsx";
 
 interface Props {
   formKey: number,
   fields: MvtFormField[],
   draft: Mouvement,
-  updateField: <K extends keyof Mouvement>(fieldName: K,
+  updateField: <K extends keyof MvtFormField>(fieldName: K,
                                            value: Mouvement[K]) => void,
   handleSubmit: (e: SyntheticEvent<HTMLFormElement>) => Promise<void>,
 }

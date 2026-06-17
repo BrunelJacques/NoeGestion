@@ -8,7 +8,7 @@ import { Xautocomplete } from "../../ui/Xautocomplete";
 
 interface Props {
   nom: string | null | undefined;
-  updateField: (value: string) => void;
+  updateField: (value: Item|null) => void;
 }
 
 // Paramétrage de l'autocomplete pour les fournisseurs
@@ -25,8 +25,8 @@ export default function FieldFournisseur({ nom, updateField }: Props) {
   const handleChange = (item: Item | string | number) => {
     const value =
       typeof item === "object" && item !== null && "nom" in item
-        ? (item.nom)
-        : String(item);
+        ? (item)
+        : null;
 
     updateField(value);
   }

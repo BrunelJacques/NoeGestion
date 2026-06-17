@@ -9,7 +9,7 @@ import { Xbutton } from "../../../ui/Xbutton";
 import XbuttonBack from "../../../ui/Xbutton/XbuttonBack";
 import goBack from "../../../assets/icons/goBack.png";
 import { useParams} from "react-router-dom";
-import FormOneMvt from "../../components/StMenu/FormOneMvt.tsx";
+import FormOneMvt from "../../components/FormOneMvt.tsx";
 
 function OneMvt() {
   const { setError } = useError();
