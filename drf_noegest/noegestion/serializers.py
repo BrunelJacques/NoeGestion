@@ -1,4 +1,4 @@
-
+from django.db import transaction
 from rest_framework.serializers import ModelSerializer
 import rest_framework.serializers as serializers
 
@@ -151,8 +151,44 @@ class StMouvementSerializer(BaseModelSerializer):
             "analytique","fournisseur","ordi","saisie","ordi","transfert"
         ]
 
-    #def get_article_nom_court(self, obj):
-    #    return obj.article.nom_court
+    def update(self, instance, validated_data):
+        # On utilise une transaction pour s'assurer que tout passe ou tout échoue
+        with transaction.atomic():
+            old_qte = instance.qte_mouvement
+            old_sens = instance.sens
+            old_article = instance.article
+
+            # Mettre à jour le mouvement avec les nouvelles valeurs
+            instance = super().update(instance, validated_data)
+
+            # Récupérer les nouvelles valeurs (ou garder les anciennes si non modifiées)
+            new_qte = validated_data.get('qte_mouvement', old_qte)
+            new_sens = validated_data.get('sens', old_sens)
+            new_article = validated_data.get('article', old_article)
+
+            # Cas 1 : L'article n'a pas changé, on ajuste la différence
+            if old_article == new_article:
+                # On annule l'ancien impact
+                diff_ancien = old_qte * old_sens
+                # On applique le nouvel impact
+                diff_nouveau = new_qte * new_sens
+
+                new_article.qte_stock = (
+                                                    new_article.qte_stock or 0) - diff_ancien + diff_nouveau
+                new_article.save()
+
+            # Cas 2 : L'article a changé (scénario plus rare mais critique)
+            else:
+                # On recrédite/décredite l'ancien article
+                old_article.qte_stock = (old_article.qte_stock or 0) - (
+                            old_qte * old_sens)
+                old_article.save()
+                # On applique le mouvement sur le nouvel article
+                new_article.qte_stock = (new_article.qte_stock or 0) + (
+                            new_qte * new_sens)
+                new_article.save()
+
+        return instance
 
     def validate(self, data):
         ok = True

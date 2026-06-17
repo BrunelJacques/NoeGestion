@@ -8,7 +8,7 @@ import type { Item } from "../../ui/Xautocomplete/useAutocomplete.tsx";
 
 interface Props {
   nom: string | null | undefined;
-  updateField: (value: string) => void;
+  updateField: (art: Item|null) => void;
 }
 
 // paramétrage de la saisie d'article avec autocomplétion
@@ -23,12 +23,12 @@ export default function FieldArticle({ nom, updateField }: Props) {
   }, [url]); // Ne change que si l'URL change
     
   const handleChange = (item: Item | string | number) => {
-    const value =
+    const art =
       typeof item === "object" && item !== null && "nom" in item
-        ? (item.nom)
-        : String(item);
+        ? (item)
+        : null;
 
-    updateField(value);
+    updateField(art);
   }
 
   return (

@@ -1,6 +1,7 @@
 // types/mouvement.ts
 
 import { type Article, ARTICLE0 } from './article';
+import { type  Fournisseur } from './mvtFiltres';
 
 export type Mouvement = {
     id: number;
@@ -14,7 +15,7 @@ export type Mouvement = {
     service: number;
     rations?: number;
     analytique: number;
-    fournisseur?: string;
+    fournisseur?: Fournisseur;
     ordi: string;
     saisie: string;
     transfert?: Date;

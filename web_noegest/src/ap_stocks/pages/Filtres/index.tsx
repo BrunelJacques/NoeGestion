@@ -1,5 +1,6 @@
 //src/ap_stocks/pages/Filtres/index.tsx
 import { useRef } from "react";
+import type { FormEvent } from "react";
 import { FormValidationProvider } from "../../../contexts/FormContext";
 import * as s from "./index.css";
 import { Xbutton } from "../../../ui/Xbutton";
@@ -39,7 +40,7 @@ export default function Filtres() {
   const validationRef = useRef<{ validateAll: () => boolean } | null>(null);
  
   // Fonction de soumission du formulaire
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     // On interroge directement la ref du validateur pour valider le formulaire
@@ -106,7 +107,7 @@ export default function Filtres() {
             <div className={s.entree}>
               {isPageArticle && (
                 <FieldArticle
-                  nom={draft.article}
+                  nom={draft.article?.nom}
                   updateField={(val) => updateField('article', val)}
                 />
               )}

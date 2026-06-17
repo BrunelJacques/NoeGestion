@@ -1,3 +1,4 @@
+// src/ap_stocks/pages/Mouvements/index.tsx
 import React, { useEffect, useState } from "react";
 import * as s from "../Mouvements/index.css";
 import { dicCalculs } from "../../utils/calculs.tsx";
@@ -10,16 +11,19 @@ import { lstMvtFields } from "../../constants/lstMvtFields";
 import { useNavigate } from "react-router-dom";
 import { getCellValue } from "../../../utils/getCellValue";
 
-
 function Mouvements() {
   const navigate = useNavigate();
   const { setError } = useError();
   const { filtres } = useFiltres();
   const [mouvements, setMouvements] = useState<Mouvement[]>([]);
 
-  // 2. Utilisation native de URLSearchParams
+  // Utilisation native de URLSearchParams
   const queryParams = new URLSearchParams();
-  if (filtres?.jour) queryParams.append("jour", filtres.jour.toISOString().split("T")[0]);
+  if (filtres?.jour) {
+    // Option 'sv-SE' force le format YYYY-MM-DD en utilisant l'heure locale
+    const localDateStr = filtres.jour.toLocaleDateString("sv-SE");
+    queryParams.append("jour", localDateStr);
+  }
   if (filtres?.origine) queryParams.append("origine", filtres.origine);
 
   const url = `${apiUrl.STMOUVEMENT_URL}?${queryParams.toString()}`;
@@ -32,7 +36,6 @@ function Mouvements() {
 
   useEffect(() => {
     let isMounted = true;
-
     const executeFetch = async () => {
       try {
         const response = await fetch(url);
@@ -42,6 +45,7 @@ function Mouvements() {
         const mvts: MvtsRetour = await response.json();
 
         if (isMounted) setMouvements(mvts.results);
+        console.log("mouvements:",mvts.results);
       } catch (error) {
         console.error("Erreur lors du fetch :", error);
         if (isMounted) {
@@ -49,11 +53,9 @@ function Mouvements() {
         }
       }
     };
-
     executeFetch().then(() => {});
-
     return () => { isMounted = false; };
-  }, [url, setError]);
+  }, [url, filtres, setError]);
 
   const handleCellClick = (mvtId: Mouvement["id"]) => {
     navigate(`/stocks/one-mvt/${mvtId}`);

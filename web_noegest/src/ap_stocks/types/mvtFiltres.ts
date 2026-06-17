@@ -3,13 +3,13 @@
 export type MvtFiltres = {
 
   pageOrigine: "entrees" | "sorties" | "article" ;
-  article?: string | null;
+  article?: Item | null;
   jour: Date;
   periode?: { debut: Date; fin: Date } | null; //se substitue à jour pour élagrir la recherche
   origine : string; // Attention : peut être à blanc
   service: number;
   camp?: string|null; // uniquement géré lors d'origine camp in ou out
-  fournisseur?: string;
+  fournisseur?: Item | null;
   magasin?: string;
   rayon?: string;
   tva: string; // sera géré dans la page de saisie d'un mouvement achat
@@ -69,4 +69,10 @@ export type Magasin = {
 export type Magasins = {
   count: number;
   results: Magasin[];
+}
+
+// générique param
+export type Item = {
+  id: number|string;
+  nom: string;
 }

@@ -8,6 +8,8 @@ import {SpanCell} from "../../../ui/SpanCell";
 import type { SyntheticEvent } from "react";
 import {getCellValue} from "../../../utils/getCellValue.tsx";
 import {dicCalculs} from "../../utils/calculs.tsx";
+import FieldArticle from "../FieldArticle.tsx";
+//import { getProp } from "../../../utils/getProp.tsx";
 
 interface Props {
   formKey: number,
@@ -19,20 +21,20 @@ interface Props {
 }
 
 
-export default function FormOneMvt({ ...p}:Props) {
+export default function FormOneMvt({ ...prp}:Props) {
 
 
 return (
   <div className={s.wrapForm}>
     <Form
       id="oneMvtForm"
-      key={p.formKey}
-      onSubmit={p.handleSubmit}
+      key={prp.formKey}
+      onSubmit={prp.handleSubmit}
     >
       <div className={s.formStyle}>
         {/* ------- déroulé des champs par map ------- */}
-        {p.fields.map((fld) => {
-          const val = getCellValue(p.draft, fld, dicCalculs);
+        {prp.fields.map((fld) => {
+          const val = getCellValue(prp.draft, fld, dicCalculs);
           const isEditable = Boolean(
             fld.fieldName &&
             !fld.subFieldName &&
@@ -41,12 +43,17 @@ return (
 
           return (
             <div
-              key={`field-${p.draft.id}-${fld.label}`}
+              key={`field-${prp.draft.id}-${fld.label}`}
             >
-              {isEditable && fld.fieldName ? (
+              { fld.fieldName === "article" ?(
+                <FieldArticle
+                  nom={fld.subFieldName}
+                  updateField={(art) => prp.updateField(`article`, art)}
+                />
+                ) : (isEditable && fld.fieldName) ? (
                 <Xinput
                   type={fld.type === "number" ? "number" : fld.type === "date" ? "date" : "text"}
-                  value={String(p.draft[fld.fieldName] ?? "")}
+                  value={String(prp.draft[fld.fieldName] ?? "")}
                   showReset={false}
                   onChange={(evt) => {
                     const nextValue =
@@ -54,7 +61,7 @@ return (
                         ? Number(evt.target.value)
                         : evt.target.value;
 
-                    p.updateField(
+                    prp.updateField(
                       fld.fieldName!,
                       nextValue as Mouvement[typeof fld.fieldName]
                     );

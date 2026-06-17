@@ -1,8 +1,9 @@
+// src/ap_stocks/hooks/contextFiltres/FiltresProvider.tsx
 import { useCallback, useEffect, useState } from "react";
 import type { MvtFiltres } from "../../types/mvtFiltres";
 import { FiltresContext } from "./FiltresContext";
 import { FILTRES0 } from "../../types/mvtFiltres";
-import { dateToISO, stringToDate } from "../../../utils/dates";
+import { stringToDate } from "../../../utils/dates";
 
 
 const STORAGE_KEY = "stocks-filtres";
@@ -50,18 +51,15 @@ export function FiltresProvider({
     setFiltres((prev) => {
       const nextState = typeof newValue === "function" ? newValue(prev) : newValue;
 
-      // On injecte automatiquement la date du jour de la modification
-      //const updatedState = { ...nextState, dateModif: new Date() };
-
       // On prépare une copie pour le localStorage
       const dataToStore = {
         ...nextState,
-        jour: dateToISO(nextState.jour), // jour stocké en YYYY-MM-DD
-        dateModif: new Date() //dateTime du jour en dateModif au format UTC internationale par string ISO 8601 (ex: "2026-05-18T10:30:00.000Z")
+        jour: nextState.jour.toLocaleDateString("sv-SE"), // date locale en YYYY-MM-DD
+        dateModif: new Date() // format UTC international ("2026-05-18T10:30:00.000Z")
         };
       
       localStorage.setItem(STORAGE_KEY, JSON.stringify(dataToStore));
-      return nextState; 
+      return { ...nextState }; // copie de l'objet par {...myVar} change la réf mémoire
     });
   }, []);
 

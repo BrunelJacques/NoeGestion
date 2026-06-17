@@ -15,8 +15,8 @@ function OneMvt() {
   const { setError } = useError();
   const { filtres } = useFiltres();
 
-  const [mouvement, setMouvement] = useState<Mouvement>(MVT0);
-  const [draft, setDraft] = useState<Mouvement>(MVT0);
+  const [mouvement, setMouvement] = useState<Mouvement>(MVT0); //original
+  const [data, setData] = useState<Mouvement>(MVT0); // modifié
   const [formKey, setFormKey] = useState(0);
 
   const { id: queryId } = useParams();
@@ -43,7 +43,7 @@ function OneMvt() {
 
         if (isMounted) {
           setMouvement(fetchedMouvement);
-          setDraft(fetchedMouvement);
+          setData(fetchedMouvement);
         }
       } catch (error) {
         console.error("Erreur lors du fetch :", error);
@@ -68,14 +68,14 @@ function OneMvt() {
   }, [url, setError]);
 
   function updateField<K extends keyof Mouvement>(fieldName: K, value: Mouvement[K]) {
-    setDraft((prev) => ({
+    setData((prev) => ({
       ...prev,
       [fieldName]: value,
     }));
   }
 
   function resetMouvement() {
-    setDraft(mouvement);
+    setData(mouvement);
     setFormKey((prevKey) => prevKey + 1);
   }
 
@@ -83,12 +83,12 @@ function OneMvt() {
     e.preventDefault();
 
     try {
-      const response = await fetch(`${apiUrl.STMOUVEMENT_URL}${draft.id}/`, {
+      const response = await fetch(`${apiUrl.STMOUVEMENT_URL}${data.id}/`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(draft),
+        body: JSON.stringify(data),
       });
 
       if (!response.ok) {
@@ -98,7 +98,7 @@ function OneMvt() {
 
       const savedMouvement: Mouvement = await response.json();
       setMouvement(savedMouvement);
-      setDraft(savedMouvement);
+      setData(savedMouvement);
     } catch (error) {
       console.error("Erreur lors de la sauvegarde :", error);
       setError(
@@ -121,7 +121,7 @@ function OneMvt() {
           filtrées selon les choix affichés</p>
       </div>
 
-      <FormOneMvt formKey={formKey} fields={fields} draft={draft}
+      <FormOneMvt formKey={formKey} fields={fields} draft={data}
                   updateField={updateField} handleSubmit={handleSubmit}
       />
 
