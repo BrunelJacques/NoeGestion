@@ -145,7 +145,7 @@ class StMouvement(models.Model):
                                     null=True, blank=True,
                                     help_text="Nbre de ration par unité Mouvement")
     transfert = models.DateField(null=True,blank=True,
-                                 help_text="non modifiable si date de transfert")
+                                 help_text="non modifiable, date de transfert à nouveaux")
     ordi = models.CharField(blank=True, default="",max_length=32,
                             help_text="pour tracer les mouvements, 'user/station'")
     saisie = models.DateField(auto_now=True,help_text="Date modif de l'item")
