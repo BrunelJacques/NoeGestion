@@ -31,8 +31,8 @@ export function StMenu(props: FiltresProps) {
           {filtres.pageOrigine}
         </div>
       </div>
-      <hr></hr>
 
+      <hr></hr>
       <AfficheFiltres />
 
       <div className={s.boutons}>

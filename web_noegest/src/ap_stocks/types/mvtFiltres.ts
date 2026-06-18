@@ -24,7 +24,7 @@ export const  FILTRES0: MvtFiltres= {
   origine: "cuisine",
   service: 0,
   camp: "",
-  fournisseur: "",
+  fournisseur: null,
   magasin: "",
   rayon: "",
   tva: "TTC",

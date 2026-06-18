@@ -16,7 +16,7 @@ interface Props {
   fields: MvtFormField[],
   draft: Mouvement,
   updateField: <K extends keyof MvtFormField>(fieldName: K,
-                                           value: Mouvement[K]) => void,
+                                           value: MvtFormField[K]) => void,
   handleSubmit: (e: SyntheticEvent<HTMLFormElement>) => Promise<void>,
 }
 

@@ -10,7 +10,9 @@ export const page = style({
 
 export const entete = style({
   display: "flex",
+  flexWrap: "wrap",
   alignItems: "center",
+  marginBottom: "auto",
 })
 
 export const boutons = style({
@@ -40,6 +42,7 @@ export const fltOrigine = style({
   fontWeight: "bold",
   textTransform: "uppercase",
   fontSize: 16,
+  marginTop: 5,
 })
 
 
@@ -50,20 +53,30 @@ export const fltWrap = style({
   gap: "0px",
   padding: "2px",
   fontSize: "14px",
-})
-
-export const fltKey = style({
-  fontWeight: "bold", 
-  textTransform: "capitalize",
-  color: colors.txtDarkGray,
+  marginBottom: "auto",
 })
 
 export const fltItem = style({
+  display: "flex",
+  flexWrap: "wrap",
+  maxWidth: "100%",
   border: "1px solid #ccc",
   borderRadius: "3px",
   padding: "1px 4px",
   margin: "1px",
+})
+
+export const fltKey = style({
+  fontWeight: "bold",
+  textTransform: "capitalize",
+  color: colors.txtDarkGray,
+})
+
+export const fltTxt = style({
+  overflow: "hidden",
+  textOverflow: "ellipsis",
   whiteSpace: "nowrap",
+  paddingLeft: "3px",
 })
 
 export const xlink = style({

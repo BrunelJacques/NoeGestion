@@ -62,13 +62,14 @@ export function AfficheFiltres() { // affichage d'un résumé des filtres actifs
 
       {filtresAffichables.map(([cle, valeur]) => {
 
-        const texteAffiche =
+        const txtDisplayed =
           typeof valeur === "object" && valeur !== null && "nom" in valeur && typeof valeur.nom === "string"
             ? valeur.nom
             : formatValeur(cle as keyof MvtFiltres, valeur as MvtFiltres[keyof MvtFiltres]);
         return (
           <div key={cle} className={s.fltItem}>
-            <span className={s.fltKey}>{cle}</span>: {texteAffiche}
+            <span className={s.fltKey}> {cle}: </span>
+            <span className={s.fltTxt}> {txtDisplayed} </span>
           </div>
         );
       })}
