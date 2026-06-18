@@ -28,8 +28,8 @@ export const altButton = style({
   backgroundColor: vars.color.secondary,
   color: vars.color.text,
   border: `1px solid ${vars.color.border}`,
-  margin: '0 5px',
-  padding: 0,
+  margin: '0',
+  paddingRight: 5,
 })
 
 export const goBack = style({

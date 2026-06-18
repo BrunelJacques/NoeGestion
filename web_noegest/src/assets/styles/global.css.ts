@@ -138,3 +138,11 @@ globalStyle('.card', {
   boxShadow: `0 0 5px -1px ${vars.color.primary}`,
   transition: 'transform 0.2s ease-in-out, background-color 0.3s ease'
 })
+
+globalStyle('.cardNoBorder', {
+  display: 'flex',
+  flexDirection: 'column',
+  margin: "10px 7px 0 7px",
+  background: vars.color.card, // Utilise la couleur de surface du thème
+  color: vars.color.text,             // Utilise le texte du thème
+})

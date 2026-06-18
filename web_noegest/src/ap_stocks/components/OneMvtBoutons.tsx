@@ -16,7 +16,6 @@ export function OneMvtBoutons({ ...prp }: Props ) {
     <div className={s.boutons}>
       <XbuttonBack altClassName={s.altButton} displayPrevious={true}>
         <img className={s.goBack} title="fleche" src={goBack} alt={'AVXX_'} />
-        <span>Retour</span>
       </XbuttonBack>
 
       <Xbutton

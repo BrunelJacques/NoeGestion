@@ -12,11 +12,12 @@ export default function Home () {
   return (
     <div>
       <h3 className="nowrap">Noegestion de Matthania</h3>
-      <h5 >Bienvenue  {user?.username} entre dans le service</h5> 
+      <h5 >Bienvenue  {user?.username} entre dans le service</h5>
       <Card>
+        <div className="cardNoBorder">
           <h5 className="nowrap">Cliquez sur une application active</h5>
           <p>les applications sont activées selon les droits de chaque utilisateur"</p>
-
+        </div>
         <XlinkAppli
           to="/stocks/filtres"
           disabled={false}
@@ -27,12 +28,11 @@ export default function Home () {
 
         <XlinkAppli
           to="/km"
-          disabled={disabled}  
+          disabled={disabled}
           imageSrc={minibus}
           title="Suivi KM"
           description="suivi des véhicules et l'affectation du coût"
         />
-
       </Card>
     </div>
   );
