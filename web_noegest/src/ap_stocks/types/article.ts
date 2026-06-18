@@ -13,7 +13,7 @@ export type Article = {
   dernier_achat?: string;
 }
 
-export const ARTICLE0 : Article = {
+export const ART0 : Article = {
   id: 0,
   nom: "",
 }

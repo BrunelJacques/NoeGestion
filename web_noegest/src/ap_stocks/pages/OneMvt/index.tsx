@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, {useCallback, useEffect, useState } from "react";
 import * as s from "./index.css.ts";
 import { useFiltres } from "../../hooks/contextFiltres/useFiltres";
 import { apiUrl } from "../../../constants/api.Constants";
-import { MVT0, type Mouvement, type MvtsRetour } from "../../types/mouvement";
+import { MVT0, type MvtPatch, type MvtsRetour } from "../../types/mouvement";
 import { useError } from "../../../hooks/useError";
 import { lstMvtFields } from "../../constants/lstMvtFields";
 import { Xbutton } from "../../../ui/Xbutton";
@@ -10,13 +10,15 @@ import XbuttonBack from "../../../ui/Xbutton/XbuttonBack";
 import goBack from "../../../assets/icons/goBack.png";
 import { useParams} from "react-router-dom";
 import FormOneMvt from "../../components/FormOneMvt.tsx";
+import { ART0, type Article } from "../../types/article.ts";
 
 function OneMvt() {
   const { setError } = useError();
   const { filtres } = useFiltres();
 
-  const [mouvement, setMouvement] = useState<Mouvement>(MVT0); //original
-  const [data, setData] = useState<Mouvement>(MVT0); // modifié
+  const [mouvement, setMouvement] = useState<MvtPatch>(MVT0); //original
+  const [mvtPatch, setMvtPatch] = useState<MvtPatch>(MVT0); // modifié
+  const [ article, setArticle] = useState<Article>(ART0); //original
   const [formKey, setFormKey] = useState(0);
 
   const { id: queryId } = useParams();
@@ -39,11 +41,17 @@ function OneMvt() {
           setError("Échec api mouvement: no response.");
         }
         const mvts: MvtsRetour = await response.json();
-        const fetchedMouvement = mvts.results[0] || MVT0;
-
+        const oneMvt = mvts.results[0];
+        const { article, fournisseur, saisie, transfert, ...leReste } = oneMvt;
+        setArticle(article);
+        const mvtPatch: MvtPatch = {
+          ...leReste,
+          article: article.id,
+          fournisseur: fournisseur?.id // Sera number ou undefined automatiquement
+        };
         if (isMounted) {
-          setMouvement(fetchedMouvement);
-          setData(fetchedMouvement);
+          setMouvement(mvtPatch);
+          setMvtPatch(mvtPatch);
         }
       } catch (error) {
         console.error("Erreur lors du fetch :", error);
@@ -67,15 +75,18 @@ function OneMvt() {
     };
   }, [url, setError]);
 
-  function updateField<K extends keyof Mouvement>(fieldName: K, value: Mouvement[K]) {
-    setData((prev) => ({
-      ...prev,
-      [fieldName]: value,
-    }));
-  }
+  const updateField = useCallback(
+    (field: keyof MvtPatch, value?: MvtPatch[keyof MvtPatch]|null
+    ) => {
+      setMvtPatch(prev => ({ ...prev, [field]: value }));
+      console.log(`setMvtPatch ${field} value:`,value)
+    },
+    []
+  );
+
 
   function resetMouvement() {
-    setData(mouvement);
+    setMvtPatch(mouvement);
     setFormKey((prevKey) => prevKey + 1);
   }
 
@@ -83,12 +94,12 @@ function OneMvt() {
     e.preventDefault();
 
     try {
-      const response = await fetch(`${apiUrl.STMOUVEMENT_URL}${data.id}/`, {
+      const response = await fetch(`${apiUrl.STMOUVEMENT_URL}${mvtPatch.id}/`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(mvtPatch),
       });
 
       if (!response.ok) {
@@ -96,9 +107,9 @@ function OneMvt() {
         return;
       }
 
-      const savedMouvement: Mouvement = await response.json();
+      const savedMouvement: MvtPatch = await response.json();
       setMouvement(savedMouvement);
-      setData(savedMouvement);
+      setMvtPatch(savedMouvement);
     } catch (error) {
       console.error("Erreur lors de la sauvegarde :", error);
       setError(
@@ -121,8 +132,10 @@ function OneMvt() {
           filtrées selon les choix affichés</p>
       </div>
 
-      <FormOneMvt formKey={formKey} fields={fields} draft={data}
-                  updateField={updateField} handleSubmit={handleSubmit}
+      <FormOneMvt formKey={formKey} fields={fields} mvtPatch={mvtPatch}
+                  article={article}
+                  updateField={updateField}
+                  handleSubmit={handleSubmit}
       />
 
       <div className={s.boutons}>
