@@ -5,12 +5,10 @@ import { apiUrl } from "../../../constants/api.Constants";
 import { MVT0, type MvtPatch, type MvtsRetour } from "../../types/mouvement";
 import { useError } from "../../../hooks/useError";
 import { lstMvtFields } from "../../constants/lstMvtFields";
-import { Xbutton } from "../../../ui/Xbutton";
-import XbuttonBack from "../../../ui/Xbutton/XbuttonBack";
-import goBack from "../../../assets/icons/goBack.png";
 import { useParams} from "react-router-dom";
-import FormOneMvt from "../../components/FormOneMvt.tsx";
+import OneMvtForm from "../../components/OneMvtForm.tsx";
 import { ART0, type Article } from "../../types/article.ts";
+import {OneMvtBoutons} from "../../components/OneMvtBoutons.tsx";
 
 function OneMvt() {
   const { setError } = useError();
@@ -84,7 +82,6 @@ function OneMvt() {
     []
   );
 
-
   function resetMouvement() {
     setMvtPatch(mouvement);
     setFormKey((prevKey) => prevKey + 1);
@@ -132,30 +129,14 @@ function OneMvt() {
           filtrées selon les choix affichés</p>
       </div>
 
-      <FormOneMvt formKey={formKey} fields={fields} mvtPatch={mvtPatch}
+      <OneMvtForm formKey={formKey}
+                  fields={fields}
+                  mvtPatch={mvtPatch}
                   article={article}
                   updateField={updateField}
                   handleSubmit={handleSubmit}
       />
-
-      <div className={s.boutons}>
-        <XbuttonBack altClassName={s.altButton} displayPrevious={false}>
-          <img className={s.goBack} title="fleche" src={goBack} alt={'fleche'} />
-          <span>Retour</span>
-        </XbuttonBack>
-
-        <Xbutton
-          type="button"
-          altClassName={s.altButton}
-          onClick={resetMouvement}
-        >
-          Abandon
-        </Xbutton>
-
-        <Xbutton type="submit" altClassName="" form="oneMvtForm">
-          Validation
-        </Xbutton>
-      </div>
+      <OneMvtBoutons resetMouvement={resetMouvement}  />
     </section>
   );
 }

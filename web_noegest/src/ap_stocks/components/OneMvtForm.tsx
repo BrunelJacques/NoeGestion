@@ -21,8 +21,7 @@ interface Props {
 }
 
 
-export default function FormOneMvt({ ...prp}:Props) {
-
+export default function OneMvtForm({ ...prp}:Props) {
 
 return (
   <div className={s.wrapForm}>
