@@ -10,9 +10,10 @@ import { useError } from "../../../hooks/useError";
 import { lstMvtFields } from "../../constants/lstMvtFields";
 import { useNavigate } from "react-router-dom";
 import { getCellValue } from "../../../utils/getCellValue";
+import {useNavState} from "../../../hooks/navState.tsx";
 
 function Mouvements() {
-  const navigate = useNavigate();
+
   const { setError } = useError();
   const { filtres } = useFiltres();
   const [mouvements, setMouvements] = useState<Mouvement[]>([]);
@@ -57,8 +58,16 @@ function Mouvements() {
     return () => { isMounted = false; };
   }, [url, filtres, setError]);
 
+  const navigate = useNavigate();
+  const { getNavState } = useNavState(); // On récupère la fonction de génération
+
   const handleCellClick = (mvtId: Mouvement["id"]) => {
-    navigate(`/stocks/one-mvt/${mvtId}`);
+    navigate(`/stocks/one-mvt/${mvtId}`, {
+      state: {
+        // On génère la pile exacte au moment précis du clic
+        pageStack: getNavState("Liste Mvts")
+      }
+    });
   };
 
   return (

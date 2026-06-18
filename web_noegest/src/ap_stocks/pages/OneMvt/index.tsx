@@ -1,3 +1,4 @@
+//src/ap_stocks/pages/OneMvt/index.tsx
 import React, {useCallback, useEffect, useState } from "react";
 import * as s from "./index.css.ts";
 import { useFiltres } from "../../hooks/contextFiltres/useFiltres";
@@ -5,12 +6,15 @@ import { apiUrl } from "../../../constants/api.Constants";
 import { MVT0, type MvtPatch, type MvtsRetour } from "../../types/mouvement";
 import { useError } from "../../../hooks/useError";
 import { lstMvtFields } from "../../constants/lstMvtFields";
-import { useParams} from "react-router-dom";
+import {useLocation, useParams} from "react-router-dom";
 import OneMvtForm from "../../components/OneMvtForm.tsx";
 import { ART0, type Article } from "../../types/article.ts";
 import {OneMvtBoutons} from "../../components/OneMvtBoutons.tsx";
 
 function OneMvt() {
+  const location = useLocation();
+  console.log("OneMvt location: ",location.state);
+
   const { setError } = useError();
   const { filtres } = useFiltres();
 

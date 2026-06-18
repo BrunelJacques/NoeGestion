@@ -23,7 +23,7 @@ export function StMenu(props: FiltresProps) {
   return (<>
     <nav className={props.className}>
       <div  className={s.entete}>
-        <XbuttonBack altClassName={s.altButton} displayPrevious={false}>
+        <XbuttonBack altClassName={s.altButton} displayPrevious={true}>
           <img className={s.goBack} title={"fleche"} src={goBack} alt={"fleche"} />
         </XbuttonBack>
 

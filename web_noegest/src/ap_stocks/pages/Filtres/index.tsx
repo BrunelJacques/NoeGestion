@@ -21,7 +21,7 @@ import { useMemo, useState } from "react";
 import XbuttonBack from "../../../ui/Xbutton/XbuttonBack";
 import { useError} from "../../../hooks/useError.tsx";
 
-
+/* Page de saisie des filtres pour les appels de mouvements */
 export default function Filtres() {
   const { filtres, setFiltres } = useFiltres();
   const { draft, setDraft, updateField } = useDraftFiltres(filtres);

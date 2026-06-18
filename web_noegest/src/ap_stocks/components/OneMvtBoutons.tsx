@@ -1,8 +1,7 @@
 //src/ap_stocks/components/OneMvtBoutons.tsx
-
 import { Xbutton } from "../../ui/Xbutton";
 import XbuttonBack from "../../ui/Xbutton/XbuttonBack";
-import { goBack } from "../pages/Filtres/index.css";
+import goBack from "../../assets/icons/goBack.png";
 import * as s from "../pages/OneMvt/index.css.ts";
 
 interface Props {
@@ -15,8 +14,8 @@ export function OneMvtBoutons({ ...prp }: Props ) {
   return (
 
     <div className={s.boutons}>
-      <XbuttonBack altClassName={s.altButton} displayPrevious={false}>
-        <img className={s.goBack} title="fleche" src={goBack} alt={'fleche'} />
+      <XbuttonBack altClassName={s.altButton} displayPrevious={true}>
+        <img className={s.goBack} title="fleche" src={goBack} alt={'AVXX_'} />
         <span>Retour</span>
       </XbuttonBack>
 

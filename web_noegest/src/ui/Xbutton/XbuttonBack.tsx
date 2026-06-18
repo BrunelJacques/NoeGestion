@@ -1,5 +1,4 @@
 // src/ui/Xbutton/XbuttonBack.tsx
-
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Xbutton } from './index';
 import * as s from './index.css.ts';
@@ -25,9 +24,8 @@ function XbuttonBack({
   const pageStack = location.state?.pageStack || [];
 
   // La page juste avant (la fin du tableau)
-
   const previousPage = pageStack[pageStack.length - 1]?? {'name': 'Accueil', 'url': '/home'};
-  // La page encore avant (l'avant-dernière)
+  // La page avant-dernière
   //const pageAfterNextBack = pageStack[pageStack.length - 2];
 
   const handleBack = () => {

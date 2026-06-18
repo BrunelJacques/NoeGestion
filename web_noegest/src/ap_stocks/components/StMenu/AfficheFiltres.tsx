@@ -3,8 +3,8 @@ import { useFiltres } from "../../hooks/contextFiltres/useFiltres";
 import type { MvtFiltres } from "../../types/mvtFiltres";
 import * as s from "./index.css.ts";
 
-
-export function AfficheFiltres() { // affichage d'un résumé des filtres actifs dans le menu
+/* Affichage d'un résumé des filtres actifs dans le menu métier */
+export function AfficheFiltres() {
   const { filtres } = useFiltres();
 
   if (!filtres) return null;
