@@ -1,3 +1,4 @@
+
 export type Article = {
   id: number;
   nom: string;

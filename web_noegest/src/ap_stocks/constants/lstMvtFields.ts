@@ -11,6 +11,7 @@ export const lstMvtFields: Record<PageOrigine, MvtFormField[]> = {
     { noDisplay:true, label: "Nom long", type: "text", fieldName: "article", subFieldName: "nom",width:165, justify: 'left'},
     { label: "Qte Stock", type: "number", fieldName: "article", subFieldName: "qte_stock", width: 45, justify: 'right', nbDecimals: 0 },
     { label: "Qte", type: "number", fieldName: "qte_mouvement", width: 55, justify: 'right', nbDecimals: 2 },
+    { label: "Fournisseur", type: "text", fieldName: "fournisseur", width:105, justify: 'left' },
     { label: "PxUn", type: "number", fieldName: "prix_unit", width: 55, justify: 'right', nbDecimals: 3 },
     { label: "Rat ions", type: "number", fieldName: "rations", width: 55, justify: 'right', nbDecimals: 0 },
     { label: "Coût Un", type: "number", calcul: "coutUn", width: 55, justify: 'right', nbDecimals: 2 },
@@ -19,6 +20,7 @@ export const lstMvtFields: Record<PageOrigine, MvtFormField[]> = {
   ],
   "entrees": [
       { label: "Article", type: "text", fieldName: "article", width:105, justify: 'left' },
+      { label: "Fournisseur", type: "text", fieldName: "fournisseur", width:105, justify: 'left' },
       { label: "Nb Colis", type: "number", fieldName: "nb_colis", width: 55, justify: 'right', nbDecimals: 0 },
       { label: "Par Colis", type: "number", calcul: "coutUn", default: 1, width: 55, justify: 'right', nbDecimals: 0 },
       { label: "Qte Fact", type: "number", fieldName: "qte_mouvement", width: 55, justify: 'right', nbDecimals: 2 },

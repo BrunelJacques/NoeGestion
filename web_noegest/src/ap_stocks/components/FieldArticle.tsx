@@ -7,13 +7,14 @@ import type { Articles } from "../types/article";
 import type { Item } from "../../ui/Xautocomplete/useAutocomplete.tsx";
 
 interface Props {
-  nom: string | null | undefined;
+  value: string | null | undefined;
   updateField: (art: Item|null) => void;
 }
 
 // paramétrage de la saisie d'article avec autocomplétion
-export default function FieldArticle({ nom, updateField }: Props) {
+export default function FieldArticle({ value, updateField }: Props) {
   const url = apiUrl.STARTICLE_NOM_URL
+  console.log("value reçue dans FieldArticle", value)
 
   // Utiliser useCallback pour figer la référence de la fonction
   const fetchArticles = useCallback(async (search: string) => {
@@ -36,7 +37,7 @@ export default function FieldArticle({ nom, updateField }: Props) {
       <Xautocomplete 
         label="Article"
         name="article"
-        value={nom ?? ""}
+        value={value ?? ""}
         fetchItems={fetchArticles}
         onSelect={handleChange }
       />

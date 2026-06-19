@@ -7,6 +7,8 @@ export type Item = {
   nom: string;
 }
 
+export const ITEM0: Item = { id: 0, nom: "item à définir" };
+
 interface UseAutocompleteProps {
   // Compatibilité synchrone / asynchrone
   fetchItems: (query: string) => Item[] | Promise<Item[]>;

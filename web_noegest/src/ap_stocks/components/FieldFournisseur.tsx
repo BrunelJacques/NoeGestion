@@ -7,13 +7,14 @@ import apiUrl from "../../constants/api.Constants";
 import { Xautocomplete } from "../../ui/Xautocomplete";
 
 interface Props {
-  nom: string | null | undefined;
+  value: string | null | undefined;
   updateField: (value: Item|null) => void;
 }
 
 // Paramétrage de l'autocomplete pour les fournisseurs
-export default function FieldFournisseur({ nom, updateField }: Props) {
+export default function FieldFournisseur({ value, updateField }: Props) {
   const url = apiUrl.STFOURNISSEUR_URL
+  console.log("fieldFournisseur", value)
 
   const fetchFournisseurs = async (search?: string) => {
     const query = search ?? ""; // search si null ou undefined, sinon ""
@@ -36,7 +37,7 @@ export default function FieldFournisseur({ nom, updateField }: Props) {
       <Xautocomplete
         label="Fournisseur"
         name="fournisseur"
-        value={nom ?? ""}
+        value={value ?? ""}
         fetchItems={fetchFournisseurs}
         onSelect={handleChange}
       />

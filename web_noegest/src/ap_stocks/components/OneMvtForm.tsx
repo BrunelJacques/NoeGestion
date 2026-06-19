@@ -9,6 +9,8 @@ import type { SyntheticEvent } from "react";
 import {getCellValue} from "../../utils/getCellValue.tsx";
 import FieldArticle from "./FieldArticle.tsx";
 import type { Article } from "../types/article.ts";
+import type { Fournisseur } from "../types/mvtFiltres.ts";
+import FieldFournisseur from "./FieldFournisseur.tsx";
 //import { getProp } from "../../../utils/getProp.tsx";
 
 interface Props {
@@ -16,13 +18,14 @@ interface Props {
   fields: MvtFormField[],
   mvtPatch: MvtPatch,
   article: Article,
+  fournisseur?:Fournisseur,
   updateField: (field: keyof MvtPatch, value?: MvtPatch[keyof MvtPatch]|null) => void,
   handleSubmit: (e: SyntheticEvent<HTMLFormElement>) => Promise<void>,
 }
 
 
-export default function OneMvtForm({ ...prp}:Props) {
-
+export function OneMvtForm({ ...prp}:Props) {
+  console.log("oneMvtForm fournisseur:",prp.fournisseur);
 return (
   <div className={s.wrapForm}>
     <Form
@@ -44,11 +47,18 @@ return (
             <div
               key={`field-${prp.mvtPatch.id}-${fld.label}`}
             >
-              { fld.fieldName === "article" ?(
-                <FieldArticle
-                  nom={fld.subFieldName}
+              { (fld.fieldName === "article") ?(
+                  <FieldArticle
+                    value={prp.article.nom}
+                    updateField={
+                      (art) => prp.updateField(`article`, art?.id)
+                    }
+                  />
+                ) : (fld.fieldName === "fournisseur") ?(
+                <FieldFournisseur
+                  value={prp.fournisseur?.nom}
                   updateField={
-                    (art) => prp.updateField(`article`, art?.id)
+                    (art) => prp.updateField(`fournisseur`, art?.id)
                   }
                 />
                 ) : (isEditable && fld.fieldName) ? (

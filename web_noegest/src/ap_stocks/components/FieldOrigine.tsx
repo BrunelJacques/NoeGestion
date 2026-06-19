@@ -15,7 +15,7 @@ interface Props {
 // Paramétrage du select pour les origines
 export default function FieldOrigine({ id, updateField, origineItems, allowNull }: Props) {
 
-  const nom = id ?? String(id) ;
+  const value = id ?? String(id) ;
 
   const fetchOrigines =  (search?: string) => {
     const query = search ?? ""; // search si null ou undefined, sinon ""
@@ -45,7 +45,7 @@ export default function FieldOrigine({ id, updateField, origineItems, allowNull 
         <Xautocomplete
           label="Origine"
           name="origine"
-          value={nom ?? ""}
+          value={value ?? ""}
           fetchItems={fetchOrigines}
           onSelect={handleChange}
           required={true}

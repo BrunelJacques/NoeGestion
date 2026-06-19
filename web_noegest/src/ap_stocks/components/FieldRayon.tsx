@@ -14,7 +14,7 @@ interface Props {
 // paramétrage de la saisie du rayon
 export default function FieldRayon({ id, updateField }: Props) {
   const url = apiUrl.STRAYON_URL
-  const nom = id ?? String(id) ;
+  const value = id ?? String(id) ;
 
   const fetchRayons = async (search?: string) => {
     const query = search || "";
@@ -36,7 +36,7 @@ export default function FieldRayon({ id, updateField }: Props) {
       <Xautocomplete
         label="Rayon"
         name="rayon"
-        value={nom ?? ""}
+        value={value ?? ""}
         fetchItems={fetchRayons}
         onSelect={handleChange}
       />

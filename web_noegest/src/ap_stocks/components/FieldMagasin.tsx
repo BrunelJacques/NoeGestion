@@ -14,7 +14,7 @@ interface Props {
 // Paramétrage de l'autocomplete pour les magasins
 export default function FieldMagasin({ id, updateField }: Props) {
   const url = apiUrl.STMAGASIN_URL
-  const nom = id ?? String(id) ;
+  const value = id ?? String(id) ;
 
   
   const fetchMagasins = async (search?: string) => {
@@ -37,7 +37,7 @@ export default function FieldMagasin({ id, updateField }: Props) {
       <Xautocomplete
         label="Magasin"
         name="magasin"
-        value={nom ?? ""}
+        value={value ?? ""}
         fetchItems={fetchMagasins}
         onSelect={handleChange}
       />
