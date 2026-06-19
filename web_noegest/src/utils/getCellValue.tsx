@@ -2,7 +2,7 @@
 
 // getCellValue extrait une valeur calculée depuis un dataRow, selon field: GridField
 
-export type GridField<TRow> = {
+type GridField<TRow> = {
   fieldName?: keyof TRow;
   subFieldName?: string;
   default?: string | number | Date;

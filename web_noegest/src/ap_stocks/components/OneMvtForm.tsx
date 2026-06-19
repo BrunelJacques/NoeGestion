@@ -9,7 +9,6 @@ import type { SyntheticEvent } from "react";
 import {getCellValue} from "../../utils/getCellValue.tsx";
 import FieldArticle from "./FieldArticle.tsx";
 import type { Article } from "../types/article.ts";
-import type { Fournisseur } from "../types/mvtFiltres.ts";
 import FieldFournisseur from "./FieldFournisseur.tsx";
 //import { getProp } from "../../../utils/getProp.tsx";
 
@@ -18,14 +17,12 @@ interface Props {
   fields: MvtFormField[],
   mvtPatch: MvtPatch,
   article: Article,
-  fournisseur?:Fournisseur,
   updateField: (field: keyof MvtPatch, value?: MvtPatch[keyof MvtPatch]|null) => void,
   handleSubmit: (e: SyntheticEvent<HTMLFormElement>) => Promise<void>,
 }
 
 
 export function OneMvtForm({ ...prp}:Props) {
-  console.log("oneMvtForm fournisseur:",prp.fournisseur);
 return (
   <div className={s.wrapForm}>
     <Form
@@ -56,9 +53,9 @@ return (
                   />
                 ) : (fld.fieldName === "fournisseur") ?(
                 <FieldFournisseur
-                  value={prp.fournisseur?.nom}
+                  value={prp.mvtPatch.fournisseur}
                   updateField={
-                    (art) => prp.updateField(`fournisseur`, art?.id)
+                    (art) => prp.updateField(`fournisseur`, art)
                   }
                 />
                 ) : (isEditable && fld.fieldName) ? (

@@ -1,13 +1,6 @@
-// src/ui/Xautocomplete/useAutocomplete.tsx
+//src/ui/Xautocomplete/useAutocomplete.tsx
 import { useState, useEffect, useRef } from 'react';
-
-// générique d'appels items
-export type Item = {
-  id: number|string;
-  nom: string;
-}
-
-export const ITEM0: Item = { id: 0, nom: "item à définir" };
+import type { Item } from '../../types/item.ts';
 
 interface UseAutocompleteProps {
   // Compatibilité synchrone / asynchrone
@@ -18,7 +11,8 @@ interface UseAutocompleteProps {
 }
 
 
-export function useAutocomplete({ fetchItems, onSelect, initialValue, disabled }: UseAutocompleteProps) {
+export function useAutocomplete({fetchItems, onSelect, initialValue, disabled }
+                                : UseAutocompleteProps) {
   const [allResults, setAllResults] = useState<Item[]>([]);
   const [results, setResults] = useState<Item[]>([]);
   const [openList, setOpenList] = useState(false);
@@ -27,30 +21,32 @@ export function useAutocomplete({ fetchItems, onSelect, initialValue, disabled }
 
   const divRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    // Si la fonction fetchItems change, on réinitialise allResults
-    // pour forcer le useEffect principal à recharger les bonnes Origines.
-    setAllResults([]);
-  }, [fetchItems]);
+  // Recherche d'un item par son id ou son nom
+  function getUniqueItem(value:string, items: Item[]):Item|undefined {
+    return items.find(u => String(u.id) === value)
+      ??items.find(u => u.nom === value )
+  }
 
   // Automate de recherche
   useEffect(() => {
     const loadData = async () => {
-      const search = query.length > 1 ? query : "";
+      const search = query.length > 0 ? query : "";
       const data = await fetchItems(search);
-
       const getItems = async (items: Item[], txt: string) => {
         const filtered = items.filter(u =>
           (u.nom && u.nom.toLowerCase().includes(txt.toLowerCase())) ||
           String(u.id).toLowerCase().includes(query.toLowerCase())
         );
-
         if (filtered.length > 1) {
+          const unique = getUniqueItem(search,filtered)
+          if (unique) {
+            handleSelect(unique);
+          }
           return filtered.map((u: Item) => ({ id: u.id, nom: u.nom }));
         } else {
+          // affectation onSelect automatique si item unique
           const uniqueItem = filtered[0];
           const unique = uniqueItem?.nom ?? "";
-
           if (uniqueItem && query !== unique) {
             setQuery(unique);
             onSelect(uniqueItem);
@@ -63,15 +59,14 @@ export function useAutocomplete({ fetchItems, onSelect, initialValue, disabled }
       const items = await getItems(data, search);
       setResults(items);
 
-      if (allResults.length === 0) {
-        const allitems = await fetchItems("");
-        setAllResults(allitems);
+      if (data.length > 0) { // Pour la validation du champ
+        setAllResults(data);
       }
     };
 
     const timer = setTimeout(loadData, 300);
     return () => clearTimeout(timer);
-  }, [query, fetchItems, allResults, onSelect]);
+  }, [query, fetchItems, onSelect]);
 
   // Handlers
   const handleSelect = (item: Item) => {
@@ -85,9 +80,9 @@ export function useAutocomplete({ fetchItems, onSelect, initialValue, disabled }
     const value = e.target.value;
     setQuery(value);
 
-    const item = allResults.find(u => u.nom === value);
-    if (item) {
-      onSelect(item);
+    const unique = getUniqueItem(value,allResults);
+    if (unique) {
+      handleSelect(unique);
       if (openList) setOpenList(false);
       return;
     } else {

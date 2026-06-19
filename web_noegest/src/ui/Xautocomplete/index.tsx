@@ -4,7 +4,7 @@ import * as sc from '../xcommon.css';
 import { Xinput } from '../Xinput';
 import { checkIsValid } from './checkIsValid.tsx';
 import { useAutocomplete } from './useAutocomplete.tsx';
-import type { Item } from "./useAutocomplete.tsx";
+import type { Item } from "../../types/item.ts";
 import { useFormValidation } from "../../contexts/FormContext.tsx";
 
 
@@ -31,7 +31,7 @@ export function Xautocomplete({
                                 ...props
                               }: XautocompleteProps) {
 
-  const initialValue = typeof props.value === "string" ? props.value : "";
+  const initialValue = typeof props.value === "string" ? props.value : String(props.value);
 
   // On récupère toute la logique du Hook personnalisé
   const {
@@ -47,6 +47,11 @@ export function Xautocomplete({
     handleFocus
   } = useAutocomplete({ fetchItems, onSelect, initialValue, disabled: props.disabled });
 
+  // On remonte le useState ici, juste après
+  const [isTouched, setIsTouched] = useState(false);
+  const validation = useFormValidation();
+
+  // 2. LA LOGIQUE ET LES EFFETS ENSUITE
   const isValid = checkIsValid(query, results, required, allowNull);
   const isValidRef = useRef(isValid);
 
@@ -54,18 +59,12 @@ export function Xautocomplete({
     isValidRef.current = isValid;
   }, [isValid]);
 
-  // État local pour savoir si on doit forcer l'affichage de l'erreur (ex: après un submit raté)
-  const [isTouched, setIsTouched] = useState(false);
-
-  // Connexion au système de validation parent
-  const validation = useFormValidation();
-
   useEffect(() => {
+    // Le garde-fou "return" doit être à l'intérieur de l'effet, pas en dehors !
     if (!validation || !props.name) return;
 
-    // On retourne la fonction qui sera exécutée lors du Submit global
-    return  validation.registerValidator(props.name, () => {
-      setIsTouched(true); // Force le composant à afficher son erreur s'il est invalide
+    return validation.registerValidator(props.name, () => {
+      setIsTouched(true);
       return isValid;
     });
 

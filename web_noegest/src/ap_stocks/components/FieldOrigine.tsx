@@ -1,6 +1,6 @@
 //src/ap_stocks/components/FieldOrigine.tsx
-import { type Origine } from '../constants/origines';
-import type { Item } from '../../ui/Xautocomplete/useAutocomplete.tsx';
+import type {  Origine } from '../constants/origines';
+import type { Item } from '../../types/item.ts';
 import { Xautocomplete } from '../../ui/Xautocomplete';
 
 

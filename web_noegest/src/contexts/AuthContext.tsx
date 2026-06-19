@@ -47,7 +47,7 @@ type LoginResult = {
   success: boolean;
   error?: string;
 };
-export interface AuthContextType {
+interface AuthContextType {
   user: User | null;
   tokens: Tokens | null;
   login: (username: string, password: string) => Promise<LoginResult>;

@@ -10,7 +10,6 @@ import { useParams } from "react-router-dom";
 import { OneMvtForm } from "../../components/OneMvtForm.tsx";
 import { OneMvtBoutons} from "../../components/OneMvtBoutons.tsx";
 import { ART0, type Article } from "../../types/article.ts";
-import type { Fournisseur } from "../../types/mvtFiltres.ts";
 
 function OneMvt() {
 
@@ -20,7 +19,6 @@ function OneMvt() {
   const [mouvement, setMouvement] = useState<MvtPatch>(MVT0); //original
   const [mvtPatch, setMvtPatch] = useState<MvtPatch>(MVT0); // modifié
   const [ article, setArticle] = useState<Article>(ART0); //original
-  const [ fournisseur, setFournisseur] = useState<Fournisseur>({id:0, nom:"à définir"});
   const [formKey, setFormKey] = useState(0);
 
   const { id: queryId } = useParams();
@@ -45,13 +43,11 @@ function OneMvt() {
         const mvts: MvtsRetour = await response.json();
         const oneMvt = mvts.results[0];
         console.log("oneMvt de résult:",oneMvt);
-        const { article, fournisseur, saisie, transfert, ...leReste } = oneMvt;
+        const { article, saisie, transfert, ...leReste } = oneMvt;
         setArticle(article);
-        fournisseur? setFournisseur(fournisseur) : null;
         const mvtPatch: MvtPatch = {
           ...leReste,
           article: article.id,
-          fournisseur: fournisseur?.id // Sera number ou undefined automatiquement
         };
         if (isMounted) {
           setMouvement(mvtPatch);
@@ -126,7 +122,6 @@ function OneMvt() {
     }
   }
 
-  console.log("oneMvt fournisseur:",fournisseur);
   return (
     //Titres sous-titres
     <section className={s.wrapper}>
@@ -140,7 +135,6 @@ function OneMvt() {
                   fields={fields}
                   mvtPatch={mvtPatch}
                   article={article}
-                  fournisseur={fournisseur}
                   updateField={updateField}
                   handleSubmit={handleSubmit}
       />

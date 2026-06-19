@@ -1,4 +1,5 @@
 //src/ap_stocks/types/mvtFiltres.ts
+import type { Item }  from "../../types/item.ts";
 
 export type MvtFiltres = {
 
@@ -9,7 +10,7 @@ export type MvtFiltres = {
   origine : string; // Attention : peut être à blanc
   service: number;
   camp?: string|null; // uniquement géré lors d'origine camp in ou out
-  fournisseur?: Item | null;
+  fournisseur?: number | null;
   magasin?: string;
   rayon?: string;
   tva: string; // sera géré dans la page de saisie d'un mouvement achat
@@ -42,23 +43,14 @@ export type Camps = {
   results: Camp;
 }
 
-export type Fournisseur = {
-  id: 0;
-  nom: string;
-}
 export type Fournisseurs = {
   count: number;
-  results: Fournisseur[];
-}
-
-export type Rayon = {
-  id: 0;
-  nom: string;
+  results: Item[];
 }
 
 export type Rayons = {
   count: number;
-  results: Rayon[];
+  results: Item[];
 }
 
 export type Magasin = {
@@ -69,10 +61,4 @@ export type Magasin = {
 export type Magasins = {
   count: number;
   results: Magasin[];
-}
-
-// générique param
-export type Item = {
-  id: number|string;
-  nom: string;
 }

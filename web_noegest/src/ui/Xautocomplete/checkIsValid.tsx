@@ -1,5 +1,5 @@
 // src/ui/Xautocomplete/checkIsValid.ts
-import type { Item } from './useAutocomplete.tsx';
+import type { Item } from '../../types/item';
 
 // Valide si la saisie correspond à un item existant ou respecte la contrainte "required"
 export function checkIsValid(

@@ -4,7 +4,7 @@ import { useCallback } from "react";
 import { Xautocomplete } from "../../ui/Xautocomplete";
 import apiUrl from "../../constants/api.Constants";
 import type { Articles } from "../types/article";
-import type { Item } from "../../ui/Xautocomplete/useAutocomplete.tsx";
+import type { Item } from "../../types/item.ts";
 
 interface Props {
   value: string | null | undefined;
@@ -14,7 +14,6 @@ interface Props {
 // paramétrage de la saisie d'article avec autocomplétion
 export default function FieldArticle({ value, updateField }: Props) {
   const url = apiUrl.STARTICLE_NOM_URL
-  console.log("value reçue dans FieldArticle", value)
 
   // Utiliser useCallback pour figer la référence de la fonction
   const fetchArticles = useCallback(async (search: string) => {

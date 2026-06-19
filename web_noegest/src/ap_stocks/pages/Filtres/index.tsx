@@ -121,7 +121,7 @@ export default function Filtres() {
 
             <div className={s.entree}>
               <FieldFournisseur     // fournisseur
-                value={draft.fournisseur?.nom}
+                value={draft.fournisseur}
                 updateField={(val) => updateField('fournisseur', val)}
               />
             </div>

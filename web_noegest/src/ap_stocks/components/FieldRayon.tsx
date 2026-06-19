@@ -1,7 +1,7 @@
 //src/ap_stocks/components/FieldRayon.tsx
 
 import type { Rayons } from "../types/mvtFiltres";
-import type { Item } from "../../ui/Xautocomplete/useAutocomplete.tsx";
+import type { Item } from "../../types/item.ts";
 import apiUrl from "../../constants/api.Constants";
 import { Xautocomplete } from "../../ui/Xautocomplete";
 
