@@ -13,7 +13,6 @@ export function useDraftFiltres(initialValues: MvtFiltres) {
     (field: keyof MvtFiltres, value: MvtFiltres[keyof MvtFiltres] 
     ) => {
       setDraft(prev => ({ ...prev, [field]: value }));
-      console.log(`setDraft ${field} value:`,value)
     },
     []
   );

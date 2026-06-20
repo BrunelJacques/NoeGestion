@@ -10,16 +10,36 @@ interface UseAutocompleteProps {
   disabled?: boolean;
 }
 
-
 export function useAutocomplete({fetchItems, onSelect, initialValue, disabled }
                                 : UseAutocompleteProps) {
-  const [allResults, setAllResults] = useState<Item[]>([]);
-  const [results, setResults] = useState<Item[]>([]);
+  const [lstItems, setLstItems] = useState<Item[]>([]); // Items pour affichage
   const [openList, setOpenList] = useState(false);
   const [newFocus, setNewFocus] = useState(false);
+  const [unique, setUnique] = useState<string>("");
   const [query, setQuery] = useState<string>(initialValue);
-
   const divRef = useRef<HTMLDivElement>(null);
+  const nbMinItems = 3;
+  const nbMaxItems = 15;
+
+  const isListItemsOk = () => {
+    const present = getUniqueItem(query,lstItems)
+    const lg = lstItems.length
+    return (lg >= nbMinItems && lg <= nbMaxItems && present)}
+
+  async function getlistItems() {
+    if (isListItemsOk())
+      return
+    // Elargissement de listItems
+    const mots = query.split(/[\[\/\\ (,.]+/) // /[...seps...]+/]/ '+/' Regroupe seps consécutifs
+    if (mots?.length > 0) {
+      for (const mot of mots) {
+        setLstItems( await getData(mot))
+        if (isListItemsOk()){
+          break;
+        }
+      }
+    }
+  }
 
   // Recherche d'un item par son id ou son nom
   function getUniqueItem(value:string, items: Item[]):Item|undefined {
@@ -27,68 +47,63 @@ export function useAutocomplete({fetchItems, onSelect, initialValue, disabled }
       ??items.find(u => u.nom === value )
   }
 
+
+  // Retourne lstItems et traite le résultat de fetchItems
+ async function getItems(data:Item[]) {
+    const items = data.map((u) => ({ id: u.id, nom: u.nom }));
+
+    if (items.length == 1) { // affectation onSelect automatique car item unique
+      const uniqueItem = items[0];
+      const unique = uniqueItem?.nom ?? "";
+      if (uniqueItem && query !== unique) {
+        setUnique(unique);
+        onSelect(uniqueItem); // Géré par le grand parent
+        setOpenList(false);
+      }
+    } else if (items.length > 1) { // Choix possible: élargit la recherche sur id
+      const unique = getUniqueItem(query,items)
+      setUnique(unique?.nom?unique.nom:"")
+      }
+    if (unique) setQuery(unique);
+    setLstItems(items);
+  }
+
+  async function getData(search:string) {
+      const data = await fetchItems(query.length > 0 ? search : "");
+      console.log("getData", search, data.length)
+      return data
+  }
+
   // Automate de recherche
   useEffect(() => {
-    const loadData = async () => {
-      const search = query.length > 0 ? query : "";
-      const data = await fetchItems(search);
-      const getItems = async (items: Item[], txt: string) => {
-        const filtered = items.filter(u =>
-          (u.nom && u.nom.toLowerCase().includes(txt.toLowerCase())) ||
-          String(u.id).toLowerCase().includes(query.toLowerCase())
-        );
-        if (filtered.length > 1) {
-          const unique = getUniqueItem(search,filtered)
-          if (unique) {
-            handleSelect(unique);
-          }
-          return filtered.map((u: Item) => ({ id: u.id, nom: u.nom }));
-        } else {
-          // affectation onSelect automatique si item unique
-          const uniqueItem = filtered[0];
-          const unique = uniqueItem?.nom ?? "";
-          if (uniqueItem && query !== unique) {
-            setQuery(unique);
-            onSelect(uniqueItem);
-            setOpenList(false);
-          }
-          return allResults.map((u: Item) => ({ id: u.id, nom: u.nom }));
-        }
-      };
-
-      const items = await getItems(data, search);
-      setResults(items);
-
-      if (data.length > 0) { // Pour la validation du champ
-        setAllResults(data);
-      }
-    };
-
-    const timer = setTimeout(loadData, 300);
+    const data = getData(query)
+    getItems(data)
+    const timer = setTimeout(() => { getData(query)}, 300);
     return () => clearTimeout(timer);
-  }, [query, fetchItems, onSelect]);
+  }, [query]);
 
-  // Handlers
+
+  // Handlers pilotés pour le parent
   const handleSelect = (item: Item) => {
     if (disabled) return;
     setQuery(item.nom);
     setOpenList(false);
-    onSelect(item);
+    onSelect(item); // Géré par le grand parent
   };
 
   const onChange = (e: { target: { value: string } }) => {
     const value = e.target.value;
     setQuery(value);
 
-    const unique = getUniqueItem(value,allResults);
-    if (unique) {
-      handleSelect(unique);
+    // Teste si value pointe sur un item unique, fn autocomplète
+    const item = getUniqueItem(value,lstItems);
+    if (item) {
+      handleSelect(item); // Selection automatique
       if (openList) setOpenList(false);
-      return;
     } else {
-      onSelect("");
+      onSelect(""); // Pas de selection automatique, géré par l grand parent
+      if (!openList) setOpenList(true); // Affiche la liste si item non trouvé
     }
-    if (!openList) setOpenList(true);
   };
 
   const handleBlur = () => {
@@ -109,6 +124,10 @@ export function useAutocomplete({fetchItems, onSelect, initialValue, disabled }
     } else {
       setOpenList(!openList);
     }
+    console.log("Click", lstItems)
+    if (isListItemsOk()) { // Rappeler la liste en élargissant la recherche
+      getlistItems()
+    }
   };
 
   const handleFocus = (e: React.FocusEvent<HTMLDivElement>) => {
@@ -120,7 +139,7 @@ export function useAutocomplete({fetchItems, onSelect, initialValue, disabled }
 
   return {
     query,
-    results,
+    lstItems: lstItems,
     openList,
     divRef,
     onChange,

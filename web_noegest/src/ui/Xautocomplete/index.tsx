@@ -9,8 +9,7 @@ import { useFormValidation } from "../../contexts/FormContext.tsx";
 
 
 interface XautocompleteProps extends Omit<ComponentPropsWithoutRef<"input">, "onSelect"> {
-  // On accepte Item[] pour origines ou Promise<Item[] pour les asynchrones
-  fetchItems: (query: string) => Item[] | Promise<Item[]>;
+  fetchItems: (query: string) => Item[] | Promise<Item[]>; // Accepte synchrones ou asynchrones
   onSelect: (item: Item | string) => void;
   altClassName?: string;
   label?: string;
@@ -21,14 +20,8 @@ interface XautocompleteProps extends Omit<ComponentPropsWithoutRef<"input">, "on
   allowNull?: boolean
 }
 
-export function Xautocomplete({
-                                fetchItems,
-                                onSelect,
-                                altClassName = "",
-                                error = null,
-                                required = false,
-                                allowNull = false,
-                                ...props
+export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error = null,
+                                required = false, allowNull = false, ...props
                               }: XautocompleteProps) {
 
   const initialValue = typeof props.value === "string" ? props.value : String(props.value);
@@ -36,7 +29,7 @@ export function Xautocomplete({
   // On récupère toute la logique du Hook personnalisé
   const {
     query,
-    results,
+    lstItems,
     openList,
     divRef,
     onChange,
@@ -51,8 +44,8 @@ export function Xautocomplete({
   const [isTouched, setIsTouched] = useState(false);
   const validation = useFormValidation();
 
-  // 2. LA LOGIQUE ET LES EFFETS ENSUITE
-  const isValid = checkIsValid(query, results, required, allowNull);
+  //La logique est les effets
+  const isValid = checkIsValid(query, lstItems, required, allowNull);
   const isValidRef = useRef(isValid);
 
   useEffect(() => {
@@ -73,6 +66,14 @@ export function Xautocomplete({
   // On affiche l'erreur si le champ est invalide ET (qu'il a été touché OU qu'on a tenté de soumettre)
   const displayError = !isValid && isTouched;
 
+  function sortQueryFirst(a:Item,b:Item) {
+      const aMatches = a.nom.toLowerCase() === query.toLowerCase();
+      const bMatches = b.nom.toLowerCase() === query.toLowerCase();
+
+      if (aMatches && !bMatches) return -1; // 'a' passe devant
+      if (!aMatches && bMatches) return 1;  // 'b' passe devant
+      return 0;                             // On ne change pas l'ordre pour les autres
+  }
   return (
     <div ref={divRef} onBlur={() => { handleBlur(); setIsTouched(true); }} onFocus={handleFocus}>
       <Xinput
@@ -91,7 +92,9 @@ export function Xautocomplete({
 
       {openList && (
         <ul className={sc.lstAuto}>
-          {results.map((item) => (
+          {[...lstItems]
+            .sort(sortQueryFirst)
+            .map((item) => (
             <li
               key={item.id}
               className={sc.item}
@@ -99,7 +102,8 @@ export function Xautocomplete({
             >
               {item.nom}
             </li>
-          ))}
+            ))
+          }
         </ul>
       )}
 
