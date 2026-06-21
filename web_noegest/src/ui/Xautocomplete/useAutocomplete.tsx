@@ -15,85 +15,102 @@ export function useAutocomplete({fetchItems, onSelect, initialValue, disabled }
   const [lstItems, setLstItems] = useState<Item[]>([]); // Items pour affichage
   const [openList, setOpenList] = useState(false);
   const [newFocus, setNewFocus] = useState(false);
-  const [unique, setUnique] = useState<string>("");
-  const [query, setQuery] = useState<string>(initialValue);
+  const [newValue, setNewValue] = useState<string>(initialValue);
   const divRef = useRef<HTMLDivElement>(null);
+
   const nbMinItems = 3;
-  const nbMaxItems = 15;
+  const nbMaxItems = 5;
 
-  const isListItemsOk = () => {
-    const present = getUniqueItem(query,lstItems)
-    const lg = lstItems.length
-    return (lg >= nbMinItems && lg <= nbMaxItems && present)}
+  // Validation basée sur des items passés en paramètre pour éviter le piège du state obsolète
+  const checkListItemsOk = (value: string, currentItems: Item[]) => {
+    const present = getUniqueItem(value, currentItems);
+    const lg = currentItems.length;
+    return lg >= nbMinItems && lg <= nbMaxItems && !!present;
+  };
 
+  // Recherche d'un item unique presentdans items identifié par son id et son nom
+  function getUniqueItem(value: string, items: Item[]): Item | undefined {
+    return items.find( u => String(u.id) === value) ?? items.find(u => u.nom === value);
+  }
+
+  // Reourne les seuls items matchant avec value identifiés par id ou partie de nom
+  function FilterItems(value: string, items: Item[]): Item[] | undefined {
+    function _(a:string|number) : string { return  String(a).toLowerCase() }
+    return items.filter( u => {
+      return _(u.id) === _(value) || _(u.nom).includes(_(value));
+    });
+  }
+
+  // Permet d'élargir la recherche en boucle de manière synchrone sur les données fraîches
   async function getlistItems() {
-    if (isListItemsOk())
-      return
-    // Elargissement de listItems
-    const mots = query.split(/[\[\/\\ (,.]+/) // /[...seps...]+/]/ '+/' Regroupe seps consécutifs
+    if (checkListItemsOk(newValue, lstItems)) return;
+
+    const mots = newValue.split(/[\[\/\\ (,.]+/);
     if (mots?.length > 0) {
+      let currentItems = [...lstItems];
+
       for (const mot of mots) {
-        setLstItems( await getData(mot))
-        if (isListItemsOk()){
+        if (!mot) continue;
+        const data = await fetchItems(mot);
+        currentItems = data.map((u) => ({ id: u.id, nom: u.nom }));
+
+        // On met à jour le state à chaque étape
+        setLstItems(currentItems);
+
+        if (checkListItemsOk(newValue, currentItems)) {
           break;
         }
       }
     }
   }
 
-  // Recherche d'un item par son id ou son nom
-  function getUniqueItem(value:string, items: Item[]):Item|undefined {
-    return items.find(u => String(u.id) === value)
-      ??items.find(u => u.nom === value )
-  }
+  // Traite le résultat final et applique la logique d'auto-sélection
+  function processItems(items: Item[], value: string) {
+    const filtered = FilterItems(value, items);
 
-
-  // Retourne lstItems et traite le résultat de fetchItems
- async function getItems(data:Item[]) {
-    const items = data.map((u) => ({ id: u.id, nom: u.nom }));
-
-    if (items.length == 1) { // affectation onSelect automatique car item unique
-      const uniqueItem = items[0];
-      const unique = uniqueItem?.nom ?? "";
-      if (uniqueItem && query !== unique) {
-        setUnique(unique);
-        onSelect(uniqueItem); // Géré par le grand parent
+    const uniqueItem = (filtered?.length === 1) ? filtered[0]
+      : filtered ? getUniqueItem(value, filtered) : undefined ;
+    if (uniqueItem?.nom && value !== uniqueItem.nom) {
+        setNewValue(uniqueItem.nom);
+        onSelect(uniqueItem);
         setOpenList(false);
-      }
-    } else if (items.length > 1) { // Choix possible: élargit la recherche sur id
-      const unique = getUniqueItem(query,items)
-      setUnique(unique?.nom?unique.nom:"")
-      }
-    if (unique) setQuery(unique);
-    setLstItems(items);
+    }
+    setLstItems(filtered ?? items);
   }
 
-  async function getData(search:string) {
-      const data = await fetchItems(query.length > 0 ? search : "");
-      console.log("getData", search, data.length)
-      return data
-  }
-
-  // Automate de recherche
+  // Effet de debounce pour l'appel API principal
   useEffect(() => {
-    const data = getData(query)
-    getItems(data)
-    const timer = setTimeout(() => { getData(query)}, 300);
-    return () => clearTimeout(timer);
-  }, [query]);
+    let active = true; // Évite les Race Conditions si le composant unmount ou la query change
 
+    const timer = setTimeout(async () => {
+      try {
+        const data = await fetchItems(newValue.length > 0 ? newValue : "");
+        if (!active) return;
 
-  // Handlers pilotés pour le parent
+        const items = data.map((u) => ({ id: u.id, nom: u.nom }));
+        processItems(items, newValue);
+      } catch (error) {
+        console.error("Erreur fetchItems:", error);
+      }
+    }, 300); // Debounce de 300ms
+
+    return () => {
+      active = false;
+      clearTimeout(timer);
+    };
+  }, [newValue]);
+
+  // Handlers
   const handleSelect = (item: Item) => {
     if (disabled) return;
-    setQuery(item.nom);
+    setNewValue(item.nom);
     setOpenList(false);
-    onSelect(item); // Géré par le grand parent
+    onSelect(item);
   };
 
   const onChange = (e: { target: { value: string } }) => {
     const value = e.target.value;
-    setQuery(value);
+    setNewValue(value);
 
     // Teste si value pointe sur un item unique, fn autocomplète
     const item = getUniqueItem(value,lstItems);
@@ -103,6 +120,13 @@ export function useAutocomplete({fetchItems, onSelect, initialValue, disabled }
     } else {
       onSelect(""); // Pas de selection automatique, géré par l grand parent
       if (!openList) setOpenList(true); // Affiche la liste si item non trouvé
+    }
+
+    if (!checkListItemsOk(newValue, lstItems)) {
+      console.log("Onchange check KO!!", newValue, lstItems, checkListItemsOk(newValue, lstItems))
+      getlistItems().then(() => void 0);
+    } else {
+      console.log("Onchange checkOK", checkListItemsOk(newValue, lstItems))
     }
   };
 
@@ -124,9 +148,8 @@ export function useAutocomplete({fetchItems, onSelect, initialValue, disabled }
     } else {
       setOpenList(!openList);
     }
-    console.log("Click", lstItems)
-    if (isListItemsOk()) { // Rappeler la liste en élargissant la recherche
-      getlistItems()
+    if (!checkListItemsOk(newValue, lstItems)) {
+      getlistItems().then(() => void 0);
     }
   };
 
@@ -138,8 +161,8 @@ export function useAutocomplete({fetchItems, onSelect, initialValue, disabled }
   };
 
   return {
-    query,
-    lstItems: lstItems,
+    value: newValue,
+    lstItems,
     openList,
     divRef,
     onChange,

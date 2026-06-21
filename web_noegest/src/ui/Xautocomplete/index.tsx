@@ -28,7 +28,7 @@ export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error 
 
   // On récupère toute la logique du Hook personnalisé
   const {
-    query,
+    value,
     lstItems,
     openList,
     divRef,
@@ -45,7 +45,7 @@ export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error 
   const validation = useFormValidation();
 
   //La logique est les effets
-  const isValid = checkIsValid(query, lstItems, required, allowNull);
+  const isValid = checkIsValid(value, lstItems, required, allowNull);
   const isValidRef = useRef(isValid);
 
   useEffect(() => {
@@ -67,8 +67,8 @@ export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error 
   const displayError = !isValid && isTouched;
 
   function sortQueryFirst(a:Item,b:Item) {
-      const aMatches = a.nom.toLowerCase() === query.toLowerCase();
-      const bMatches = b.nom.toLowerCase() === query.toLowerCase();
+      const aMatches = a.nom.toLowerCase() === value.toLowerCase();
+      const bMatches = b.nom.toLowerCase() === value.toLowerCase();
 
       if (aMatches && !bMatches) return -1; // 'a' passe devant
       if (!aMatches && bMatches) return 1;  // 'b' passe devant
@@ -78,7 +78,7 @@ export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error 
     <div ref={divRef} onBlur={() => { handleBlur(); setIsTouched(true); }} onFocus={handleFocus}>
       <Xinput
         {...props}
-        value={query}
+        value={value}
         onChange={(e) => { onChange(e); setIsTouched(false); }} // Masque l'erreur pendant la saisie
         onReset={handleReset}
         error={displayError ? `${props.label} invalide` : null}
