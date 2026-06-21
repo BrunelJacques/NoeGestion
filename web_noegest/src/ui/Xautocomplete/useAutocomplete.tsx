@@ -18,23 +18,24 @@ export function useAutocomplete({fetchItems, onSelect, initialValue, disabled }
   const [newValue, setNewValue] = useState<string>(initialValue);
   const divRef = useRef<HTMLDivElement>(null);
 
-  const nbMinItems = 3;
+  const nbMinItems = 2;
   const nbMaxItems = 5;
 
   // Validation basée sur des items passés en paramètre pour éviter le piège du state obsolète
   const checkListItemsOk = (value: string, currentItems: Item[]) => {
-    const present = getUniqueItem(value, currentItems);
+    const present = FilterItems(value, currentItems).length > 0;
     const lg = currentItems.length;
-    return lg >= nbMinItems && lg <= nbMaxItems && !!present;
+    return lg >= nbMinItems && lg <= nbMaxItems && present;
   };
 
   // Recherche d'un item unique presentdans items identifié par son id et son nom
   function getUniqueItem(value: string, items: Item[]): Item | undefined {
+    console.log("getUniqueItem", value, items)
     return items.find( u => String(u.id) === value) ?? items.find(u => u.nom === value);
   }
 
   // Reourne les seuls items matchant avec value identifiés par id ou partie de nom
-  function FilterItems(value: string, items: Item[]): Item[] | undefined {
+  function FilterItems(value: string, items: Item[]): Item[] {
     function _(a:string|number) : string { return  String(a).toLowerCase() }
     return items.filter( u => {
       return _(u.id) === _(value) || _(u.nom).includes(_(value));
@@ -52,16 +53,16 @@ export function useAutocomplete({fetchItems, onSelect, initialValue, disabled }
       for (const mot of mots) {
         if (!mot) continue;
         const data = await fetchItems(mot);
-        currentItems = data.map((u) => ({ id: u.id, nom: u.nom }));
-
-        // On met à jour le state à chaque étape
-        setLstItems(currentItems);
-
-        if (checkListItemsOk(newValue, currentItems)) {
-          break;
+        const items = data.map((u) => ({ id: u.id, nom: u.nom }));
+        currentItems = FilterItems(mot, items);
+        console.log("getlistItems mot", mot, mots, currentItems,checkListItemsOk(mot, currentItems))
+        if (checkListItemsOk(mot, currentItems)) {
+          setLstItems(currentItems);
+          console.log("getlistItems MAJ lstItem", mot, currentItems)
         }
       }
     }
+    console.log("getlistItems final", newValue, lstItems)
   }
 
   // Traite le résultat final et applique la logique d'auto-sélection
@@ -75,7 +76,8 @@ export function useAutocomplete({fetchItems, onSelect, initialValue, disabled }
         onSelect(uniqueItem);
         setOpenList(false);
     }
-    setLstItems(filtered ?? items);
+    if ( items.length > nbMinItems ) console.log("processItems setLstItems", uniqueItem, value, filtered, items)
+    if ( items.length > nbMinItems ) setLstItems(filtered ?? items);
   }
 
   // Effet de debounce pour l'appel API principal
