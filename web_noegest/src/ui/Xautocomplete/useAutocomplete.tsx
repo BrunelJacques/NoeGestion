@@ -12,17 +12,17 @@ interface UseAutocompleteProps {
 
 export function useAutocomplete({fetchItems, onSelect, initialValue, disabled }
                                 : UseAutocompleteProps) {
+  /* ---------------- constantes de portées générale ----------------- */
   const [lstItems, setLstItems] = useState<Item[]>([]); // Items pour affichage
   const [openList, setOpenList] = useState(false);
   const [newFocus, setNewFocus] = useState(false);
   const [newValue, setNewValue] = useState<string>(initialValue);
   const divRef = useRef<HTMLDivElement>(null);
-
   const nbMinItems = 2;
-  const nbMaxItems = 5;
+  const nbMaxItems = 15;
 
-  // Validation basée sur des items passés en paramètre pour éviter le piège du state obsolète
-  const checkListItemsOk = (value: string, currentItems: Item[]) => {
+  // Validation des items fournis, l'un deux contient-il la value?
+  const isListItemsOk = (value: string, currentItems: Item[]) => {
     const present = FilterItems(value, currentItems).length > 0;
     const lg = currentItems.length;
     return lg >= nbMinItems && lg <= nbMaxItems && present;
@@ -30,7 +30,6 @@ export function useAutocomplete({fetchItems, onSelect, initialValue, disabled }
 
   // Recherche d'un item unique presentdans items identifié par son id et son nom
   function getUniqueItem(value: string, items: Item[]): Item | undefined {
-    console.log("getUniqueItem", value, items)
     return items.find( u => String(u.id) === value) ?? items.find(u => u.nom === value);
   }
 
@@ -42,45 +41,84 @@ export function useAutocomplete({fetchItems, onSelect, initialValue, disabled }
     });
   }
 
-  // Permet d'élargir la recherche en boucle de manière synchrone sur les données fraîches
+  // Recherche par boucles pour composer un jeu d'items à afficher'
   async function getlistItems() {
-    if (checkListItemsOk(newValue, lstItems)) return;
+    console.log("getlistItems start", newValue, lstItems);
+    if (isListItemsOk(newValue, lstItems)) return;
 
     const mots = newValue.split(/[\[\/\\ (,.]+/);
-    if (mots?.length > 0) {
-      let currentItems = [...lstItems];
+    let finalItems: Item[] = [];
 
-      for (const mot of mots) {
-        if (!mot) continue;
-        const data = await fetchItems(mot);
-        const items = data.map((u) => ({ id: u.id, nom: u.nom }));
-        currentItems = FilterItems(mot, items);
-        console.log("getlistItems mot", mot, mots, currentItems,checkListItemsOk(mot, currentItems))
-        if (checkListItemsOk(mot, currentItems)) {
-          setLstItems(currentItems);
-          console.log("getlistItems MAJ lstItem", mot, currentItems)
+    try { // sur l'ensemble de value saisie en décrémentant par la droite
+      for (let i = newValue.length; i > 0; i--) {
+        const stripValue = newValue.slice(0, i);
+        const data = await fetchItems(stripValue);
+        console.log("fetchItems", stripValue, data);
+        const mappedItems = data.map((u) => ({ id: u.id, nom: u.nom }));
+        const filtered = FilterItems(stripValue, mappedItems);
+        if (isListItemsOk(stripValue, filtered)) {
+          finalItems = [...filtered];
+          console.log("finalItems", finalItems);
+          break;
         }
       }
+    } catch (error) {
+      console.error("Erreur lors du fetch pour la saisie :", newValue, error);
+    } // fin try 1
+
+    if (!isListItemsOk(newValue, finalItems) && mots?.length > 1) {
+      // value est fractionnable et on n'a toujours pas trouvé
+      for (const mot of mots) { // Recherche sur les mots saisis
+        if (!mot) continue;
+        try {
+          const data = await fetchItems(mot);
+          const mappedItems = data.map((u) => ({ id: u.id, nom: u.nom }));
+          const filtered = FilterItems(mot, mappedItems);
+
+          // le mot donne des résultats qu'on cumule
+          const merged = [...new Set([...finalItems, ...filtered])];
+          if (isListItemsOk(newValue, merged)) {
+            finalItems = [...merged];
+          } else if ((filtered.length < finalItems.length) && isListItemsOk(newValue, filtered)){
+            finalItems = [...filtered];
+          }
+        } catch (error) {
+          console.error("Erreur lors du fetch pour le mot:", mot, error);
+        } // fin try 2
+      } // boucle terminée
     }
-    console.log("getlistItems final", newValue, lstItems)
+    if (!isListItemsOk(newValue, finalItems)) { // toujours pas trouvé
+      const data = await fetchItems("");
+      const mappedItems = data.map((u) => ({ id: u.id, nom: u.nom }));
+      finalItems = [...mappedItems];
+    }
+    if (finalItems.length > 0) {
+      setLstItems([...finalItems]);
+      console.log("getListItems stLstItems finalItems", finalItems);
+      processItems(finalItems, newValue);
+    }
   }
 
-  // Traite le résultat final et applique la logique d'auto-sélection
-  function processItems(items: Item[], value: string) {
-    const filtered = FilterItems(value, items);
+  // Traite les items et applique l'auto-sélection
+  function processItems(w_items: Item[], value: string) {
+    const filtered = FilterItems(value, w_items);
 
     const uniqueItem = (filtered?.length === 1) ? filtered[0]
       : filtered ? getUniqueItem(value, filtered) : undefined ;
+
     if (uniqueItem?.nom && value !== uniqueItem.nom) {
-        setNewValue(uniqueItem.nom);
-        onSelect(uniqueItem);
-        setOpenList(false);
+      setNewValue(uniqueItem.nom);
+      onSelect(uniqueItem);
+      if (isListItemsOk(uniqueItem.nom,w_items)) {
+        console.log("processItems stLstItems finalSelection", w_items);
+        setLstItems(w_items);
+      }
+      setOpenList(false);
     }
-    if ( items.length > nbMinItems ) console.log("processItems setLstItems", uniqueItem, value, filtered, items)
-    if ( items.length > nbMinItems ) setLstItems(filtered ?? items);
+
   }
 
-  // Effet de debounce pour l'appel API principal
+  // Effect debounce pour la recherche d'items par API principal
   useEffect(() => {
     let active = true; // Évite les Race Conditions si le composant unmount ou la query change
 
@@ -89,20 +127,20 @@ export function useAutocomplete({fetchItems, onSelect, initialValue, disabled }
         const data = await fetchItems(newValue.length > 0 ? newValue : "");
         if (!active) return;
 
-        const items = data.map((u) => ({ id: u.id, nom: u.nom }));
-        processItems(items, newValue);
+        const dt_items = data.map((u) => ({ id: u.id, nom: u.nom }));
+        processItems(dt_items, newValue);
       } catch (error) {
         console.error("Erreur fetchItems:", error);
       }
     }, 300); // Debounce de 300ms
-
     return () => {
       active = false;
       clearTimeout(timer);
     };
   }, [newValue]);
 
-  // Handlers
+  /* -------- Handlers pour les interactions avec le composant --------------- */
+
   const handleSelect = (item: Item) => {
     if (disabled) return;
     setNewValue(item.nom);
@@ -111,10 +149,10 @@ export function useAutocomplete({fetchItems, onSelect, initialValue, disabled }
   };
 
   const onChange = (e: { target: { value: string } }) => {
+    // Teste si la saisie pointe sur un item unique, fn autocomplète
     const value = e.target.value;
     setNewValue(value);
-
-    // Teste si value pointe sur un item unique, fn autocomplète
+    console.log("onChange", value);
     const item = getUniqueItem(value,lstItems);
     if (item) {
       handleSelect(item); // Selection automatique
@@ -123,13 +161,11 @@ export function useAutocomplete({fetchItems, onSelect, initialValue, disabled }
       onSelect(""); // Pas de selection automatique, géré par l grand parent
       if (!openList) setOpenList(true); // Affiche la liste si item non trouvé
     }
-
-    if (!checkListItemsOk(newValue, lstItems)) {
-      console.log("Onchange check KO!!", newValue, lstItems, checkListItemsOk(newValue, lstItems))
+    console.log("onChange2", value,lstItems,);
+    if (!isListItemsOk(value, lstItems)) {
       getlistItems().then(() => void 0);
-    } else {
-      console.log("Onchange checkOK", checkListItemsOk(newValue, lstItems))
     }
+
   };
 
   const handleBlur = () => {
@@ -150,7 +186,8 @@ export function useAutocomplete({fetchItems, onSelect, initialValue, disabled }
     } else {
       setOpenList(!openList);
     }
-    if (!checkListItemsOk(newValue, lstItems)) {
+    if (!isListItemsOk(newValue, lstItems)) {
+      console.log("handleClick", newValue,lstItems,);
       getlistItems().then(() => void 0);
     }
   };
