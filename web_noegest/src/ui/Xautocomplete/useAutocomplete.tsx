@@ -44,13 +44,11 @@ export function useAutocomplete({fetchItems, onSelect, initialValue, disabled }
   // Recherche par boucles pour composer un jeu d'items à afficher'
   async function getlistItems() {
     console.log("getlistItems start", newValue, lstItems);
-    if (isListItemsOk(newValue, lstItems)) return;
-
     const mots = newValue.split(/[\[\/\\ (,.]+/);
     let finalItems: Item[] = [];
 
     try { // sur l'ensemble de value saisie en décrémentant par la droite
-      for (let i = newValue.length; i > 0; i--) {
+      for (let i = newValue.length; i > 2; i--) {
         const stripValue = newValue.slice(0, i);
         const data = await fetchItems(stripValue);
         console.log("fetchItems", stripValue, data);
@@ -66,9 +64,8 @@ export function useAutocomplete({fetchItems, onSelect, initialValue, disabled }
       console.error("Erreur lors du fetch pour la saisie :", newValue, error);
     } // fin try 1
 
-    if (!isListItemsOk(newValue, finalItems) && mots?.length > 1) {
-      // value est fractionnable et on n'a toujours pas trouvé
-      for (const mot of mots) { // Recherche sur les mots saisis
+    if (mots?.length > 1) { // value est fractionnable et on n'a toujours pas trouvé
+      for (const mot of mots) { // Recherche boucle sur les mots
         if (!mot) continue;
         try {
           const data = await fetchItems(mot);
@@ -115,7 +112,6 @@ export function useAutocomplete({fetchItems, onSelect, initialValue, disabled }
       }
       setOpenList(false);
     }
-
   }
 
   // Effect debounce pour la recherche d'items par API principal
@@ -152,7 +148,6 @@ export function useAutocomplete({fetchItems, onSelect, initialValue, disabled }
     // Teste si la saisie pointe sur un item unique, fn autocomplète
     const value = e.target.value;
     setNewValue(value);
-    console.log("onChange", value);
     const item = getUniqueItem(value,lstItems);
     if (item) {
       handleSelect(item); // Selection automatique
@@ -161,11 +156,7 @@ export function useAutocomplete({fetchItems, onSelect, initialValue, disabled }
       onSelect(""); // Pas de selection automatique, géré par l grand parent
       if (!openList) setOpenList(true); // Affiche la liste si item non trouvé
     }
-    console.log("onChange2", value,lstItems,);
-    if (!isListItemsOk(value, lstItems)) {
-      getlistItems().then(() => void 0);
-    }
-
+    getlistItems().then(() => void 0);
   };
 
   const handleBlur = () => {

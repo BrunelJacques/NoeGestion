@@ -19,6 +19,7 @@ export default function FieldFournisseur({ value, updateField }: Props) {
     const query = search ?? ""; // search si null ou undefined, sinon ""
     const response = await fetch(`${url}?nom=${query}`);
     const fournisseurs: Fournisseurs = await response.json();
+    console.log("fetch fournisseurs:",query,fournisseurs);
     return fournisseurs.results;
   };
 
