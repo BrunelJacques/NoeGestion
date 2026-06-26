@@ -64,16 +64,18 @@ export function inputAuto({listItems, setListItems,openList, setOpenList,
       if (openList) setOpenList(false);
     } else {
       getListItems(value, fetchItems)
-      .then((newListItems) => {
+      .then(([newListItems, nomUnique]) => {
         if (newListItems) {
           console.log("onChange newListItems", newListItems);
           setListItems(newListItems);
         }
+        if (nomUnique) {
+          setNewValue(nomUnique);
+        }
+        setOpenList(!nomUnique); // Pour (nomUnique? false : true
       })
       .catch((error) => console.error(error));
-      if (!openList) setOpenList(true);
     }
-    getListItems(newValue, fetchItems).then(() => void 0);
   };
 
   const handleBlur = () => {
@@ -98,11 +100,12 @@ export function inputAuto({listItems, setListItems,openList, setOpenList,
       setOpenList(!openList);
     }
     if (!isListItemsOk(newValue, listItems)) {
-      getListItems(newValue, fetchItems).then((newListItems) => {
+      getListItems(newValue, fetchItems).then(([newListItems,nomUnique]) => {
         if (newListItems) {
           console.log("handleClick newListItems", newListItems);
           setListItems(newListItems);
         }
+        if (nomUnique) {setNewValue(nomUnique)}
       });
     }
   };

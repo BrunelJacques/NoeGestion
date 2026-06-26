@@ -30,12 +30,28 @@ export const isListItemsOk = (value: string, currentItems: Item[]) => {
   return lg >= nbMinItems && lg <= nbMaxItems && present;
 };
 
-// Recherche d'un item unique presentdans items identifié par son id et son nom
-export function getUniqueItem(value: string, items: Item[]): Item | undefined {
-  return items.find( u => String(u.id) === value) ?? items.find(u => u.nom === value);
+// Recherche d'un item unique present dans items identifié par son id et son nom
+export function getUniqueItem(value: string, items: Item[],
+                              altValue?:string, altItems?: Item[]): Item | undefined {
+  const listeA = filterItems(value??"", items??[]);
+  const duo = !value.includes(altValue??"") && !altValue?.includes(value??"");
+
+  if ( duo && altItems) { // Deux listes de mots différents à matcher
+    const listeB = filterItems(altValue??"", altItems??[]);
+    const listeAIds = new Set(items.map(item => item.id));
+    const intersection = listeB.filter(item => listeAIds.has(item.id));
+    if (intersection.length == 1) {
+      return intersection[0];
+    } else return undefined;
+
+  } else { // Qu'une seule liste et valeur
+    if (listeA.length == 1) {
+      return listeA[0];
+    } else return undefined;
+  }
 }
 
-// Reourne les seuls items matchant avec value identifiés par id ou partie de nom
+// Retourne les seuls items matchant avec value identifiés par id ou partie de nom
 export function filterItems(value: string, items: Item[]): Item[] {
   function _(a:string|number) : string { return  String(a).toLowerCase() }
   return items.filter( u => {
@@ -44,54 +60,71 @@ export function filterItems(value: string, items: Item[]): Item[] {
 }
 
 // Recherche par boucles pour composer un jeu d'items à afficher'
-export async function getListItems(value:string, fetchItems:(query: string) => Item[] | Promise<Item[]> ) {
+export async function getListItems(value:string, fetchItems:(query: string) => Item[] | Promise<Item[]> ) :Promise<[Item[], string]> {
   const mots = value.split(/[\[\/\\ (,.]+/);
+  if (mots?.length === 0) {
+    return [[], "" ]
+  }
   let finalItems: Item[] = [];
+  let nomUnique: string = ""
 
-  try { // sur l'ensemble de value saisie en décrémentant par la droite
-    for (let i = value.length; i > 2; i--) {
-      const stripValue = value.slice(0, i);
+  console.log("getListItems", value, mots);
+  try { // sur le premier mot saisi fractionné par la droite jusqu'à trouver des items
+    for (let i = mots[0].length; i > 1; i--) {
+      const stripValue = mots[0].slice(0, i);
       const data = await fetchItems(stripValue);
-      console.log("fetchItems", stripValue, data);
       const mappedItems = data.map((u) => ({ id: u.id, nom: u.nom }));
       const filtered = filterItems(stripValue, mappedItems);
       if (isListItemsOk(stripValue, filtered)) {
         finalItems = [...filtered];
-        console.log("wItemsOk", finalItems);
+        console.log("wItemsOk sur mot[0] break", finalItems);
         break;
       }
     }
   } catch (error) {
     console.error("Erreur lors du fetch pour la saisie :", value, error);
-  } // fin try 1
+  } // fin 
 
-  if (mots?.length > 1) { // value est fractionnable et on n'a toujours pas trouvé
-    for (const mot of mots) { // Recherche boucle sur les mots
+  if ( finalItems.length ) {
+    const itemUnique = getUniqueItem(mots[0], finalItems)
+    nomUnique = itemUnique?.nom??""
+  }
+
+  if (!nomUnique && mots?.length > 1) { // value est fractionnable et on n'a toujours pas trouvé
+    for (const mot of mots.slice(1)) { // Recherche en boucle sur les mots suivants
+      console.log("lance mot ",mot)
       if (!mot) continue;
       try {
         const data = await fetchItems(mot);
         const mappedItems = data.map((u) => ({ id: u.id, nom: u.nom }));
         const filtered = filterItems(mot, mappedItems);
 
-        // le mot donne des résultats qu'on cumule
-        const merged = [...new Set([...finalItems, ...filtered])];
-        if (isListItemsOk(value, merged)) {
+
+        // le mot donne des résultats qu'on cumule sans doublons
+        const combined = [...finalItems, ...filtered]
+        const merged = [...new Map(combined.map(item => [item.id, item])).values()];
+        console.log("mot ",mot, merged)
+        
+        if (merged.length <= nbMaxItems) {
           finalItems = [...merged];
-        } else if ((filtered.length < finalItems.length) && isListItemsOk(value, filtered)){
-          finalItems = [...filtered];
+        } else if ((filtered.length < finalItems.length) && isListItemsOk(mot, finalItems)){
+          finalItems = [...filtered]; // gestion de priorité de mot conservé
         }
       } catch (error) {
         console.error("Erreur lors du fetch pour le mot:", mot, error);
       } // fin try 2
-    } // boucle terminée
-  }
-  if (!isListItemsOk(value, finalItems)) { // toujours pas trouvé
-    const data = await fetchItems("");
-    const mappedItems = data.map((u) => ({ id: u.id, nom: u.nom }));
-    finalItems = [...mappedItems];
+    } // boucle mots terminée
+
+    console.log('fin merge',finalItems)
+    if (!isListItemsOk(mots[0], finalItems)) { // toujours pas trouvé
+      console.log("relancé car non trouvé", mots[0],finalItems)
+      const data = await fetchItems("");
+      const mappedItems = data.map((u) => ({ id: u.id, nom: u.nom }));
+      finalItems = [...mappedItems];
+    }
   }
   console.log("getListItems return", finalItems);
-  return finalItems;
+  return [finalItems, nomUnique];
 }
 
 // Traite les items et applique l'auto-sélection
