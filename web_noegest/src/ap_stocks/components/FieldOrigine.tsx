@@ -48,8 +48,7 @@ export default function FieldOrigine({ id, updateField, origineItems, allowNull 
           value={value ?? ""}
           fetchItems={fetchOrigines}
           onSelect={handleChange}
-          required={true}
-          allowNull={allowNull}
+          required={!allowNull}
 
         />
       </>

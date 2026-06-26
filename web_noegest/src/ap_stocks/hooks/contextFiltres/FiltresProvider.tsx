@@ -54,7 +54,7 @@ export function FiltresProvider({
       // On prépare une copie pour le localStorage
       const dataToStore = {
         ...nextState,
-        jour: nextState.jour.toLocaleDateString("sv-SE"), // date locale en YYYY-MM-DD
+        jour: nextState.jour?.toLocaleDateString("sv-SE"), // date locale en YYYY-MM-DD
         dateModif: new Date() // format UTC international ("2026-05-18T10:30:00.000Z")
         };
       

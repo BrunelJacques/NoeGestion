@@ -2,10 +2,11 @@
 import {useEffect, useRef, useState, type ComponentPropsWithoutRef } from "react";
 import * as sc from '../xcommon.css';
 import { Xinput } from '../Xinput';
-import { checkIsValid } from './checkIsValid.tsx';
-import { useAutocomplete } from './useAutocomplete.tsx';
+import {checkIsValid} from './fnComplete.tsx';
+import { inputAuto } from './inputAuto.tsx';
 import type { Item } from "../../types/item.ts";
 import { useFormValidation } from "../../contexts/FormContext.tsx";
+import {choiceAuto} from "./choiceAuto.tsx";
 
 
 interface XautocompleteProps extends Omit<ComponentPropsWithoutRef<"input">, "onSelect"> {
@@ -17,36 +18,53 @@ interface XautocompleteProps extends Omit<ComponentPropsWithoutRef<"input">, "on
   disabled?: boolean;
   showReset?: boolean;
   required?: boolean;
-  allowNull?: boolean
 }
 
 export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error = null,
-                                required = false, allowNull = false, ...props
+                                required = false, ...props
                               }: XautocompleteProps) {
 
   const initialValue = typeof props.value === "string" ? props.value : String(props.value);
-
+  const [value, setValue] = useState<string>(initialValue);
+  const [listItems, setListItems] = useState<Item[]>([]);
+  const [openList, setOpenList] = useState(false);
+  const [newFocus, setNewFocus] = useState(false);
   // On récupère toute la logique du Hook personnalisé
   const {
-    value,
-    lstItems,
-    openList,
+    inputValue,
     divRef,
     onChange,
-    handleSelect,
     handleBlur,
     handleReset,
     handleClick,
     handleFocus
-  } = useAutocomplete({ fetchItems, onSelect, initialValue, disabled: props.disabled });
+  } = inputAuto({ listItems, setListItems,openList, setOpenList,newFocus, setNewFocus,
+                  fetchItems, onSelect, initialValue });
+
+  const {
+    choiceValue,
+    lstItems,
+    handleSelect,
+  } = choiceAuto({listItems, setListItems,openList, setOpenList, setNewFocus,
+                  fetchItems, initialValue });
+
 
   // On remonte le useState ici, juste après
   const [isTouched, setIsTouched] = useState(false);
   const validation = useFormValidation();
 
   //La logique est les effets
-  const isValid = checkIsValid(value, lstItems, required, allowNull);
+  const isValid = checkIsValid(value, lstItems, required);
   const isValidRef = useRef(isValid);
+
+  useEffect(() => {
+    setValue(choiceValue);
+  }, [choiceValue]);
+
+  useEffect(() => {
+    setValue(inputValue);
+  }, [inputValue, handleClick]);
+
 
   useEffect(() => {
     isValidRef.current = isValid;
@@ -75,7 +93,7 @@ export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error 
       return 0;                             // On ne change pas l'ordre pour les autres
   }
   return (
-    <div ref={divRef} onBlur={() => { handleBlur(); setIsTouched(true); }} onFocus={handleFocus}>
+    <div ref={divRef} onBlur={() => {handleBlur(); setIsTouched(true);}} onFocus={handleFocus}>
       <Xinput
         {...props}
         value={value}
