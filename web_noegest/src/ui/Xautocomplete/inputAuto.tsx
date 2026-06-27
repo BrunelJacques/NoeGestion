@@ -3,7 +3,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import type { Item } from '../../types/item.ts';
 import {
   getListItems,
-  getUniqueItem,
   isListItemsOk,
   processItems
 } from './fnComplete.tsx';
@@ -30,6 +29,19 @@ export function inputAuto({listItems, setListItems,openList, setOpenList,
   const [newValue, setNewValue] = useState<string>(initialValue);
   const divRef = useRef<HTMLDivElement>(null);
 
+  // SetValue, fetchItems, setListItems en asynchrone
+  const fetchAndSet = async (value:string) => {
+    try {
+      const [newListItems, nomUnique] = await getListItems(value, fetchItems);
+      if (newListItems) setListItems(newListItems);
+
+      const val = nomUnique? nomUnique : value; // Selection automatique
+      if (newValue !== val) {
+        setNewValue(val); // Mise à jour si différence
+      }
+      setOpenList(!nomUnique); // Pour (nomUnique? false : true
+    } catch (error) {console.error( "Erreur lors de getListItems:", error )}
+  }
 
   useEffect(() => {
     let active = true; // Active évite 'Race Conditions'. Ouvre une activité
@@ -56,35 +68,17 @@ export function inputAuto({listItems, setListItems,openList, setOpenList,
   const onChange = (e: { target: { value: string } }) => {
     // Teste si la saisie pointe sur un item unique, fn autocomplète
     const value = e.target.value;
-    setNewValue(value);
-    const item = getUniqueItem(value,listItems);
-    console.log("onChange item", item);
-    if (item) {// Selection automatique
-      setNewValue(item.nom);
-      if (openList) setOpenList(false);
-    } else {
-      getListItems(value, fetchItems)
-      .then(([newListItems, nomUnique]) => {
-        if (newListItems) {
-          console.log("onChange newListItems", newListItems);
-          setListItems(newListItems);
-        }
-        if (nomUnique) {
-          setNewValue(nomUnique);
-        }
-        setOpenList(!nomUnique); // Pour (nomUnique? false : true
-      })
-      .catch((error) => console.error(error));
-    }
+    console.log("onChange ", value);
+    fetchAndSet(value);
   };
 
   const handleBlur = () => {
-    console.log("handleBlur", newValue);
     setOpenList(false);
     setNewFocus(false);
   };
 
   const handleReset = () => {
+    console.log("handleReset ", newValue);
     divRef.current?.focus();
     setNewFocus(true);
   };
@@ -92,22 +86,11 @@ export function inputAuto({listItems, setListItems,openList, setOpenList,
   const handleClick = () => {
     console.log("handleClick deb",newFocus, "/",openList);
     if (newFocus) {
-      console.log("handleClick new set_true");
       setOpenList(true);
       setNewFocus(false);
-    } else {
-      console.log("handleClick set",!openList);
-      setOpenList(!openList);
-    }
-    if (!isListItemsOk(newValue, listItems)) {
-      getListItems(newValue, fetchItems).then(([newListItems,nomUnique]) => {
-        if (newListItems) {
-          console.log("handleClick newListItems", newListItems);
-          setListItems(newListItems);
-        }
-        if (nomUnique) {setNewValue(nomUnique)}
-      });
-    }
+    } else setOpenList(!openList);
+
+    if (!isListItemsOk(newValue, listItems)) fetchAndSet(newValue)
   };
 
   const handleFocus = (e: React.FocusEvent<HTMLDivElement>) => {

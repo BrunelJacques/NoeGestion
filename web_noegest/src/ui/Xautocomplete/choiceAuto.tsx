@@ -1,25 +1,19 @@
 //src/ui/Xautocomplete/choiceAuto.tsx
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import type { Item } from '../../types/item.ts';
 import {processItems} from "./fnComplete.tsx";
 
 interface UseAutocompleteProps {
-  listItems: Item[];
   setListItems: React.Dispatch<React.SetStateAction<Item[]>>;
-  openList: boolean
   setOpenList: React.Dispatch<React.SetStateAction<boolean>>;
   setNewFocus: React.Dispatch<React.SetStateAction<boolean>>;
   fetchItems: (query: string) => Item[] | Promise<Item[]>;// comptabile sync et async
-  initialValue: string;
+  value: string;
+  setValue: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export function choiceAuto({ listItems, setListItems,openList, setOpenList,
-                             setNewFocus, fetchItems,
-                             initialValue }: UseAutocompleteProps) {
-  /* ---------------- constantes de portées générale ----------------- */
-  const [newValue, setNewValue] = useState<string>(initialValue);
-  const divRef = useRef<HTMLDivElement>(null);
-
+export function choiceAuto({ setListItems, setOpenList, fetchItems,
+                             value, setValue }: UseAutocompleteProps) {
 
   // Effect debounce pour la recherche d'items par API principal
   useEffect(() => {
@@ -27,11 +21,11 @@ export function choiceAuto({ listItems, setListItems,openList, setOpenList,
 
     const timer = setTimeout(async () => {
       try {
-        const data = await fetchItems(newValue.length > 0 ? newValue : "");
+        const data = await fetchItems(value.length > 0 ? value : "");
         if (!active) return;
 
         const dt_items = data.map((u) => ({ id: u.id, nom: u.nom }));
-        processItems(newValue, dt_items, setNewValue, setListItems, setOpenList,);
+        processItems(value, dt_items, setValue, setListItems, setOpenList,);
       } catch (error) {
         console.error("Erreur fetchItems:", error);
       }
@@ -40,36 +34,20 @@ export function choiceAuto({ listItems, setListItems,openList, setOpenList,
       active = false;
       clearTimeout(timer);
     };
-  }, [newValue, initialValue]);
+  }, [value]);
 
   /* -------- Handlers pour les interactions avec le composant --------------- */
 
   const handleSelect = (item: Item) => {
-    setNewValue(item.nom);
+    console.log("handleSelect, item", item)
+    setValue(item.nom);
     setOpenList(false);
   };
-
-  const handleBlur = () => {
-    console.log("handleBlur bye", newValue);
-    setOpenList(false);
-    setNewFocus(false);
-  };
-
-  const handleReset = () => {
-    divRef.current?.focus();
-    console.log("handleReset close list", newValue);
-    setOpenList(false);
-    setNewFocus(true);
-  };
-
 
   return {
-    choiceValue: newValue,
-    lstItems: listItems,
-    openList,
-    divRef,
     handleSelect,
-    handleBlur,
-    handleReset,
   };
 }
+/*
+listItems, setListItems,openList, setOpenList, setNewFocus,
+  fetchItems, initialValue, setValue*/

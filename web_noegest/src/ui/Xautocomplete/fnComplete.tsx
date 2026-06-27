@@ -6,8 +6,7 @@ const nbMaxItems = 15;
 
 // FinalTest, Valide la saisie d'un item.nom complet, existe  respecte la contrainte "required"
 export function checkIsValid(
-  value: string, items: Item[], required: boolean): boolean
-{
+  value: string, items: Item[], required: boolean): boolean {
   if (!value && !required) {
     return true;
   }
@@ -22,7 +21,6 @@ export function checkIsValid(
   return test1 || test2;
 }
 
-
 // Validation des items fournis, l'un deux contient-il la value?
 export const isListItemsOk = (value: string, currentItems: Item[]) => {
   const present = filterItems(value, currentItems).length > 0;
@@ -36,6 +34,7 @@ export function getUniqueItem(value: string, items: Item[],
   const listeA = filterItems(value??"", items??[]);
   const duo = !value.includes(altValue??"") && !altValue?.includes(value??"");
 
+  console.log("getUniqueItem", value, altValue, listeA, altItems, duo);
   if ( duo && altItems) { // Deux listes de mots différents à matcher
     const listeB = filterItems(altValue??"", altItems??[]);
     const listeAIds = new Set(items.map(item => item.id));
@@ -98,8 +97,8 @@ export async function getListItems(value:string, fetchItems:(query: string) => I
         const data = await fetchItems(mot);
         const mappedItems = data.map((u) => ({ id: u.id, nom: u.nom }));
         const filtered = filterItems(mot, mappedItems);
-
-
+        const itemUnique = getUniqueItem(mots[0], finalItems, mot, filtered)
+        if (itemUnique) nomUnique = itemUnique.nom
         // le mot donne des résultats qu'on cumule sans doublons
         const combined = [...finalItems, ...filtered]
         const merged = [...new Map(combined.map(item => [item.id, item])).values()];
@@ -123,7 +122,7 @@ export async function getListItems(value:string, fetchItems:(query: string) => I
       finalItems = [...mappedItems];
     }
   }
-  console.log("getListItems return", finalItems);
+  console.log("getListItems return", finalItems, nomUnique);
   return [finalItems, nomUnique];
 }
 
@@ -133,20 +132,14 @@ export function processItems(value: string, w_items: Item[],
                              setListItems: (arg0: Item[]) => void,
                              setOpenList: (arg0: boolean) => void) {
   const filtered = filterItems(value, w_items);
+  const uniqueItem = getUniqueItem(value, w_items);
 
-  const uniqueItem = (filtered?.length === 1) ? filtered[0]
-    : filtered ? getUniqueItem(value, filtered) : undefined ;
+  if (uniqueItem?.nom && value !== uniqueItem.nom) setValue(uniqueItem.nom);
 
-  if (uniqueItem?.nom && value !== uniqueItem.nom) {
-    setValue(uniqueItem.nom);
-    //onSelect(uniqueItem);
-    if (isListItemsOk(uniqueItem.nom,w_items)) {
-      console.log("processItems stLstItems finalSelection", w_items);
-      setListItems(w_items);
-    }
-    console.log("processItems unique setOpenList close");
+  if (uniqueItem && isListItemsOk( uniqueItem.nom,w_items)) {
+    setListItems(w_items);
     setOpenList(false);
-  }
+  } else setListItems(filtered);
 }
 
 

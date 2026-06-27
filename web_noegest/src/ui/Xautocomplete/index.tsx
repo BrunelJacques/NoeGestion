@@ -42,11 +42,8 @@ export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error 
                   fetchItems, onSelect, initialValue });
 
   const {
-    choiceValue,
-    lstItems,
     handleSelect,
-  } = choiceAuto({listItems, setListItems,openList, setOpenList, setNewFocus,
-                  fetchItems, initialValue });
+  } = choiceAuto({ setListItems, setOpenList, setNewFocus, fetchItems, value, setValue });
 
 
   // On remonte le useState ici, juste après
@@ -54,17 +51,13 @@ export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error 
   const validation = useFormValidation();
 
   //La logique est les effets
-  const isValid = checkIsValid(value, lstItems, required);
+  const isValid = checkIsValid(value, listItems, required);
   const isValidRef = useRef(isValid);
 
   useEffect(() => {
-    setValue(choiceValue);
-  }, [choiceValue]);
-
-  useEffect(() => {
+    console.log("inputValue", inputValue);
     setValue(inputValue);
-  }, [inputValue, handleClick]);
-
+  }, [inputValue]);
 
   useEffect(() => {
     isValidRef.current = isValid;
@@ -110,7 +103,7 @@ export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error 
 
       {openList && (
         <ul className={sc.lstAuto}>
-          {[...lstItems]
+          {[...listItems]
             .sort(sortQueryFirst)
             .map((item) => (
             <li
