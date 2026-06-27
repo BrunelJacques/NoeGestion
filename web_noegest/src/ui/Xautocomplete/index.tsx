@@ -2,7 +2,7 @@
 import {useEffect, useRef, useState, type ComponentPropsWithoutRef } from "react";
 import * as sc from '../xcommon.css';
 import { Xinput } from '../Xinput';
-import {checkIsValid} from './fnComplete.tsx';
+import {checkIsValid, getUniqueItem} from './fnComplete.tsx';
 import { inputAuto } from './inputAuto.tsx';
 import type { Item } from "../../types/item.ts";
 import { useFormValidation } from "../../contexts/FormContext.tsx";
@@ -26,6 +26,7 @@ export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error 
 
   const initialValue = typeof props.value === "string" ? props.value : String(props.value);
   const [value, setValue] = useState<string>(initialValue);
+  const [oldValue, setOldValue] = useState<string>(initialValue);
   const [listItems, setListItems] = useState<Item[]>([]);
   const [openList, setOpenList] = useState(false);
   const [newFocus, setNewFocus] = useState(false);
@@ -54,17 +55,24 @@ export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error 
   const isValid = checkIsValid(value, listItems, required);
   const isValidRef = useRef(isValid);
 
-  useEffect(() => {
-    console.log("inputValue", inputValue);
+  useEffect(() => { // Récupération de la saisie par l'input
     setValue(inputValue);
   }, [inputValue]);
 
-  useEffect(() => {
+  useEffect(() => { // Transmet au parent le choix d'item
+    const uniqueItem = getUniqueItem(value, listItems);
+    if (uniqueItem && value !== oldValue) {
+      onSelect(uniqueItem);
+      setOldValue(value)
+    }
+  }, [value, listItems]);
+
+  useEffect(() => { // Pour le suivi global de validité du formulaire
     isValidRef.current = isValid;
   }, [isValid]);
 
   useEffect(() => {
-    // Le garde-fou "return" doit être à l'intérieur de l'effet, pas en dehors !
+    // Le garde-fou "return" doit être à l'intérieur de l'effet
     if (!validation || !props.name) return;
 
     return validation.registerValidator(props.name, () => {
