@@ -2,7 +2,7 @@
 import * as s from "../pages/OneMvt/index.css.ts";
 import {Form} from "react-router-dom";
 import type { MvtFormField } from "../types/mvtFormFields.ts";
-import type { MvtPatch } from "../types/mouvement.ts";
+import type { Mouvement, MvtPatch } from "../types/mouvement.ts";
 import {Xinput} from "../../ui/Xinput";
 import {SpanCell} from "../../ui/SpanCell";
 import type { SyntheticEvent } from "react";
@@ -10,19 +10,34 @@ import {getCellValue} from "../../utils/getCellValue.tsx";
 import FieldArticle from "./FieldArticle.tsx";
 import type { Article } from "../types/article.ts";
 import FieldFournisseur from "./FieldFournisseur.tsx";
-//import { getProp } from "../../../utils/getProp.tsx";
+import { standardize } from "../../utils/string.ts";
+//import { getProp } from "../../utils/getProp.tsx";
 
 interface Props {
   formKey: number,
   fields: MvtFormField[],
-  mvtPatch: MvtPatch,
+  mouvement: Mouvement,
   article: Article,
-  updateField: (field: keyof MvtPatch, value?: MvtPatch[keyof MvtPatch]|null) => void,
+  updateField: (field: keyof Mouvement, value?: Mouvement[keyof Mouvement]|null) => void,
   handleSubmit: (e: SyntheticEvent<HTMLFormElement>) => Promise<void>,
 }
 
 
-export function OneMvtForm({ ...prp}:Props) {
+export function OneMvtForm({ fields,mouvement,article, ...prp}:Props) {
+  const idMvt=mouvement.id
+  const disabledFields = new Set(["couttot","coutun","pxun","nomlong","pxstock","qtestock"])
+  console.log("OneMvt",mouvement)
+
+  const champs=fields.map(fld => {
+    const name = standardize(fld.label);
+    return {
+      ...fld,
+      name: name,
+      disabled: disabledFields.has(name),
+      value: getCellValue(mouvement, fld),
+    };
+  });
+
 return (
   <div className={s.wrapForm}>
     <Form
@@ -32,36 +47,38 @@ return (
     >
       <div className={s.formStyle}>
         {/* ------- déroulé des champs par map ------- */}
-        {prp.fields.map((fld) => {
-          const val = getCellValue(prp.mvtPatch, fld);
-          const isEditable = Boolean(
-            fld.fieldName &&
-            !fld.subFieldName &&
-            !fld.calcul
-          );
+        {champs.map((fld) => {
 
+          const key = `fld-${idMvt}-${fld.name}`;
+
+          //console.log("OneField",key,fld.value,fld)
           return (
-            <div
-              key={`field-${prp.mvtPatch.id}-${fld.label}`}
-            >
-              { (fld.fieldName === "article") ?(
+             /*------- affichage d'un champ selon sa nature -------*/
+            <div key={key} >
+              { (fld.disabled) ?(
+                <Xinput
+                  value= {fld.value}
+                  disabled= {true}
+                  label= {fld.label}
+                />
+              ) : (fld.fieldName === "article") ?(
                   <FieldArticle
-                    value={prp.article.nom}
+                    value={article.nom}
                     updateField={
                       (art) => prp.updateField(`article`, art?.id)
                     }
                   />
                 ) : (fld.fieldName === "fournisseur") ?(
                 <FieldFournisseur
-                  value={prp.mvtPatch.fournisseur}
+                  value={mouvement.fournisseur}
                   updateField={
                     (art) => prp.updateField(`fournisseur`, art)
                   }
                 />
-                ) : (isEditable && fld.fieldName) ? (
+                ) : (fld.fieldName) ? (
                 <Xinput
                   type={fld.type === "number" ? "number" : fld.type === "date" ? "date" : "text"}
-                  value={String(prp.mvtPatch[fld.fieldName] ?? "")}
+                  value={String(mouvement[fld.fieldName] ?? "")}
                   showReset={false}
                   onChange={(evt) => {
                     const nextValue =
@@ -72,16 +89,16 @@ return (
                     prp.updateField(fld.fieldName!, nextValue as MvtPatch[typeof fld.fieldName]);
                   }}
                 />
-              ) : typeof val === "number" ? (
+              ) : typeof fld.value === "number" ? (
                 <SpanCell
-                  value={val}
+                  value={fld.value}
                   justify={fld.justify}
                   nbDecimals={fld.nbDecimals}
                   width={fld.width}
                 />
               ) : (
                 <SpanCell
-                  value={String(val)}
+                  value={String(fld.value)}
                   justify={fld.justify}
                   width={fld.width}
                 />

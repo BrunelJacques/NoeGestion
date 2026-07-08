@@ -29,9 +29,9 @@ function Mouvements() {
 
   const url = `${apiUrl.STMOUVEMENT_URL}?${queryParams.toString()}`;
   const formFields = lstMvtFields[filtres?.pageOrigine || "sorties"];
-  const colonnes = formFields.filter((field) => !field.noLstDisplay);
+  const fields = formFields.filter((field) => !field.noLstDisplay);
 
-  const gridColumns = colonnes
+  const gridColumns = fields
     .map((f) => `minmax(${f.width ?? 50}px, 1fr)`)
     .join(" ");
 
@@ -74,9 +74,9 @@ function Mouvements() {
       <div className={s.grid} style={{ gridTemplateColumns: gridColumns }}>
 
         {/* Entêtes */}
-        {colonnes.map((col) => (
-          <div key={`head-${col.label}`} className={s.columnHeader}>
-            {col.label}
+        {fields.map((fld) => (
+          <div key={`head-${fld.label}`} className={s.columnHeader}>
+            {fld.label}
           </div>
         ))}
 
@@ -84,11 +84,11 @@ function Mouvements() {
         {mouvements.map((mvt) => (
           // Le Fragment avec sa clé est obligatoire ici pour le CSS Grid !
           <React.Fragment key={mvt.id}>
-            {colonnes.map((col) => {
-              const val = getCellValue(mvt, col, dicCalculs);
+            {fields.map((fld) => {
+              const val = getCellValue(mvt, fld, dicCalculs);
               return (
                 <div
-                  key={`cell-${mvt.id}-${col.label}`}
+                  key={`cell-${mvt.id}-${fld.label}`}
                   className={s.dataCell}
                   role="button"
                   tabIndex={0}
@@ -102,15 +102,15 @@ function Mouvements() {
                   {typeof val === "number" ? (
                     <SpanCell
                       value={val}
-                      justify={col.justify}
-                      nbDecimals={col.nbDecimals}
-                      width={col.width}
+                      justify={fld.justify}
+                      nbDecimals={fld.nbDecimals}
+                      width={fld.width}
                     />
                   ) : (
                     <SpanCell
                       value={String(val)}
-                      justify={col.justify}
-                      width={col.width}
+                      justify={fld.justify}
+                      width={fld.width}
                     />
                   )}
                 </div>

@@ -21,7 +21,7 @@ const toDisplayValue = (value: unknown): string | number => {
 
 
 export const getCellValue = <TRow extends object>(
-  row: TRow,
+  rowData: TRow,
   field: GridField<TRow>,
   dicCalculs?: CalculDictionary<TRow>
 ): string | number => {
@@ -34,7 +34,7 @@ export const getCellValue = <TRow extends object>(
     }
 
     try {
-      return fonctionAExecuter(row);
+      return fonctionAExecuter(rowData);
     } catch (error) {
       console.error(`Erreur dans la fonction ${field.calcul}:`, error);
       return "";
@@ -45,7 +45,7 @@ export const getCellValue = <TRow extends object>(
     return field.default?.toString() ?? "";
   }
 
-  const value = row[field.fieldName];
+  const value = rowData[field.fieldName];
 
   if (field.subFieldName) {
     if (value == null || typeof value !== "object") {

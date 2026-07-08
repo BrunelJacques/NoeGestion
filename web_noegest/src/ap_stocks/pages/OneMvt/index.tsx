@@ -3,7 +3,7 @@ import React, {useCallback, useEffect, useState } from "react";
 import * as s from "./index.css.ts";
 import { useFiltres } from "../../hooks/contextFiltres/useFiltres";
 import { apiUrl } from "../../../constants/api.Constants";
-import { MVT0, type MvtPatch, type MvtsRetour } from "../../types/mouvement";
+import { MVT0, type MvtPatch, type MvtsRetour, type Mouvement } from "../../types/mouvement";
 import { useError } from "../../../hooks/useError";
 import { lstMvtFields } from "../../constants/lstMvtFields";
 import { useParams } from "react-router-dom";
@@ -11,13 +11,22 @@ import { OneMvtForm } from "../../components/OneMvtForm.tsx";
 import { OneMvtBoutons} from "../../components/OneMvtBoutons.tsx";
 import { ART0, type Article } from "../../types/article.ts";
 
+
+function mvtToPatch(mvt:Mouvement):MvtPatch {
+  const { article, saisie, transfert, ...leReste} = mvt;
+  return {
+    ...leReste,
+    IdArticle: article.id,
+  };
+}
+
 function OneMvt() {
 
   const { setError } = useError();
   const { filtres } = useFiltres();
 
-  const [mouvement, setMouvement] = useState<MvtPatch>(MVT0); //original
-  const [mvtPatch, setMvtPatch] = useState<MvtPatch>(MVT0); // modifié
+  const [mouvement, setMouvement] = useState<Mouvement>(MVT0); //original
+  const [mvtPatch, setMvtPatch] = useState<MvtPatch>(null); // modifié
   const [ article, setArticle] = useState<Article>(ART0); //original
   const [formKey, setFormKey] = useState(0);
 
@@ -34,10 +43,10 @@ function OneMvt() {
   const fields = lstMvtFields[filtres?.pageOrigine || "sorties"];
 
   useEffect(() => {
-    // Si on est en mode création, on ne fetch rien, on s'assure juste des valeurs par défaut
+    // Si on est en mode création, on ne 'fetch' rien, on s'assure juste des valeurs par défaut
     if (isCreationMode) {
       setMouvement(MVT0);
-      setMvtPatch(MVT0);
+      setMvtPatch(null);
       setArticle(ART0);
       return;
     }
@@ -56,15 +65,13 @@ function OneMvt() {
           setError("Mouvement introuvable.");
           return;
         }
-        const { article, saisie, transfert, ...leReste } = oneMvt;
-        setArticle(article);
-        const mvtPatch: MvtPatch = {
-          ...leReste,
-          article: article.id,
-        };
+
+        const mvtPatch: MvtPatch = mvtToPatch(oneMvt);
+
         if (isMounted) {
-          setMouvement(mvtPatch);
+          setMouvement(oneMvt);
           setMvtPatch(mvtPatch);
+          setArticle(article);
         }
       } catch (error) {
         console.error("Erreur lors du fetch :", error);
@@ -91,13 +98,14 @@ function OneMvt() {
   const updateField = useCallback(
     (field: keyof MvtPatch, value?: MvtPatch[keyof MvtPatch]|null
     ) => {
-      setMvtPatch(prev => ({ ...prev, [field]: value }));
+      console.log("updateField todo", field, value);
+      //setMvtPatch(prev => ({ ...prev, [field]: value }));
     },
     []
   );
 
   function resetMouvement() {
-    setMvtPatch(mouvement);
+    setMvtPatch(null);
     setFormKey((prevKey) => prevKey + 1);
   }
 async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
@@ -106,7 +114,7 @@ async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
   // URL et Méthode dynamiques selon le mode
   const submitUrl = isCreationMode
     ? apiUrl.STMOUVEMENT_URL
-    : `${apiUrl.STMOUVEMENT_URL}${mvtPatch.id}/`;
+    : `${apiUrl.STMOUVEMENT_URL}${mvtPatch}/`;
 
   const method = isCreationMode ? "POST" : "PATCH";
 
@@ -124,9 +132,9 @@ async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
       return;
     }
 
-    const savedMouvement: MvtPatch = await response.json();
+    const savedMouvement: Mouvement = await response.json();
     setMouvement(savedMouvement);
-    setMvtPatch(savedMouvement);
+    setMvtPatch(mvtToPatch(savedMouvement));
 
     // Optionnel : Si vous voulez rediriger l'utilisateur sur la page de modification
     // avec le nouvel ID généré par l'API après une création réussie, vous pouvez
@@ -162,7 +170,7 @@ async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
 
       <OneMvtForm formKey={formKey}
                   fields={fields}
-                  mvtPatch={mvtPatch}
+                  mouvement={mouvement}
                   article={article}
                   updateField={updateField}
                   handleSubmit={handleSubmit}

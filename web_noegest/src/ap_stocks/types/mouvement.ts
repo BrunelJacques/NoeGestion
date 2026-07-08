@@ -1,6 +1,6 @@
 // types/mouvement.ts
 
-import { type Article } from './article';
+import { ART0, type Article } from './article';
 
 export type Mouvement = {
     id: number;
@@ -14,17 +14,17 @@ export type Mouvement = {
     service: number;
     rations?: number;
     analytique: number;
-    fournisseur?: number;
+    fournisseur: number;
     ordi: string;
     saisie: string;
     transfert?: Date;
 }
-export type MvtPatch = {
+export type MvtPatch = null|{
     id: number;
     jour: string;
     sens: number;
     origine: string;
-    article: number;
+    IdArticle: number;
     nb_colis?: number;
     qte_mouvement: number;
     prix_unit: number;
@@ -32,16 +32,16 @@ export type MvtPatch = {
     rations?: number;
     analytique?: number;
     fournisseur?: number;
-    ordi?: string;
+    ordi: string;
 }
 
 
-export const MVT0: MvtPatch =  {
+export const MVT0: Mouvement {
     id: 0,
     jour: "",
     sens: -1,
     origine: "",
-    article: 1,
+    article: ART0
     qte_mouvement: 1,
     prix_unit: 1,
     service: 0,
