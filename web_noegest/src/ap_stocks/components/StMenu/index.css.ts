@@ -8,16 +8,12 @@ export const page = style({
   alignSelf: "center",
 })
 
-export const entete = style({
-  display: "flex",
-  flexWrap: "wrap",
-  alignItems: "center",
-  marginBottom: "auto",
-})
 
 export const boutons = style({
-    display: "flexWrap",
+    display: "flex",
+    flexWrap: "wrap",
     alignItems: "center",
+    marginBottom: "auto",
   })
 
 export const altButton = style({
@@ -81,7 +77,8 @@ export const fltTxt = style({
 
 export const xlink = style({
   display: "flex",
-  margin: "5px auto",
+  flexWrap: "wrap",
+  alignItems: "center",
+  marginBottom: "auto",
   fontSize: "13px",
-  height: "28px"
 })

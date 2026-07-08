@@ -34,7 +34,6 @@ export function getUniqueItem(value: string, items: Item[],
   const listeA = filterItems(value??"", items??[]);
   const duo = !value.includes(altValue??"") && !altValue?.includes(value??"");
 
-  console.log("getUniqueItem", value, altValue, listeA, altItems, duo);
   if ( duo && altItems) { // Deux listes de mots différents à matcher
     const listeB = filterItems(altValue??"", altItems??[]);
     const listeAIds = new Set(items.map(item => item.id));
@@ -67,7 +66,6 @@ export async function getListItems(value:string, fetchItems:(query: string) => I
   let finalItems: Item[] = [];
   let nomUnique: string = ""
 
-  console.log("getListItems", value, mots);
   try { // sur le premier mot saisi fractionné par la droite jusqu'à trouver des items
     for (let i = mots[0].length; i > 1; i--) {
       const stripValue = mots[0].slice(0, i);
@@ -76,7 +74,6 @@ export async function getListItems(value:string, fetchItems:(query: string) => I
       const filtered = filterItems(stripValue, mappedItems);
       if (isListItemsOk(stripValue, filtered)) {
         finalItems = [...filtered];
-        console.log("wItemsOk sur mot[0] break", finalItems);
         break;
       }
     }
@@ -91,7 +88,6 @@ export async function getListItems(value:string, fetchItems:(query: string) => I
 
   if (!nomUnique && mots?.length > 1) { // value est fractionnable et on n'a toujours pas trouvé
     for (const mot of mots.slice(1)) { // Recherche en boucle sur les mots suivants
-      console.log("lance mot ",mot)
       if (!mot) continue;
       try {
         const data = await fetchItems(mot);
@@ -102,8 +98,7 @@ export async function getListItems(value:string, fetchItems:(query: string) => I
         // le mot donne des résultats qu'on cumule sans doublons
         const combined = [...finalItems, ...filtered]
         const merged = [...new Map(combined.map(item => [item.id, item])).values()];
-        console.log("mot ",mot, merged)
-        
+
         if (merged.length <= nbMaxItems) {
           finalItems = [...merged];
         } else if ((filtered.length < finalItems.length) && isListItemsOk(mot, finalItems)){
@@ -114,15 +109,12 @@ export async function getListItems(value:string, fetchItems:(query: string) => I
       } // fin try 2
     } // boucle mots terminée
 
-    console.log('fin merge',finalItems)
     if (!isListItemsOk(mots[0], finalItems)) { // toujours pas trouvé
-      console.log("relancé car non trouvé", mots[0],finalItems)
       const data = await fetchItems("");
       const mappedItems = data.map((u) => ({ id: u.id, nom: u.nom }));
       finalItems = [...mappedItems];
     }
   }
-  console.log("getListItems return", finalItems, nomUnique);
   return [finalItems, nomUnique];
 }
 

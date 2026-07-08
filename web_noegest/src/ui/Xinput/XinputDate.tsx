@@ -55,10 +55,8 @@ export function XinputDate({
     const handleBackSpace = () => {  // sauter le slash automatiquement sinon il sera remis par le formatage
         const pos = cursorPosRef.current ?? 0;
         const carAtPos = dateFr.charAt(pos);
-        console.log("Backspace détecté, actuelle:", dateFr, pos, "/", carAtPos, "/")
         if (carAtPos === "/") {
             setDateFr(dateFr.slice(0, carAtPos === "/" ? pos - 1 : pos) + dateFr.slice(pos));
-            console.log("Backspace setDateFr:", dateFr)
         }
     };
 
@@ -92,7 +90,6 @@ export function XinputDate({
         // Ajustement si curseur derrière un "/" ajouté automatiquement
         if (dateFr[pos - 1] === "/" && [2, 5].includes(pos)) {
             pos -= 1;
-            console.log("Ajustement  -1:", pos, dateFr[pos], dateFr);
         } else {
             if (dateFr[pos] === "/" || [3, 6].includes(pos)) {
                 pos += 1;

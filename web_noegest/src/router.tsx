@@ -42,7 +42,7 @@ export const router = createBrowserRouter([
             children: [
               { path: 'filtres', element: <StFiltres /> },
               { path: 'mouvements', element: <StMouvements /> },
-              { path: 'one-mvt/:id', element: <StOneMvt /> },
+              { path: 'one-mvt/:id?', element: <StOneMvt /> },
             ],
           },
         ],

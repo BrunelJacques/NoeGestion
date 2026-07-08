@@ -12,7 +12,7 @@ export type MvtFormField = {
   width?: number; // pour ajuster la largeur de la colonne
   justify?: 'left' | 'center' | 'right'; // alignement du contenu
   nbDecimals?: number; // pour les champs numériques, nombre de décimales à afficher
-  noDisplay?: boolean;
+  noLstDisplay?: boolean;
   default?: number | string | Date; // valeur par défaut si non liée à un champ de mouvement
 }
 

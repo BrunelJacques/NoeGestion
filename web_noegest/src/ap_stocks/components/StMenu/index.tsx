@@ -22,7 +22,7 @@ export function StMenu(props: FiltresProps) {
   if (!filtres) return null;
   return (<>
     <nav className={props.className}>
-      <div  className={s.entete}>
+      <div  className={s.boutons}>
         <XbuttonBack altClassName={s.altButton} displayPrevious={true}>
           <img className={s.goBack} title={"fleche"} src={goBack} alt={"fleche"} />
         </XbuttonBack>
@@ -48,6 +48,13 @@ export function StMenu(props: FiltresProps) {
         $isFullLink={true}
         altClassName={s.xlink}>
           Mouvements
+        </Xlink>}
+
+        {page === "Mouvements" && <Xlink
+            to="/stocks/one-mvt"
+            $isFullLink={true}
+            altClassName={s.xlink}>
+            Ajout Mvt
         </Xlink>}
       </div>
     </nav>

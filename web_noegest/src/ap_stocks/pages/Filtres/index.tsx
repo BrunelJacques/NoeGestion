@@ -45,7 +45,6 @@ export default function Filtres() {
     // On interroge directement la ref du validateur pour valider le formulaire
     if (validationRef.current && !validationRef.current.validateAll()) {
       setError("Validation refusée car présence de champ(s) incorrect(s).")
-      console.log("Formulaire invalide, soumission bloquée.");
       return; // On stoppe le submit
     }
 
@@ -57,7 +56,6 @@ export default function Filtres() {
       pageOrigine: pageOrigine.value
     };
     setFiltres(finalFiltres);
-    console.log("Filtres validés:", finalFiltres);
   }
     
   return (

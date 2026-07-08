@@ -39,7 +39,6 @@ export function choiceAuto({ setListItems, setOpenList, fetchItems,
   /* -------- Handlers pour les interactions avec le composant --------------- */
 
   const handleSelect = (item: Item) => {
-    console.log("handleSelect, item", item)
     setValue(item.nom);
     setOpenList(false);
   };

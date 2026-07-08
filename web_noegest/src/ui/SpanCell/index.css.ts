@@ -5,7 +5,7 @@ import { createVar, style } from '@vanilla-extract/css';
 export const widthVar = createVar();
 
 export const widthStyle = style({
-  minWidth: "33px",
+  minWidth: `max(33px, calc(${widthVar} / 2))`,
   width: widthVar,
 });
 

@@ -1,8 +1,8 @@
 // src/pages/Register.tsx
 
 import { useState } from "react";
-import { Xinput } from "../../ui/Xinput/index.tsx";
-import  { Xbutton } from "../../ui/Xbutton/index.tsx";
+import { Xinput } from "../../ui/Xinput";
+import  { Xbutton } from "../../ui/Xbutton";
 import * as s from "./index.css.ts"
 import { useAuth } from "../../hooks/useAuth.tsx";
 import { XinputDate } from "../../ui/Xinput/XinputDate.tsx";

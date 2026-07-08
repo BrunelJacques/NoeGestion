@@ -29,7 +29,7 @@ function Mouvements() {
 
   const url = `${apiUrl.STMOUVEMENT_URL}?${queryParams.toString()}`;
   const formFields = lstMvtFields[filtres?.pageOrigine || "sorties"];
-  const colonnes = formFields.filter((field) => !field.noDisplay);
+  const colonnes = formFields.filter((field) => !field.noLstDisplay);
 
   const gridColumns = colonnes
     .map((f) => `minmax(${f.width ?? 50}px, 1fr)`)
@@ -46,7 +46,6 @@ function Mouvements() {
         const mvts: MvtsRetour = await response.json();
 
         if (isMounted) setMouvements(mvts.results);
-        console.log("mouvements:",mvts.results);
       } catch (error) {
         console.error("Erreur lors du fetch :", error);
         if (isMounted) {
@@ -102,17 +101,16 @@ function Mouvements() {
                 >
                   {typeof val === "number" ? (
                     <SpanCell
-                      value={val} // Ici TypeScript sait que val est STRICTEMENT un number
+                      value={val}
                       justify={col.justify}
                       nbDecimals={col.nbDecimals}
                       width={col.width}
                     />
                   ) : (
                     <SpanCell
-                      value={String(val)} // Ici TypeScript sait que val est un string
+                      value={String(val)}
                       justify={col.justify}
                       width={col.width}
-                      // Pas de nbDecimals ici, donc il matche parfaitement OtherProps
                     />
                   )}
                 </div>

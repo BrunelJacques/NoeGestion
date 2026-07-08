@@ -68,7 +68,6 @@ export function inputAuto({listItems, setListItems,openList, setOpenList,
   const onChange = (e: { target: { value: string } }) => {
     // Teste si la saisie pointe sur un item unique, fn autocomplète
     const value = e.target.value;
-    console.log("onChange ", value);
     fetchAndSet(value);
   };
 
@@ -78,13 +77,11 @@ export function inputAuto({listItems, setListItems,openList, setOpenList,
   };
 
   const handleReset = () => {
-    console.log("handleReset ", newValue);
     divRef.current?.focus();
     setNewFocus(true);
   };
 
   const handleClick = () => {
-    console.log("handleClick deb",newFocus, "/",openList);
     if (newFocus) {
       setOpenList(true);
       setNewFocus(false);
