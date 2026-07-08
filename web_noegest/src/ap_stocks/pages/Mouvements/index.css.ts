@@ -5,10 +5,11 @@ import { colors } from '../../../assets/styles/colors.css';
 
 export const tableauWrapper = style({
   display: 'flex',
-  overflow: 'auto', // C'est lui qui permet le scroll 2D
+  flexDirection: 'column', // Optionnel mais conseillé pour du flex qui contient une grille
+  overflow: 'auto',
   border: '1px solid #ccc',
   position: 'relative', 
-  height: 'calc(100vh)',
+  height: '100%',
   zIndex: 25, 
   color: vars.color.textLower,
   background: vars.color.body,
@@ -22,7 +23,8 @@ export const grid = style({
   maxHeight: 'calc(100% - 65px )', // hauteur pour activer le scroll vertical
   marginLeft: 5,
   gridAutoRows: 'max-content',
-  justifyContent: 'center'
+  justifyContent: 'safe center', // ou remplacer par start, plus classique pour grids
+  //minWidth: 'max-content',
 });
 
 export const columnHeader = style({
