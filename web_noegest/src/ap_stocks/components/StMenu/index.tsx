@@ -50,7 +50,7 @@ export function StMenu(props: FiltresProps) {
           Mouvements
         </Xlink>}
 
-        {page === "Mouvements" && <Xlink
+        {page != "One Mvt" && <Xlink
             to="/stocks/one-mvt"
             $isFullLink={true}
             altClassName={s.xlink}>

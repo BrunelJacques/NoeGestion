@@ -55,6 +55,7 @@ export default function Filtres() {
       ...draft,
       pageOrigine: pageOrigine.value
     };
+    console.log("handle Submit filtres Set",finalFiltres);
     setFiltres(finalFiltres);
   }
     

@@ -21,9 +21,8 @@ interface UseAutocompleteProps {
 }
 
 export function inputAuto({listItems, setListItems,openList, setOpenList,
-                            newFocus, setNewFocus,
-                            fetchItems, initialValue }
-                                : UseAutocompleteProps) {
+                            newFocus, setNewFocus, fetchItems, onSelect, initialValue }
+                          : UseAutocompleteProps) {
   /* ---------------- constantes de portées générale ----------------- */
 
   const [newValue, setNewValue] = useState<string>(initialValue);
@@ -34,7 +33,6 @@ export function inputAuto({listItems, setListItems,openList, setOpenList,
     try {
       const [newListItems, nomUnique] = await getListItems(value, fetchItems);
       if (newListItems) setListItems(newListItems);
-
       const val = nomUnique? nomUnique : value; // Selection automatique
       if (newValue !== val) {
         setNewValue(val); // Mise à jour si différence
@@ -68,8 +66,14 @@ export function inputAuto({listItems, setListItems,openList, setOpenList,
   const onChange = (e: { target: { value: string } }) => {
     // Teste si la saisie pointe sur un item unique, fn autocomplète
     const value = e.target.value;
-    fetchAndSet(value);
+    if (value) {
+      fetchAndSet(value);
+    } else {
+      setNewValue("")
+      onSelect("")
+    }
   };
+
 
   const handleBlur = () => {
     setOpenList(false);

@@ -61,8 +61,10 @@ export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error 
 
   useEffect(() => { // Transmet au parent le choix d'item
     const uniqueItem = getUniqueItem(value, listItems);
-    if (uniqueItem && value !== oldValue) {
-      onSelect(uniqueItem);
+    if (uniqueItem) {
+      onSelect(uniqueItem??null);
+    }
+    if (value !== oldValue) {
       setOldValue(value)
     }
   }, [value, listItems]);

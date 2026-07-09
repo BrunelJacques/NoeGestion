@@ -8,7 +8,6 @@ import {SpanCell} from "../../ui/SpanCell";
 import type { SyntheticEvent } from "react";
 import {getCellValue} from "../../utils/getCellValue.tsx";
 import FieldArticle from "./FieldArticle.tsx";
-import type { Article } from "../types/article.ts";
 import FieldFournisseur from "./FieldFournisseur.tsx";
 import { standardize } from "../../utils/string.ts";
 import {dicCalculs} from "../utils/calculs.tsx";
@@ -18,24 +17,26 @@ interface Props {
   formKey: number,
   fields: MvtFormField[],
   mouvement: Mouvement,
-  article: Article,
   updateField: (field: keyof Mouvement, value?: Mouvement[keyof Mouvement]|null) => void,
   handleSubmit: (e: SyntheticEvent<HTMLFormElement>) => Promise<void>,
 }
 
 
-export function OneMvtForm({ fields,mouvement,article, ...prp}:Props) {
+export function OneMvtForm({ fields,mouvement, ...prp}:Props) {
   const idMvt=mouvement.id
-  const disabledFields = new Set(["couttot","coutun","pxun","nomlong","pxstock","qtestock"])
-  console.log("OneMvt",mouvement)
+  const disabledFields = new Set(["couttot","coutun","pxun","nomcourt","pxstock","qtestock"])
+  const minusable = new Set(["qte","couttot"])
+  const article = mouvement.article
 
   const champs=fields.map(fld => {
     const name = standardize(fld.label);
+    const sens = (minusable.has(name)) ? mouvement.sens : null;
+    const val = getCellValue(mouvement, fld, dicCalculs)
     return {
       ...fld,
       name: name,
       disabled: disabledFields.has(name),
-      value: getCellValue(mouvement, fld, dicCalculs),
+      value: sens? +val * sens :val, // value : number|string, val:string
     };
   });
 
@@ -52,11 +53,10 @@ return (
 
           const key = `fld-${idMvt}-${fld.name}`;
 
-          //console.log("OneField",key,fld.value,fld)
           return (
              /*------- affichage d'un champ selon sa nature -------*/
             <div key={key} >
-              { (fld.disabled) ?(
+              { (fld.disabled) ?( // champs non modifiables
                 <Xinput
                   value= {fld.value}
                   disabled= {true}
@@ -76,11 +76,12 @@ return (
                     (art) => prp.updateField(`fournisseur`, art)
                   }
                 />
-                ) : (fld.fieldName) ? (
+                ) : (fld.fieldName) ? ( // autres champs modifiables
                 <Xinput
                   type={fld.type === "number" ? "number" : fld.type === "date" ? "date" : "text"}
-                  value={String(mouvement[fld.fieldName] ?? "")}
-                  showReset={false}
+                  value={String(fld.value ?? "")}
+                  label={fld.name}
+                  showReset={true}
                   onChange={(evt) => {
                     const nextValue =
                       fld.type === "number"

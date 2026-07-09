@@ -47,13 +47,11 @@ export function AfficheFiltres() {
   // Construction de la liste des filtres à afficher
   const filtresAffichables = Object.entries(filtres).filter(([cle, valeur]) => {
 
-    if (valeur === null || valeur === undefined || valeur === "") return false;
-    
+    if (valeur === null || valeur === undefined || !valeur) return false;
     if (exclusions.includes(cle)) return false;
     
     // Exclure 'jour' si 'periode' est présent et valide
     return !(cle === "jour" && filtres.periode);
-
 
   });
 

@@ -9,8 +9,6 @@ import { lstMvtFields } from "../../constants/lstMvtFields";
 import { useParams } from "react-router-dom";
 import { OneMvtForm } from "../../components/OneMvtForm.tsx";
 import { OneMvtBoutons} from "../../components/OneMvtBoutons.tsx";
-import { ART0, type Article } from "../../types/article.ts";
-
 
 function mvtToPatch(mvt:Mouvement):MvtPatch {
   const { article, saisie, transfert, ...leReste} = mvt;
@@ -27,7 +25,6 @@ function OneMvt() {
 
   const [mouvement, setMouvement] = useState<Mouvement>(MVT0); //original
   const [mvtPatch, setMvtPatch] = useState<MvtPatch>(null); // modifié
-  const [ article, setArticle] = useState<Article>(ART0); //original
   const [formKey, setFormKey] = useState(0);
 
   const { id: queryId } = useParams<{ id?: string }>();
@@ -47,7 +44,6 @@ function OneMvt() {
     if (isCreationMode) {
       setMouvement(MVT0);
       setMvtPatch(null);
-      setArticle(ART0);
       return;
     }
 
@@ -71,7 +67,6 @@ function OneMvt() {
         if (isMounted) {
           setMouvement(oneMvt);
           setMvtPatch(mvtPatch);
-          setArticle(article);
         }
       } catch (error) {
         console.error("Erreur lors du fetch :", error);
@@ -171,7 +166,6 @@ async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
       <OneMvtForm formKey={formKey}
                   fields={fields}
                   mouvement={mouvement}
-                  article={article}
                   updateField={updateField}
                   handleSubmit={handleSubmit}
       />
