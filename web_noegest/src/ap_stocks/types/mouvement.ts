@@ -13,8 +13,8 @@ export type Mouvement = {
     prix_unit: number;
     service: number;
     rations?: number;
-    analytique: number;
-    fournisseur: number;
+    analytique?: number;
+    fournisseur?: number;
     ordi: string;
     saisie: string;
     transfert?: Date;
@@ -36,17 +36,18 @@ export type MvtPatch = null|{
 }
 
 
-export const MVT0: Mouvement {
+export const MVT0 :Mouvement = {
     id: 0,
     jour: "",
     sens: -1,
     origine: "",
-    article: ART0
+    article: ART0,
     qte_mouvement: 1,
     prix_unit: 1,
     service: 0,
     analytique: 0,
     ordi: "",
+    saisie:"",
 }
 
 export type MvtsRetour = {

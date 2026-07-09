@@ -29,6 +29,8 @@ export const Xinput = forwardRef<HTMLInputElement, Props>(({
     ...props
  }, ref) => {
 
+  const locShowReset = props.disabled? false: showReset;
+
   const inputRef = useRef<HTMLInputElement>(null); // retour focus après reset
 
   const isBackspacePressed = useRef(false); // La dernière touche pressée était Backspace
@@ -80,7 +82,7 @@ export const Xinput = forwardRef<HTMLInputElement, Props>(({
           ].filter(Boolean).join(" ")}
           {...props}
         />
-        {showReset && props.value && (
+        {locShowReset && props.value && (
           <button
             type="button"
             className={sc.resetButton}

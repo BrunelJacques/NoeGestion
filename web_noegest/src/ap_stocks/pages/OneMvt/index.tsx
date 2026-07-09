@@ -96,7 +96,7 @@ function OneMvt() {
   }, [url, setError, isCreationMode]); // Ajout de isCreationMode dans les dépendances
 
   const updateField = useCallback(
-    (field: keyof MvtPatch, value?: MvtPatch[keyof MvtPatch]|null
+    (field: keyof Mouvement, value?: Mouvement[keyof Mouvement]|null
     ) => {
       console.log("updateField todo", field, value);
       //setMvtPatch(prev => ({ ...prev, [field]: value }));

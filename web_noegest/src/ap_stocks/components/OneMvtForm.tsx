@@ -2,7 +2,7 @@
 import * as s from "../pages/OneMvt/index.css.ts";
 import {Form} from "react-router-dom";
 import type { MvtFormField } from "../types/mvtFormFields.ts";
-import type { Mouvement, MvtPatch } from "../types/mouvement.ts";
+import type { Mouvement} from "../types/mouvement.ts";
 import {Xinput} from "../../ui/Xinput";
 import {SpanCell} from "../../ui/SpanCell";
 import type { SyntheticEvent } from "react";
@@ -11,6 +11,7 @@ import FieldArticle from "./FieldArticle.tsx";
 import type { Article } from "../types/article.ts";
 import FieldFournisseur from "./FieldFournisseur.tsx";
 import { standardize } from "../../utils/string.ts";
+import {dicCalculs} from "../utils/calculs.tsx";
 //import { getProp } from "../../utils/getProp.tsx";
 
 interface Props {
@@ -34,7 +35,7 @@ export function OneMvtForm({ fields,mouvement,article, ...prp}:Props) {
       ...fld,
       name: name,
       disabled: disabledFields.has(name),
-      value: getCellValue(mouvement, fld),
+      value: getCellValue(mouvement, fld, dicCalculs),
     };
   });
 
@@ -86,7 +87,7 @@ return (
                         ? Number(evt.target.value)
                         : evt.target.value;
 
-                    prp.updateField(fld.fieldName!, nextValue as MvtPatch[typeof fld.fieldName]);
+                    prp.updateField(fld.fieldName!, nextValue as Mouvement[typeof fld.fieldName]);
                   }}
                 />
               ) : typeof fld.value === "number" ? (

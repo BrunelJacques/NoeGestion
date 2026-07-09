@@ -1,4 +1,4 @@
-//src/ap_stocks/constants/lstMvtFiels.ts
+//src/ap_stocks/constants/lstMvtFields.ts
 import type { MvtFormField } from "../types/mvtFormFields";
 import type { PageOrigine } from "./origines";
 
@@ -9,7 +9,7 @@ export const lstMvtFields: Record<PageOrigine, MvtFormField[]> = {
   "sorties": [
     { label: "Qte Stock", type: "number", fieldName: "article", subFieldName: "qte_stock",
       width: 45, justify: 'right', nbDecimals: 0 },
-    { label: "Repas", type: "number", fieldName: "repas",
+    { label: "Service", type: "number", fieldName: "service",
       width:35, justify: 'right', noLstDisplay:true, },
     { label: "Article", type: "text", fieldName: "article", subFieldName: "nom_court",
       width:145, justify: 'right'},
