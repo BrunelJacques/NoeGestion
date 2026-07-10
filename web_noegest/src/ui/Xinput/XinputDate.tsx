@@ -18,12 +18,7 @@ interface Props {
     autoComplete?: string
 }
 
-
-export function XinputDate({
-                               jour,
-                               onChange,
-                               ...props
-                           }: Props) {
+export function XinputDate({ jour, onChange, ...props }: Props) {
 
     const [dateFr, setDateFr] = useState(dt.dateToStringFr(jour??null));
 
@@ -85,13 +80,14 @@ export function XinputDate({
     useLayoutEffect(() => {
         const el = inputRef.current;
         let pos = cursorPosRef.current;
-        if (!el || !pos) return;
+        console.log("rerender LayoutEffect",pos, "/", el, dateFr);
+        if (!el) return;
 
         // Ajustement si curseur derrière un "/" ajouté automatiquement
-        if (dateFr[pos - 1] === "/" && [2, 5].includes(pos)) {
+        if (pos && dateFr[pos - 1] === "/" && [2, 5].includes(pos)) {
             pos -= 1;
         } else {
-            if (dateFr[pos] === "/" || [3, 6].includes(pos)) {
+            if (pos && (dateFr[pos] === "/" || [3, 6].includes(pos))) {
                 pos += 1;
             }
         }
@@ -104,7 +100,7 @@ export function XinputDate({
                 {...props}
                 ref={inputRef}
                 value={dateFr}
-                maxLength={10}
+                maxLength={11}
                 onChange={handleChange}
                 onBackSpace={handleBackSpace}
                 placeholder="jjmmaaaa"

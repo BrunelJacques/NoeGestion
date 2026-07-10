@@ -1,5 +1,6 @@
 // src/ui/Xautocomplete/fnComplete.ts
 import type { Item } from '../../types/item';
+import { standardize as _ } from '../../utils/string.ts'
 
 const nbMinItems = 2;
 const nbMaxItems = 15;
@@ -51,7 +52,7 @@ export function getUniqueItem(value: string, items: Item[],
 
 // Retourne les seuls items matchant avec value identifiés par id ou partie de nom
 export function filterItems(value: string, items: Item[]): Item[] {
-  function _(a:string|number) : string { return  String(a).toLowerCase() }
+
   return items.filter( u => {
     return _(u.id) === _(value) || _(u.nom).includes(_(value));
   });
@@ -119,7 +120,8 @@ export async function getListItems(value:string, fetchItems:(query: string) => I
 }
 
 // Traite les items et applique l'auto-sélection
-export function processItems(value: string, w_items: Item[],
+export function processItems(value: string,
+                             w_items: Item[],
                              setValue: (arg0: string) => void,
                              setListItems: (arg0: Item[]) => void,
                              setOpenList: (arg0: boolean) => void) {
@@ -131,7 +133,9 @@ export function processItems(value: string, w_items: Item[],
   if (uniqueItem && isListItemsOk( uniqueItem.nom,w_items)) {
     setListItems(w_items);
     setOpenList(false);
-  } else setListItems(filtered);
+  } else {
+    setListItems(filtered)
+  };
 }
 
 

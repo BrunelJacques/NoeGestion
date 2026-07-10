@@ -30,6 +30,7 @@ export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error 
   const [listItems, setListItems] = useState<Item[]>([]);
   const [openList, setOpenList] = useState(false);
   const [newFocus, setNewFocus] = useState(false);
+  const [isValid, setIsValid] = useState(false);
   // On récupère toute la logique du Hook personnalisé
   const {
     inputValue,
@@ -47,16 +48,17 @@ export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error 
   } = choiceAuto({ setListItems, setOpenList, setNewFocus, fetchItems, value, setValue });
 
 
-  // On remonte le useState ici, juste après
   const [isTouched, setIsTouched] = useState(false);
   const validation = useFormValidation();
 
-  //La logique est les effets
-  const isValid = checkIsValid(value, listItems, required);
+  //La logique et les effets
+
   const isValidRef = useRef(isValid);
 
   useEffect(() => { // Récupération de la saisie par l'input
     setValue(inputValue);
+    const checkedValid = checkIsValid(inputValue, listItems, required)
+    if ( checkedValid != isValid) setIsValid(checkedValid);
   }, [inputValue]);
 
   useEffect(() => { // Transmet au parent le choix d'item
@@ -111,7 +113,7 @@ export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error 
         onClick={handleClick}
       />
 
-      {openList && (
+      {openList && listItems.length >0 && (
         <ul className={sc.lstAuto}>
           {[...listItems]
             .sort(sortQueryFirst)

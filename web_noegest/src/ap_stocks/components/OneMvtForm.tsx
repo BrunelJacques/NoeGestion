@@ -44,7 +44,7 @@ return (
     <Form
       id="oneMvtForm"
       key={prp.formKey}
-      onSubmit={prp.handleSubmit}
+      //onSubmit={prp.handleSubmit}
     >
       <div className={s.formStyle}>
         {/* ------- déroulé des champs par map ------- */}

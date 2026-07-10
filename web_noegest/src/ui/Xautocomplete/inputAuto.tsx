@@ -1,11 +1,7 @@
 //src/ui/Xautocomplete/inputAuto.tsx
-import React, { useState, useEffect, useRef } from 'react';
-import {ITEM0, type Item } from '../../types/item.ts';
-import {
-  getListItems,
-  isListItemsOk,
-  processItems
-} from './fnComplete.tsx';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
+import { ITEM0, type Item } from '../../types/item.ts';
+import { getListItems,  isListItemsOk, checkIsValid} from './fnComplete.tsx';
 
 interface UseAutocompleteProps {
   // Compatibilité synchrone / asynchrone
@@ -16,62 +12,91 @@ interface UseAutocompleteProps {
   newFocus: boolean;
   setNewFocus: React.Dispatch<React.SetStateAction<boolean>>;
   fetchItems: (query: string) => Item[] | Promise<Item[]>;
-  onSelect: (item: Item ) => void;
+  onSelect: (item: Item) => void;
   initialValue: string;
 }
 
-export function inputAuto({listItems, setListItems,openList, setOpenList,
-                            newFocus, setNewFocus, fetchItems, onSelect, initialValue }
-                          : UseAutocompleteProps) {
-  /* ---------------- constantes de portées générale ----------------- */
+export function inputAuto({
+  listItems, setListItems, openList, setOpenList,
+  newFocus, setNewFocus, fetchItems, onSelect, initialValue
+}: UseAutocompleteProps) {
 
   const [newValue, setNewValue] = useState<string>(initialValue);
   const divRef = useRef<HTMLDivElement>(null);
 
-  // SetValue, fetchItems, setListItems en asynchrone
-  const fetchAndSet = async (value:string) => {
+  // Conserve l'ID de la dernière requête pour bloquer les réponses tardives (Race Conditions)
+  const requestIdRef = useRef<number>(0);
+
+  /* 1. Définition de la logique brute de Fetch */
+  const executeFetch = useCallback(async (value: string) => {
+    // On génère un identifiant unique pour CETTE requête
+    const currentRequestId = ++requestIdRef.current;
+
     try {
       const [newListItems, nomUnique] = await getListItems(value, fetchItems);
+
+      // Si une autre requête a été lancée entre-temps, on ignore ce résultat
+      if (currentRequestId !== requestIdRef.current) return;
+
       if (newListItems) setListItems(newListItems);
-      const val = nomUnique? nomUnique : value; // Selection automatique
-      const isValide = isListItemsOk(val, newListItems);
-      if (newValue !== val) {
-        setNewValue(val); // Mise à jour si différence
-      }
-      setOpenList(!isValide); // Pour (isValide? false : true
-    } catch (error) {console.error( "Erreur lors de getListItems:", error )}
-  }
 
+      const val = nomUnique ? nomUnique : value;
+      const isValide = checkIsValid(val, newListItems, false,);
+
+      setNewValue(val);
+      setOpenList(!isValide);
+    } catch (error) {
+      console.error("Erreur lors de getListItems:", error);
+    }
+  }, [fetchItems, setListItems, setOpenList]);
+
+  /* 2. Création du Debounce (sans dépendance externe) */
+  const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const fetchAndSetDebounced = useCallback((value: string) => {
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current);
+    }
+    debounceTimerRef.current = setTimeout(() => {
+      void executeFetch(value); // Le 'void' supprime l'avertissement WebStorm
+    }, 300);
+  }, [executeFetch]);
+
+  // Nettoyage si le composant est démonté pendant un timer actif
   useEffect(() => {
-    let active = true; // Active évite 'Race Conditions'. Ouvre une activité
-
-    const timer = setTimeout(async () => { // debounce par différé
-      try {
-        const data = await fetchItems(newValue.length > 0 ? newValue : "");
-        if (!active) return; // Ce n'était pas la dernière requête lancée
-
-        const dt_items = data.map((u) => ({ id: u.id, nom: u.nom }));
-        processItems(newValue, dt_items, setNewValue, setListItems, setOpenList);
-      } catch (error) {
-        console.error("Erreur fetchItems:", error);
-      }
-    }, 300); // Debounce de 300ms
     return () => {
-      active = false; // Ferme les demandes en cours, attend la prochaine
-      clearTimeout(timer); //annule les demandes en cours, ne retient que la nouvelle
+      if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current);
     };
-  }, [newValue, initialValue]);
+  }, []);
 
   /* -------- Handlers pour les interactions avec le composant --------------- */
 
   const onChange = (e: { target: { value: string } }) => {
     // Teste si la saisie pointe sur un item unique, fn autocomplète
     const value = e.target.value;
+    setNewValue(value); // On met à jour l'input immédiatement
+
     if (value) {
-      void fetchAndSet(value); // void pour assumer une promise ignorée
+      fetchAndSetDebounced(value); // Lancement différé du fetch
     } else {
-      setNewValue("")
-      onSelect(ITEM0)
+      if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current);
+      setListItems([]);
+      onSelect(ITEM0);
+      setOpenList(false)
+    }
+  };
+
+  const handleClick = () => {
+    if (newFocus) {
+      setOpenList(true);
+      setNewFocus(false);
+    } else {
+      setOpenList(!openList);
+    }
+    if (!isListItemsOk(newValue, listItems)) {
+      // Au clic, l'utilisateur veut une action immédiate : on n'attend pas les 300ms du debounce
+      if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current);
+      void executeFetch(newValue);
     }
   };
 
@@ -83,17 +108,8 @@ export function inputAuto({listItems, setListItems,openList, setOpenList,
   const handleReset = () => {
     divRef.current?.focus();
     setNewFocus(true);
-  };
-
-  const handleClick = () => {
-    if (newFocus) {
-      setOpenList(true);
-      setNewFocus(false);
-    } else setOpenList(!openList);
-
-    if (!isListItemsOk(newValue, listItems)) {
-      void fetchAndSet(newValue)// void pour assumer une promise ignorée
-    }
+    setOpenList(false)
+    setListItems([])
   };
 
   const handleFocus = (e: React.FocusEvent<HTMLDivElement>) => {

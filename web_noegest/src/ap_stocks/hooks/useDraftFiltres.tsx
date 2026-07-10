@@ -12,7 +12,11 @@ export function useDraftFiltres(initialValues: MvtFiltres) {
   const updateField = useCallback(
     (field: keyof MvtFiltres, value: MvtFiltres[keyof MvtFiltres] 
     ) => {
-      setDraft(prev => ({ ...prev, [field]: value }));
+      const zerolist = new Set(["","0","null",null])
+      const valString = zerolist.has(String(value)) ? "" : value;
+
+      setDraft(prev => ({ ...prev, [field]: valString }));
+      console.log("updateField value", field, valString, typeof value)
     },
     []
   );

@@ -15,8 +15,9 @@ export function capitalize(str?: string | null) {
   return str[0].toUpperCase() + str.slice(1).toLowerCase();
 }
 
-export function standardize(str: string) {
+export function standardize(value: string|number):string {
   // ramène une chaîne épurée de casse espaces accents et caractères spéciaux
+  const str = typeof(value) === "string"? value:String(value)
   return str
             .normalize("NFD") // sépare lettre et accent en deux octets
             .replace(/[\u0300-\u036f]/g, "") // supprime l'accent et garde la lettre

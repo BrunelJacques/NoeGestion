@@ -47,7 +47,9 @@ export function FiltresProvider({
   const [filtres, setFiltres] = useState<MvtFiltres>(getSavedFiltres);
 
   // Sauvegarde automatique avec mise à jour de la date de modification
-  const updateFiltres = useCallback((newValue: MvtFiltres | ((prev: MvtFiltres) => MvtFiltres)) => {
+  const updateFiltres = useCallback(
+    (newValue: MvtFiltres | ((prev: MvtFiltres) => MvtFiltres)
+    ) => {
     setFiltres((prev) => {
       const nextState = typeof newValue === "function" ? newValue(prev) : newValue;
 
@@ -70,13 +72,11 @@ export function FiltresProvider({
         setFiltres(getSavedFiltres());
       }
     };
-
     // surveillance du navigateur pour les changements de localStorage
     window.addEventListener("storage", handleStorageChange);
     return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
 
-  
   return (
     <FiltresContext.Provider
       value={{
