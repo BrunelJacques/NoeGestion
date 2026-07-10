@@ -11,7 +11,7 @@ import {choiceAuto} from "./choiceAuto.tsx";
 
 interface XautocompleteProps extends Omit<ComponentPropsWithoutRef<"input">, "onSelect"> {
   fetchItems: (query: string) => Item[] | Promise<Item[]>; // Accepte synchrones ou asynchrones
-  onSelect: (item: Item | string) => void;
+  onSelect: (item: Item ) => void;
   altClassName?: string;
   label?: string;
   error?: string | null;

@@ -1,6 +1,6 @@
 //src/ui/Xautocomplete/inputAuto.tsx
 import React, { useState, useEffect, useRef } from 'react';
-import type { Item } from '../../types/item.ts';
+import {ITEM0, type Item } from '../../types/item.ts';
 import {
   getListItems,
   isListItemsOk,
@@ -16,7 +16,7 @@ interface UseAutocompleteProps {
   newFocus: boolean;
   setNewFocus: React.Dispatch<React.SetStateAction<boolean>>;
   fetchItems: (query: string) => Item[] | Promise<Item[]>;
-  onSelect: (item: Item | string) => void;
+  onSelect: (item: Item ) => void;
   initialValue: string;
 }
 
@@ -34,17 +34,18 @@ export function inputAuto({listItems, setListItems,openList, setOpenList,
       const [newListItems, nomUnique] = await getListItems(value, fetchItems);
       if (newListItems) setListItems(newListItems);
       const val = nomUnique? nomUnique : value; // Selection automatique
+      const isValide = isListItemsOk(val, newListItems);
       if (newValue !== val) {
         setNewValue(val); // Mise à jour si différence
       }
-      setOpenList(!nomUnique); // Pour (nomUnique? false : true
+      setOpenList(!isValide); // Pour (isValide? false : true
     } catch (error) {console.error( "Erreur lors de getListItems:", error )}
   }
 
   useEffect(() => {
     let active = true; // Active évite 'Race Conditions'. Ouvre une activité
 
-    const timer = setTimeout(async () => { // debouce par différé
+    const timer = setTimeout(async () => { // debounce par différé
       try {
         const data = await fetchItems(newValue.length > 0 ? newValue : "");
         if (!active) return; // Ce n'était pas la dernière requête lancée
@@ -67,13 +68,12 @@ export function inputAuto({listItems, setListItems,openList, setOpenList,
     // Teste si la saisie pointe sur un item unique, fn autocomplète
     const value = e.target.value;
     if (value) {
-      fetchAndSet(value);
+      void fetchAndSet(value); // void pour assumer une promise ignorée
     } else {
       setNewValue("")
-      onSelect("")
+      onSelect(ITEM0)
     }
   };
-
 
   const handleBlur = () => {
     setOpenList(false);
@@ -91,7 +91,9 @@ export function inputAuto({listItems, setListItems,openList, setOpenList,
       setNewFocus(false);
     } else setOpenList(!openList);
 
-    if (!isListItemsOk(newValue, listItems)) fetchAndSet(newValue)
+    if (!isListItemsOk(newValue, listItems)) {
+      void fetchAndSet(newValue)// void pour assumer une promise ignorée
+    }
   };
 
   const handleFocus = (e: React.FocusEvent<HTMLDivElement>) => {

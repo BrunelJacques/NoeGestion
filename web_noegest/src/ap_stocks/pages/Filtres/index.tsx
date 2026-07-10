@@ -105,7 +105,7 @@ export default function Filtres() {
             <div className={s.entree}>
               {isPageArticle && (
                 <FieldArticle
-                  value={draft.article?.nom}
+                  id={draft.article?.nom}
                   updateField={(val) => updateField('article', val)}
                 />
               )}
@@ -120,7 +120,7 @@ export default function Filtres() {
 
             <div className={s.entree}>
               <FieldFournisseur     // fournisseur
-                value={draft.fournisseur}
+                id={draft.fournisseur}
                 updateField={(val) => updateField('fournisseur', val)}
               />
             </div>

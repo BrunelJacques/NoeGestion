@@ -9,9 +9,9 @@ import type { SyntheticEvent } from "react";
 import {getCellValue} from "../../utils/getCellValue.tsx";
 import FieldArticle from "./FieldArticle.tsx";
 import FieldFournisseur from "./FieldFournisseur.tsx";
+import FieldService from "./FieldService.tsx";
 import { standardize } from "../../utils/string.ts";
 import {dicCalculs} from "../utils/calculs.tsx";
-//import { getProp } from "../../utils/getProp.tsx";
 
 interface Props {
   formKey: number,
@@ -20,7 +20,6 @@ interface Props {
   updateField: (field: keyof Mouvement, value?: Mouvement[keyof Mouvement]|null) => void,
   handleSubmit: (e: SyntheticEvent<HTMLFormElement>) => Promise<void>,
 }
-
 
 export function OneMvtForm({ fields,mouvement, ...prp}:Props) {
   const idMvt=mouvement.id
@@ -64,19 +63,26 @@ return (
                 />
               ) : (fld.fieldName === "article") ?(
                   <FieldArticle
-                    value={article.nom}
+                    id={article.nom}
                     updateField={
                       (art) => prp.updateField(`article`, art?.id)
                     }
                   />
                 ) : (fld.fieldName === "fournisseur") ?(
                 <FieldFournisseur
-                  value={mouvement.fournisseur}
+                  id={mouvement.fournisseur}
                   updateField={
                     (art) => prp.updateField(`fournisseur`, art)
                   }
                 />
-                ) : (fld.fieldName) ? ( // autres champs modifiables
+                ) : (fld.fieldName === "service") ?(
+                <FieldService
+                  id={mouvement.service}
+                  updateField={
+                    (serv) => prp.updateField(`service`, serv)
+                  }
+                />
+              ) : (fld.fieldName) ? ( // autres champs modifiables
                 <Xinput
                   type={fld.type === "number" ? "number" : fld.type === "date" ? "date" : "text"}
                   value={String(fld.value ?? "")}
