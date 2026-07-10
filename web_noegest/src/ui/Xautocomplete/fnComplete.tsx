@@ -12,7 +12,7 @@ export function checkIsValid(
     return true;
   }
   if (!required && (!items || items.length === 0)) {
-    return false;
+    return true;
   }
   if (required && !value) {
     return true;
@@ -135,7 +135,7 @@ export function processItems(value: string,
     setOpenList(false);
   } else {
     setListItems(filtered)
-  };
+  }
 }
 
 

@@ -1,17 +1,16 @@
 // src/ui/Xautocomplete/index.tsx
-import {useEffect, useRef, useState, type ComponentPropsWithoutRef } from "react";
+import { useEffect, useState, type ComponentPropsWithoutRef } from "react";
 import * as sc from '../xcommon.css';
 import { Xinput } from '../Xinput';
-import {checkIsValid, getUniqueItem} from './fnComplete.tsx';
+import { checkIsValid, getUniqueItem } from './fnComplete.tsx';
 import { inputAuto } from './inputAuto.tsx';
 import type { Item } from "../../types/item.ts";
 import { useFormValidation } from "../../contexts/FormContext.tsx";
-import {choiceAuto} from "./choiceAuto.tsx";
-
+import { choiceAuto } from "./choiceAuto.tsx";
 
 interface XautocompleteProps extends Omit<ComponentPropsWithoutRef<"input">, "onSelect"> {
   fetchItems: (query: string) => Item[] | Promise<Item[]>; // Accepte synchrones ou asynchrones
-  onSelect: (item: Item ) => void;
+  onSelect: (item: Item) => void;
   altClassName?: string;
   label?: string;
   error?: string | null;
@@ -30,8 +29,8 @@ export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error 
   const [listItems, setListItems] = useState<Item[]>([]);
   const [openList, setOpenList] = useState(false);
   const [newFocus, setNewFocus] = useState(false);
-  const [isValid, setIsValid] = useState(false);
-  // On récupère toute la logique du Hook personnalisé
+
+  // Logique des hooks personnalisés
   const {
     inputValue,
     divRef,
@@ -40,41 +39,43 @@ export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error 
     handleReset,
     handleClick,
     handleFocus
-  } = inputAuto({ listItems, setListItems,openList, setOpenList,newFocus, setNewFocus,
-                  fetchItems, onSelect, initialValue });
+  } = inputAuto({
+    listItems, setListItems, openList, setOpenList, newFocus, setNewFocus,
+    fetchItems, onSelect, initialValue
+  });
 
-  const {
-    handleSelect,
-  } = choiceAuto({ setListItems, setOpenList, setNewFocus, fetchItems, value, setValue });
+  const { handleSelect } = choiceAuto({
+    setListItems, setOpenList, setNewFocus, fetchItems, value, setValue
+  });
 
 
   const [isTouched, setIsTouched] = useState(false);
   const validation = useFormValidation();
 
+  const isValid = checkIsValid(value, listItems, required);
+  const displayError = !isValid && isTouched;
+
   //La logique et les effets
 
-  const isValidRef = useRef(isValid);
-
-  useEffect(() => { // Récupération de la saisie par l'input
+  // Effet 1 : Synchronisation cosmétique de la valeur locale (si nécessaire pour Xinput)
+  useEffect(() => {
     setValue(inputValue);
-    const checkedValid = checkIsValid(inputValue, listItems, required)
-    if ( checkedValid != isValid) setIsValid(checkedValid);
   }, [inputValue]);
 
-  useEffect(() => { // Transmet au parent le choix d'item
+
+  // Effet 2 : Transmission du choix de l'item au parent
+  useEffect(() => {
     const uniqueItem = getUniqueItem(value, listItems);
     if (uniqueItem) {
       onSelect(uniqueItem??null);
     }
     if (value !== oldValue) {
-      setOldValue(value)
+      setOldValue(value);
     }
-  }, [value, listItems]);
+  }, [value, listItems]); // Ajout des dépendances manquantes
 
-  useEffect(() => { // Pour le suivi global de validité du formulaire
-    isValidRef.current = isValid;
-  }, [isValid]);
 
+  // Effet 3 : Enregistrement unique auprès du validateur de formulaire
   useEffect(() => {
     // Le garde-fou "return" doit être à l'intérieur de l'effet
     if (!validation || !props.name) return;
@@ -83,20 +84,21 @@ export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error 
       setIsTouched(true);
       return isValid;
     });
-
   }, [validation, props.name, isValid]); // Recalculé si isValid change
 
   // On affiche l'erreur si le champ est invalide ET (qu'il a été touché OU qu'on a tenté de soumettre)
-  const displayError = !isValid && isTouched;
 
-  function sortQueryFirst(a:Item,b:Item) {
-      const aMatches = a.nom.toLowerCase() === value.toLowerCase();
-      const bMatches = b.nom.toLowerCase() === value.toLowerCase();
+  // Tri de la liste
+  function sortQueryFirst(a: Item, b: Item) {
+    const currentQuery = value.toLowerCase();
+    const aMatches = a.nom.toLowerCase() === currentQuery;
+    const bMatches = b.nom.toLowerCase() === currentQuery;
 
-      if (aMatches && !bMatches) return -1; // 'a' passe devant
-      if (!aMatches && bMatches) return 1;  // 'b' passe devant
-      return 0;                             // On ne change pas l'ordre pour les autres
+    if (aMatches && !bMatches) return -1; // 'a' passe devant
+    if (!aMatches && bMatches) return 1;  // 'b' passe devant
+    return 0;                             // On ne change pas l'ordre pour les autres
   }
+
   return (
     <div ref={divRef} onBlur={() => {handleBlur(); setIsTouched(true);}} onFocus={handleFocus}>
       <Xinput
@@ -113,26 +115,24 @@ export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error 
         onClick={handleClick}
       />
 
-      {openList && listItems.length >0 && (
+      {openList && listItems.length > 0 && (
         <ul className={sc.lstAuto}>
           {[...listItems]
             .sort(sortQueryFirst)
             .map((item) => (
-            <li
-              key={item.id}
-              className={sc.item}
-              onMouseDown={() => handleSelect(item)}
-            >
-              {item.nom}
-            </li>
+              <li
+                key={item.id}
+                className={sc.item}
+                onMouseDown={() => handleSelect(item)}
+              >
+                {item.nom}
+              </li>
             ))
           }
         </ul>
       )}
 
-      {error && (
-        <p className={sc.errorStyle}>{error}</p>
-      )}
+      {error && <p className={sc.errorStyle}>{error}</p>}
     </div>
   );
 }
