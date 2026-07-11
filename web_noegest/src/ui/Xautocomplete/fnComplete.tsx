@@ -12,14 +12,15 @@ export function checkIsValid( value: string,
   const test0 = (!value && !required && items && items.length !== 0);
   const test1 = items.some(item => item.nom.toLowerCase() === value.toLowerCase());
   const test2 = value === "" && !required;
+  console.log("checkIsValid", test0||test1||test2,items.length);
   return test0 ||test1 || test2;
 }
 
 // Validation des items fournis, l'un deux contient-il la value?
-export const isListItemsOk = (value: string, currentItems: Item[]) => {
+export const isListItemsOk = (value: string, currentItems: Item[],uniqueOk=false) => {
   const present = filterItems(value, currentItems).length > 0;
   const lg = currentItems.length;
-  return lg >= nbMinItems && lg <= nbMaxItems && present;
+  return lg >= (uniqueOk?1:nbMinItems) && lg <= nbMaxItems && present;
 };
 
 // Recherche d'un item unique present dans items identifié par son id et son nom
@@ -68,7 +69,7 @@ export async function getListItems(value:string,
       const data = await fetchItems(stripValue);
       const mappedItems = data.map((u) => ({ id: u.id, nom: u.nom }));
       const filtered = filterItems(stripValue, mappedItems);
-      if (isListItemsOk(stripValue, filtered)) {
+      if (isListItemsOk(stripValue, filtered, true)) {
         finalItems = [...filtered];
         break;
       }
@@ -105,13 +106,12 @@ export async function getListItems(value:string,
       } // fin try 2
     } // boucle mots terminée
 
-    if (!isListItemsOk(mots[0], finalItems)) { // toujours pas trouvé
+    if (!isListItemsOk(mots[0], finalItems, true)) { // toujours pas trouvé
       const data = await fetchItems("");
       const mappedItems = data.map((u) => ({ id: u.id, nom: u.nom }));
       finalItems = [...mappedItems];
     }
   }
-  console.log("getListItems", value, finalItems, nomUnique);
   return [finalItems, nomUnique];
 }
 
@@ -121,13 +121,12 @@ export function processItems(value: string,
                              setValue: (arg0: string) => void,
                              setListItems: (arg0: Item[]) => void,
                              setOpenList: (arg0: boolean) => void) {
-  console.log("processItems", value, w_items);
   const filtered = filterItems(value, w_items);
   const uniqueItem = getUniqueItem(value, w_items);
 
   if (uniqueItem?.nom && value !== uniqueItem.nom) setValue(uniqueItem.nom);
 
-  if (uniqueItem && isListItemsOk( uniqueItem.nom, w_items)) {
+  if (uniqueItem && isListItemsOk( uniqueItem.nom, w_items,true)) {
     setListItems(w_items);
     setOpenList(false);
   } else {

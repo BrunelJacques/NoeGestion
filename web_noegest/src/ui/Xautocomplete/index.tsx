@@ -35,7 +35,6 @@ export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error 
 
   // Effet 0: Récupération asynchrone au montage du composant, initialise listItems
   useEffect(() => {
-    console.log("Effet0 initialValue", initialValue);
     let isMounted = true; // Pour éviter les fuites de mémoire si le composant est démonté rapidement
 
     async function loadInitialItems() {
@@ -83,22 +82,20 @@ export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error 
   const validation = useFormValidation();
 
   const isValid = checkIsValid(value, listItems, required);
-  console.log("rendered isValid", isValid, inputValue,);
   // On n'affiche pas l'invalidité si le champ n'a pas été touché OU tenté de soumettre
   const displayError = !isValid && isTouched;
 
 
     // Effet 1 : Synchronisation cosmétique de la valeur locale (si nécessaire pour Xinput)
   useEffect(() => {
-    console.log("Effet1 inputValue", inputValue,"/", isValid,"/",listItems,"/");
     setValue(inputValue);
     setOpenList(!isValid);
-  }, [inputValue]);
+    console.log("Effet 1", inputValue, isValid);
+  }, [inputValue,isValid]);
 
 
   // Effet 2 : Enregistrement unique auprès du validateur de formulaire
   useEffect(() => {
-    console.log("Effet2 deb isValid", isValid);
     // Le garde-fou "return" doit être à l'intérieur de l'effet
     if (!validation || !props.name) return;
 
@@ -106,7 +103,7 @@ export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error 
       setIsTouched(true);
       return isValid;
     });
-  }, [validation, props.name]); // Recalculé si isValid change
+  }, [validation, props.name, isValid]);
 
 
   // Tri de la liste

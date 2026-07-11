@@ -16,7 +16,6 @@ export function choiceAuto({ setListItems, setOpenList, fetchItems,
 
   // Effect debounce pour la recherche d'items par API principal
   useEffect(() => {
-    console.log("choice useEffect", value);
     let active = true; // Évite les Race Conditions si le composant unmount ou la query change
 
     const timer = setTimeout(async () => {

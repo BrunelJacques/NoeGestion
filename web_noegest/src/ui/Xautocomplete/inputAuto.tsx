@@ -42,10 +42,8 @@ export function inputAuto({
       if (newListItems) setListItems(newListItems);
 
       const val = nomUnique ? nomUnique : value;
-      console.log("input executeFetch", value,val,newListItems);
       setNewValue(val);
     } catch (error) {
-      console.error("Erreur lors de getListItems:", error);
     }
   }, [fetchItems, setListItems, setOpenList]);
 
@@ -64,7 +62,6 @@ export function inputAuto({
   // Nettoyage si le composant est démonté pendant un timer actif
   useEffect(() => {
     return () => {
-      console.log("inputAuto useEffect clear timeout", debounceTimerRef.current);
       if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current);
     };
   }, []);
@@ -84,10 +81,10 @@ export function inputAuto({
       onSelect(ITEM0);
       setOpenList(false)
     }
-    console.log("onChange", value, listItems);
   };
 
   const handleClick = () => {
+    console.log("handleClick",newFocus);
     if (newFocus) {
       setOpenList(true);
       setNewFocus(false);
@@ -107,14 +104,15 @@ export function inputAuto({
   };
 
   const handleReset = () => {
+    console.log("handleReset");
     divRef.current?.focus();
     setNewFocus(true);
     setOpenList(false)
-    setListItems([])
   };
 
   const handleFocus = (e: React.FocusEvent<HTMLDivElement>) => {
     if (document.activeElement !== e.currentTarget) {
+      console.log("handleFocus");
       setNewFocus(true);
       }
   };

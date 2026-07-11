@@ -41,6 +41,7 @@ export default function Filtres() {
   // Fonction de soumission du formulaire
   const handleSubmit: React.SubmitEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
+    console.log("Filtres handle Submit", draft,e);
 
     // On interroge directement la ref du validateur pour valider le formulaire
     if (validationRef.current && !validationRef.current.validateAll()) {
