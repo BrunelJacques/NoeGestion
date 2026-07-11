@@ -2,7 +2,7 @@
 import { useEffect, useState, type ComponentPropsWithoutRef } from "react";
 import * as sc from '../xcommon.css';
 import { Xinput } from '../Xinput';
-import { checkIsValid, getUniqueItem } from './fnComplete.tsx';
+import {checkIsValid, getListItems} from './fnComplete.tsx';
 import { inputAuto } from './inputAuto.tsx';
 import type { Item } from "../../types/item.ts";
 import { useFormValidation } from "../../contexts/FormContext.tsx";
@@ -17,20 +17,50 @@ interface XautocompleteProps extends Omit<ComponentPropsWithoutRef<"input">, "on
   disabled?: boolean;
   showReset?: boolean;
   required?: boolean;
+  type?: "text" | "number" | "tel" | "email" | "password";
 }
 
 export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error = null,
-                                required = false, ...props
+                                required = false, type="text", ...props
                               }: XautocompleteProps) {
 
   const initialValue = typeof props.value === "string" ? props.value : String(props.value);
+
+  // Initialisation synchrone des états
   const [value, setValue] = useState<string>(initialValue);
-  const [oldValue, setOldValue] = useState<string>(initialValue);
   const [listItems, setListItems] = useState<Item[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true); // Flag de blocage
   const [openList, setOpenList] = useState(false);
   const [newFocus, setNewFocus] = useState(false);
 
-  // Logique des hooks personnalisés
+  // Effet 0: Récupération asynchrone au montage du composant, initialise listItems
+  useEffect(() => {
+    console.log("Effet0 initialValue", initialValue);
+    let isMounted = true; // Pour éviter les fuites de mémoire si le composant est démonté rapidement
+
+    async function loadInitialItems() {
+      try {
+        const [newListItems, nomUnique] = await getListItems(initialValue, fetchItems);
+        if (isMounted) {
+          setListItems(nomUnique ? newListItems : []);
+        }
+      } catch (err) {
+        console.error("Erreur lors de l'initialisation des items :", err);
+      } finally {
+        if (isMounted) {
+          setIsLoading(false); // Le chargement est terminé, on libère le rendu
+        }
+      }
+    }
+
+    void loadInitialItems();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [initialValue, fetchItems]); // S'exécute une seule fois au montage (ou si les props clés changent)
+
+    // Logique des hooks personnalisés
   const {
     inputValue,
     divRef,
@@ -45,7 +75,7 @@ export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error 
   });
 
   const { handleSelect } = choiceAuto({
-    setListItems, setOpenList, setNewFocus, fetchItems, value, setValue
+    setListItems, setOpenList, fetchItems, value, setValue
   });
 
 
@@ -53,30 +83,22 @@ export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error 
   const validation = useFormValidation();
 
   const isValid = checkIsValid(value, listItems, required);
+  console.log("rendered isValid", isValid, inputValue,);
+  // On n'affiche pas l'invalidité si le champ n'a pas été touché OU tenté de soumettre
   const displayError = !isValid && isTouched;
 
-  //La logique et les effets
 
-  // Effet 1 : Synchronisation cosmétique de la valeur locale (si nécessaire pour Xinput)
+    // Effet 1 : Synchronisation cosmétique de la valeur locale (si nécessaire pour Xinput)
   useEffect(() => {
+    console.log("Effet1 inputValue", inputValue,"/", isValid,"/",listItems,"/");
     setValue(inputValue);
+    setOpenList(!isValid);
   }, [inputValue]);
 
 
-  // Effet 2 : Transmission du choix de l'item au parent
+  // Effet 2 : Enregistrement unique auprès du validateur de formulaire
   useEffect(() => {
-    const uniqueItem = getUniqueItem(value, listItems);
-    if (uniqueItem) {
-      onSelect(uniqueItem??null);
-    }
-    if (value !== oldValue) {
-      setOldValue(value);
-    }
-  }, [value, listItems]); // Ajout des dépendances manquantes
-
-
-  // Effet 3 : Enregistrement unique auprès du validateur de formulaire
-  useEffect(() => {
+    console.log("Effet2 deb isValid", isValid);
     // Le garde-fou "return" doit être à l'intérieur de l'effet
     if (!validation || !props.name) return;
 
@@ -84,9 +106,8 @@ export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error 
       setIsTouched(true);
       return isValid;
     });
-  }, [validation, props.name, isValid]); // Recalculé si isValid change
+  }, [validation, props.name]); // Recalculé si isValid change
 
-  // On affiche l'erreur si le champ est invalide ET (qu'il a été touché OU qu'on a tenté de soumettre)
 
   // Tri de la liste
   function sortQueryFirst(a: Item, b: Item) {
@@ -99,10 +120,16 @@ export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error 
     return 0;                             // On ne change pas l'ordre pour les autres
   }
 
+  if (isLoading) {
+    return <div>Chargement...</div>; // Attente tant que ce n'est pas chargé,
+  }
+
   return (
     <div ref={divRef} onBlur={() => {handleBlur(); setIsTouched(true);}} onFocus={handleFocus}>
       <Xinput
         {...props}
+        type={type}
+        autoComplete="off" // Pour désactiver la suggestion de certains navigateurs
         value={value}
         onChange={(e) => { onChange(e); setIsTouched(false); }} // Masque l'erreur pendant la saisie
         onReset={handleReset}

@@ -7,13 +7,17 @@ import { Xautocomplete } from '../../ui/Xautocomplete';
 interface Props {
   id: string | null | undefined;
   updateField: (value: string) => void;
-  origineItems: Origine[];
-  allowNull: boolean
+  origineItems?: Origine[];
+  allowNull?: boolean
 }
 
 
 // Paramétrage du select pour les origines
-export default function FieldOrigine({ id, updateField, origineItems, allowNull }: Props) {
+export default function FieldOrigine({ id,
+                                       updateField,
+                                       origineItems=[{ id:  'repas', libelle: 'Repas en cuisine' },],
+                                       allowNull=false }
+                                     : Props) {
 
   const value = id ?? String(id) ;
 

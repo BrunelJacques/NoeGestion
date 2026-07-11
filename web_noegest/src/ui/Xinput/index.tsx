@@ -15,6 +15,7 @@ export interface Props extends Omit<
   label?: string;
   error?: string | null;
   showReset?: boolean;
+  autoComplete?: string;
 }
 
 

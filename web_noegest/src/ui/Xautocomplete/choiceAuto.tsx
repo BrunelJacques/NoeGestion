@@ -6,7 +6,6 @@ import {processItems} from "./fnComplete.tsx";
 interface UseAutocompleteProps {
   setListItems: React.Dispatch<React.SetStateAction<Item[]>>;
   setOpenList: React.Dispatch<React.SetStateAction<boolean>>;
-  setNewFocus: React.Dispatch<React.SetStateAction<boolean>>;
   fetchItems: (query: string) => Item[] | Promise<Item[]>;// comptabile sync et async
   value: string;
   setValue: React.Dispatch<React.SetStateAction<string>>;
@@ -17,6 +16,7 @@ export function choiceAuto({ setListItems, setOpenList, fetchItems,
 
   // Effect debounce pour la recherche d'items par API principal
   useEffect(() => {
+    console.log("choice useEffect", value);
     let active = true; // Évite les Race Conditions si le composant unmount ou la query change
 
     const timer = setTimeout(async () => {
@@ -47,6 +47,3 @@ export function choiceAuto({ setListItems, setOpenList, fetchItems,
     handleSelect,
   };
 }
-/*
-listItems, setListItems,openList, setOpenList, setNewFocus,
-  fetchItems, initialValue, setValue*/

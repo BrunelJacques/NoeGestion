@@ -1,7 +1,7 @@
 //src/ui/Xautocomplete/inputAuto.tsx
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { ITEM0, type Item } from '../../types/item.ts';
-import { getListItems,  isListItemsOk, checkIsValid} from './fnComplete.tsx';
+import { getListItems,  isListItemsOk} from './fnComplete.tsx';
 
 interface UseAutocompleteProps {
   // Compatibilité synchrone / asynchrone
@@ -29,6 +29,7 @@ export function inputAuto({
 
   /* 1. Définition de la logique brute de Fetch */
   const executeFetch = useCallback(async (value: string) => {
+
     // On génère un identifiant unique pour CETTE requête
     const currentRequestId = ++requestIdRef.current;
 
@@ -41,10 +42,8 @@ export function inputAuto({
       if (newListItems) setListItems(newListItems);
 
       const val = nomUnique ? nomUnique : value;
-      const isValide = checkIsValid(val, newListItems, false,);
-
+      console.log("input executeFetch", value,val,newListItems);
       setNewValue(val);
-      setOpenList(!isValide);
     } catch (error) {
       console.error("Erreur lors de getListItems:", error);
     }
@@ -65,6 +64,7 @@ export function inputAuto({
   // Nettoyage si le composant est démonté pendant un timer actif
   useEffect(() => {
     return () => {
+      console.log("inputAuto useEffect clear timeout", debounceTimerRef.current);
       if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current);
     };
   }, []);
@@ -84,6 +84,7 @@ export function inputAuto({
       onSelect(ITEM0);
       setOpenList(false)
     }
+    console.log("onChange", value, listItems);
   };
 
   const handleClick = () => {
@@ -94,7 +95,7 @@ export function inputAuto({
       setOpenList(!openList);
     }
     if (!isListItemsOk(newValue, listItems)) {
-      // Au clic, l'utilisateur veut une action immédiate : on n'attend pas les 300ms du debounce
+      // Au clic, action immédiate : on n'attend pas les 300ms du debounce
       if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current);
       void executeFetch(newValue);
     }
@@ -115,9 +116,7 @@ export function inputAuto({
   const handleFocus = (e: React.FocusEvent<HTMLDivElement>) => {
     if (document.activeElement !== e.currentTarget) {
       setNewFocus(true);
-    } else {
-      setOpenList(!openList);
-    }
+      }
   };
 
   return {

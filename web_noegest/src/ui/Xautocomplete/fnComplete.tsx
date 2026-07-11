@@ -5,21 +5,14 @@ import { standardize as _ } from '../../utils/string.ts'
 const nbMinItems = 2;
 const nbMaxItems = 15;
 
-// FinalTest, Valide la saisie d'un item.nom complet, existe  respecte la contrainte "required"
-export function checkIsValid(
-  value: string, items: Item[], required: boolean): boolean {
-  if (!value && !required) {
-    return true;
-  }
-  if (!required && (!items || items.length === 0)) {
-    return true;
-  }
-  if (required && !value) {
-    return true;
-  }
+// Valide la saisie d'un item.nom complet, existe  respecte la contrainte "required"
+export function checkIsValid( value: string,
+                              items: Item[],
+                              required: boolean): boolean {
+  const test0 = (!value && !required && items && items.length !== 0);
   const test1 = items.some(item => item.nom.toLowerCase() === value.toLowerCase());
   const test2 = value === "" && !required;
-  return test1 || test2;
+  return test0 ||test1 || test2;
 }
 
 // Validation des items fournis, l'un deux contient-il la value?
@@ -59,7 +52,9 @@ export function filterItems(value: string, items: Item[]): Item[] {
 }
 
 // Recherche par boucles pour composer un jeu d'items à afficher'
-export async function getListItems(value:string, fetchItems:(query: string) => Item[] | Promise<Item[]> ) :Promise<[Item[], string]> {
+export async function getListItems(value:string,
+                                   fetchItems:(query: string) => Item[] | Promise<Item[]>
+):Promise<[Item[], string]> {
   const mots = value.split(/[\[\/\\ (,.]+/);
   if (mots?.length === 0) {
     return [[], "" ]
@@ -116,6 +111,7 @@ export async function getListItems(value:string, fetchItems:(query: string) => I
       finalItems = [...mappedItems];
     }
   }
+  console.log("getListItems", value, finalItems, nomUnique);
   return [finalItems, nomUnique];
 }
 
@@ -125,12 +121,13 @@ export function processItems(value: string,
                              setValue: (arg0: string) => void,
                              setListItems: (arg0: Item[]) => void,
                              setOpenList: (arg0: boolean) => void) {
+  console.log("processItems", value, w_items);
   const filtered = filterItems(value, w_items);
   const uniqueItem = getUniqueItem(value, w_items);
 
   if (uniqueItem?.nom && value !== uniqueItem.nom) setValue(uniqueItem.nom);
 
-  if (uniqueItem && isListItemsOk( uniqueItem.nom,w_items)) {
+  if (uniqueItem && isListItemsOk( uniqueItem.nom, w_items)) {
     setListItems(w_items);
     setOpenList(false);
   } else {

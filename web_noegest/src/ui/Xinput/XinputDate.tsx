@@ -80,7 +80,6 @@ export function XinputDate({ jour, onChange, ...props }: Props) {
     useLayoutEffect(() => {
         const el = inputRef.current;
         let pos = cursorPosRef.current;
-        console.log("rerender LayoutEffect",pos, "/", el, dateFr);
         if (!el) return;
 
         // Ajustement si curseur derrière un "/" ajouté automatiquement
