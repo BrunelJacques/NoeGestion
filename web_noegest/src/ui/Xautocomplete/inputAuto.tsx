@@ -61,6 +61,7 @@ export function inputAuto({
 
   // Nettoyage si le composant est démonté pendant un timer actif
   useEffect(() => {
+    console.log("inputAuto useEffect");
     return () => {
       if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current);
     };

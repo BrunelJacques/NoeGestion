@@ -12,7 +12,6 @@ export function checkIsValid( value: string,
   const test0 = (!value && !required && items && items.length !== 0);
   const test1 = items.some(item => item.nom.toLowerCase() === value.toLowerCase());
   const test2 = value === "" && !required;
-  console.log("checkIsValid", test0||test1||test2,items.length);
   return test0 ||test1 || test2;
 }
 

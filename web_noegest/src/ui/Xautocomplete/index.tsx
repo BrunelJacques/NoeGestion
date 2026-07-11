@@ -2,7 +2,7 @@
 import { useEffect, useState, type ComponentPropsWithoutRef } from "react";
 import * as sc from '../xcommon.css';
 import { Xinput } from '../Xinput';
-import {checkIsValid, getListItems} from './fnComplete.tsx';
+import {checkIsValid, getListItems, getUniqueItem} from './fnComplete.tsx';
 import { inputAuto } from './inputAuto.tsx';
 import type { Item } from "../../types/item.ts";
 import { useFormValidation } from "../../contexts/FormContext.tsx";
@@ -24,7 +24,7 @@ export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error 
                                 required = false, type="text", ...props
                               }: XautocompleteProps) {
 
-  const initialValue = typeof props.value === "string" ? props.value : String(props.value);
+  const [initialValue] = useState(() => typeof props.value === "string" ? props.value : String(props.value));
 
   // Initialisation synchrone des états
   const [value, setValue] = useState<string>(initialValue);
@@ -35,6 +35,7 @@ export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error 
 
   // Effet 0: Récupération asynchrone au montage du composant, initialise listItems
   useEffect(() => {
+    console.log("Xautocomplete useEffect 0");
     let isMounted = true; // Pour éviter les fuites de mémoire si le composant est démonté rapidement
 
     async function loadInitialItems() {
@@ -57,11 +58,10 @@ export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error 
     return () => {
       isMounted = false;
     };
-  }, [initialValue, fetchItems]); // S'exécute une seule fois au montage (ou si les props clés changent)
+  }, []); // S'exécute une seule fois au montage (ou si les props clés changent)
 
     // Logique des hooks personnalisés
   const {
-    inputValue,
     divRef,
     onChange,
     handleBlur,
@@ -85,16 +85,17 @@ export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error 
   // On n'affiche pas l'invalidité si le champ n'a pas été touché OU tenté de soumettre
   const displayError = !isValid && isTouched;
 
-
-    // Effet 1 : Synchronisation cosmétique de la valeur locale (si nécessaire pour Xinput)
+  // Effet 2 : Transmission du choix de l'item au parent
   useEffect(() => {
-    setValue(inputValue);
-    setOpenList(!isValid);
-    console.log("Effet 1", inputValue, isValid);
-  }, [inputValue,isValid]);
+    const uniqueItem = getUniqueItem(value, listItems);
+    if (uniqueItem) {
+      onSelect(uniqueItem??null);
+    }
+
+  }, [value, listItems]); // Ajout des dépendances manquantes
 
 
-  // Effet 2 : Enregistrement unique auprès du validateur de formulaire
+  // Effet 3 : Enregistrement unique auprès du validateur de formulaire
   useEffect(() => {
     // Le garde-fou "return" doit être à l'intérieur de l'effet
     if (!validation || !props.name) return;
@@ -103,7 +104,7 @@ export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error 
       setIsTouched(true);
       return isValid;
     });
-  }, [validation, props.name, isValid]);
+  }, [validation, props.name, isValid ]);
 
 
   // Tri de la liste
@@ -120,7 +121,6 @@ export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error 
   if (isLoading) {
     return <div>Chargement...</div>; // Attente tant que ce n'est pas chargé,
   }
-
   return (
     <div ref={divRef} onBlur={() => {handleBlur(); setIsTouched(true);}} onFocus={handleFocus}>
       <Xinput
