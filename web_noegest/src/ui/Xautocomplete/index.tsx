@@ -60,7 +60,7 @@ export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error 
     };
   }, []); // S'exécute une seule fois au montage (ou si les props clés changent)
 
-    // Logique des hooks personnalisés
+  // Déportation des fonctions                "inputAuto"
   const {
     divRef,
     onChange,
@@ -70,9 +70,10 @@ export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error 
     handleFocus
   } = inputAuto({
     listItems, setListItems, openList, setOpenList, newFocus, setNewFocus,
-    fetchItems, onSelect, initialValue
+    fetchItems, onSelect, value, setValue
   });
 
+  // Déportation des fonctions                "choiceAuto"
   const { handleSelect } = choiceAuto({
     setListItems, setOpenList, fetchItems, value, setValue
   });
@@ -84,6 +85,13 @@ export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error 
   const isValid = checkIsValid(value, listItems, required);
   // On n'affiche pas l'invalidité si le champ n'a pas été touché OU tenté de soumettre
   const displayError = !isValid && isTouched;
+
+  // Effet 1 : Actualiser l'affichage de l'invalidité
+  useEffect(() => {
+    setIsTouched(true)
+  }, [handleBlur, handleReset]); // Ajout des dépendances manquantes
+
+
 
   // Effet 2 : Transmission du choix de l'item au parent
   useEffect(() => {

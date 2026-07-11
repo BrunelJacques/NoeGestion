@@ -13,15 +13,16 @@ interface UseAutocompleteProps {
   setNewFocus: React.Dispatch<React.SetStateAction<boolean>>;
   fetchItems: (query: string) => Item[] | Promise<Item[]>;
   onSelect: (item: Item) => void;
-  initialValue: string;
+  value: string;
+  setValue: React.Dispatch<React.SetStateAction<string>>
 }
 
 export function inputAuto({
   listItems, setListItems, openList, setOpenList,
-  newFocus, setNewFocus, fetchItems, onSelect, initialValue
+  newFocus, setNewFocus, fetchItems, onSelect, value, setValue
 }: UseAutocompleteProps) {
 
-  const [newValue, setNewValue] = useState<string>(initialValue);
+  const [newValue, setNewValue] = useState<string>(value);
   const divRef = useRef<HTMLDivElement>(null);
 
   // Conserve l'ID de la dernière requête pour bloquer les réponses tardives (Race Conditions)
@@ -72,13 +73,13 @@ export function inputAuto({
   const onChange = (e: { target: { value: string } }) => {
     // Teste si la saisie pointe sur un item unique, fn autocomplète
     const value = e.target.value;
-    setNewValue(value); // On met à jour l'input immédiatement
+    setValue(value); // On met à jour l'input immédiatement
 
     if (value) {
       fetchAndSetDebounced(value); // Lancement différé du fetch
     } else {
       if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current);
-      setListItems([]);
+      //setListItems([]);
       onSelect(ITEM0);
       setOpenList(false)
     }
@@ -101,13 +102,16 @@ export function inputAuto({
 
   const handleBlur = () => {
     setOpenList(false);
-    setNewFocus(false);
+    
+    //setNewFocus(false);
   };
 
   const handleReset = () => {
     console.log("handleReset");
     divRef.current?.focus();
-    setNewFocus(true);
+    setNewFocus(false);
+    onSelect(ITEM0);
+    setValue("");
     setOpenList(false)
   };
 
@@ -119,7 +123,6 @@ export function inputAuto({
   };
 
   return {
-    inputValue: newValue,
     divRef,
     onChange,
     handleBlur,
