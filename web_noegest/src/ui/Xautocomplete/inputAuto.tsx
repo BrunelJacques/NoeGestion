@@ -51,6 +51,7 @@ export function inputAuto({
   /* 2. Création du Debounce (sans dépendance externe) */
   const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  // callBack d'exécution fetch, limitant l'effet rebond sur le réseau
   const fetchAndSetDebounced = useCallback((value: string) => {
     if (debounceTimerRef.current) {
       clearTimeout(debounceTimerRef.current);
@@ -62,7 +63,6 @@ export function inputAuto({
 
   // Nettoyage si le composant est démonté pendant un timer actif
   useEffect(() => {
-    console.log("inputAuto useEffect");
     return () => {
       if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current);
     };
@@ -102,7 +102,7 @@ export function inputAuto({
 
   const handleBlur = () => {
     setOpenList(false);
-    
+
     //setNewFocus(false);
   };
 

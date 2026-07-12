@@ -35,7 +35,6 @@ export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error 
 
   // Effet 0: Récupération asynchrone au montage du composant, initialise listItems
   useEffect(() => {
-    console.log("Xautocomplete useEffect 0");
     let isMounted = true; // Pour éviter les fuites de mémoire si le composant est démonté rapidement
 
     async function loadInitialItems() {
@@ -61,36 +60,25 @@ export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error 
   }, []); // S'exécute une seule fois au montage (ou si les props clés changent)
 
   // Déportation des fonctions                "inputAuto"
-  const {
-    divRef,
-    onChange,
-    handleBlur,
-    handleReset,
-    handleClick,
-    handleFocus
-  } = inputAuto({
-    listItems, setListItems, openList, setOpenList, newFocus, setNewFocus,
-    fetchItems, onSelect, value, setValue
-  });
+  const { divRef, onChange, handleBlur, handleReset, handleClick, handleFocus
+  } = inputAuto({ listItems, setListItems, openList, setOpenList, newFocus,
+                  setNewFocus, fetchItems, onSelect, value, setValue });
 
   // Déportation des fonctions                "choiceAuto"
-  const { handleSelect } = choiceAuto({
-    setListItems, setOpenList, fetchItems, value, setValue
-  });
-
+  const { handleSelect } = choiceAuto({ setListItems, setOpenList, fetchItems,
+                           value, setValue });
 
   const [isTouched, setIsTouched] = useState(false);
   const validation = useFormValidation();
 
   const isValid = checkIsValid(value, listItems, required);
-  // On n'affiche pas l'invalidité si le champ n'a pas été touché OU tenté de soumettre
+  // On n'affiche pas l'invalidité si le champ n'a pas été touché
   const displayError = !isValid && isTouched;
 
-  // Effet 1 : Actualiser l'affichage de l'invalidité
+  // Effet 1 : Actualiser l'affichage de l'invalidité lors de ces évènements
   useEffect(() => {
     setIsTouched(true)
   }, [handleBlur, handleReset]); // Ajout des dépendances manquantes
-
 
 
   // Effet 2 : Transmission du choix de l'item au parent
@@ -99,13 +87,11 @@ export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error 
     if (uniqueItem) {
       onSelect(uniqueItem??null);
     }
-
   }, [value, listItems]); // Ajout des dépendances manquantes
 
 
   // Effet 3 : Enregistrement unique auprès du validateur de formulaire
   useEffect(() => {
-    // Le garde-fou "return" doit être à l'intérieur de l'effet
     if (!validation || !props.name) return;
 
     return validation.registerValidator(props.name, () => {
@@ -114,8 +100,7 @@ export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error 
     });
   }, [validation, props.name, isValid ]);
 
-
-  // Tri de la liste
+  // Tri de la liste d'items
   function sortQueryFirst(a: Item, b: Item) {
     const currentQuery = value.toLowerCase();
     const aMatches = a.nom.toLowerCase() === currentQuery;
@@ -126,17 +111,20 @@ export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error 
     return 0;                             // On ne change pas l'ordre pour les autres
   }
 
-  if (isLoading) {
-    return <div>Chargement...</div>; // Attente tant que ce n'est pas chargé,
+  if (isLoading) { // Attente tant que ce n'est pas chargé,
+    return <div>Chargement du composant...</div>;
   }
   return (
     <div ref={divRef} onBlur={() => {handleBlur(); setIsTouched(true);}} onFocus={handleFocus}>
-      <Xinput
+      <Xinput  // Fonctions dans inputAuto
         {...props}
         type={type}
         autoComplete="off" // Pour désactiver la suggestion de certains navigateurs
         value={value}
-        onChange={(e) => { onChange(e); setIsTouched(false); }} // Masque l'erreur pendant la saisie
+        onChange={(e) => {
+          onChange(e);          // Fonction dans inputAuto
+          setIsTouched(false);  // Masque l'erreur pendant la saisie
+        }}
         onReset={handleReset}
         error={displayError ? `${props.label} invalide` : null}
         className={[
@@ -155,7 +143,7 @@ export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error 
               <li
                 key={item.id}
                 className={sc.item}
-                onMouseDown={() => handleSelect(item)}
+                onMouseDown={() => handleSelect(item)} // Fonction dans choiceAuto
               >
                 {item.nom}
               </li>
