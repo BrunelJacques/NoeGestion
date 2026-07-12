@@ -7,11 +7,12 @@ interface UseAutocompleteProps {
   setListItems: React.Dispatch<React.SetStateAction<Item[]>>;
   setOpenList: React.Dispatch<React.SetStateAction<boolean>>;
   fetchItems: (query: string) => Item[] | Promise<Item[]>;// comptabile sync et async
+  onSelect: (item: Item) => void;
   value: string;
   setValue: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export function choiceAuto({ setListItems, setOpenList, fetchItems,
+export function choiceAuto({ setListItems, setOpenList, fetchItems, onSelect,
                              value, setValue }: UseAutocompleteProps) {
 
   // Effect debounce pour la recherche d'items par API principal
@@ -24,7 +25,8 @@ export function choiceAuto({ setListItems, setOpenList, fetchItems,
         if (!active) return;
 
         const dt_items = data.map((u) => ({ id: u.id, nom: u.nom }));
-        processItems(value, dt_items, setValue, setListItems, setOpenList,);
+        if (dt_items.length === 0) return
+        processItems(value, dt_items, setValue, onSelect, setListItems, setOpenList,);
       } catch (error) {
         console.error("Erreur fetchItems:", error);
       }
@@ -40,6 +42,7 @@ export function choiceAuto({ setListItems, setOpenList, fetchItems,
   const handleSelect = (item: Item) => {
     setValue(item.nom);
     setOpenList(false);
+    onSelect(item);
   };
 
   return {

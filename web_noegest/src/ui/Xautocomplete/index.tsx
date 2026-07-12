@@ -2,7 +2,7 @@
 import { useEffect, useState, type ComponentPropsWithoutRef } from "react";
 import * as sc from '../xcommon.css';
 import { Xinput } from '../Xinput';
-import {checkIsValid, getListItems, getUniqueItem} from './fnComplete.tsx';
+import {checkIsValid, getListItems} from './fnComplete.tsx';
 import { inputAuto } from './inputAuto.tsx';
 import type { Item } from "../../types/item.ts";
 import { useFormValidation } from "../../contexts/FormContext.tsx";
@@ -39,9 +39,11 @@ export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error 
 
     async function loadInitialItems() {
       try {
-        const [newListItems, nomUnique] = await getListItems(initialValue, fetchItems);
+        const [newListItems, itemUnique] = await getListItems(initialValue, fetchItems);
+        console.log("Effet 0: lance getList initialValue", initialValue);
         if (isMounted) {
-          setListItems(nomUnique ? newListItems : []);
+          setListItems(newListItems ? newListItems : []);
+          if (itemUnique) setValue(itemUnique.nom)
         }
       } catch (err) {
         console.error("Erreur lors de l'initialisation des items :", err);
@@ -66,7 +68,7 @@ export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error 
 
   // Déportation des fonctions                "choiceAuto"
   const { handleSelect } = choiceAuto({ setListItems, setOpenList, fetchItems,
-                           value, setValue });
+                           onSelect, value, setValue });
 
   const [isTouched, setIsTouched] = useState(false);
   const validation = useFormValidation();
@@ -80,14 +82,15 @@ export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error 
     setIsTouched(true)
   }, [handleBlur, handleReset]); // Ajout des dépendances manquantes
 
-
+/*
   // Effet 2 : Transmission du choix de l'item au parent
   useEffect(() => {
     const uniqueItem = getUniqueItem(value, listItems);
     if (uniqueItem) {
-      onSelect(uniqueItem??null);
+      onSelect(uniqueItem);
     }
   }, [value, listItems]); // Ajout des dépendances manquantes
+*/
 
 
   // Effet 3 : Enregistrement unique auprès du validateur de formulaire

@@ -1,7 +1,7 @@
 import { hello } from "./index.css";
 import { useAuth } from "../../hooks/useAuth.tsx";
 import * as s from "../../ap_stocks/pages/Filtres/index.css.ts";
-import FieldOrigine from "../../ap_stocks/components/FieldOrigine.tsx";
+import FieldArticle from "../../ap_stocks/components/FieldArticle.tsx";
 
 export function Hello() {
     const { user } = useAuth();
@@ -10,8 +10,8 @@ export function Hello() {
       <h5>Hello Noegest user: {user?.lastName}  {user?.firstName}</h5>
 
       <div className={s.entree}>
-        <FieldOrigine
-          id={"repas"}
+        <FieldArticle
+          id={"32"}
           updateField={(val) => console.log('updateField_new ', val)}
         />
       </div>

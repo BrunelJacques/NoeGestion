@@ -1,5 +1,5 @@
 //src/ui/Xautocomplete/inputAuto.tsx
-import React, { useState, useRef, useCallback, useEffect } from 'react';
+import React, { useRef, useCallback, useEffect } from 'react';
 import { ITEM0, type Item } from '../../types/item.ts';
 import { getListItems,  isListItemsOk} from './fnComplete.tsx';
 
@@ -22,7 +22,6 @@ export function inputAuto({
   newFocus, setNewFocus, fetchItems, onSelect, value, setValue
 }: UseAutocompleteProps) {
 
-  const [newValue, setNewValue] = useState<string>(value);
   const divRef = useRef<HTMLDivElement>(null);
 
   // Conserve l'ID de la dernière requête pour bloquer les réponses tardives (Race Conditions)
@@ -35,15 +34,15 @@ export function inputAuto({
     const currentRequestId = ++requestIdRef.current;
 
     try {
-      const [newListItems, nomUnique] = await getListItems(value, fetchItems);
-
+      const [newListItems, itemUnique] = await getListItems(value, fetchItems);
+      console.log("ExecuteFetch: lance getList initialValue", value);
       // Si une autre requête a été lancée entre-temps, on ignore ce résultat
       if (currentRequestId !== requestIdRef.current) return;
 
       if (newListItems) setListItems(newListItems);
 
-      const val = nomUnique ? nomUnique : value;
-      setNewValue(val);
+      const val = itemUnique ? itemUnique.nom : value;
+      setValue(val);
     } catch (error) {
     }
   }, [fetchItems, setListItems, setOpenList]);
@@ -72,31 +71,26 @@ export function inputAuto({
 
   const onChange = (e: { target: { value: string } }) => {
     // Teste si la saisie pointe sur un item unique, fn autocomplète
-    const value = e.target.value;
-    setValue(value); // On met à jour l'input immédiatement
+    const newValue = e.target.value;
 
-    if (value) {
-      fetchAndSetDebounced(value); // Lancement différé du fetch
-    } else {
-      if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current);
-      //setListItems([]);
-      onSelect(ITEM0);
-      setOpenList(false)
+    setValue(newValue); // On met à jour l'input immédiatement
+
+    if (newValue) {
+      fetchAndSetDebounced(newValue); // Lancement différé du fetch
     }
   };
 
   const handleClick = () => {
-    console.log("handleClick",newFocus);
     if (newFocus) {
       setOpenList(true);
       setNewFocus(false);
     } else {
       setOpenList(!openList);
     }
-    if (!isListItemsOk(newValue, listItems)) {
+    if (!isListItemsOk(value, listItems)) {
       // Au clic, action immédiate : on n'attend pas les 300ms du debounce
       if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current);
-      void executeFetch(newValue);
+      void executeFetch(value);
     }
   };
 
@@ -107,11 +101,11 @@ export function inputAuto({
   };
 
   const handleReset = () => {
-    console.log("handleReset");
     divRef.current?.focus();
     setNewFocus(false);
     onSelect(ITEM0);
     setValue("");
+
     setOpenList(false)
   };
 
