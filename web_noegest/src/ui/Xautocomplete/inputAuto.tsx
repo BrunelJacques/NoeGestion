@@ -109,7 +109,6 @@ export function inputAuto({
 
   const handleFocus = (e: React.FocusEvent<HTMLDivElement>) => {
     if (document.activeElement !== e.currentTarget) {
-      console.log("handleFocus");
       setNewFocus(true);
       }
   };

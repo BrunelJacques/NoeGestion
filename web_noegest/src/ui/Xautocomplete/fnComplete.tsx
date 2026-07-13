@@ -40,14 +40,11 @@ export function getUniqueItem(value: string, items: Item[]): Item | undefined {
 
   for (const mot of mots) { // Filtrage en boucle sur chaque mot
     listeB = filterItems(mot, listeB);
-    console.log("getUniqueItem process mot:", mot,"/", mots,"/", listeB);
     if (listeB.length <= 1) break;
   }
   if (listeB.length == 1) {
-    console.log("getUniqueItem success", listeB[0]);
     return listeB[0]; // la value était présente telle quelle dans l'item.nom ou .id
   }
-  console.log("getUniqueItem KO", listeB.length);
 }
 
 
@@ -76,7 +73,6 @@ export async function getListItems(value:string,
       const data = await fetchItems(stripMot);
       const mappedItems = data.map((u) => ({id: u.id, nom: u.nom}));
       finalItems = [...filterItems(stripMot, mappedItems)];
-      console.log("getListItems stripMot:", stripMot, "/", finalItems,isListItemsOk(stripMot, finalItems, false));
       if (isListItemsOk(stripMot, finalItems, true)) { // uniqueOk false car on veut un minimum d'items
         break;
       }
@@ -96,7 +92,6 @@ export async function getListItems(value:string,
         const combined = [...finalItems, ...filtered]
         const ssDoublons = [...new Map(combined.map(item => [item.id, item])).values()]; // supprime les items avec ID en doublon (garde le dernier)
         finalItems = [...ssDoublons];
-        console.log("getListItems process mot:", mot,"/", mots,"/", finalItems,filtered);
         if (ssDoublons.length <= nbMaxItems) {
           break // On garde une liste avec assez d'items
         }
@@ -105,7 +100,6 @@ export async function getListItems(value:string,
     } // fin 2eme étape
 
     // 3eme étape: si nécessaire élargir la liste des items
-    console.log("pour 3eme étape",finalItems.length < nbMinItems,!isListItemsOk(mots[0], finalItems, true))
     if ( finalItems.length < nbMinItems) {
       const data = await fetchItems("");
       const mappedItems = data.map((u) => ({id: u.id, nom: u.nom}));
@@ -115,10 +109,6 @@ export async function getListItems(value:string,
     console.error("Erreur lors du fetch pour la saisie :", value, error);
   }
   const ssDoublons = [...new Map(finalItems.map(item => [item.id, item])).values()]; // supprime les items avec ID en doublon (garde le dernier)
-
-  if (itemUnique) {
-    console.log("getListItems items Unique:",ssDoublons, itemUnique);
-  }
 
   return [ssDoublons, itemUnique];
 }
