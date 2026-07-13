@@ -6,7 +6,6 @@ import {checkIsValid, getListItems, processItems} from './fnComplete.tsx';
 import { inputAuto } from './inputAuto.tsx';
 import type { Item } from "../../types/item.ts";
 import { useFormValidation } from "../../contexts/FormContext.tsx";
-import { choiceAuto } from "./choiceAuto.tsx";
 
 interface XautocompleteProps extends Omit<ComponentPropsWithoutRef<"input">, "onSelect"> {
   fetchItems: (query: string) => Item[] | Promise<Item[]>; // Accepte synchrones ou asynchrones
@@ -33,7 +32,6 @@ export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error 
   const [openList, setOpenList] = useState(false);
   const [newFocus, setNewFocus] = useState(false);
   const [isTouched, setIsTouched] = useState(false);
-
 
   // Effet 0: Récupération asynchrone au montage du composant, initialise listItems
   useEffect(() => {
@@ -65,15 +63,17 @@ export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error 
     };
   }, []); // Vide car doit S'exécuter une seule fois au montage, sinon il va boucler
 
-
-  // Déportation des fonctions                "inputAuto"
+  // Déportation des fonctions de l'input dans "inputAuto"
   const { divRef, onChange, handleBlur, handleReset, handleClick, handleFocus
   } = inputAuto({ listItems, setListItems, openList, setOpenList, newFocus,
                   setNewFocus, fetchItems, onSelect, value, setValue });
 
-  // Déportation des fonctions                "choiceAuto"
-  const { handleSelect } = choiceAuto({ setListItems, setOpenList, fetchItems,
-                           onSelect, value, setValue });
+  // Action de select un item dans la liste
+  const handleSelect = (item: Item) => {
+    setValue(item.nom);
+    setOpenList(false);
+    onSelect(item);
+  };
 
   const validation = useFormValidation();
 
@@ -130,7 +130,6 @@ export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error 
       clearTimeout(timer);
     };
   }, [value, props.value]);
-
 
   // Tri de la liste d'items
   function sortQueryFirst(a: Item, b: Item) {

@@ -96,6 +96,7 @@ export async function getListItems(value:string,
         const combined = [...finalItems, ...filtered]
         const ssDoublons = [...new Map(combined.map(item => [item.id, item])).values()]; // supprime les items avec ID en doublon (garde le dernier)
         finalItems = [...ssDoublons];
+        console.log("getListItems process mot:", mot,"/", mots,"/", finalItems,filtered);
         if (ssDoublons.length <= nbMaxItems) {
           break // On garde une liste avec assez d'items
         }
@@ -104,7 +105,8 @@ export async function getListItems(value:string,
     } // fin 2eme étape
 
     // 3eme étape: si nécessaire élargir la liste des items
-    if ( finalItems.length < nbMinItems ||!isListItemsOk(mots[0], finalItems, true)) {
+    console.log("pour 3eme étape",finalItems.length < nbMinItems,!isListItemsOk(mots[0], finalItems, true))
+    if ( finalItems.length < nbMinItems) {
       const data = await fetchItems("");
       const mappedItems = data.map((u) => ({id: u.id, nom: u.nom}));
       finalItems = [...mappedItems];
@@ -113,6 +115,11 @@ export async function getListItems(value:string,
     console.error("Erreur lors du fetch pour la saisie :", value, error);
   }
   const ssDoublons = [...new Map(finalItems.map(item => [item.id, item])).values()]; // supprime les items avec ID en doublon (garde le dernier)
+
+  if (itemUnique) {
+    console.log("getListItems items Unique:",ssDoublons, itemUnique);
+  }
+
   return [ssDoublons, itemUnique];
 }
 
@@ -139,3 +146,4 @@ export function processItems(value: string,
     setListItems(filtered)
   }
 }
+

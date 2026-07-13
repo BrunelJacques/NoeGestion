@@ -34,14 +34,14 @@ export function inputAuto({
     const currentRequestId = ++requestIdRef.current;
 
     try {
-      const [newListItems] = await getListItems(value, fetchItems);
+      const [newListItems, itemUnique] = await getListItems(value, fetchItems);
 
       // Si une autre requête a été lancée entre-temps, on ignore ce résultat
       if (currentRequestId !== requestIdRef.current) return;
 
-      if (newListItems.length >1) {
-        setListItems(newListItems);
-      }
+      if (newListItems.length >1) setListItems(newListItems);
+      if (itemUnique) setValue(itemUnique.nom);
+
     } catch (error) {
     }
   }, [fetchItems, setListItems, setOpenList]);
