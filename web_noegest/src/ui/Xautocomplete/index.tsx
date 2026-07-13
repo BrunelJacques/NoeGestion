@@ -32,6 +32,7 @@ export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error 
   const [isLoading, setIsLoading] = useState<boolean>(true); // Flag de blocage
   const [openList, setOpenList] = useState(false);
   const [newFocus, setNewFocus] = useState(false);
+  const [isTouched, setIsTouched] = useState(false);
 
   // Effet 0: Récupération asynchrone au montage du composant, initialise listItems
   useEffect(() => {
@@ -40,7 +41,7 @@ export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error 
     async function loadInitialItems() {
       try {
         const [newListItems, itemUnique] = await getListItems(initialValue, fetchItems);
-        console.log("Effet 0: lance getList initialValue", initialValue);
+
         if (isMounted) {
           setListItems(newListItems ? newListItems : []);
           if (itemUnique) setValue(itemUnique.nom)
@@ -70,7 +71,7 @@ export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error 
   const { handleSelect } = choiceAuto({ setListItems, setOpenList, fetchItems,
                            onSelect, value, setValue });
 
-  const [isTouched, setIsTouched] = useState(false);
+
   const validation = useFormValidation();
 
   const isValid = checkIsValid(value, listItems, required);
@@ -81,16 +82,6 @@ export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error 
   useEffect(() => {
     setIsTouched(true)
   }, [handleBlur, handleReset]); // Ajout des dépendances manquantes
-
-/*
-  // Effet 2 : Transmission du choix de l'item au parent
-  useEffect(() => {
-    const uniqueItem = getUniqueItem(value, listItems);
-    if (uniqueItem) {
-      onSelect(uniqueItem);
-    }
-  }, [value, listItems]); // Ajout des dépendances manquantes
-*/
 
 
   // Effet 3 : Enregistrement unique auprès du validateur de formulaire

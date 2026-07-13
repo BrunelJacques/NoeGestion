@@ -22,7 +22,6 @@ export const isListItemsOk = (value: string, currentItems: Item[],uniqueOk=false
 
 // Recherche d'un item unique present dans items identifié par son id et son nom
 export function getUniqueItem(value: string, items: Item[]): Item | undefined {
-  console.log("getUniqueItem start:", value, items);
   const ssDoublons = [...new Map(items.map(item => [item.id, item])).values()];
 
   // Premier test sur value entière
@@ -122,6 +121,7 @@ export function processItems(value: string,
                              onSelect: (arg0: Item) => void,
                              setListItems: (arg0: Item[]) => void,
                              setOpenList: (arg0: boolean) => void) {
+
   const filtered = filterItems(value, w_items);
   const uniqueItem = getUniqueItem(value, w_items);
 

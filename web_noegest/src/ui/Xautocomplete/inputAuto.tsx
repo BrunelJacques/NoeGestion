@@ -34,15 +34,14 @@ export function inputAuto({
     const currentRequestId = ++requestIdRef.current;
 
     try {
-      const [newListItems, itemUnique] = await getListItems(value, fetchItems);
-      console.log("ExecuteFetch: lance getList initialValue", value);
+      const [newListItems] = await getListItems(value, fetchItems);
+
       // Si une autre requête a été lancée entre-temps, on ignore ce résultat
       if (currentRequestId !== requestIdRef.current) return;
 
-      if (newListItems) setListItems(newListItems);
-
-      const val = itemUnique ? itemUnique.nom : value;
-      setValue(val);
+      if (newListItems.length >1) {
+        setListItems(newListItems);
+      }
     } catch (error) {
     }
   }, [fetchItems, setListItems, setOpenList]);
@@ -105,7 +104,6 @@ export function inputAuto({
     setNewFocus(false);
     onSelect(ITEM0);
     setValue("");
-
     setOpenList(false)
   };
 
