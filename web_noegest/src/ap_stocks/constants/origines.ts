@@ -11,24 +11,24 @@ export const PageOrigineValues = {
 
 export interface Origine {
   id: string;
-  libelle: string;
+  nom: string;
 }
 
 export const  Origines: Record<PageOrigine, Origine[]>  = {
   "sorties": [
-    { id:  'repas', libelle: 'Repas en cuisine' },
-    { id:  'camp', libelle: 'Camp Extérieur' },
-    { id:  'od_out', libelle: 'Régularisation' },
+    { id:  'repas', nom: 'Repas en cuisine' },
+    { id:  'camp', nom: 'Camp Extérieur' },
+    { id:  'od_out', nom: 'Régularisation' },
   ],
   "entrees": [
-    { id:  'achat', libelle: 'Achats fournisseur' },
-    { id:  'retour', libelle: 'Retour de camp' },
-    { id:  'od_in', libelle: 'Régularisation' },
+    { id:  'achat', nom: 'Achats fournisseur' },
+    { id:  'retour', nom: 'Retour de camp' },
+    { id:  'od_in', nom: 'Régularisation' },
   ],
     "article": [
-    { id:  'achat', libelle: 'Achats fournisseur' },
-    { id:  'repas', libelle: 'Repas en cuisine' },
-    { id:  'od_in', libelle: 'Régularisation' },
-    { id:  'od_out', libelle: 'Régularisation' },
+    { id:  'achat', nom: 'Achats fournisseur' },
+    { id:  'repas', nom: 'Repas en cuisine' },
+    { id:  'od_in', nom: 'Régularisation' },
+    { id:  'od_out', nom: 'Régularisation' },
   ],
 }

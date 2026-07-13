@@ -2,7 +2,7 @@
 import { useEffect, useState, type ComponentPropsWithoutRef } from "react";
 import * as sc from '../xcommon.css';
 import { Xinput } from '../Xinput';
-import {checkIsValid, getListItems} from './fnComplete.tsx';
+import {checkIsValid, getListItems, processItems} from './fnComplete.tsx';
 import { inputAuto } from './inputAuto.tsx';
 import type { Item } from "../../types/item.ts";
 import { useFormValidation } from "../../contexts/FormContext.tsx";
@@ -34,8 +34,10 @@ export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error 
   const [newFocus, setNewFocus] = useState(false);
   const [isTouched, setIsTouched] = useState(false);
 
+
   // Effet 0: Récupération asynchrone au montage du composant, initialise listItems
   useEffect(() => {
+    props.label === "Origine"?console.log("Effet 0 initialisation", props.label, "start"):null
     let isMounted = true; // Pour éviter les fuites de mémoire si le composant est démonté rapidement
 
     async function loadInitialItems() {
@@ -52,15 +54,17 @@ export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error 
         if (isMounted) {
           setIsLoading(false); // Le chargement est terminé, on libère le rendu
         }
+        if (props.label === "origine"){
+          console.log("useEffect 0 end", value, listItems)
+        }
       }
     }
-
     void loadInitialItems();
-
     return () => {
       isMounted = false;
     };
-  }, []); // S'exécute une seule fois au montage (ou si les props clés changent)
+  }, []); // Vide car doit S'exécuter une seule fois au montage, sinon il va boucler
+
 
   // Déportation des fonctions                "inputAuto"
   const { divRef, onChange, handleBlur, handleReset, handleClick, handleFocus
@@ -71,15 +75,24 @@ export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error 
   const { handleSelect } = choiceAuto({ setListItems, setOpenList, fetchItems,
                            onSelect, value, setValue });
 
-
   const validation = useFormValidation();
 
   const isValid = checkIsValid(value, listItems, required);
   // On n'affiche pas l'invalidité si le champ n'a pas été touché
   const displayError = !isValid && isTouched;
 
-  // Effet 1 : Actualiser l'affichage de l'invalidité lors de ces évènements
+
+  // Effect 1 : Value alignée si initialValue est changée par le parent
   useEffect(() => {
+    const ok = checkIsValid(String(props.value),listItems,required)
+    setValue(String(props.value))
+    props.label === "Origine"? console.log("checkIsValid Effet 1",ok,"value:", value, "/",props.value, "/",listItems):null
+  }, [props.value]);
+
+
+  // Effet 2 : Actualiser l'affichage de l'invalidité lors de ces évènements
+  useEffect(() => {
+    props.label === "Origine"?console.log("setIsTouched Effet 2", isValid, true, value, listItems):null
     setIsTouched(true)
   }, [handleBlur, handleReset]); // Ajout des dépendances manquantes
 
@@ -93,6 +106,31 @@ export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error 
       return isValid;
     });
   }, [validation, props.name, isValid ]);
+
+
+  // Effet 4: debounce pour la recherche d'items par API principal
+  useEffect(() => {
+    console.log("processItems Effet 4 value:", value, "props.value:",props.value )
+    let active = true; // Évite les Race Conditions si le composant unmount ou la query change
+
+    const timer = setTimeout(async () => {
+      try {
+        const data = await fetchItems(value.length > 0 ? value : "");
+        if (!active) return;
+
+        const dt_items = data.map((u) => ({ id: u.id, nom: u.nom }));
+        if (dt_items.length === 0) return
+        processItems(value, dt_items, setValue, onSelect, setListItems, setOpenList,);
+      } catch (error) {
+        console.error("Erreur fetchItems:", error);
+      }
+    }, 300); // Debounce de 300ms
+    return () => {
+      active = false;
+      clearTimeout(timer);
+    };
+  }, [value, props.value]);
+
 
   // Tri de la liste d'items
   function sortQueryFirst(a: Item, b: Item) {

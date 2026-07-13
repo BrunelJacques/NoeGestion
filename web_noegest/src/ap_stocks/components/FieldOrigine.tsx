@@ -2,6 +2,7 @@
 import type {  Origine } from '../constants/origines';
 import type { Item } from '../../types/item.ts';
 import { Xautocomplete } from '../../ui/Xautocomplete';
+import { checkIsValid} from '../../ui/Xautocomplete/fnComplete.tsx';
 
 
 interface Props {
@@ -15,21 +16,22 @@ interface Props {
 // Paramétrage du select pour les origines
 export default function FieldOrigine({ id,
                                        updateField,
-                                       origineItems=[{ id:  'repas', libelle: 'Repas en cuisine' },],
+                                       origineItems=[{ id:  'repas', nom: 'Repas en cuisine' },],
                                        allowNull=false }
                                      : Props) {
 
-  const value = id ?? String(id) ;
+  // Un changement des origineItems, doit écraser value et provoqura un test de validité
+  const value = checkIsValid(id??"",origineItems,true)? id : "";
 
   const fetchOrigines =  (search?: string) => {
     const query = search ?? ""; // search si null ou undefined, sinon ""
     return [
       ...origineItems
-        .filter((u: Origine) => u.libelle && u.libelle.toLowerCase().includes(query.toLowerCase())
+        .filter((u: Origine) => u.nom && u.nom.toLowerCase().includes(query.toLowerCase())
         )
         .map((u: Origine) => ({
           id: u.id,
-          nom: u.libelle
+          nom: u.nom
         }))
     ];
   };

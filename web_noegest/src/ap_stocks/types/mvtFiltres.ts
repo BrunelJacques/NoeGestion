@@ -22,7 +22,7 @@ export const  FILTRES0: MvtFiltres= {
   article: null,
   jour: new Date(2022,9,17),//valeur pour démo, provisoire
   periode: null,
-  origine: "cuisine",
+  origine: "repas",
   service: 0,
   camp: "",
   fournisseur: null,

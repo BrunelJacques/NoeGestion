@@ -9,8 +9,9 @@ const nbMaxItems = 15;
 export function checkIsValid( value: string, items: Item[], required: boolean): boolean {
   const test0 = (!value && !required && items && items.length !== 0);
   const test1 = items.some(item => item.nom.toLowerCase() === value.toLowerCase());
-  const test2 = value === "" && !required;
-  return test0 ||test1 || test2;
+  const test2 = items.some(item => String(item.id).toLowerCase() === String(value).toLowerCase());
+  const test3 = value === "" && !required;
+  return test0 ||test1 || test2 || test3;
 }
 
 // Validation des items fournis, l'un deux contient-il la value?
@@ -75,7 +76,8 @@ export async function getListItems(value:string,
       const data = await fetchItems(stripMot);
       const mappedItems = data.map((u) => ({id: u.id, nom: u.nom}));
       finalItems = [...filterItems(stripMot, mappedItems)];
-      if (isListItemsOk(stripMot, finalItems, false)) { // uniqueOk false car on veut un minimum d'items
+      console.log("getListItems stripMot:", stripMot, "/", finalItems,isListItemsOk(stripMot, finalItems, false));
+      if (isListItemsOk(stripMot, finalItems, true)) { // uniqueOk false car on veut un minimum d'items
         break;
       }
     }
