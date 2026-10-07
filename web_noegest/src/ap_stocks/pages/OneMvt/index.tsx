@@ -91,18 +91,42 @@ function OneMvt() {
   }, [url, setError, isCreationMode]); // Ajout de isCreationMode dans les dépendances
 
   const updateField = useCallback(
-    (field: keyof Mouvement, value?: Mouvement[keyof Mouvement]|null
+    <K extends keyof NonNullable<MvtPatch>>(
+      field: K,
+      value?: NonNullable<MvtPatch>[K] | null
     ) => {
-      console.log("updateField todo", field, value);
-      //setMvtPatch(prev => ({ ...prev, [field]: value }));
+      setMvtPatch(prev => {
+        // Si le patch est null, on initialise à partir de l'objet mouvement courant
+        const base: NonNullable<MvtPatch> = prev ?? {
+          id: mouvement.id,
+          jour: mouvement.jour,
+          sens: mouvement.sens,
+          origine: mouvement.origine,
+          IdArticle: mouvement.article?.id,
+          nb_colis: mouvement.nb_colis,
+          qte_mouvement: mouvement.qte_mouvement,
+          prix_unit: mouvement.prix_unit,
+          service: mouvement.service,
+          rations: mouvement.rations,
+          analytique: mouvement.analytique,
+          fournisseur: mouvement.fournisseur,
+          ordi: mouvement.ordi,
+        };
+        console.log("updateField_callback", field, value,base);
+        return {
+          ...base,
+          [field]: value,
+        };
+      });
     },
-    []
+    [mouvement]
   );
 
   function resetMouvement() {
     setMvtPatch(null);
     setFormKey((prevKey) => prevKey + 1);
   }
+
 async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
   e.preventDefault();
   console.log("oneMvt handleSubmit", mvtPatch);
@@ -148,12 +172,6 @@ async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     );
   }
 }
-/*
-  Puisque vous passez article (qui vaut ART0) à votre <OneMvtForm/>, assurez-vous que
-  votre sous-composant ou votre composant d'autocomplétion (Xautocomplete) gère correctement
-  la sélection d'un nouvel article et remonte bien l'ID sélectionné via la fonction
-  updateField("article", nouvelId).
-*/
 
   return (
     //Titres sous-titres

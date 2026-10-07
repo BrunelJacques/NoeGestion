@@ -2,7 +2,7 @@
 import * as s from "../pages/OneMvt/index.css.ts";
 import {Form} from "react-router-dom";
 import type { MvtFormField } from "../types/mvtFormFields.ts";
-import type { Mouvement} from "../types/mouvement.ts";
+import type { MvtPatch, Mouvement} from "../types/mouvement.ts";
 import {Xinput} from "../../ui/Xinput";
 import {SpanCell} from "../../ui/SpanCell";
 import type { SyntheticEvent } from "react";
@@ -13,12 +13,27 @@ import FieldService from "./FieldService.tsx";
 import { standardize } from "../../utils/string.ts";
 import {dicCalculs} from "../utils/calculs.tsx";
 
+/*
 interface Props {
   formKey: number,
   fields: MvtFormField[],
   mouvement: Mouvement,
   updateField: (field: keyof Mouvement, value?: Mouvement[keyof Mouvement]|null) => void,
   handleSubmit: (e: SyntheticEvent<HTMLFormElement>) => Promise<void>,
+}
+*/
+
+type MvtPatchObj = NonNullable<MvtPatch>;
+
+interface Props {
+  formKey: number;
+  fields: MvtFormField[];
+  mouvement: Mouvement;
+  updateField: <K extends keyof MvtPatchObj>(
+    field: K,
+    value?: MvtPatchObj[K] | null
+  ) => void;
+  handleSubmit: (e: SyntheticEvent<HTMLFormElement>) => Promise<void>;
 }
 
 export function OneMvtForm({ fields,mouvement, ...prp}:Props) {
@@ -62,17 +77,21 @@ return (
                   label= {fld.label}
                 />
               ) : (fld.fieldName === "article") ?(
-                  <FieldArticle
-                    id={article.nom}
-                    updateField={
-                      (art) => prp.updateField(`article`, art?.id)
+
+                <FieldArticle
+                  id={article.nom}
+                  updateField={(art) => {
+                    if (typeof art?.id === "number") {
+                      prp.updateField("IdArticle", art.id);
                     }
-                  />
+                  }}
+                />
+
                 ) : (fld.fieldName === "fournisseur") ?(
                 <FieldFournisseur
                   id={mouvement.fournisseur}
                   updateField={
-                    (art) => prp.updateField(`fournisseur`, art)
+                    (fourn) => prp.updateField("fournisseur", fourn ? Number(fourn) : null)
                   }
                 />
                 ) : (fld.fieldName === "service") ?(
@@ -89,12 +108,17 @@ return (
                   label={fld.name}
                   showReset={true}
                   onChange={(evt) => {
-                    const nextValue =
-                      fld.type === "number"
-                        ? Number(evt.target.value)
-                        : evt.target.value;
+                    const targetKey = fld.fieldName as keyof MvtPatchObj;
+                    const rawVal = evt.target.value;
+                    const nextValue = fld.type === "number" ?
+                      (rawVal === "" ? null : Number(rawVal)) : rawVal;
 
-                    prp.updateField(fld.fieldName!, nextValue as Mouvement[typeof fld.fieldName]);
+                    // const nextValue =
+                    //   fld.type === "number"
+                    //     ? Number(evt.target.value)
+                    //     : evt.target.value;
+
+                    prp.updateField(targetKey, nextValue as any);
                   }}
                 />
               ) : typeof fld.value === "number" ? (
