@@ -100,12 +100,10 @@ function OneMvt() {
       value?: NonNullable<MvtPatch>[K] | null
     ) => {
       setMvtPatch((prev) => {
-        const nextPatch: MvtPatch = {
+        return {
           ...prev,
           [field]: value,
-        } as MvtPatch; // Assertion ciblée si le patch incomplet est accepté par l'état
-
-        return nextPatch;
+        } as MvtPatch; // Assertion ciblée sur le type attendu
       });
     },
     [] // Pas de dépendance nécessaire !
