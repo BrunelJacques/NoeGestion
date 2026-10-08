@@ -28,7 +28,7 @@ export const SpanCell: React.FC<FieldProps> = ({
   justify = 'left',
   width
 }) => {
-  
+
   // Fonction de formatage interne
   const formatValue = (): string => {
     if (value instanceof Date) {

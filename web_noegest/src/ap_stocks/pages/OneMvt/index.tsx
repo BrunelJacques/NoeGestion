@@ -26,6 +26,10 @@ function OneMvt() {
   const [mouvement, setMouvement] = useState<Mouvement>(MVT0); //original
   const [mvtPatch, setMvtPatch] = useState<MvtPatch>(null); // modifié
   const [formKey, setFormKey] = useState(0);
+  const activeMouvement = {
+    ...mouvement,
+    ...mvtPatch,
+  };
 
   const { id: queryId } = useParams<{ id?: string }>();
   const isCreationMode = !queryId;
@@ -95,30 +99,14 @@ function OneMvt() {
       field: K,
       value?: NonNullable<MvtPatch>[K] | null
     ) => {
-      setMvtPatch(prev => {
-        // Si le patch est null, on initialise à partir de l'objet mouvement courant
-        const base: NonNullable<MvtPatch> = prev ?? {
-          id: mouvement.id,
-          jour: mouvement.jour,
-          sens: mouvement.sens,
-          origine: mouvement.origine,
-          IdArticle: mouvement.article?.id,
-          nb_colis: mouvement.nb_colis,
-          qte_mouvement: mouvement.qte_mouvement,
-          prix_unit: mouvement.prix_unit,
-          service: mouvement.service,
-          rations: mouvement.rations,
-          analytique: mouvement.analytique,
-          fournisseur: mouvement.fournisseur,
-          ordi: mouvement.ordi,
-        };
+      setMvtPatch((prev) => {
         return {
-          ...base,
+          ...prev,
           [field]: value,
         };
       });
     },
-    [mouvement]
+    [] // Pas de dépendance nécessaire !
   );
 
   function resetMouvement() {
@@ -186,6 +174,7 @@ async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
                   mouvement={mouvement}
                   updateField={updateField}
                   handleSubmit={handleSubmit}
+                  activeMouvement={activeMouvement}
       />
       <OneMvtBoutons resetMouvement={resetMouvement}  />
     </section>

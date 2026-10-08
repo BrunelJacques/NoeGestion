@@ -5,23 +5,13 @@ import type { MvtFormField } from "../types/mvtFormFields.ts";
 import type { MvtPatch, Mouvement} from "../types/mouvement.ts";
 import {Xinput} from "../../ui/Xinput";
 import {SpanCell} from "../../ui/SpanCell";
-import type { SyntheticEvent } from "react";
+import {type SyntheticEvent } from "react";
 import {getCellValue} from "../../utils/getCellValue.tsx";
 import FieldArticle from "./FieldArticle.tsx";
 import FieldFournisseur from "./FieldFournisseur.tsx";
 import FieldService from "./FieldService.tsx";
 import { standardize } from "../../utils/string.ts";
 import {dicCalculs} from "../utils/calculs.tsx";
-
-/*
-interface Props {
-  formKey: number,
-  fields: MvtFormField[],
-  mouvement: Mouvement,
-  updateField: (field: keyof Mouvement, value?: Mouvement[keyof Mouvement]|null) => void,
-  handleSubmit: (e: SyntheticEvent<HTMLFormElement>) => Promise<void>,
-}
-*/
 
 type MvtPatchObj = NonNullable<MvtPatch>;
 
@@ -34,9 +24,11 @@ interface Props {
     value?: MvtPatchObj[K] | null
   ) => void;
   handleSubmit: (e: SyntheticEvent<HTMLFormElement>) => Promise<void>;
+  activeMouvement: any;
 }
 
-export function OneMvtForm({ fields,mouvement, ...prp}:Props) {
+export function OneMvtForm({ fields,mouvement,activeMouvement, ...prp}:Props) {
+
   const idMvt=mouvement.id
   const disabledFields = new Set(["couttot","coutun","pxun","nomcourt","pxstock","qtestock"])
   const minusable = new Set(["qte","couttot"])
@@ -64,7 +56,7 @@ return (
       <div className={s.formStyle}>
         {/* ------- déroulé des champs par map ------- */}
         {champs.map((fld) => {
-
+          const currentFieldValue = activeMouvement[fld.fieldName as keyof typeof activeMouvement];
           const key = `fld-${idMvt}-${fld.name}`;
 
           return (
@@ -103,20 +95,17 @@ return (
                 />
               ) : (fld.fieldName) ? ( // autres champs modifiables
                 <Xinput
+                  key={fld.fieldName}
                   type={fld.type === "number" ? "number" : fld.type === "date" ? "date" : "text"}
-                  value={String(fld.value ?? "")}
+                  value={String(currentFieldValue ?? "")}
                   label={fld.name}
                   showReset={true}
-                  onChange={(evt) => {
+                  onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
                     const targetKey = fld.fieldName as keyof MvtPatchObj;
                     const rawVal = evt.target.value;
-                    const nextValue = fld.type === "number" ?
-                      (rawVal === "" ? null : Number(rawVal)) : rawVal;
-
-                    // const nextValue =
-                    //   fld.type === "number"
-                    //     ? Number(evt.target.value)
-                    //     : evt.target.value;
+                    const nextValue = fld.type === "number"
+                      ? (rawVal === "" ? "" : Number(rawVal))
+                      : rawVal;
 
                     prp.updateField(targetKey, nextValue as any);
                   }}

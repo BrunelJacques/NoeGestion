@@ -21,7 +21,7 @@ export default function Galery() {
     <> 
       <h3>Bonjour user: {user?.lastName}  {user?.firstName}</h3> 
       <h1>'Galery'</h1>
-      <h5>rappel Hello</h5>
+
       <Hello />
       <h5>Fin Hello - autres éléments de Galery: </h5>
       <hr className = {hrstyle} />
@@ -35,6 +35,7 @@ export default function Galery() {
       </Xbutton>
 
        <Xinput
+         label="Ici un Xinput basique"
         value= {myVariable}
         onChange={(e:React.ChangeEvent<HTMLInputElement>) => {
               setMyVariable(e.target.value)

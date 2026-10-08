@@ -28,11 +28,11 @@ export type MvtPatch = null|{
     nb_colis?: number;
     qte_mouvement: number;
     prix_unit: number;
-    service?: number;
+    service: number;
     rations?: number;
     analytique?: number;
     fournisseur?: number;
-    ordi: string;
+    //ordi: string;
 }
 
 
