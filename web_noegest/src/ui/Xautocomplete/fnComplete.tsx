@@ -120,7 +120,6 @@ export function processItems(value: string,
                              onSelect: (arg0: Item) => void,
                              setListItems: (arg0: Item[]) => void,
                              setOpenList: (arg0: boolean) => void) {
-
   const filtered = filterItems(value, w_items);
   const uniqueItem = getUniqueItem(value, w_items);
 

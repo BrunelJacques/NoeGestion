@@ -69,13 +69,19 @@ export function inputAuto({
   /* -------- Handlers pour les interactions avec le composant --------------- */
 
   const onChange = (e: { target: { value: string } }) => {
+    setOpenList(true)
     // Teste si la saisie pointe sur un item unique, fn autocomplète
     const newValue = e.target.value;
-
     setValue(newValue); // On met à jour l'input immédiatement
 
     if (newValue) {
       fetchAndSetDebounced(newValue); // Lancement différé du fetch
+    }
+    else {
+      // Si la valeur est vide, on annule le timer en cours
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+      }
     }
   };
 
@@ -104,7 +110,10 @@ export function inputAuto({
     setNewFocus(false);
     onSelect(ITEM0);
     setValue("");
-    setOpenList(false)
+    setOpenList(true)
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current);
+    }
   };
 
   const handleFocus = (e: React.FocusEvent<HTMLDivElement>) => {

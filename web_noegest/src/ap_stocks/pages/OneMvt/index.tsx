@@ -112,7 +112,6 @@ function OneMvt() {
           fournisseur: mouvement.fournisseur,
           ordi: mouvement.ordi,
         };
-        console.log("updateField_callback", field, value,base);
         return {
           ...base,
           [field]: value,
