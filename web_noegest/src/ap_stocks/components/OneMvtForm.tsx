@@ -2,18 +2,18 @@
 import * as s from "../pages/OneMvt/index.css.ts";
 import {Form} from "react-router-dom";
 import type { MvtFormField } from "../types/mvtFormFields.ts";
-import type { MvtPatch, Mouvement} from "../types/mouvement.ts";
+import type { Mouvement, MvtPatchObj} from "../types/mouvement.ts";
 import {Xinput} from "../../ui/Xinput";
 import {SpanCell} from "../../ui/SpanCell";
 import {type SyntheticEvent } from "react";
 import {getCellValue} from "../../utils/getCellValue.tsx";
-import FieldArticle from "./FieldArticle.tsx";
+import FieldArticle, {ChangeArticle} from "./FieldArticle.tsx";
 import FieldFournisseur from "./FieldFournisseur.tsx";
 import FieldService from "./FieldService.tsx";
 import { standardize } from "../../utils/string.ts";
 import {dicCalculs} from "../utils/calculs.tsx";
 
-type MvtPatchObj = NonNullable<MvtPatch>;
+
 
 interface Props {
   formKey: number;
@@ -74,7 +74,11 @@ return (
                   id={article.nom}
                   updateField={(art) => {
                     if (typeof art?.id === "number") {
-                      prp.updateField("IdArticle", art.id);
+                      const modifs = ChangeArticle(art)
+                      modifs.map((modif) => (
+                        prp.updateField(modif[0], modif[1])
+                      ))
+                      //prp.updateField("IdArticle", art.id);
                     }
                   }}
                 />

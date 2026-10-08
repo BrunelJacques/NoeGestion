@@ -100,6 +100,7 @@ function OneMvt() {
       value?: NonNullable<MvtPatch>[K] | null
     ) => {
       setMvtPatch((prev) => {
+        console.log("updateField_callback", field, value, prev);
         return {
           ...prev,
           [field]: value,

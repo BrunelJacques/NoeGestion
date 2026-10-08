@@ -35,6 +35,7 @@ export type MvtPatch = null|{
     //ordi: string;
 }
 
+export type MvtPatchObj = NonNullable<MvtPatch>;
 
 export const MVT0 :Mouvement = {
     id: 0,

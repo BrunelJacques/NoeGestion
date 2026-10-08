@@ -5,6 +5,13 @@ import { Xautocomplete } from "../../ui/Xautocomplete";
 import apiUrl from "../../constants/api.Constants";
 import type { Articles } from "../types/article";
 import type { Item } from "../../types/item.ts";
+import type { MvtPatchObj } from "../types/mouvement.ts";
+
+
+export function ChangeArticle(art: Item): [keyof MvtPatchObj, number][] {
+  console.log("Traitement du changment d'article:",art.id)
+  return [['IdArticle' , art.id as number],]
+}
 
 interface Props {
   id: string | null | undefined;
