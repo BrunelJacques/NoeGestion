@@ -72,9 +72,9 @@ return (
 
                 <FieldArticle
                   id={article.nom}
-                  updateField={(art) => {
+                  updateField={async (art) => {
                     if (typeof art?.id === "number") {
-                      const modifs = ChangeArticle(art)
+                      const modifs = await ChangeArticle(art)
                       modifs.map((modif) => (
                         prp.updateField(modif[0], modif[1])
                       ))
