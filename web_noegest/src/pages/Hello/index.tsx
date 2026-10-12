@@ -11,7 +11,7 @@ export function Hello() {
 
       <div className={s.entree}>
         <FieldArticle
-          id={"32"}
+          nomArt={"32"}
           updateField={(val) => console.log('updateField_new ', val)}
         />
       </div>

@@ -2,12 +2,12 @@
 
 import { ART0, type Article } from './article';
 
-export type Mouvement = {
+// Champs communs aux mouvements
+export type MouvementBase = {
     id: number;
     jour: string;
     sens: number;
     origine: string;
-    article: Article;
     nb_colis?: number;
     qte_mouvement: number;
     prix_unit: number;
@@ -16,27 +16,28 @@ export type Mouvement = {
     analytique?: number;
     fournisseur?: number;
     ordi: string;
+};
+
+// Type Mouvement retourné par l'api
+export type Mouvement = MouvementBase & {
+    article: Article;
     saisie: string;
     transfert?: Date;
-}
-export type MvtPatch = null|{
-    id: number;
-    jour: string;
-    sens: number;
-    origine: string;
-    IdArticle: number;
-    nb_colis?: number;
-    qte_mouvement: number;
-    prix_unit: number;
-    service: number;
-    rations?: number;
-    analytique?: number;
-    fournisseur?: number;
-    //ordi: string;
-}
+};
+
+// Type MvtPatch contient les modifs apportées par saisie
+export type MvtPatch = null | (MouvementBase & {
+    idArticle: number;
+});
 
 export type MvtPatchObj = NonNullable<MvtPatch>;
 
+// Type MvtActif update de mouvement, pour affichage des modifs avant validation
+export type MvtActif = Mouvement & {
+    idArticle?: number;
+};
+
+// Initialisation mouvement créé
 export const MVT0 :Mouvement = {
     id: 0,
     jour: "",
@@ -51,6 +52,7 @@ export const MVT0 :Mouvement = {
     saisie:"",
 }
 
+// retour d'api mouvements
 export type MvtsRetour = {
     count: number;
     results: Mouvement[];

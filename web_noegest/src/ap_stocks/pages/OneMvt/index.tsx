@@ -11,26 +11,24 @@ import { OneMvtForm } from "../../components/OneMvtForm.tsx";
 import { OneMvtBoutons} from "../../components/OneMvtBoutons.tsx";
 
 function mvtToPatch(mvt:Mouvement):MvtPatch {
+  // Transpose le mouvement reçu de l'api en mvtPatch de travail
   const { article, saisie, transfert, ...leReste} = mvt;
   return {
     ...leReste,
-    IdArticle: article.id,
+    idArticle: article.id,
   };
 }
 
 function OneMvt() {
+  // Lanceur de forms d'affichage mvtPatch et sa gestion
 
   const { setError } = useError();
   const { filtres } = useFiltres();
 
   const [mouvement, setMouvement] = useState<Mouvement>(MVT0); //original
-  const [mvtPatch, setMvtPatch] = useState<MvtPatch>(null); // modifié
-  const [formKey, setFormKey] = useState(0);
-  const activeMouvement = {
-    ...mouvement,
-    ...mvtPatch,
-  };
+  const [mvtPatch, setMvtPatch] = useState<MvtPatch>(null); // envoi modif
 
+  const [formKey, setFormKey] = useState(0);
   const { id: queryId } = useParams<{ id?: string }>();
   const isCreationMode = !queryId;
 
@@ -66,11 +64,11 @@ function OneMvt() {
           return;
         }
 
-        const mvtPatch: MvtPatch = mvtToPatch(oneMvt);
+        const patch: MvtPatch = mvtToPatch(oneMvt);
 
         if (isMounted) {
           setMouvement(oneMvt);
-          setMvtPatch(mvtPatch);
+          setMvtPatch(patch);
         }
       } catch (error) {
         console.error("Erreur lors du fetch :", error);
@@ -106,6 +104,7 @@ function OneMvt() {
           [field]: value,
         } as MvtPatch; // Assertion ciblée sur le type attendu
       });
+
     },
     [] // Pas de dépendance nécessaire !
   );
@@ -115,7 +114,8 @@ function OneMvt() {
     setFormKey((prevKey) => prevKey + 1);
   }
 
-async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
+  //
   e.preventDefault();
   console.log("oneMvt handleSubmit", mvtPatch);
 
@@ -175,7 +175,6 @@ async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
                   mouvement={mouvement}
                   updateField={updateField}
                   handleSubmit={handleSubmit}
-                  activeMouvement={activeMouvement}
       />
       <OneMvtBoutons resetMouvement={resetMouvement}  />
     </section>

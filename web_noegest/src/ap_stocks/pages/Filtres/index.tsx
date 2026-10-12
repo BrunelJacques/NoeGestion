@@ -106,7 +106,7 @@ export default function Filtres() {
             <div className={s.entree}>
               {isPageArticle && (
                 <FieldArticle
-                  id={draft.article?.nom}
+                  nomArt={draft.article?.nom}
                   updateField={(val) => updateField('article', val)}
                 />
               )}

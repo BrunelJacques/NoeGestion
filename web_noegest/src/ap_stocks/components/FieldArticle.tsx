@@ -4,7 +4,7 @@ import { Xautocomplete } from "../../ui/Xautocomplete";
 import apiUrl from "../../constants/api.Constants";
 import type { Articles } from "../types/article";
 import type { Item } from "../../types/item.ts";
-import type { MvtPatchObj } from "../types/mouvement.ts";
+import type {Mouvement, MvtPatchObj } from "../types/mouvement.ts";
 
 
 const fetchArticlesByParam = async (baseUrl: string, value: string | number) => {
@@ -16,27 +16,32 @@ const fetchArticlesByParam = async (baseUrl: string, value: string | number) => 
   return articles.results;
 };
 
-const fetchIdArticle = (id: number) =>
+const fetchidArticle = (id: number) =>
   fetchArticlesByParam(`${apiUrl.STARTICLE_URL}?id=`, id);
 
 const fetchArticles = (search: string) =>
   fetchArticlesByParam(`${apiUrl.STARTICLE_NOM_URL}?nom=`, search);
 
-export async function ChangeArticle(art: Item):
+export async function ChangeArticle(
+    art: Item,
+    mouvement: Mouvement,
+    setMvtActif: (x: any) => void,
+): // Retourne l'ensemble des  updateField
   Promise<[keyof MvtPatchObj,number|string][]> {
   const numericId = Number(art.id);
-  const result = await fetchIdArticle(numericId);
-  console.log("Traitement du changment d'article:",numericId, result)
-  return [['IdArticle' , numericId],]
+  const result = await fetchidArticle(numericId);
+
+  console.log("Traitement du changment d'article:",numericId, mouvement, result)
+  return [['idArticle' , numericId],]
 }
 
 interface Props {
-  id: string | null | undefined;
+  nomArt: string | null | undefined;
   updateField: (art: Item|null) => void;
 }
 
 // paramétrage de la saisie d'article avec autocomplétion
-export default function FieldArticle({ id, updateField }: Props) {
+export default function FieldArticle({ nomArt, updateField }: Props) {
 
   const handleChange = (item: Item) => {
     updateField(item);
@@ -47,7 +52,7 @@ export default function FieldArticle({ id, updateField }: Props) {
       <Xautocomplete 
         label="Article"
         name="article"
-        value={id ?? ""}
+        value={nomArt ?? ""}
         fetchItems={fetchArticles}
         onSelect={handleChange }
       />

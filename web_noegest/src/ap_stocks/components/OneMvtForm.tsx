@@ -2,10 +2,10 @@
 import * as s from "../pages/OneMvt/index.css.ts";
 import {Form} from "react-router-dom";
 import type { MvtFormField } from "../types/mvtFormFields.ts";
-import type { Mouvement, MvtPatchObj} from "../types/mouvement.ts";
+import type { Mouvement, MvtActif, MvtPatchObj} from "../types/mouvement.ts";
 import {Xinput} from "../../ui/Xinput";
 import {SpanCell} from "../../ui/SpanCell";
-import {type SyntheticEvent } from "react";
+import {useState, type SyntheticEvent } from "react";
 import {getCellValue} from "../../utils/getCellValue.tsx";
 import FieldArticle, {ChangeArticle} from "./FieldArticle.tsx";
 import FieldFournisseur from "./FieldFournisseur.tsx";
@@ -24,11 +24,14 @@ interface Props {
     value?: MvtPatchObj[K] | null
   ) => void;
   handleSubmit: (e: SyntheticEvent<HTMLFormElement>) => Promise<void>;
-  activeMouvement: any;
 }
 
-export function OneMvtForm({ fields,mouvement,activeMouvement, ...prp}:Props) {
+export function OneMvtForm({ fields,mouvement, ...prp}:Props) {
 
+  const [mvtActif, setMvtActif] = useState<MvtActif>({
+    ...mouvement,
+    ...{ idArticle: mouvement.article.id },
+  }); // affiché
   const idMvt=mouvement.id
   const disabledFields = new Set(["couttot","coutun","pxun","nomcourt","pxstock","qtestock"])
   const minusable = new Set(["qte","couttot"])
@@ -56,7 +59,7 @@ return (
       <div className={s.formStyle}>
         {/* ------- déroulé des champs par map ------- */}
         {champs.map((fld) => {
-          const currentFieldValue = activeMouvement[fld.fieldName as keyof typeof activeMouvement];
+          const currentFieldValue = mvtActif[fld.fieldName as keyof typeof mvtActif];
           const key = `fld-${idMvt}-${fld.name}`;
 
           return (
@@ -71,14 +74,13 @@ return (
               ) : (fld.fieldName === "article") ?(
 
                 <FieldArticle
-                  id={article.nom}
+                  nomArt= {article.nom}
                   updateField={async (art) => {
                     if (typeof art?.id === "number") {
-                      const modifs = await ChangeArticle(art)
+                      const modifs = await ChangeArticle(art,mouvement,setMvtActif)
                       modifs.map((modif) => (
                         prp.updateField(modif[0], modif[1])
                       ))
-                      //prp.updateField("IdArticle", art.id);
                     }
                   }}
                 />
