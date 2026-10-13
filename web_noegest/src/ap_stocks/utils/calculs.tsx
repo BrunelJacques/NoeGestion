@@ -1,6 +1,8 @@
 //src/ap_stocks/pages/Mouvements/calculs.tsx
+
 import { round } from "../../utils/number.ts";
-import type { Mouvement } from "../types/mouvement.ts";
+import type { Mouvement, MvtActif } from "../types/mouvement.ts";
+import getUser from "../../utils/getUser.tsx";
 
 
 function coutUn (mvt: Mouvement):number {
@@ -20,3 +22,13 @@ export const dicCalculs: Record<string, (mvt: Mouvement) => string | number> = {
   coutTotal: coutTotal,
 };
 
+export function getFlagsMouvement()
+  : [keyof MvtActif, MvtActif[keyof MvtActif]][] {
+  const today: string = new Date().toLocaleDateString('en-CA');
+  const user = getUser()
+
+  return [
+    ['saisie',today],
+    ['ordi', user]
+  ]
+}

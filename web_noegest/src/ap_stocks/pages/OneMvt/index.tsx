@@ -3,12 +3,13 @@ import React, {useCallback, useEffect, useState } from "react";
 import * as s from "./index.css.ts";
 import { useFiltres } from "../../hooks/contextFiltres/useFiltres";
 import { apiUrl } from "../../../constants/api.Constants";
-import { MVT0, type MvtPatch, type MvtsRetour, type Mouvement } from "../../types/mouvement";
+import { MVT0, type MvtPatch, type MvtsRetour, type Mouvement, type MvtActif } from "../../types/mouvement";
 import { useError } from "../../../hooks/useError";
 import { lstMvtFields } from "../../constants/lstMvtFields";
 import { useParams } from "react-router-dom";
 import { OneMvtForm } from "../../components/OneMvtForm.tsx";
 import { OneMvtBoutons} from "../../components/OneMvtBoutons.tsx";
+import {getFlagsMouvement} from "../../utils/calculs.tsx";
 
 function mvtToPatch(mvt:Mouvement):MvtPatch {
   // Transpose le mouvement reçu de l'api en mvtPatch de travail
@@ -93,9 +94,9 @@ function OneMvt() {
   }, [url, setError, isCreationMode]); // Ajout de isCreationMode dans les dépendances
 
   const updateField = useCallback(
-    <K extends keyof NonNullable<MvtPatch>>(
+    <K extends keyof NonNullable<MvtActif>>(
       field: K,
-      value?: NonNullable<MvtPatch>[K] | null
+      value?: NonNullable<MvtActif>[K] | null
     ) => {
       setMvtPatch((prev) => {
         console.log("updateField_callback", field, value, prev);
@@ -118,6 +119,12 @@ function OneMvt() {
   //
   e.preventDefault();
   console.log("oneMvt handleSubmit", mvtPatch);
+
+  const flags = getFlagsMouvement()
+  flags.map((modif) => (
+      updateField(modif[0], modif[1])
+    ));
+
 
   // URL et Méthode dynamiques selon le mode
   const submitUrl = isCreationMode

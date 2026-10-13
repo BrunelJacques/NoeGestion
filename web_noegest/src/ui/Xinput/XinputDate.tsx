@@ -1,6 +1,6 @@
 // src/ui/variants/XinputDate.tsx
 import { Xinput } from "./index.tsx";
-import * as dt from "../../utils/dates.ts";
+import * as dt from "../../utils/dates.tsx";
 import * as sc from "../xcommon.css.ts";
 import {useLayoutEffect, useRef, useState, useEffect} from "react";
 import {useFormValidation} from "../../contexts/FormContext.tsx";

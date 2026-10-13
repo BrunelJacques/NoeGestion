@@ -2,7 +2,7 @@
 import * as s from "../pages/OneMvt/index.css.ts";
 import {Form} from "react-router-dom";
 import type { MvtFormField } from "../types/mvtFormFields.ts";
-import type { Mouvement, MvtActif, MvtPatchObj} from "../types/mouvement.ts";
+import type { Mouvement, MvtActif} from "../types/mouvement.ts";
 import {Xinput} from "../../ui/Xinput";
 import {SpanCell} from "../../ui/SpanCell";
 import {useState, type SyntheticEvent } from "react";
@@ -19,9 +19,9 @@ interface Props {
   formKey: number;
   fields: MvtFormField[];
   mouvement: Mouvement;
-  updateField: <K extends keyof MvtPatchObj>(
+  updateField: <K extends keyof MvtActif>(
     field: K,
-    value?: MvtPatchObj[K] | null
+    value?: MvtActif[K] | null
   ) => void;
   handleSubmit: (e: SyntheticEvent<HTMLFormElement>) => Promise<void>;
 }
@@ -77,10 +77,11 @@ return (
                   nomArt= {article.nom}
                   updateField={async (art) => {
                     if (typeof art?.id === "number") {
-                      const modifs = await ChangeArticle(art,mouvement,setMvtActif)
+                      const modifs = await ChangeArticle(art,mouvement)
                       modifs.map((modif) => (
                         prp.updateField(modif[0], modif[1])
                       ))
+                      setMvtActif(mvtActif)
                     }
                   }}
                 />
@@ -107,7 +108,7 @@ return (
                   label={fld.name}
                   showReset={true}
                   onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
-                    const targetKey = fld.fieldName as keyof MvtPatchObj;
+                    const targetKey = fld.fieldName as keyof MvtActif;
                     const rawVal = evt.target.value;
                     const nextValue = fld.type === "number"
                       ? (rawVal === "" ? "" : Number(rawVal))

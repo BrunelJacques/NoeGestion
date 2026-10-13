@@ -1,13 +1,13 @@
 import { hello } from "./index.css";
-import { useAuth } from "../../hooks/useAuth.tsx";
 import * as s from "../../ap_stocks/pages/Filtres/index.css.ts";
 import FieldArticle from "../../ap_stocks/components/FieldArticle.tsx";
+import getUser from "../../utils/getUser.tsx";
 
 export function Hello() {
-    const { user } = useAuth();
+  const clientUser = getUser();
   return (
     <div className={hello}>
-      <h5>Hello Noegest user: {user?.lastName}  {user?.firstName}</h5>
+      <h5>Hello Noegest user: {clientUser}</h5>
 
       <div className={s.entree}>
         <FieldArticle

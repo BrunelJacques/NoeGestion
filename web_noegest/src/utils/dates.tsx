@@ -1,4 +1,4 @@
-//src/utils/dates.ts
+//src/utils/dates.tsx
 
 export function dateToStringFr(jour:Date|null): string{
 
@@ -19,18 +19,19 @@ export function dateToStringFr(jour:Date|null): string{
   return dateFr;
 }
 
-export function dateToISO(jour:Date|null): string{
+// Date au format aaaa-mm-jj (Date locale, tient compte du fuseau horaire)
+export const today: string = new Date().toLocaleDateString('en-CA');
 
+// Date aaaa-mm-jj affranchie du fuseau horaire
+export function dateToISO(jour:Date|null): string{
   if (!jour){
     return ""
   }
-  const dateIso = `${
-    jour.getFullYear()
-  }-${
-    String(jour.getMonth() + 1).padStart(2, '0')
-  }-${
-    String(jour.getDate()).padStart(2, '0')}`
-    return dateIso;
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
 }
 
 export function stringToDate(txt: string): Date | null {
