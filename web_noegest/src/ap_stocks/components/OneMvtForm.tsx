@@ -11,7 +11,7 @@ import FieldArticle, {ChangeArticle} from "./FieldArticle.tsx";
 import FieldFournisseur from "./FieldFournisseur.tsx";
 import FieldService from "./FieldService.tsx";
 import { standardize } from "../../utils/string.ts";
-import {dicCalculs} from "../utils/calculs.tsx";
+import {calculsMvt} from "../utils/calculs.tsx";
 
 
 
@@ -40,7 +40,7 @@ export function OneMvtForm({ fields,mouvement, ...prp}:Props) {
   const champs=fields.map(fld => {
     const name = standardize(fld.label);
     const sens = (minusable.has(name)) ? mouvement.sens : null;
-    const val = getCellValue(mouvement, fld, dicCalculs)
+    const val = getCellValue(mouvement, fld, calculsMvt)
     return {
       ...fld,
       name: name,

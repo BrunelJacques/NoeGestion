@@ -17,10 +17,18 @@ function coutTotal (mvt: Mouvement):number {
   return round(pxUnit * qte,2)
 }
 
-export const dicCalculs: Record<string, (mvt: Mouvement) => string | number> = {
-  coutUn: coutUn,
-  coutTotal: coutTotal,
+export const calculsMvt: Record<string, (mvt: Mouvement) => number> =  {
+    coutUn: coutUn,
+    coutTotal: coutTotal,
 };
+
+// Test de calculsMvt
+/*console.log("Résultat calculs coutUn: ",
+  calculsMvt.coutUn({
+    'prix_unit': 10,
+    'qte_mouvement':4,
+    'rations':3,
+  } as Mouvement))*/
 
 export function getFlagsMouvement()
   : [keyof MvtActif, MvtActif[keyof MvtActif]][] {

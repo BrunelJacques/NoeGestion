@@ -1,7 +1,7 @@
 // src/ap_stocks/pages/Mouvements/index.tsx
 import React, { useEffect, useState } from "react";
 import * as s from "../Mouvements/index.css";
-import { dicCalculs } from "../../utils/calculs.tsx";
+import { calculsMvt } from "../../utils/calculs.tsx";
 import { SpanCell } from "../../../ui/SpanCell";
 import { useFiltres } from "../../hooks/contextFiltres/useFiltres";
 import { apiUrl } from "../../../constants/api.Constants";
@@ -85,7 +85,7 @@ function Mouvements() {
           // Le Fragment avec sa clé est obligatoire ici pour le CSS Grid !
           <React.Fragment key={mvt.id}>
             {fields.map((fld) => {
-              const val = getCellValue(mvt, fld, dicCalculs);
+              const val = getCellValue(mvt, fld, calculsMvt);
               return (
                 <div
                   key={`cell-${mvt.id}-${fld.label}`}

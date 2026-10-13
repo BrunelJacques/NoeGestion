@@ -1,6 +1,7 @@
 //src/utils/getCellValue.tsx
 
-// getCellValue extrait une valeur calculée depuis un dataRow, selon field: GridField
+
+// getCellValue extrait une valeur calculée depuis un dataRow, selon field: GridField et fnCalculs
 
 type GridField<TRow> = {
   fieldName?: keyof TRow;
@@ -9,7 +10,7 @@ type GridField<TRow> = {
   calcul?: string;
 };
 
-type CalculDictionary<TRow> = Record<string, (row: TRow) => string | number>;
+type TypeFnCalculs<TRow> = Record<string, (row: TRow) => string | number>;
 
 const toDisplayValue = (value: unknown): string | number => {
   if (typeof value === "string" || typeof value === "number") {
@@ -23,13 +24,13 @@ const toDisplayValue = (value: unknown): string | number => {
 export const getCellValue = <TRow extends object>(
   rowData: TRow,
   field: GridField<TRow>,
-  dicCalculs?: CalculDictionary<TRow>
+  dicCalculs: TypeFnCalculs<TRow>
 ): string | number => {
   if (field.calcul) {
     const fonctionAExecuter = dicCalculs?.[field.calcul];
 
     if (!fonctionAExecuter) {
-      console.error(`La fonction ${field.calcul} n'existe pas.`);
+      console.error(`La fonction ${field.calcul} n'existe pas dans ${dicCalculs}.`);
       return "";
     }
 
