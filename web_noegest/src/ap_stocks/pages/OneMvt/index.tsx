@@ -3,7 +3,7 @@ import React, {useCallback, useEffect, useState } from "react";
 import * as s from "./index.css.ts";
 import { useFiltres } from "../../hooks/contextFiltres/useFiltres";
 import { apiUrl } from "../../../constants/api.Constants";
-import { MVT0, type MvtPatch, type MvtsRetour, type Mouvement, type MvtActif } from "../../types/mouvement";
+import { MVT0, type MvtsRetour, type Mouvement, type MvtActif } from "../../types/mouvement";
 import { useError } from "../../../hooks/useError";
 import { lstMvtFields } from "../../constants/lstMvtFields";
 import { useParams } from "react-router-dom";
@@ -11,12 +11,12 @@ import { OneMvtForm } from "../../components/OneMvtForm.tsx";
 import { OneMvtBoutons} from "../../components/OneMvtBoutons.tsx";
 import {getFlagsMouvement} from "../../utils/calculs.tsx";
 
-function mvtToPatch(mvt:Mouvement):MvtPatch {
+function mvtToPatch(mvt:Mouvement): Mouvement {
   // Transpose le mouvement reçu de l'api en mvtPatch de travail
-  const { article, saisie, transfert, ...leReste} = mvt;
+  const { article, ...leReste} = mvt;
   return {
     ...leReste,
-    idArticle: article.id,
+    idArticle: article?.id??0
   };
 }
 
@@ -27,7 +27,7 @@ function OneMvt() {
   const { filtres } = useFiltres();
 
   const [mouvement, setMouvement] = useState<Mouvement>(MVT0); //original
-  const [mvtPatch, setMvtPatch] = useState<MvtPatch>(null); // envoi modif
+  const [mvtPatch, setMvtPatch] = useState<Mouvement>(mouvement); // envoi modif
 
   const [formKey, setFormKey] = useState(0);
   const { id: queryId } = useParams<{ id?: string }>();
@@ -46,14 +46,16 @@ function OneMvt() {
     // Si on est en mode création, on ne 'fetch' rien, on s'assure juste des valeurs par défaut
     if (isCreationMode) {
       setMouvement(MVT0);
-      setMvtPatch(null);
+      setMvtPatch(MVT0);
       return;
     }
 
     let isMounted = true;
     const executeFetch = async () => {
       try {
+        console.log("Fetching mouvement...",isCreationMode,url);
         const response = await fetch(url);
+
         if (!response.ok) {
           setError("Échec api mouvement: no response.");
           return; // Ajout d'un return pour éviter de continuer en cas d'erreur
@@ -65,12 +67,10 @@ function OneMvt() {
           return;
         }
 
-        const patch: MvtPatch = mvtToPatch(oneMvt);
-
-        if (isMounted) {
-          setMouvement(oneMvt);
-          setMvtPatch(patch);
-        }
+        const patch: Mouvement = mvtToPatch(oneMvt);
+        console.log("Fecch reponse:",isMounted, oneMvt,patch);
+        setMouvement(patch);
+        setMvtPatch(patch);
       } catch (error) {
         console.error("Erreur lors du fetch :", error);
         if (isMounted) {
@@ -87,11 +87,12 @@ function OneMvt() {
     };
 
     void executeFetch();
+    console.log("useEffect isMounted", isMounted,mvtPatch);
 
     return () => {
       isMounted = false;
     };
-  }, [url, setError, isCreationMode]); // Ajout de isCreationMode dans les dépendances
+  }, [url, setError, isCreationMode]);
 
   const updateField = useCallback(
     <K extends keyof NonNullable<MvtActif>>(
@@ -103,7 +104,7 @@ function OneMvt() {
         return {
           ...prev,
           [field]: value,
-        } as MvtPatch; // Assertion ciblée sur le type attendu
+        } as Mouvement; // Assertion ciblée sur le type attendu
       });
 
     },
@@ -111,7 +112,7 @@ function OneMvt() {
   );
 
   function resetMouvement() {
-    setMvtPatch(null);
+    setMvtPatch(mouvement);
     setFormKey((prevKey) => prevKey + 1);
   }
 
@@ -150,11 +151,6 @@ function OneMvt() {
     const savedMouvement: Mouvement = await response.json();
     setMouvement(savedMouvement);
     setMvtPatch(mvtToPatch(savedMouvement));
-
-    // Optionnel : Si vous voulez rediriger l'utilisateur sur la page de modification
-    // avec le nouvel ID généré par l'API après une création réussie, vous pouvez
-    // utiliser le hook useNavigate() ici.
-
   } catch (error) {
     console.error("Erreur lors de la sauvegarde :", error);
     setError(
@@ -167,7 +163,6 @@ function OneMvt() {
     );
   }
 }
-
   return (
     //Titres sous-titres
     <section className={s.wrapper}>
@@ -179,7 +174,7 @@ function OneMvt() {
 
       <OneMvtForm formKey={formKey}
                   fields={fields}
-                  mouvement={mouvement}
+                  mouvement={mvtPatch}
                   updateField={updateField}
                   handleSubmit={handleSubmit}
       />

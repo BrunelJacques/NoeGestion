@@ -30,7 +30,6 @@ export function OneMvtForm({ fields,mouvement, ...prp}:Props) {
 
   const [mvtActif, setMvtActif] = useState<MvtActif>({
     ...mouvement,
-    ...{ idArticle: mouvement.article.id },
   }); // affiché
   const idMvt=mouvement.id
   const disabledFields = new Set(["couttot","coutun","pxun","nomcourt","pxstock","qtestock"])
@@ -48,6 +47,12 @@ export function OneMvtForm({ fields,mouvement, ...prp}:Props) {
       value: sens? +val * sens :val, // value : number|string, val:string
     };
   });
+  console.log("OneMvtForm",mouvement,"actif",mvtActif);
+  if (mouvement != mvtActif) {
+    console.log("mouvement en actif",mouvement);
+    setMvtActif(mouvement);
+  }
+
 
 return (
   <div className={s.wrapForm}>
@@ -61,7 +66,7 @@ return (
         {champs.map((fld) => {
           const currentFieldValue = mvtActif[fld.fieldName as keyof typeof mvtActif];
           const key = `fld-${idMvt}-${fld.name}`;
-
+          //console.log(`>>>>>>>>> ${fld.label},${fld.value}`)
           return (
              /*------- affichage d'un champ selon sa nature -------*/
             <div key={key} >
@@ -74,14 +79,13 @@ return (
               ) : (fld.fieldName === "article") ?(
 
                 <FieldArticle
-                  nomArt= {article.nom}
+                  nomArt= {article?.nom}
                   updateField={async (art) => {
                     if (typeof art?.id === "number") {
                       const modifs = await ChangeArticle(art,mouvement)
                       modifs.map((modif) => (
                         prp.updateField(modif[0], modif[1])
                       ))
-                      setMvtActif(mvtActif)
                     }
                   }}
                 />
