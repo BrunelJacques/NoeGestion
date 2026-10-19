@@ -126,9 +126,7 @@ function OneMvt() {
     e.preventDefault();
 
     const flags = getFlagsMouvement()
-    console.log("flags", flags);
     flags.map((modif) => (
-        console.log("modif", modif),
         updateField(modif[0], modif[1])
       ));
 
