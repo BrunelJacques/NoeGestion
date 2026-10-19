@@ -22,14 +22,6 @@ export type Mouvement = {
     transfert?: Date;
 };
 
-// Type Mouvement retourné par l'api
-export type zzMouvement = Mouvement;
-
-// Type MvtPatch contient les modifs apportées par saisie
-export type zzMvtPatch = Mouvement;
-
-export type MvtPatchObj = NonNullable<Mouvement>;
-
 // Type MvtActif update de mouvement, pour affichage des modifs avant validation
 export type MvtActif = Mouvement;
 

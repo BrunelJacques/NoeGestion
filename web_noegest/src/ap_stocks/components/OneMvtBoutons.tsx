@@ -3,13 +3,15 @@ import { Xbutton } from "../../ui/Xbutton";
 import XbuttonBack from "../../ui/Xbutton/XbuttonBack";
 import goBack from "../../assets/icons/goBack.png";
 import * as s from "../pages/OneMvt/index.css.ts";
+import type { SyntheticEvent } from "react";
 
 interface Props {
   resetMouvement: () => void;
+  onSubmit: (e: SyntheticEvent<HTMLFormElement>) => Promise<void>;
 }
 
 
-export function OneMvtBoutons({ ...prp }: Props ) {
+export function OneMvtBoutons({ onSubmit, ...prp }: Props ) {
 
   return (
 
@@ -26,7 +28,10 @@ export function OneMvtBoutons({ ...prp }: Props ) {
         Abandon
       </Xbutton>
 
-      <Xbutton type="submit" altClassName="" form="oneMvtForm">
+      <Xbutton type="submit" 
+               altClassName=""
+               form="oneMvtForm"
+      >
         Validation
       </Xbutton>
     </div>

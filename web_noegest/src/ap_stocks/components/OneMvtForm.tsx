@@ -10,7 +10,7 @@ import {getCellValue} from "../../utils/getCellValue.tsx";
 import FieldArticle, {ChangeArticle} from "./FieldArticle.tsx";
 import FieldFournisseur from "./FieldFournisseur.tsx";
 import FieldService from "./FieldService.tsx";
-import { standardize } from "../../utils/string.ts";
+import { standardize, fmtLabel } from "../../utils/string.ts";
 import {calculsMvt} from "../utils/calculs.tsx";
 
 
@@ -23,7 +23,8 @@ interface Props {
     field: K,
     value?: MvtActif[K] | null
   ) => void;
-  handleSubmit: (e: SyntheticEvent<HTMLFormElement>) => Promise<void>;
+  onSubmit: (e: SyntheticEvent<HTMLFormElement>) => Promise<void>;
+  id:string;
 }
 
 export function OneMvtForm({ fields,mouvement, ...prp}:Props) {
@@ -37,36 +38,35 @@ export function OneMvtForm({ fields,mouvement, ...prp}:Props) {
   const article = mouvement.article
 
   const champs=fields.map(fld => {
-    const name = standardize(fld.label);
-    const sens = (minusable.has(name)) ? mouvement.sens : null;
+    const stdLabel = standardize(fld.label)
+    const sens = (minusable.has(stdLabel)) ? mouvement.sens : 1;
     const val = getCellValue(mouvement, fld, calculsMvt)
     return {
       ...fld,
-      name: name,
-      disabled: disabledFields.has(name),
+      stdLabel: stdLabel,
+      label:  fmtLabel(fld.label), // Ajoute un espace entre minus & maj
+      disabled: disabledFields.has(stdLabel),
       value: sens? +val * sens :val, // value : number|string, val:string
     };
   });
-  console.log("OneMvtForm",mouvement,"actif",mvtActif);
   if (mouvement != mvtActif) {
     console.log("mouvement en actif",mouvement);
     setMvtActif(mouvement);
   }
 
-
 return (
   <div className={s.wrapForm}>
     <Form
-      id="oneMvtForm"
+      id={prp.id}
       key={prp.formKey}
-      //onSubmit={prp.handleSubmit}
+      onSubmit={prp.onSubmit}
     >
       <div className={s.formStyle}>
         {/* ------- déroulé des champs par map ------- */}
         {champs.map((fld) => {
           const currentFieldValue = mvtActif[fld.fieldName as keyof typeof mvtActif];
-          const key = `fld-${idMvt}-${fld.name}`;
-          //console.log(`>>>>>>>>> ${fld.label},${fld.value}`)
+          const key = `fld-${idMvt}-${fld.stdLabel}`;
+          console.log(`>>>>>>>>> ${fld.label},${fld.stdLabel},${fld.value}`)
           return (
              /*------- affichage d'un champ selon sa nature -------*/
             <div key={key} >
@@ -77,7 +77,6 @@ return (
                   label= {fld.label}
                 />
               ) : (fld.fieldName === "article") ?(
-
                 <FieldArticle
                   nomArt= {article?.nom}
                   updateField={async (art) => {
@@ -89,15 +88,14 @@ return (
                     }
                   }}
                 />
-
-                ) : (fld.fieldName === "fournisseur") ?(
+              ) : (fld.fieldName === "fournisseur") ?(
                 <FieldFournisseur
                   id={mouvement.fournisseur}
                   updateField={
                     (fourn) => prp.updateField("fournisseur", fourn ? Number(fourn) : null)
                   }
                 />
-                ) : (fld.fieldName === "service") ?(
+              ) : (fld.fieldName === "service") ?(
                 <FieldService
                   id={mouvement.service}
                   updateField={
@@ -109,7 +107,7 @@ return (
                   key={fld.fieldName}
                   type={fld.type === "number" ? "number" : fld.type === "date" ? "date" : "text"}
                   value={String(currentFieldValue ?? "")}
-                  label={fld.name}
+                  label={fld.label}
                   showReset={true}
                   onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
                     const targetKey = fld.fieldName as keyof MvtActif;
@@ -117,7 +115,6 @@ return (
                     const nextValue = fld.type === "number"
                       ? (rawVal === "" ? "" : Number(rawVal))
                       : rawVal;
-
                     prp.updateField(targetKey, nextValue as any);
                   }}
                 />

@@ -13,16 +13,16 @@ import {getFlagsMouvement} from "../../utils/calculs.tsx";
 
 function mvtToPatch(mvt:Mouvement): Mouvement {
   // Transpose le mouvement reçu de l'api en mvtPatch de travail
-  const { article, ...leReste} = mvt;
+  const { qte_mouvement, ...leReste} = mvt;
   return {
     ...leReste,
-    idArticle: article?.id??0
+    idArticle: leReste.article?.id??0,
+    qte_mouvement: qte_mouvement * leReste.sens
   };
 }
 
 function OneMvt() {
   // Lanceur de forms d'affichage mvtPatch et sa gestion
-
   const { setError } = useError();
   const { filtres } = useFiltres();
 
@@ -34,13 +34,14 @@ function OneMvt() {
   const isCreationMode = !queryId;
 
   const queryParams = new URLSearchParams();
-
   if (queryId) {
     queryParams.append("id", queryId);
   }
   const url = `${apiUrl.STMOUVEMENT_URL}?${queryParams.toString()}`;
 
   const fields = lstMvtFields[filtres?.pageOrigine || "sorties"];
+
+  let isMounted = false;
 
   useEffect(() => {
     // Si on est en mode création, on ne 'fetch' rien, on s'assure juste des valeurs par défaut
@@ -50,10 +51,12 @@ function OneMvt() {
       return;
     }
 
-    let isMounted = true;
+    if (isMounted) {
+      return;
+    }
+
     const executeFetch = async () => {
       try {
-        console.log("Fetching mouvement...",isCreationMode,url);
         const response = await fetch(url);
 
         if (!response.ok) {
@@ -66,31 +69,32 @@ function OneMvt() {
           setError("Mouvement introuvable.");
           return;
         }
-
         const patch: Mouvement = mvtToPatch(oneMvt);
-        console.log("Fecch reponse:",isMounted, oneMvt,patch);
-        setMouvement(patch);
+
+        if (!isMounted) {
+          return;
+        } else {
+          setMouvement(patch);
+        }
         setMvtPatch(patch);
+
       } catch (error) {
         console.error("Erreur lors du fetch :", error);
-        if (isMounted) {
-          setError(
-            [
-              "Échec d'appel à l'API des mouvement.",
-              error instanceof Error ? error.message : String(error),
-            ]
-              .filter(Boolean)
-              .join(" - ")
-          );
-        }
+        setError(
+          [
+            "Échec d'appel à l'API des mouvement.",
+            error instanceof Error ? error.message : String(error),
+          ]
+            .filter(Boolean)
+            .join(" - ")
+        );
       }
     };
 
     void executeFetch();
-    console.log("useEffect isMounted", isMounted,mvtPatch);
 
     return () => {
-      isMounted = false;
+      isMounted = true;
     };
   }, [url, setError, isCreationMode]);
 
@@ -100,7 +104,6 @@ function OneMvt() {
       value?: NonNullable<MvtActif>[K] | null
     ) => {
       setMvtPatch((prev) => {
-        console.log("updateField_callback", field, value, prev);
         return {
           ...prev,
           [field]: value,
@@ -117,52 +120,53 @@ function OneMvt() {
   }
 
   async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
-  //
-  e.preventDefault();
-  console.log("oneMvt handleSubmit", mvtPatch);
 
-  const flags = getFlagsMouvement()
-  flags.map((modif) => (
-      updateField(modif[0], modif[1])
-    ));
+    console.log("OneMvt handleSubmit", mvtPatch);
+
+    e.preventDefault();
+
+    const flags = getFlagsMouvement()
+    console.log("flags", flags);
+    flags.map((modif) => (
+        console.log("modif", modif),
+        updateField(modif[0], modif[1])
+      ));
 
 
-  // URL et Méthode dynamiques selon le mode
-  const submitUrl = isCreationMode
-    ? apiUrl.STMOUVEMENT_URL
-    : `${apiUrl.STMOUVEMENT_URL}${mvtPatch}/`;
+    // URL et Méthode dynamiques selon le mode
+    const submitUrl = isCreationMode
+      ? apiUrl.STMOUVEMENT_URL
+      : `${apiUrl.STMOUVEMENT_URL}${mvtPatch}/`;
 
-  const method = isCreationMode ? "POST" : "PATCH";
+    const method = isCreationMode ? "POST" : "PATCH";
 
-  try {
-    const response = await fetch(submitUrl, {
-      method: method,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(mvtPatch),
-    });
+    try {
+      console.log("try handleSubmit");
+      const response = await fetch(submitUrl, {
+        method: method,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(mvtPatch),
+      });
 
-    if (!response.ok) {
-      setError(`Échec api mouvement: ${isCreationMode ? "création" : "modification"} non enregistrée.`);
-      return;
+      if (!response.ok) {
+        setError(`Échec api mouvement: ${isCreationMode ? "création" : "modification"} non enregistrée.`);
+        return;
+      }
+    } catch (error) {
+      console.error("Erreur lors de la sauvegarde :", error);
+      setError(
+        [
+          "Échec d'enregistrement du mouvement.",
+          error instanceof Error ? error.message : String(error),
+        ]
+          .filter(Boolean)
+          .join(" - ")
+      );
     }
-
-    const savedMouvement: Mouvement = await response.json();
-    setMouvement(savedMouvement);
-    setMvtPatch(mvtToPatch(savedMouvement));
-  } catch (error) {
-    console.error("Erreur lors de la sauvegarde :", error);
-    setError(
-      [
-        "Échec d'enregistrement du mouvement.",
-        error instanceof Error ? error.message : String(error),
-      ]
-        .filter(Boolean)
-        .join(" - ")
-    );
   }
-}
+
   return (
     //Titres sous-titres
     <section className={s.wrapper}>
@@ -176,9 +180,12 @@ function OneMvt() {
                   fields={fields}
                   mouvement={mvtPatch}
                   updateField={updateField}
-                  handleSubmit={handleSubmit}
+                  onSubmit={handleSubmit}
+                  id="oneMvtForm"
       />
-      <OneMvtBoutons resetMouvement={resetMouvement}  />
+      <OneMvtBoutons resetMouvement={resetMouvement}
+                     onSubmit={handleSubmit}
+      />
     </section>
   );
 }

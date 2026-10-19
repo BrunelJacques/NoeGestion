@@ -12,7 +12,6 @@ const fetchArticlesByParam = async (baseUrl: string, value: string | number) => 
   const response = await fetch(url);
   if (!response.ok) throw new Error("Erreur lors de la récupération des articles");
   const articles: Articles = await response.json();
-  console.log("fetchByParams",url,articles.results)
   return articles.results;
 };
 

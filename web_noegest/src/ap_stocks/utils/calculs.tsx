@@ -12,7 +12,7 @@ function coutUn (mvt: Mouvement):number {
 }
 
 function coutTotal (mvt: Mouvement):number {
-  const qte = mvt.qte_mouvement?? 0
+  const qte = ( (mvt.qte_mouvement?? 0 ) * (mvt.sens?? 0))
   const pxUnit = mvt.prix_unit?? 0
   return round(pxUnit * qte,2)
 }
