@@ -35,6 +35,8 @@ export const lstMvtFields: Record<PageOrigine, MvtFormField[]> = {
       width:165, justify: 'left', noLstDisplay:true,},
     { label: "Nom Court", type: "text", fieldName: "article", subFieldName: "nom_court",
       width:145, justify: 'right'},
+    { label: "Fournisseur", type: "text", fieldName: "fournisseur",
+      width:105, justify: 'left' },
     { label: "Nb Colis", type: "number", fieldName: "nb_colis",
       width: 55, justify: 'right', nbDecimals: 0 },
     { label: "Par Colis", type: "number", default: 2, fieldName: "nb_colis",

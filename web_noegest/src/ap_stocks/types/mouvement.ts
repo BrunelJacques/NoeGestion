@@ -22,9 +22,6 @@ export type Mouvement = {
     transfert?: Date;
 };
 
-// Type MvtActif update de mouvement, pour affichage des modifs avant validation
-export type MvtActif = Mouvement;
-
 // Initialisation mouvement créé
 export const MVT0 : Mouvement = {
     id: 0,

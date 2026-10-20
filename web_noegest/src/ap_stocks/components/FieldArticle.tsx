@@ -4,7 +4,7 @@ import { Xautocomplete } from "../../ui/Xautocomplete";
 import apiUrl from "../../constants/api.Constants";
 import type { Articles } from "../types/article";
 import type { Item } from "../../types/item.ts";
-import type {Mouvement, MvtActif } from "../types/mouvement.ts";
+import type {Mouvement } from "../types/mouvement.ts";
 
 
 const fetchArticlesByParam = async (baseUrl: string, value: string | number) => {
@@ -25,7 +25,7 @@ const fetchArticles = (search: string) =>
 export async function ChangeArticle(
     art: Item,
     mouvement: Mouvement)
-    : Promise<[keyof MvtActif, MvtActif[keyof MvtActif]][]> {
+    : Promise<[keyof Mouvement, Mouvement[keyof Mouvement]][]> {
   const numericId = Number(art.id);
   const result = await fetchidArticle(numericId);
   const article = result[0];

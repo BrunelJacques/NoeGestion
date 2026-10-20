@@ -2,7 +2,6 @@
 import type { Item }  from "../../types/item.ts";
 
 export type MvtFiltres = {
-
   pageOrigine: "entrees" | "sorties" | "article" ;
   article?: Item | null;
   jour: Date;
@@ -10,7 +9,7 @@ export type MvtFiltres = {
   origine : string; // Attention : peut être à blanc
   service: number;
   camp?: string|null; // uniquement géré lors d'origine camp in ou out
-  fournisseur?: number | null;
+  fournisseur?: number;
   magasin?: string;
   rayon?: string;
   tva: string; // sera géré dans la page de saisie d'un mouvement achat
@@ -25,7 +24,7 @@ export const  FILTRES0: MvtFiltres= {
   origine: "repas",
   service: 0,
   camp: "",
-  fournisseur: null,
+  fournisseur: undefined,
   magasin: "",
   rayon: "",
   tva: "TTC",

@@ -1,7 +1,7 @@
 //src/ap_stocks/pages/Mouvements/calculs.tsx
 
 import { round } from "../../utils/number.ts";
-import type { Mouvement, MvtActif } from "../types/mouvement.ts";
+import type { Mouvement } from "../types/mouvement.ts";
 import getUser from "../../utils/getUser.tsx";
 
 
@@ -31,7 +31,7 @@ export const calculsMvt: Record<string, (mvt: Mouvement) => number> =  {
   } as Mouvement))*/
 
 export function getFlagsMouvement()
-  : [keyof MvtActif, MvtActif[keyof MvtActif]][] {
+  : [keyof Mouvement, Mouvement[keyof Mouvement]][] {
   const today: string = new Date().toLocaleDateString('en-CA');
   const user = getUser()
 

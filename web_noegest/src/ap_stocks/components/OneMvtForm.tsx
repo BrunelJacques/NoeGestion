@@ -1,16 +1,16 @@
 // src/ap_stocks/components/StMenu/FormOneMvt.tsx
 import * as s from "../pages/OneMvt/index.css.ts";
 import {Form} from "react-router-dom";
-import type { MvtFormField } from "../types/mvtFormFields.ts";
-import type { Mouvement, MvtActif} from "../types/mouvement.ts";
+import {useState, type SyntheticEvent} from "react";
+import type {MvtFormField} from "../types/mvtFormFields.ts";
+import type {Mouvement} from "../types/mouvement.ts";
 import {Xinput} from "../../ui/Xinput";
 import {SpanCell} from "../../ui/SpanCell";
-import {useState, type SyntheticEvent } from "react";
 import {getCellValue} from "../../utils/getCellValue.tsx";
 import FieldArticle, {ChangeArticle} from "./FieldArticle.tsx";
 import FieldFournisseur from "./FieldFournisseur.tsx";
 import FieldService from "./FieldService.tsx";
-import { standardize, fmtLabel } from "../../utils/string.ts";
+import {standardize, fmtLabel} from "../../utils/string.ts";
 import {calculsMvt} from "../utils/calculs.tsx";
 
 
@@ -18,29 +18,27 @@ import {calculsMvt} from "../utils/calculs.tsx";
 interface Props {
   formKey: number;
   fields: MvtFormField[];
-  mouvement: Mouvement;
-  updateField: <K extends keyof MvtActif>(
+  mvtPatch: Mouvement;
+  updateField: <K extends keyof Mouvement>(
     field: K,
-    value?: MvtActif[K] | null
+    value?: Mouvement[K] | null
   ) => void;
   onSubmit: (e: SyntheticEvent<HTMLFormElement>) => Promise<void>;
   id:string;
 }
 
-export function OneMvtForm({ fields,mouvement, ...prp}:Props) {
+export function OneMvtForm({ fields,mvtPatch, ...prp}:Props) {
 
-  const [mvtActif, setMvtActif] = useState<MvtActif>({
-    ...mouvement,
-  }); // affiché
-  const idMvt=mouvement.id
+  const [mvtActif, setMvtActif] = useState<Mouvement>({ ...mvtPatch }); // affiché
+  const idMvt=mvtPatch.id
   const disabledFields = new Set(["couttot","coutun","pxun","nomcourt","pxstock","qtestock"])
   const minusable = new Set(["qte","couttot"])
-  const article = mouvement.article
+  const article = mvtPatch.article
 
   const champs=fields.map(fld => {
     const stdLabel = standardize(fld.label)
-    const sens = (minusable.has(stdLabel)) ? mouvement.sens : null;
-    const val = getCellValue(mouvement, fld, calculsMvt)
+    const sens = (minusable.has(stdLabel)) ? mvtPatch.sens : null;
+    const val = getCellValue(mvtPatch, fld, calculsMvt)
     return {
       ...fld,
       stdLabel: stdLabel,
@@ -49,9 +47,9 @@ export function OneMvtForm({ fields,mouvement, ...prp}:Props) {
       value: sens? Number(val) * sens :val, // value : number|string, val:string
     };
   });
-  if (mouvement != mvtActif) {
-    console.log("mouvement en actif",mouvement);
-    setMvtActif(mouvement);
+  if (mvtPatch != mvtActif) {
+    console.log("mvtPatch-actif", mvtPatch);
+    setMvtActif(mvtPatch);
   }
 
 
@@ -83,7 +81,7 @@ export function OneMvtForm({ fields,mouvement, ...prp}:Props) {
                     nomArt= {article?.nom}
                     updateField={async (art) => {
                       if (typeof art?.id === "number") {
-                        const modifs = await ChangeArticle(art,mouvement)
+                        const modifs = await ChangeArticle(art,mvtPatch)
                         modifs.map((modif) => (
                           prp.updateField(modif[0], modif[1])
                         ))
@@ -93,14 +91,14 @@ export function OneMvtForm({ fields,mouvement, ...prp}:Props) {
 
                 ) : (fld.fieldName === "fournisseur") ?(
                   <FieldFournisseur
-                    id={mouvement.fournisseur}
+                    id={mvtPatch.fournisseur}
                     updateField={
                       (fourn) => prp.updateField("fournisseur", fourn ? Number(fourn) : null)
                     }
                   />
                 ) : (fld.fieldName === "service") ?(
                   <FieldService
-                    id={mouvement.service}
+                    id={mvtPatch.service}
                     updateField={
                       (serv) => prp.updateField(`service`, serv)
                     }
@@ -113,7 +111,7 @@ export function OneMvtForm({ fields,mouvement, ...prp}:Props) {
                     label={fld.label}
                     showReset={true}
                     onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
-                      const targetKey = fld.fieldName as keyof MvtActif;
+                      const targetKey = fld.fieldName as keyof Mouvement;
                       const rawVal = evt.target.value;
                       const nextValue = fld.type === "number"
                         ? (rawVal === "" ? "" : Number(rawVal))
