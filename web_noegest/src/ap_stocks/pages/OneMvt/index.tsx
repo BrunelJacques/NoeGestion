@@ -12,6 +12,9 @@ import { OneMvtBoutons} from "../../components/OneMvtBoutons.tsx";
 import {getFlagsMouvement} from "../../utils/calculs.tsx";
 import {dateToISO} from "../../../utils/dates.tsx";
 
+const movementCache = new Map<string, Mouvement>();
+
+
 function mvtToPatch(mvt:Mouvement): Mouvement {
   // Transpose le mouvement reçu de l'api en mvtPatch de travail
   const { qte_mouvement, ...leReste} = mvt;
@@ -39,76 +42,101 @@ function OneMvt() {
     queryParams.append("id", queryId);
   }
   const url = `${apiUrl.STMOUVEMENT_URL}?${queryParams.toString()}`;
+  const urlPatch = `${url}-patch`
+
+  const testPatch = movementCache.get(urlPatch)
+  console.log("Lanceur OneMvt", testPatch);
 
   const fields = lstMvtFields[filtres?.pageOrigine || "sorties"];
 
-  let isMounted = false;
-
-  // Aplique le filtre par patch sur le mouvement
   useEffect(() => {
-    if (mvtPatch.origine == filtres.origine &&
-        mvtPatch.jour == String(filtres.jour)
-    ) { return }
-    console.log(">>>>>>> useEffect origine", mvtPatch.origine,"/",filtres.origine);
-    setMvtPatch(updateFltrInPatch())
-  }, [filtres]);
+    if (!mvtPatch || mvtPatch.id === 0) return;
+    console.log("useEffect >>>>>>>> cache mvtPatch",mvtPatch);
+    movementCache.set(url,mouvement);
+    movementCache.set(urlPatch,mvtPatch);
+  }, [mvtPatch]);
 
   // initialise le mouvement à gérer, par fetch si modif ou MVT0 si creation
   useEffect(() => {
     if (isCreationMode) {
       setMouvement(MVT0);
       setMvtPatch(MVT0);
+      console.log("useEffect Creation Mode MVT0");
       return;
     }
 
-    if (isMounted) {
+    // 1. Vérifier si on a déjà les données en cache pour cette URL
+    if (movementCache.has(url)) {
+      const cachedData = movementCache.get(url)!;
+      const cachedPatch = movementCache.get(urlPatch)!;
+      setMouvement(cachedData);
+      setMvtPatch(cachedPatch);
+      console.log("useEffect: Utilisation du cache pour l'URL", cachedData, cachedPatch);
       return;
     }
-    console.log("useEffect Fetch")
+    console.log("useEffect Fetch");
+
+    let isCurrent = true; // Pour éviter les mises à jour d'état si le composant se démonte
 
     const executeFetch = async () => {
       try {
         const response = await fetch(url);
 
         if (!response.ok) {
-          setError("Échec api mouvement: no response.");
+          if (isCurrent) setError("Échec api mouvement: no response.");
           return; // Ajout d'un return pour éviter de continuer en cas d'erreur
         }
         const mvts: MvtsRetour = await response.json();
         const oneMvt = mvts.results[0];
         if (!oneMvt) {
-          setError("Mouvement introuvable.");
+          if (isCurrent) setError("Mouvement introuvable.");
           return;
         }
         const patch: Mouvement = mvtToPatch(oneMvt);
 
-        if (!isMounted) {
-          return;
-        } else {
+        if (isCurrent) {
+          // 2. Stocker dans le cache avant d'appliquer
           setMouvement(patch);
+          setMvtPatch(patch);
         }
-        setMvtPatch(patch);
         console.log("_______ useEffect retour fetch", mvts);
 
       } catch (error) {
-        console.error("Erreur lors du fetch :", error);
-        setError(
-          [
-            "Échec d'appel à l'API des mouvement.",
-            error instanceof Error ? error.message : String(error),
-          ]
-            .filter(Boolean)
-            .join(" - ")
-        );
+        if (isCurrent) {
+          console.error("Erreur lors du fetch :", error);
+          setError(
+            [
+              "Échec d'appel à l'API des mouvement.",
+              error instanceof Error ? error.message : String(error),
+            ]
+              .filter(Boolean)
+              .join(" - ")
+          );
+        }
       }
     };
-
     void executeFetch();
 
     return () => {
-      isMounted = true;
+      isCurrent = false;
     };
-  }, [url, setError, isCreationMode]);
+  }, [url, setError]);
+
+
+// useEffect3: Applique le filtre par patch sur le mouvement en cours
+  useEffect(() => {
+    setMvtPatch((prev) => {
+      // On vérifie avec la valeur la plus récente (prev), au lieu de mvtPatch ancien
+      if (
+        prev.origine === filtres.origine &&
+        prev.jour === String(filtres.jour)
+      ) {
+        return prev; // Aucun changement nécessaire, on retourne l'état actuel tel quel
+      }
+      const patched = updateFltrInPatch(prev);
+      return patched;
+    });
+  }, [filtres]);
 
   const updateField = useCallback(
     <K extends keyof NonNullable<Mouvement>>(
@@ -119,21 +147,20 @@ function OneMvt() {
         return {
           ...prev,
           [field]: value,
-        } as Mouvement; // Assertion ciblée sur le type attendu
+        } as Mouvement;
       });
-
     },
-    [] // Pas de dépendance nécessaire !
+    [urlPatch]
   );
 
-  function updateFltrInPatch(): Mouvement {
+  function updateFltrInPatch(patch: Mouvement): Mouvement {
     // Importe le changement de filtre dans le mvtPatch
-    const { fournisseur, ...leReste } = mvtPatch
+    const { fournisseur, ...leReste } = patch
 
     const fourn = filtres?.pageOrigine === "entrees"
       ? filtres?.fournisseur || mouvement?.fournisseur // priorité au filtre si existe
       : undefined; // si non entrée, pas de fournisseur
-    console.log("$$$$$$$", filtres.fournisseur,mouvement.fournisseur, "newFourn", fourn)
+    console.log("updateFltr", filtres.fournisseur,mouvement.fournisseur, "newFourn", fourn)
 
     return {
       ...leReste,

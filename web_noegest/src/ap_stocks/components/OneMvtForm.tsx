@@ -1,7 +1,7 @@
 // src/ap_stocks/components/StMenu/FormOneMvt.tsx
 import * as s from "../pages/OneMvt/index.css.ts";
 import {Form} from "react-router-dom";
-import {useState, type SyntheticEvent} from "react";
+import {useEffect, useState, type SyntheticEvent} from "react";
 import type {MvtFormField} from "../types/mvtFormFields.ts";
 import type {Mouvement} from "../types/mouvement.ts";
 import {Xinput} from "../../ui/Xinput";
@@ -30,6 +30,11 @@ interface Props {
 export function OneMvtForm({ fields,mvtPatch, ...prp}:Props) {
 
   const [mvtActif, setMvtActif] = useState<Mouvement>({ ...mvtPatch }); // affiché
+  console.log("Form mvtPatch->actif", (mvtPatch != mvtActif),mvtPatch);
+  useEffect(() => {
+    setMvtActif({ ...mvtPatch });
+  }, [mvtPatch]);
+
   const idMvt=mvtPatch.id
   const disabledFields = new Set(["couttot","coutun","pxun","nomcourt","pxstock","qtestock"])
   const minusable = new Set(["qte","couttot"])
@@ -47,10 +52,8 @@ export function OneMvtForm({ fields,mvtPatch, ...prp}:Props) {
       value: sens? Number(val) * sens :val, // value : number|string, val:string
     };
   });
-  if (mvtPatch != mvtActif) {
-    console.log("mvtPatch-actif", mvtPatch);
-    setMvtActif(mvtPatch);
-  }
+
+
 
 
   return (
@@ -142,3 +145,4 @@ export function OneMvtForm({ fields,mvtPatch, ...prp}:Props) {
     </div>
   )
 }
+

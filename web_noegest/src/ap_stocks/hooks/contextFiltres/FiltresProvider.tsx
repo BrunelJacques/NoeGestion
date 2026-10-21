@@ -4,6 +4,7 @@ import type { MvtFiltres } from "../../types/mvtFiltres";
 import { FiltresContext } from "./FiltresContext";
 import { FILTRES0 } from "../../types/mvtFiltres";
 import { stringToDate } from "../../../utils/dates";
+import {useError} from "../../../hooks/useError.tsx";
 
 
 const STORAGE_KEY = "stocks-filtres";
@@ -44,6 +45,7 @@ export function FiltresProvider({
 }: {
   children: React.ReactNode;
 }) {
+  const { setError } = useError();
   const [filtres, setFiltres] = useState<MvtFiltres>(getSavedFiltres);
 
   // Sauvegarde automatique avec mise à jour de la date de modification
@@ -51,17 +53,21 @@ export function FiltresProvider({
     (newValue: MvtFiltres | ((prev: MvtFiltres) => MvtFiltres)
     ) => {
     setFiltres((prev) => {
-      const nextState = typeof newValue === "function" ? newValue(prev) : newValue;
+      try {
+        const nextState = typeof newValue === "function" ? newValue(prev) : newValue;
 
-      // On prépare une copie pour le localStorage
-      const dataToStore = {
-        ...nextState,
-        jour: nextState.jour?.toLocaleDateString("sv-SE"), // date locale en YYYY-MM-DD
-        dateModif: new Date() // format UTC international ("2026-05-18T10:30:00.000Z")
-        };
-      
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(dataToStore));
-      return { ...nextState }; // copie de l'objet par {...myVar} change la réf mémoire
+        // On prépare une copie pour le localStorage
+        const dataToStore = {
+          ...nextState,
+          jour: nextState.jour?.toLocaleDateString("sv-SE"), // date locale en YYYY-MM-DD
+          dateModif: new Date() // format UTC international ("2026-05-18T10:30:00.000Z")
+          }
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(dataToStore));
+        return { ...nextState }; // copie de l'objet par {...myVar} change la réf mémoire
+      } catch (error) {
+        setError( "Échec du stckage des filtres.");
+        return prev
+      }
     });
   }, []);
 

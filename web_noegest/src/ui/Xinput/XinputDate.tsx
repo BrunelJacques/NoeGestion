@@ -12,6 +12,7 @@ interface Props {
     altClassName?: string,
     label?: string,
     error?: string | null,
+    required?: boolean
     showReset?: boolean,
     disabled?: boolean,
     value?: string | undefined,
@@ -22,7 +23,8 @@ export function XinputDate({ jour, onChange, ...props }: Props) {
 
     const [dateFr, setDateFr] = useState(dt.dateToStringFr(jour??null));
 
-    const isValid = dateFr === "" || dt.isValidDateFr(dateFr);
+    const isRequired = props.required?? true;
+    const isValid = (isRequired ? dateFr !== "" : true) && dt.isValidDateFr(dateFr);
 
     const isValidRef = useRef(isValid); // si plusieurs instances il faut identifier
 
@@ -35,7 +37,6 @@ export function XinputDate({ jour, onChange, ...props }: Props) {
 
     useEffect(() => {
         if (!validation || !props.label) return;
-
         // On retourne la fonction qui sera exécutée lors du Submit global
         return  validation.registerValidator(props.label, () => {
             return isValid;
@@ -103,7 +104,11 @@ export function XinputDate({ jour, onChange, ...props }: Props) {
                 onChange={handleChange}
                 onBackSpace={handleBackSpace}
                 placeholder="jjmmaaaa"
-                error={!isValid ? "Date invalide" : null}
+                error={
+                    !isValid
+                      ? (dateFr === "" ? "Ce champ est obligatoire" : "Date invalide")
+                      : null
+                }
             />
         </div>
     );
