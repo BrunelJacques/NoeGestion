@@ -133,8 +133,7 @@ function OneMvt() {
       ) {
         return prev; // Aucun changement nécessaire, on retourne l'état actuel tel quel
       }
-      const patched = updateFltrInPatch(prev);
-      return patched;
+      return filtresInPatch(prev);
     });
   }, [filtres]);
 
@@ -153,7 +152,7 @@ function OneMvt() {
     [urlPatch]
   );
 
-  function updateFltrInPatch(patch: Mouvement): Mouvement {
+  function filtresInPatch(patch: Mouvement): Mouvement {
     // Importe le changement de filtre dans le mvtPatch
     const { fournisseur, ...leReste } = patch
 
