@@ -12,8 +12,8 @@ import { OneMvtBoutons} from "../../components/OneMvtBoutons.tsx";
 import {getFlagsMouvement} from "../../utils/calculs.tsx";
 import {dateToISO} from "../../../utils/dates.tsx";
 
+// Crée une Mise en cache pour cette page
 const movementCache = new Map<string, Mouvement>();
-
 
 function mvtToPatch(mvt:Mouvement): Mouvement {
   // Transpose le mouvement reçu de l'api en mvtPatch de travail
@@ -25,7 +25,7 @@ function mvtToPatch(mvt:Mouvement): Mouvement {
   };
 }
 
-function OneMvt() {
+export default function OneMvt() {
   // Lanceur de forms d'affichage mvtPatch et sa gestion
   const { setError } = useError();
   const { filtres } = useFiltres();
@@ -233,6 +233,7 @@ function OneMvt() {
       <OneMvtForm formKey={formKey}
                   fields={fields}
                   mvtPatch={mvtPatch}
+                  setMvtPatch={setMvtPatch}
                   updateField={updateField}
                   onSubmit={handleSubmit}
                   id="oneMvtForm"
@@ -243,5 +244,3 @@ function OneMvt() {
     </section>
   );
 }
-
-export default OneMvt;

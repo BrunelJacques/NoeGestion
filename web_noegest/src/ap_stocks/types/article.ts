@@ -9,7 +9,7 @@ export type Article = {
   colis_par?: number;
   unite_colis?: string;
   rations?: number;
-  fournisseur?: string;
+  fournisseur?: number;
   tx_tva?: number;
   dernier_achat?: string;
 }

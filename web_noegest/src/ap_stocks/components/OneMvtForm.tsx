@@ -1,4 +1,4 @@
-// src/ap_stocks/components/StMenu/FormOneMvt.tsx
+// src/ap_stocks/components/StMenu/OneMvtForm.tsx
 import * as s from "../pages/OneMvt/index.css.ts";
 import {Form} from "react-router-dom";
 import {useEffect, useState, type SyntheticEvent} from "react";
@@ -7,18 +7,19 @@ import type {Mouvement} from "../types/mouvement.ts";
 import {Xinput} from "../../ui/Xinput";
 import {SpanCell} from "../../ui/SpanCell";
 import {getCellValue} from "../../utils/getCellValue.tsx";
-import FieldArticle, {ChangeArticle} from "./FieldArticle.tsx";
+import FieldArticle, {changementArticle} from "./FieldArticle.tsx";
 import FieldFournisseur from "./FieldFournisseur.tsx";
 import FieldService from "./FieldService.tsx";
 import {standardize, fmtLabel} from "../../utils/string.ts";
 import {calculsMvt} from "../utils/calculs.tsx";
 
-
+// Affichage du formulaire pour la gestion d'un enregistrement mouvement
 
 interface Props {
   formKey: number;
   fields: MvtFormField[];
   mvtPatch: Mouvement;
+  setMvtPatch: (mvtPatch: Mouvement) => void;
   updateField: <K extends keyof Mouvement>(
     field: K,
     value?: Mouvement[K] | null
@@ -53,9 +54,6 @@ export function OneMvtForm({ fields,mvtPatch, ...prp}:Props) {
     };
   });
 
-
-
-
   return (
     <div className={s.wrapForm}>
       <Form
@@ -83,11 +81,17 @@ export function OneMvtForm({ fields,mvtPatch, ...prp}:Props) {
                   <FieldArticle
                     nomArt= {article?.nom}
                     updateField={async (art) => {
+/*
                       if (typeof art?.id === "number") {
                         const modifs = await ChangeArticle(art,mvtPatch)
                         modifs.map((modif) => (
                           prp.updateField(modif[0], modif[1])
                         ))
+                      }
+*/
+                      if (typeof art?.id === "number") {
+                        const patch = await changementArticle(art, mvtPatch)
+                        setMvtActif(patch)
                       }
                     }}
                   />

@@ -2,7 +2,7 @@
 
 import { Xautocomplete } from "../../ui/Xautocomplete";
 import apiUrl from "../../constants/api.Constants";
-import type { Articles } from "../types/article";
+import type {Article, Articles } from "../types/article";
 import type { Item } from "../../types/item.ts";
 import type {Mouvement } from "../types/mouvement.ts";
 
@@ -21,22 +21,31 @@ const fetchidArticle = (id: number) =>
 const fetchArticles = (search: string) =>
   fetchArticlesByParam(`${apiUrl.STARTICLE_NOM_URL}?nom=`, search);
 
-// ChangeArticle retourne l'ensemble des updateField à faire
-export async function ChangeArticle(
-    art: Item,
-    mouvement: Mouvement)
-    : Promise<[keyof Mouvement, Mouvement[keyof Mouvement]][]> {
-  const numericId = Number(art.id);
-  const result = await fetchidArticle(numericId);
-  const article = result[0];
-  const today: string = new Date().toLocaleDateString('en-CA');
+const calculeArticle = (newArt:Article, mvtPatch: Mouvement) : Mouvement => {
+  const { fournisseur, ...leReste } = mvtPatch
+  return {
+    ...leReste,
+    idArticle: newArt.id,
+    prix_unit: newArt.prix_moyen??mvtPatch.prix_unit,
+    rations: newArt.rations ?mvtPatch.qte_mouvement * newArt.rations:1,
+    fournisseur: newArt.fournisseur?? mvtPatch.fournisseur,
+    saisie: new Date().toLocaleDateString('en-CA'),
+    nb_colis: (newArt.colis_par && newArt.colis_par > 0)?
+      mvtPatch.qte_mouvement / newArt.colis_par : 1,
+  }
+}
 
-  console.log("Traitement du changment d'article:",numericId, mouvement, result)
-  return [
-    ['idArticle' , numericId],
-    ['article', article],
-    ['saisie',today]
-  ]
+// ChangementArticle applique les modifications induites
+export async function changementArticle(
+    art: Item,
+    mvtPatch: Mouvement)
+    : Promise<Mouvement> {
+  const result = await fetchidArticle(Number(art.id));
+  const article = result[0];
+  const newPatch = calculeArticle(article, mvtPatch);
+
+  console.log("Traitement du changment d'article:", mvtPatch)
+  return newPatch
 }
 
 interface Props {
