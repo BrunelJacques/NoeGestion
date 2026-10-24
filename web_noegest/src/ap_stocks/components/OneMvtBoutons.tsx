@@ -11,7 +11,7 @@ interface Props {
 }
 
 
-export function OneMvtBoutons({ onSubmit, ...prp }: Props ) {
+export function OneMvtBoutons({ onSubmit, ...props }: Props ) {
 
   return (
 
@@ -23,7 +23,7 @@ export function OneMvtBoutons({ onSubmit, ...prp }: Props ) {
       <Xbutton
         type="button"
         altClassName={s.altButton}
-        onClick={prp.resetMouvement}
+        onClick={props.resetMouvement}
       >
         Abandon
       </Xbutton>

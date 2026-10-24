@@ -7,11 +7,12 @@ import { useSelectObject } from "../hooks/useSelectObject";
 interface Props {
   id: number;
   updateField: (value: number) => void;
+  error?: string | null | undefined;
 }
 
 
 // Paramétrage du select pour les services
-export default function FieldService({ id: T, updateField }: Props) { //on embrasse {} car deux éléments
+export default function FieldService({ id: T, updateField, error }: Props) { //on embrasse {} car deux éléments
 
   const service = useSelectObject(Services, T);
  
@@ -29,6 +30,7 @@ export default function FieldService({ id: T, updateField }: Props) { //on embra
         value={service.value}
         onChange={handleChange}
         options={service.options}
+        error={error}
       />
     </>
   );

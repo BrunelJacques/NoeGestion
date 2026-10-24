@@ -11,7 +11,6 @@ interface Props {
     onChange?: (value: Date | null) => void,
     altClassName?: string,
     label?: string,
-    error?: string | null,
     required?: boolean
     showReset?: boolean,
     disabled?: boolean,
@@ -26,7 +25,7 @@ export function XinputDate({ jour, onChange, ...props }: Props) {
     const isRequired = props.required?? true;
     const isValid = (isRequired ? dateFr !== "" : true) && dt.isValidDateFr(dateFr);
 
-    const isValidRef = useRef(isValid); // si plusieurs instances il faut identifier
+    const isValidRef = useRef(isValid); // si plusieurs instances, il faut identifier
 
     useEffect(() => {
         isValidRef.current = isValid;
@@ -107,7 +106,7 @@ export function XinputDate({ jour, onChange, ...props }: Props) {
                 error={
                     !isValid
                       ? (dateFr === "" ? "Ce champ est obligatoire" : "Date invalide")
-                      : null
+                      : undefined
                 }
             />
         </div>

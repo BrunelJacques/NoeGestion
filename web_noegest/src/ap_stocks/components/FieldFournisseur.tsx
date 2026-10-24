@@ -9,12 +9,12 @@ import { Xautocomplete } from "../../ui/Xautocomplete";
 interface Props {
   id: number | null | undefined;
   updateField: (id: number|string|null) => void;
+  required?: boolean ;
 }
 
 // Paramétrage de l'autocomplete pour les fournisseurs
-export default function FieldFournisseur({ id, updateField }: Props) {
+export default function FieldFournisseur({ id, updateField, ...props }: Props) {
   const url = apiUrl.STFOURNISSEUR_URL
-
   const fetchFournisseurs = async (search?: string) => {
     const query = search ?? ""; // search si null ou undefined, sinon ""
     const response = await fetch(`${url}?nom=${query}`);
@@ -38,6 +38,7 @@ export default function FieldFournisseur({ id, updateField }: Props) {
         value={id ?? ""}
         fetchItems={fetchFournisseurs}
         onSelect={handleChange}
+        required={props.required}
       />
     </>
   );

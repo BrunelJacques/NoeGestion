@@ -13,9 +13,10 @@ export interface Props extends Omit<
   onReset?: () => void;
   altClassName?: string;
   label?: string;
-  error?: string | null;
+  required?: boolean;
   showReset?: boolean;
   autoComplete?: string;
+  error?: string;
 }
 
 
@@ -25,7 +26,6 @@ export const Xinput = forwardRef<HTMLInputElement, Props>(({
     onReset,
     altClassName = "",
     label,
-    error = null,
     showReset = true,
     ...props
  }, ref) => {
@@ -94,8 +94,8 @@ export const Xinput = forwardRef<HTMLInputElement, Props>(({
         )}
       </div>
 
-      {error && (
-        <p className={sc.errorStyle}>{error}</p>
+      {props.error && (
+        <p className={sc.errorStyle}>{props.error}</p>
       )}
     </div>
   );

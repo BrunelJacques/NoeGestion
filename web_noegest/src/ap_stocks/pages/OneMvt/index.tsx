@@ -44,14 +44,10 @@ export default function OneMvt() {
   const url = `${apiUrl.STMOUVEMENT_URL}?${queryParams.toString()}`;
   const urlPatch = `${url}-patch`
 
-  const testPatch = movementCache.get(urlPatch)
-  console.log("Lanceur OneMvt", testPatch);
-
   const fields = lstMvtFields[filtres?.pageOrigine || "sorties"];
 
   useEffect(() => {
     if (!mvtPatch || mvtPatch.id === 0) return;
-    console.log("useEffect >>>>>>>> cache mvtPatch",mvtPatch);
     movementCache.set(url,mouvement);
     movementCache.set(urlPatch,mvtPatch);
   }, [mvtPatch]);
@@ -61,7 +57,6 @@ export default function OneMvt() {
     if (isCreationMode) {
       setMouvement(MVT0);
       setMvtPatch(MVT0);
-      console.log("useEffect Creation Mode MVT0");
       return;
     }
 
@@ -74,7 +69,6 @@ export default function OneMvt() {
       console.log("useEffect: Utilisation du cache pour l'URL", cachedData, cachedPatch);
       return;
     }
-    console.log("useEffect Fetch");
 
     let isCurrent = true; // Pour éviter les mises à jour d'état si le composant se démonte
 
@@ -99,7 +93,6 @@ export default function OneMvt() {
           setMouvement(patch);
           setMvtPatch(patch);
         }
-        console.log("_______ useEffect retour fetch", mvts);
 
       } catch (error) {
         if (isCurrent) {
@@ -159,7 +152,6 @@ export default function OneMvt() {
     const fourn = filtres?.pageOrigine === "entrees"
       ? filtres?.fournisseur || mouvement?.fournisseur // priorité au filtre si existe
       : undefined; // si non entrée, pas de fournisseur
-    console.log("updateFltr", filtres.fournisseur,mouvement.fournisseur, "newFourn", fourn)
 
     return {
       ...leReste,

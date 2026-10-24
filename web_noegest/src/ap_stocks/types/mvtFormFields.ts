@@ -11,7 +11,10 @@ export type MvtFormField = {
   width?: number; // pour ajuster la largeur de la colonne
   justify?: 'left' | 'center' | 'right'; // alignement du contenu
   nbDecimals?: number; // pour les champs numériques, nombre de décimales à afficher
-  noLstDisplay?: boolean;
+  noLstDisplay?: boolean; // colonne visible dans une liste
+  required?: boolean;
+  disabled?: boolean;
   default?: number | string | Date; // valeur par défaut si non liée à un champ de mouvement
 }
 
+//"couttot","coutun","pxun","nomcourt","pxstock","qtestock"

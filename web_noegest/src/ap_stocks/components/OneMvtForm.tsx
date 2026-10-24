@@ -12,6 +12,7 @@ import FieldFournisseur from "./FieldFournisseur.tsx";
 import FieldService from "./FieldService.tsx";
 import {standardize, fmtLabel} from "../../utils/string.ts";
 import {calculsMvt} from "../utils/calculs.tsx";
+import { useFiltres } from "../hooks/contextFiltres/useFiltres.tsx";
 
 // Affichage du formulaire pour la gestion d'un enregistrement mouvement
 
@@ -28,16 +29,16 @@ interface Props {
   id:string;
 }
 
-export function OneMvtForm({ fields,mvtPatch, ...prp}:Props) {
-
+export function OneMvtForm({ fields,mvtPatch, ...props}:Props) {
+  console.log("open onMvtForm")
   const [mvtActif, setMvtActif] = useState<Mouvement>({ ...mvtPatch }); // affiché
-  console.log("Form mvtPatch->actif", (mvtPatch != mvtActif),mvtPatch);
   useEffect(() => {
     setMvtActif({ ...mvtPatch });
+    console.log("useEffect init mvtActif")
   }, [mvtPatch]);
 
+  const { filtres } = useFiltres();
   const idMvt=mvtPatch.id
-  const disabledFields = new Set(["couttot","coutun","pxun","nomcourt","pxstock","qtestock"])
   const minusable = new Set(["qte","couttot"])
   const article = mvtPatch.article
 
@@ -49,7 +50,6 @@ export function OneMvtForm({ fields,mvtPatch, ...prp}:Props) {
       ...fld,
       stdLabel: stdLabel,
       label:  fmtLabel(fld.label), // Ajoute un espace entre minus & maj
-      disabled: disabledFields.has(stdLabel),
       value: sens? Number(val) * sens :val, // value : number|string, val:string
     };
   });
@@ -58,89 +58,92 @@ export function OneMvtForm({ fields,mvtPatch, ...prp}:Props) {
     <div className={s.wrapForm}>
       <Form
         id="oneMvtForm"
-        key={prp.formKey}
-        //onSubmit={prp.handleSubmit}
+        key={props.formKey}
+        //onSubmit={props.handleSubmit}
       >
         <div className={s.formStyle}>
           {/* ------- déroulé des champs par map ------- */}
           {champs.map((fld) => {
             const currentFieldValue = mvtActif[fld.fieldName as keyof typeof mvtActif];
             const key = `fld-${idMvt}-${fld.stdLabel}`;
-            //console.log(`>>>>>>>>> ${fld.label},${fld.value}`)
+            console.log("map",key)
             return (
               /*------- affichage d'un champ selon sa nature -------*/
               <div key={key} >
-                { (fld.disabled) ?( // champs non modifiables
-                  <Xinput
-                    value= {fld.value}
-                    disabled= {true}
-                    label= {fld.label}
-                  />
-                ) : (fld.fieldName === "article") ?(
-
-                  <FieldArticle
-                    nomArt= {article?.nom}
-                    updateField={async (art) => {
-/*
-                      if (typeof art?.id === "number") {
-                        const modifs = await ChangeArticle(art,mvtPatch)
-                        modifs.map((modif) => (
-                          prp.updateField(modif[0], modif[1])
-                        ))
-                      }
-*/
-                      if (typeof art?.id === "number") {
-                        const patch = await changementArticle(art, mvtPatch)
-                        setMvtActif(patch)
-                      }
-                    }}
-                  />
-
-                ) : (fld.fieldName === "fournisseur") ?(
-                  <FieldFournisseur
-                    id={mvtPatch.fournisseur}
-                    updateField={
-                      (fourn) => prp.updateField("fournisseur", fourn ? Number(fourn) : null)
-                    }
-                  />
-                ) : (fld.fieldName === "service") ?(
-                  <FieldService
-                    id={mvtPatch.service}
-                    updateField={
-                      (serv) => prp.updateField(`service`, serv)
-                    }
-                  />
-                ) : (fld.fieldName) ? ( // autres champs modifiables
-                  <Xinput
-                    key={fld.fieldName}
-                    type={fld.type === "number" ? "number" : fld.type === "date" ? "date" : "text"}
-                    value={String(currentFieldValue ?? "")}
-                    label={fld.label}
-                    showReset={true}
-                    onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
-                      const targetKey = fld.fieldName as keyof Mouvement;
-                      const rawVal = evt.target.value;
-                      const nextValue = fld.type === "number"
-                        ? (rawVal === "" ? "" : Number(rawVal))
-                        : rawVal;
-
-                      prp.updateField(targetKey, nextValue as any);
-                    }}
-                  />
-                ) : typeof fld.value === "number" ? (
-                  <SpanCell
-                    value={fld.value}
-                    justify={fld.justify}
-                    nbDecimals={fld.nbDecimals}
-                    width={fld.width}
-                  />
-                ) : (
-                  <SpanCell
-                    value={String(fld.value)}
-                    justify={fld.justify}
-                    width={fld.width}
-                  />
-                )}
+                {
+                  (fld.disabled) ?( // champs non modifiables
+                    <Xinput
+                      value= {fld.value}
+                      disabled= {true}
+                      label= {fld.label}
+                    />
+                  ):
+                  (fld.fieldName === "article") ?(
+                    <FieldArticle
+                        nomArt= {article?.nom}
+                        updateField={async (artItem) => {
+                          if (typeof artItem?.id === "number") {
+                            const patch = await changementArticle(artItem, mvtPatch, filtres)
+                            props.setMvtPatch(patch)
+                          }
+                        }}
+                        required={fld.required}
+                    />
+                  ):
+                  (fld.fieldName === "fournisseur") ?(
+                    <FieldFournisseur
+                        id={mvtPatch.fournisseur}
+                        updateField={
+                          (fourn) => props.updateField("fournisseur", fourn ? Number(fourn) : null)
+                        }
+                        required={fld.required}
+                      />
+                    ): (fld.fieldName === "service") ?(
+                      <FieldService
+                        id={mvtPatch.service}
+                        updateField={
+                          (serv) => props.updateField(`service`, serv)
+                        }
+                      />
+                    ): (fld.disabled) ?( // champs non modifiables
+                      <Xinput
+                        value= {fld.value}
+                        label= {fld.label}
+                        disabled= {true}
+                        required={fld.required}
+                      />
+                    ) : (fld.fieldName) ?( // autres champs modifiables
+                      <Xinput
+                        key={fld.fieldName}
+                        type={fld.type === "number" ? "number" : fld.type === "date" ? "date" : "text"}
+                        value={String(currentFieldValue ?? "")}
+                        label={fld.label}
+                        showReset={true}
+                        onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
+                          const targetKey = fld.fieldName as keyof Mouvement;
+                          const rawVal = evt.target.value;
+                          const nextValue = fld.type === "number"
+                            ? (rawVal === "" ? "" : Number(rawVal))
+                            : rawVal;
+                          props.updateField(targetKey, nextValue as any);
+                        }}
+                        required={fld.required}
+                      />
+                    ): typeof fld.value === "number" ?(
+                      <SpanCell
+                        value={fld.value}
+                        justify={fld.justify}
+                        nbDecimals={fld.nbDecimals}
+                        width={fld.width}
+                      />
+                    ): (
+                      <SpanCell
+                        value={String(fld.value)}
+                        justify={fld.justify}
+                        width={fld.width}
+                      />
+                    )
+                }
               </div>
             );
           })}

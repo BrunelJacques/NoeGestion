@@ -12,16 +12,16 @@ interface XautocompleteProps extends Omit<ComponentPropsWithoutRef<"input">, "on
   onSelect: (item: Item) => void;
   altClassName?: string;
   label?: string;
-  error?: string | null;
+  error?: string;
   disabled?: boolean;
   showReset?: boolean;
   required?: boolean;
   type?: "text" | "number" | "tel" | "email" | "password";
 }
 
-export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error = null,
-                                required = false, type="text", ...props
-                              }: XautocompleteProps) {
+export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error = "",
+  required = false, type="text", ...props}: XautocompleteProps
+) {
 
   const [initialValue] = useState(() => typeof props.value === "string" ? props.value : String(props.value));
 
@@ -149,7 +149,7 @@ export function Xautocomplete({ fetchItems, onSelect,  altClassName = "", error 
           setIsTouched(false);  // Masque l'erreur pendant la saisie
         }}
         onReset={handleReset}
-        error={displayError ? `${props.label} invalide` : null}
+        error={displayError ? `${props.label} doit être présent` : undefined}
         className={[
           sc.baseInput,
           props.disabled && sc.disabledInput,
