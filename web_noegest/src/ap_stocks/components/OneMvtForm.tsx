@@ -30,11 +30,9 @@ interface Props {
 }
 
 export function OneMvtForm({ fields,mvtPatch, ...props}:Props) {
-  console.log("open onMvtForm")
   const [mvtActif, setMvtActif] = useState<Mouvement>({ ...mvtPatch }); // affiché
   useEffect(() => {
     setMvtActif({ ...mvtPatch });
-    console.log("useEffect init mvtActif")
   }, [mvtPatch]);
 
   const { filtres } = useFiltres();
@@ -53,7 +51,6 @@ export function OneMvtForm({ fields,mvtPatch, ...props}:Props) {
       value: sens? Number(val) * sens :val, // value : number|string, val:string
     };
   });
-
   return (
     <div className={s.wrapForm}>
       <Form
@@ -66,19 +63,11 @@ export function OneMvtForm({ fields,mvtPatch, ...props}:Props) {
           {champs.map((fld) => {
             const currentFieldValue = mvtActif[fld.fieldName as keyof typeof mvtActif];
             const key = `fld-${idMvt}-${fld.stdLabel}`;
-            console.log("map",key)
             return (
               /*------- affichage d'un champ selon sa nature -------*/
               <div key={key} >
                 {
-                  (fld.disabled) ?( // champs non modifiables
-                    <Xinput
-                      value= {fld.value}
-                      disabled= {true}
-                      label= {fld.label}
-                    />
-                  ):
-                  (fld.fieldName === "article") ?(
+                  ((fld.label) === "Article") ?(
                     <FieldArticle
                         nomArt= {article?.nom}
                         updateField={async (artItem) => {
@@ -90,7 +79,7 @@ export function OneMvtForm({ fields,mvtPatch, ...props}:Props) {
                         required={fld.required}
                     />
                   ):
-                  (fld.fieldName === "fournisseur") ?(
+                  (fld.label === "Fournisseur") ?(
                     <FieldFournisseur
                         id={mvtPatch.fournisseur}
                         updateField={
@@ -98,7 +87,7 @@ export function OneMvtForm({ fields,mvtPatch, ...props}:Props) {
                         }
                         required={fld.required}
                       />
-                    ): (fld.fieldName === "service") ?(
+                    ): (fld.label === "Service") ?(
                       <FieldService
                         id={mvtPatch.service}
                         updateField={
