@@ -1,5 +1,5 @@
 //src/ap_stocks/pages/Filtres/index.tsx
-import { useRef } from "react";
+import { useRef, useEffect, useMemo, useState } from "react";
 import { FormValidationProvider } from "../../../contexts/FormContext";
 import * as s from "./index.css";
 import { Xbutton } from "../../../ui/Xbutton";
@@ -17,63 +17,103 @@ import FieldFournisseur from "../../components/FieldFournisseur.tsx";
 import FieldMagasin from "../../components/FieldMagasin.tsx";
 import FieldRayon from "../../components/FieldRayon.tsx";
 import { XinputDate } from "../../../ui/Xinput/XinputDate";
-import { useMemo, useState } from "react";
 import XbuttonBack from "../../../ui/Xbutton/XbuttonBack";
-import { useError} from "../../../hooks/useError.tsx";
+import InfoBanner from "../../../components/InfoBanner";
 
 /* Page de saisie des filtres pour les appels de mouvements */
 export default function Filtres() {
   const { filtres, setFiltres } = useFiltres();
   const { draft, setDraft, updateField } = useDraftFiltres(filtres);
   const [formKey, setFormKey] = useState(0);
-  const { setError } = useError();
-
-  function resetFiltres() {
-    setDraft(filtres);
-    setFormKey(prevKey => prevKey + 1);
-  }
-
+  const [warning, setWarning] = useState("");
+  const [isFormValid, setIsFormValid] = useState(true);
+  const [hasChanged, setHasChanged] = useState(false);
   const pageOrigine = useSelectEnum(PageOrigineValues, draft.pageOrigine);
   const origineItems = useMemo(() => Origines[pageOrigine.value] ?? [], [pageOrigine.value]);
   const isPageArticle = useMemo(() => pageOrigine.value === "article", [pageOrigine.value]);
   const validationRef = useRef<{ validateAll: () => boolean } | null>(null);
- 
-  // Fonction de soumission du formulaire
-  const handleSubmit: React.SubmitEventHandler<HTMLFormElement> = (e) => {
-    e.preventDefault();
-    console.log("Filtres handle Submit", draft,e);
+  const isFirstRender = useRef(true); // Pour ignorer le premier rendu à l'ouverture
 
-    // On interroge directement la ref du validateur pour valider le formulaire
-    if (validationRef.current && !validationRef.current.validateAll()) {
-      setError("Validation refusée car présence de champ(s) incorrect(s).")
-      return; // On stoppe le submit
+  function resetFiltres() {
+    setDraft(filtres);
+    setFormKey(prevKey => prevKey + 1);
+    setIsFormValid(true);
+    setHasChanged(false); // Réinitialise l'indicateur de modification
+  }
+
+  function validation(prov:string) {
+    // L'utilisateur a effectué une modification, on contrôle la validité
+    const isValidResult = validationRef?.current
+      ? validationRef.current.validateAll()
+      : false;
+    console.log("VALIDATION RESULT :", isValidResult,prov);
+    setIsFormValid(isValidResult);
+    if (!isValidResult) {
+      setWarning("Validation refusée présence d'erreur(s)");
+    }
+    return isValidResult;
+  }
+
+
+    // Mise à jour en temps réel
+  useEffect(() => {
+    console.log("useEffect 1")
+    // Si c'est le premier rendu (ouverture de la page), on ne fait rien
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    const valid = validation("prov 1")
+    // On bloque l'enregistrement  invalide
+    if ( !valid ){
+      return
     }
 
-    // Tout est valide, on continue le traitement pour enregistrer
+    // Tout est valide, on met à jour les filtres globaux en temps réel
     const today = new Date();
-    updateField('dateModif', today);
     const finalFiltres = {
       ...draft,
+      dateModif: today,
       pageOrigine: pageOrigine.value
     };
-    console.log("handle Submit filtres Set",finalFiltres);
+
+    // L'utilisateur a effectué une modification
+    console.log("fin effect1", isFormValid,hasChanged,"devient true", finalFiltres);
     setFiltres(finalFiltres);
-  }
-    
+    setHasChanged(true);
+  }, [draft, pageOrigine.value, setFiltres, isFormValid]);
+
+
+  // Action d'enregistrement en stockage
+  useEffect(() => {
+    // Avertissement de fermeture de page en cas de données invalides modifiées
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (!isFormValid) {
+        e.preventDefault();
+      }
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [hasChanged]);
+
+  console.log("Final render valide et changé:",  isFormValid, hasChanged,
+    draft, pageOrigine.value
+    )
   return (
     <section className={s.wrapper}>
       <div className="container">
         <h2>Saisie des Filtres</h2>
-        <p>Les données appelées après validation seront filtrées sur les paramètres ci-dessous:</p>
+        <p>Ces filtres par défaut, s'appliquent aux listes et saisies</p>
       </div>
 
       <div className={s.wrapForm}>
         {/* On encapsule le formulaire avec notre Provider de validation */}
         <FormValidationProvider formRef={validationRef}>
+          { !isFormValid && hasChanged ? InfoBanner(warning) : "" }
           <Form
             id="filtresForm"
             key={formKey}
-            onSubmit={handleSubmit}
+            onSubmit={(e) => e.preventDefault()}
             className={s.formStyle}
           >
             <div className={s.entree}>
@@ -100,7 +140,7 @@ export default function Filtres() {
                 updateField={(val) => updateField('origine', val)}
                 origineItems={origineItems}
                 allowNull={pageOrigine.value === "article"}
-            />
+              />
             </div>
 
             <div className={s.entree}>
@@ -151,12 +191,6 @@ export default function Filtres() {
 
           <Xbutton altClassName={s.altButton} type="button" onClick={() => resetFiltres()}>
             Reset Filtres
-          </Xbutton>
-
-          {/* Ce bouton déclenchera correctement le onSubmit via l'attribut form */}
-          <Xbutton type="submit" altClassName="" form="filtresForm">
-            <img className={s.goBack} title={"fleche"} src={goBack} alt={"fleche"}/>
-            Validation
           </Xbutton>
         </div>
       </div>

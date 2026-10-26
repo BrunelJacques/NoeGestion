@@ -1,4 +1,4 @@
-// src/components/Error/index.tsx
+// src/components/ErrorBanner/index.tsx
 import { useTheme } from '../../hooks/useTheme.tsx';
 import * as s from './index.css.ts';
 import { useError } from '../../hooks/useError.tsx';

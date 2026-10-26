@@ -42,7 +42,7 @@ export default function FieldOrigine({ id,
         typeof item === "object" && item !== null && "id" in item
           ? String(item.id)
           : String(item);
-      
+
       updateField(id);
     };
 

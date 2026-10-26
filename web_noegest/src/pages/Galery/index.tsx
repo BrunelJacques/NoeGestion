@@ -1,21 +1,23 @@
 import { Xbutton } from '../../ui/Xbutton';
 import { Xinput}      from '../../ui/Xinput';
 import Hello from '../Hello';
+import InfoBanner from "../../components/InfoBanner";
 import { useState } from 'react';
-import { useError } from '../../hooks/useError.tsx';
 import { Card } from "../../ui/Card";
 import { useTheme } from "../../hooks/useTheme.tsx";
 import { hrstyle, localStyle } from "./index.css.ts";
 import { useAuth } from '../../hooks/useAuth.tsx';
-
+import { useError} from "../../hooks/useError.tsx";
 
 
 export default function Galery() {
 
   const [myVariable, setMyVariable] = useState("");
-  const { setError } = useError();
+  //const { setError } = useError();
   const { user } = useAuth();
   const { theme, toggleTheme } = useTheme();
+  const { setError } = useError();
+  //setError("Test d'error depuis Galery")
 
   return (
     <> 
@@ -60,6 +62,8 @@ export default function Galery() {
         onChange = {() => {}}
         placeholder="Saisissez quelque chose..." />
       </div>
+
+      {InfoBanner("Ceci est une InfoBanner","Notez bien")}
       <div>------ end ------</div>  
       <hr />
     </>
