@@ -41,12 +41,11 @@ export default function Filtres() {
     setHasChanged(false); // Réinitialise l'indicateur de modification
   }
 
-  function validation(prov:string) {
+  function validation() {
     // L'utilisateur a effectué une modification, on contrôle la validité
     const isValidResult = validationRef?.current
       ? validationRef.current.validateAll()
       : false;
-    console.log("VALIDATION RESULT :", isValidResult,prov);
     setIsFormValid(isValidResult);
     if (!isValidResult) {
       setWarning("Validation refusée présence d'erreur(s)");
@@ -54,16 +53,14 @@ export default function Filtres() {
     return isValidResult;
   }
 
-
-    // Mise à jour en temps réel
+  // Mise à jour en temps réel
   useEffect(() => {
-    console.log("useEffect 1")
     // Si c'est le premier rendu (ouverture de la page), on ne fait rien
     if (isFirstRender.current) {
       isFirstRender.current = false;
       return;
     }
-    const valid = validation("prov 1")
+    const valid = validation()
     // On bloque l'enregistrement  invalide
     if ( !valid ){
       return
@@ -78,11 +75,9 @@ export default function Filtres() {
     };
 
     // L'utilisateur a effectué une modification
-    console.log("fin effect1", isFormValid,hasChanged,"devient true", finalFiltres);
     setFiltres(finalFiltres);
     setHasChanged(true);
   }, [draft, pageOrigine.value, setFiltres, isFormValid]);
-
 
   // Action d'enregistrement en stockage
   useEffect(() => {
@@ -96,9 +91,6 @@ export default function Filtres() {
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [hasChanged]);
 
-  console.log("Final render valide et changé:",  isFormValid, hasChanged,
-    draft, pageOrigine.value
-    )
   return (
     <section className={s.wrapper}>
       <div className="container">
