@@ -7,16 +7,12 @@ export type Item = {
   nom: string;
 }
 
-export const ITEM0: Item = { id: 0, nom: "item 0 | @ à définir" };
-
-
+export const ITEM0: Item = { id: "", nom: "" };
 
 export type ItemStr = {
   id: string;
   nom: string;
 }
-
-export const ITEMSTR0: Item = { id: "@", nom: "item '@' à définir" };
 
 
 export type ItemNum = {

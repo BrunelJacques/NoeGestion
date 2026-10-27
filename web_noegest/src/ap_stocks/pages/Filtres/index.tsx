@@ -48,7 +48,7 @@ export default function Filtres() {
       : false;
     setIsFormValid(isValidResult);
     if (!isValidResult) {
-      setWarning("Validation refusée présence d'erreur(s)");
+      setWarning("Validation impossible avec des erreur(s)");
     }
     return isValidResult;
   }

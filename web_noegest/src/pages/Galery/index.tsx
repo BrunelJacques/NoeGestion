@@ -63,7 +63,7 @@ export default function Galery() {
         placeholder="Saisissez quelque chose..." />
       </div>
 
-      {InfoBanner("Ceci est une InfoBanner","Notez bien")}
+      {InfoBanner("Ceci est une InfoBanner")}
       <div>------ end ------</div>  
       <hr />
     </>

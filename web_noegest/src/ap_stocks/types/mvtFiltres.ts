@@ -6,7 +6,7 @@ export type MvtFiltres = {
   article?: Item | null;
   jour: Date;
   periode?: { debut: Date; fin: Date } | null; //se substitue à jour pour élagrir la recherche
-  origine : string; // Attention : peut être à blanc
+  origine : string; //  peut être à blanc
   service: number;
   camp?: string|null; // uniquement géré lors d'origine camp in ou out
   fournisseur?: number;

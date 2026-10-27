@@ -2,7 +2,7 @@
 
 import type { Fournisseurs } from "../types/mvtFiltres";
 import type { Item } from "../../types/item.ts";
-
+import { ITEM0 } from "../../types/item.ts";
 import apiUrl from "../../constants/api.Constants";
 import { Xautocomplete } from "../../ui/Xautocomplete";
 
@@ -15,11 +15,16 @@ interface Props {
 // Paramétrage de l'autocomplete pour les fournisseurs
 export default function FieldFournisseur({ id, updateField, ...props }: Props) {
   const url = apiUrl.STFOURNISSEUR_URL
-  const fetchFournisseurs = async (search?: string) => {
+
+  const fetchFournisseurs = async (search?: string) : Promise<Item[]> => {
     const query = search ?? ""; // search si null ou undefined, sinon ""
     const response = await fetch(`${url}?nom=${query}`);
     const fournisseurs: Fournisseurs = await response.json();
-    return fournisseurs.results;
+    console.log("fournisseurs:", fournisseurs);
+    return [
+      ITEM0,
+      ...fournisseurs.results,
+    ];
   };
 
   const handleChange = (item: Item | string | number) => {
