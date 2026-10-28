@@ -4,6 +4,7 @@ import * as s from "./index.css.ts";
 import { useFiltres } from "../../hooks/contextFiltres/useFiltres";
 import { apiUrl } from "../../../constants/api.Constants";
 import { MVT0, type MvtsRetour, type Mouvement } from "../../types/mouvement";
+import { type Article } from "../../types/article";
 import { useError } from "../../../hooks/useError";
 import { lstMvtFields } from "../../constants/lstMvtFields";
 import { useParams } from "react-router-dom";
@@ -137,20 +138,25 @@ export default function OneMvt() {
       value?: NonNullable<Mouvement>[K] | null
     ) => {
       setMvtPatch((prev) => {
-        const altModifs = (field === "qte_mouvement") && prev.article
-          ? [
-            {"qte_stock": prev.article.qte_stock + ((Number(value)?? 1) * Number(prev.sens))},
-            { "rations": value?? 1 * (prev.article.rations?? 1)}
-          ] : [undefined, undefined]
-        console.log("updateField", field, value,"alt:", altModifs);
+
+        const isQteMouvement = field === "qte_mouvement" && prev.article;
+
+        // Calcul optionnel des modifications de l'article si le champ correspond
+        const updatedArticle = isQteMouvement && prev.article
+          ? {
+            ...prev.article,
+            qte_stock: prev.article.qte_stock + (Number(value) || 1) * Number(prev.sens),
+          } as Article
+          : prev.article;
+
+        console.log("updateField", field, value, "alt:", updatedArticle);
         return {
           ...prev,
           [field]: value,
-          "article": {
+          article: prev.article ? {
             ...prev.article,
-            ...(altModifs[0])
-          },
-          ...altModifs[1]
+            ...updatedArticle,
+          } : undefined,
         } as Mouvement;
       });
     },
