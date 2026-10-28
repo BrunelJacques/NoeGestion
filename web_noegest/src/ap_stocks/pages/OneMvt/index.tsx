@@ -46,13 +46,14 @@ export default function OneMvt() {
 
   const fields = lstMvtFields[filtres?.pageOrigine || "sorties"];
 
+  // Traitement final
   useEffect(() => {
     if (!mvtPatch || mvtPatch.id === 0) return;
     movementCache.set(url,mouvement);
     movementCache.set(urlPatch,mvtPatch);
   }, [mvtPatch]);
 
-  // initialise le mouvement à gérer, par fetch si modif ou MVT0 si creation
+  // Initialise le mouvement à gérer, par fetch si modif ou MVT0 si creation
   useEffect(() => {
     if (isCreationMode) {
       setMouvement(MVT0);
@@ -115,8 +116,7 @@ export default function OneMvt() {
     };
   }, [url, setError]);
 
-
-// useEffect3: Applique le filtre par patch sur le mouvement en cours
+  // Applique le filtre par patch sur le mouvement en cours
   useEffect(() => {
     setMvtPatch((prev) => {
       // On vérifie avec la valeur la plus récente (prev), au lieu de mvtPatch ancien
@@ -130,23 +130,35 @@ export default function OneMvt() {
     });
   }, [filtres]);
 
+  // Modif d'un champ dans le mouvement patch en préparation
   const updateField = useCallback(
     <K extends keyof NonNullable<Mouvement>>(
       field: K,
       value?: NonNullable<Mouvement>[K] | null
     ) => {
       setMvtPatch((prev) => {
+        const altModifs = (field === "qte_mouvement") && prev.article
+          ? [
+            {"qte_stock": prev.article.qte_stock + ((Number(value)?? 1) * Number(prev.sens))},
+            { "rations": value?? 1 * (prev.article.rations?? 1)}
+          ] : [undefined, undefined]
+        console.log("updateField", field, value,"alt:", altModifs);
         return {
           ...prev,
           [field]: value,
+          "article": {
+            ...prev.article,
+            ...(altModifs[0])
+          },
+          ...altModifs[1]
         } as Mouvement;
       });
     },
     [urlPatch]
   );
 
+  // Importe le changement de filtre dans le mvtPatch
   function filtresInPatch(patch: Mouvement): Mouvement {
-    // Importe le changement de filtre dans le mvtPatch
     const { fournisseur, ...leReste } = patch
 
     const fourn = filtres?.pageOrigine === "entrees"
@@ -213,8 +225,8 @@ export default function OneMvt() {
     }
   }
 
+  // Affichage du formulaire
   return (
-    //Titres sous-titres
     <section className={s.wrapper}>
       <div className="container">
         <h2>Saisie d'un mouvement</h2>

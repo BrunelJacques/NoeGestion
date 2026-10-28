@@ -24,16 +24,18 @@ const fetchArticles = (search: string) =>
   fetchArticlesByParam(`${apiUrl.STARTICLE_NOM_URL}?nom=`, search);
 
 const calculeArticle = (newArt:Article, mvtPatch: Mouvement, filtres: MvtFiltres) : Mouvement => {
+  console.log("newArt, mvtPatch", newArt, mvtPatch)
+  const qteMvt = mvtPatch.qte_mouvement * mvtPatch.sens
   const { qte_stock, prix_moyen, ...resteArt } = newArt
   const { fournisseur, ...leReste } = mvtPatch
-  const calcPxMoy = (prix_moyen * qte_stock + mvtPatch.qte_mouvement * mvtPatch.prix_unit)
-                / (mvtPatch.qte_mouvement + qte_stock)
+  const calcPxMoy = (prix_moyen * qte_stock + qteMvt * mvtPatch.prix_unit)
+                / (qteMvt + qte_stock)
 
   const pxMoy = filtres.pageOrigine === "entrees" ? calcPxMoy : prix_moyen
 
   const updatedArt = {
     ...resteArt,
-    qte_stock: newArt.qte_stock + mvtPatch.qte_mouvement,
+    qte_stock: newArt.qte_stock + qteMvt,
     prix_moyen: pxMoy
   }
 
@@ -42,13 +44,12 @@ const calculeArticle = (newArt:Article, mvtPatch: Mouvement, filtres: MvtFiltres
     idArticle: newArt.id,
     article: (newArt.id != 0)? updatedArt : undefined,
     prix_unit: newArt.prix_moyen??mvtPatch.prix_unit,
-    rations: newArt.rations ?mvtPatch.qte_mouvement * newArt.rations:1,
+    rations: newArt.rations ? mvtPatch.qte_mouvement * newArt.rations : 1,
     fournisseur: newArt.fournisseur?? mvtPatch.fournisseur,
     saisie: new Date().toLocaleDateString('en-CA'),
     nb_colis: (newArt.colis_par && newArt.colis_par > 0)?
-      mvtPatch.qte_mouvement / newArt.colis_par : 1,
+      qteMvt / newArt.colis_par : 1,
   }
-  console.log("patch calculé:",newMvtPatch);
   return newMvtPatch
 }
 

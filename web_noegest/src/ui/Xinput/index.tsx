@@ -32,6 +32,12 @@ export const Xinput = forwardRef<HTMLInputElement, Props>(({
 
   const locShowReset = props.disabled? false: showReset;
 
+  const numericValue = (typeof props.value === 'string' || typeof props.value === 'number')
+    ? Number(props.value)
+    : NaN;
+
+  const isNegative = !isNaN(numericValue) && numericValue < 0;
+
   const inputRef = useRef<HTMLInputElement>(null); // retour focus après reset
 
   const isBackspacePressed = useRef(false); // La dernière touche pressée était Backspace
@@ -68,7 +74,15 @@ export const Xinput = forwardRef<HTMLInputElement, Props>(({
   return (
     <div className={sc.wrapperV}>
       <div className={sc.wrapperH}>
-        {label && <span className={sc.label}> {label} :</span>}
+        {label
+          && <span
+            className={[
+              sc.label,
+              isNegative && sc.negativeValue,
+            ].filter(Boolean).join(" ")}> {/* "Boolean" équivaut à "(item) => Boolean(item)"*/}
+            {label} :
+            </span>
+        }
 
         <input
           ref={ref}
@@ -77,6 +91,7 @@ export const Xinput = forwardRef<HTMLInputElement, Props>(({
           onBlur={handleChange}
           onKeyDown={handleKeyDown} // handler pour backspace
           className={[
+            isNegative && sc.negativeValue,
             sc.baseInput,
             props.disabled && sc.disabledInput,
             altClassName

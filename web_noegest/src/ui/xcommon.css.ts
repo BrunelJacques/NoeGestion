@@ -46,7 +46,6 @@ export const baseInput = style({
     },
     "&:not(:placeholder-shown)": { // placeHolder null ou masqué par value
     background: colors.bgSaisie,
-    color: colors.txt_dark,
     fontSize: '14px',
     fontWeight: "bold",
     },
@@ -64,6 +63,10 @@ export const baseInput = style({
 
 })
 
+export const negativeValue = style({
+  color: "red",
+  fontWeight: "bold",
+});
 
 export const dateInput = style({
   padding: '8px 12px',

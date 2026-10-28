@@ -101,7 +101,7 @@ export function OneMvtForm({ fields,mvtPatch, ...props}:Props) {
                         disabled= {true}
                         required={fld.required}
                       />
-                    ) : (fld.fieldName) ?( // autres champs modifiables
+                    ): (fld.fieldName) ?( // autres champs modifiables
                       <Xinput
                         key={fld.fieldName}
                         type={fld.type === "number" ? "number" : fld.type === "date" ? "date" : "text"}
@@ -114,7 +114,8 @@ export function OneMvtForm({ fields,mvtPatch, ...props}:Props) {
                           const nextValue = fld.type === "number"
                             ? (rawVal === "" ? "" : Number(rawVal))
                             : rawVal;
-                          props.updateField(targetKey, nextValue as any);
+                          console.log("nextValue dans",mvtPatch)
+                          props.updateField(targetKey, nextValue);
                         }}
                         required={fld.required}
                       />

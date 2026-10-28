@@ -17,6 +17,7 @@ function coutTotal (mvt: Mouvement):number {
   return round(pxUnit * qte,2)
 }
 
+
 export const calculsMvt: Record<string, (mvt: Mouvement) => number> =  {
     coutUn: coutUn,
     coutTotal: coutTotal,
