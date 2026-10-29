@@ -140,15 +140,22 @@ class StArticleSerializer(BaseModelSerializer):
 
 # Réponse différentiée selon nature de requête
 class StMouvementSerializer(BaseModelSerializer):
-    article = StArticleSerializer()
-    #article_nom_court = serializers.SerializerMethodField()
+    # En lecture, Django renvoie l'objet article complet grâce à read_only=True
+    article = StArticleSerializer(read_only=True)
+
+    # En écriture (POST/PATCH), Django accepte l'ID de l'article
+    article_id = serializers.PrimaryKeyRelatedField(
+        queryset=StArticle.objects.all(),
+        source='article',
+        write_only=True
+    )
 
     class Meta:
         model = StMouvement
         fields = [
-            "id","jour","sens","origine","article",
-            "nb_colis","qte_mouvement","prix_unit","service","rations",
-            "analytique","fournisseur","ordi","saisie","ordi","transfert"
+            "id", "jour", "sens", "origine", "article", "article_id",
+            "nb_colis", "qte_mouvement", "prix_unit", "service", "rations",
+            "analytique", "fournisseur", "ordi", "saisie", "transfert"
         ]
 
     def update(self, instance, validated_data):
