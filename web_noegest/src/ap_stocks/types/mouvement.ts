@@ -8,7 +8,7 @@ export type Mouvement = {
     jour: string;
     sens: number;
     origine: string;
-    idArticle: number;
+    article_id: number;
     nb_colis?: number;
     qte_mouvement: number;
     prix_unit: number;
@@ -35,7 +35,7 @@ export const MVT0 : Mouvement = {
     analytique: 0,
     ordi: "",
     saisie:"",
-    idArticle: 0,
+    article_id: 0,
 }
 
 // retour d'api mouvements

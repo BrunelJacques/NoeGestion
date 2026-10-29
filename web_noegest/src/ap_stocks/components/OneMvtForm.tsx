@@ -56,7 +56,7 @@ export function OneMvtForm({ fields,mvtPatch, ...props}:Props) {
       <Form
         id="oneMvtForm"
         key={props.formKey}
-        //onSubmit={props.handleSubmit}
+        onSubmit={props.onSubmit}
       >
         <div className={s.formStyle}>
           {/* ------- déroulé des champs par map ------- */}
@@ -114,7 +114,6 @@ export function OneMvtForm({ fields,mvtPatch, ...props}:Props) {
                           const nextValue = fld.type === "number"
                             ? (rawVal === "" ? "" : Number(rawVal))
                             : rawVal;
-                          console.log("nextValue dans",mvtPatch)
                           props.updateField(targetKey, nextValue);
                         }}
                         required={fld.required}

@@ -21,7 +21,7 @@ function mvtToPatch(mvt:Mouvement): Mouvement {
   const { qte_mouvement, ...leReste} = mvt;
   return {
     ...leReste,
-    idArticle: leReste.article?.id??0,
+    article_id: leReste.article?.id??0,
     qte_mouvement: qte_mouvement * leReste.sens
   };
 }
@@ -30,7 +30,7 @@ export default function OneMvt() {
   // Lanceur de forms d'affichage mvtPatch et sa gestion
   const { setError } = useError();
   const { filtres } = useFiltres();
-
+  const flags = getFlagsMouvement();
   const [mouvement, setMouvement] = useState<Mouvement>(MVT0); //original
   const [mvtPatch, setMvtPatch] = useState<Mouvement>(mouvement); // envoi modif
 
@@ -68,7 +68,6 @@ export default function OneMvt() {
       const cachedPatch = movementCache.get(urlPatch)!;
       setMouvement(cachedData);
       setMvtPatch(cachedPatch);
-      console.log("useEffect: Utilisation du cache pour l'URL", cachedData, cachedPatch);
       return;
     }
 
@@ -149,7 +148,6 @@ export default function OneMvt() {
           } as Article
           : prev.article;
 
-        console.log("updateField", field, value, "alt:", updatedArticle);
         return {
           ...prev,
           [field]: value,
@@ -187,25 +185,21 @@ export default function OneMvt() {
 
   async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
 
-    console.log("OneMvt handleSubmit", mvtPatch);
-
     e.preventDefault();
-
-    const flags = getFlagsMouvement()
-    flags.map((modif) => (
-        updateField(modif[0], modif[1])
-      ));
-
-
-    // URL et Méthode dynamiques selon le mode
-    const submitUrl = isCreationMode
-      ? apiUrl.STMOUVEMENT_URL
-      : `${apiUrl.STMOUVEMENT_URL}${mvtPatch}/`;
-
-    const method = isCreationMode ? "POST" : "PATCH";
-
     try {
-      console.log("try handleSubmit");
+      flags.forEach((modif) => {
+        updateField(modif[0], modif[1]);
+      });
+
+      const movementId = mvtPatch.id;
+
+      const submitUrl = isCreationMode
+        ? apiUrl.STMOUVEMENT_URL
+        : `${apiUrl.STMOUVEMENT_URL}/${movementId}/`;
+
+      const method = isCreationMode ? "POST" : "PATCH";
+
+      console.log("3. Envoi de la requête vers :", submitUrl);
       const response = await fetch(submitUrl, {
         method: method,
         headers: {
@@ -218,6 +212,7 @@ export default function OneMvt() {
         setError(`Échec api mouvement: ${isCreationMode ? "création" : "modification"} non enregistrée.`);
         return;
       }
+      console.log("4. Succès de la requête");
     } catch (error) {
       console.error("Erreur lors de la sauvegarde :", error);
       setError(
