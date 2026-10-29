@@ -25,10 +25,10 @@ const fetchArticles = (search: string) =>
 
 const calculeArticle = (newArt:Article, mvtPatch: Mouvement, filtres: MvtFiltres) : Mouvement => {
   const qteMvt = mvtPatch.qte_mouvement * mvtPatch.sens
-  const { qte_stock, prix_moyen, ...resteArt } = newArt
-  const { fournisseur, ...leReste } = mvtPatch
+  const {qte_stock, prix_moyen, ...resteArt} = newArt
+  const {fournisseur, ...leReste} = mvtPatch
   const calcPxMoy = (prix_moyen * qte_stock + qteMvt * mvtPatch.prix_unit)
-                / (qteMvt + qte_stock)
+    / (qteMvt + qte_stock)
 
   const pxMoy = filtres.pageOrigine === "entrees" ? calcPxMoy : prix_moyen
 
@@ -38,19 +38,19 @@ const calculeArticle = (newArt:Article, mvtPatch: Mouvement, filtres: MvtFiltres
     prix_moyen: pxMoy
   }
 
-  const newMvtPatch = {
+  return {
     ...leReste,
     article_id: newArt.id,
-    article: (newArt.id != 0)? updatedArt : undefined,
-    prix_unit: newArt.prix_moyen??mvtPatch.prix_unit,
+    article: (newArt.id != 0) ? updatedArt : undefined,
+    prix_unit: newArt.prix_moyen ?? mvtPatch.prix_unit,
     rations: newArt.rations ? mvtPatch.qte_mouvement * newArt.rations : 1,
-    fournisseur: newArt.fournisseur?? mvtPatch.fournisseur,
+    fournisseur: newArt.fournisseur ?? mvtPatch.fournisseur,
     saisie: new Date().toLocaleDateString('en-CA'),
-    nb_colis: (newArt.colis_par && newArt.colis_par > 0)?
+    nb_colis: (newArt.colis_par && newArt.colis_par > 0) ?
       qteMvt / newArt.colis_par : 1,
   }
-  return newMvtPatch
 }
+
 
 // ChangementArticle applique les modifications induites
 export async function changementArticle(
@@ -66,7 +66,6 @@ export async function changementArticle(
 
   return calculeArticle(article, mvtPatch, filtres);
 }
-
 
 // Composition de l'affichage de l'article
 interface Props {
