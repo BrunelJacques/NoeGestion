@@ -62,6 +62,8 @@ export async function changementArticle(
   const article = (artItem.id == 0)
     ? ART0
     : (await fetcharticle_id(Number(artItem.id)))[0];
+  console.log("fetchArticle", article);
+
   return calculeArticle(article, mvtPatch, filtres);
 }
 

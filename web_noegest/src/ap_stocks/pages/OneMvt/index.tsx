@@ -1,17 +1,20 @@
 //src/ap_stocks/pages/OneMvt/index.tsx
-import React, {useCallback, useEffect, useState } from "react";
+import React, {useCallback, useEffect } from "react";
 import * as s from "./index.css.ts";
+import { useError } from "../../../hooks/useError";
 import { useFiltres } from "../../hooks/contextFiltres/useFiltres";
+import { useMouvement, useMvtPatch } from "../../hooks/contextMouvement/useMouvement";
 import { apiUrl } from "../../../constants/api.Constants";
 import { MVT0, type MvtsRetour, type Mouvement } from "../../types/mouvement";
 import { type Article } from "../../types/article";
-import { useError } from "../../../hooks/useError";
+
 import { lstMvtFields } from "../../constants/lstMvtFields";
 import { useParams } from "react-router-dom";
 import { OneMvtForm } from "../../components/OneMvtForm.tsx";
 import { OneMvtBoutons} from "../../components/OneMvtBoutons.tsx";
 import {getFlagsMouvement} from "../../utils/calculs.tsx";
 import {dateToISO} from "../../../utils/dates.tsx";
+
 
 // Crée une Mise en cache pour cette page
 const movementCache = new Map<string, Mouvement>();
@@ -31,10 +34,10 @@ export default function OneMvt() {
   const { setError } = useError();
   const { filtres } = useFiltres();
   const flags = getFlagsMouvement();
-  const [mouvement, setMouvement] = useState<Mouvement>(MVT0); //original
-  const [mvtPatch, setMvtPatch] = useState<Mouvement>(mouvement); // envoi modif
+  const { mouvement, setMouvement} = useMouvement(); //original
+  const { mvtPatch, setMvtPatch } = useMvtPatch(); // envoi modif
 
-  const [formKey, setFormKey] = useState(0); // pour identifier chaque field dans form
+  //const [formKey] = useState(0); // pour identifier chaque field dans form
   const { id: queryId } = useParams<{ id?: string }>();
   const isCreationMode = !queryId;
 
@@ -141,18 +144,20 @@ export default function OneMvt() {
         const isQteMouvement = field === "qte_mouvement" && prev.article;
 
         // Calcul optionnel des modifications de l'article si le champ correspond
+        console.log("Calcul:",prev,value,field)
         const updatedArticle = isQteMouvement && prev.article
           ? {
             ...prev.article,
-            qte_stock: prev.article.qte_stock + (Number(value) || 1) * Number(prev.sens),
+            qte_stock: prev.article.qte_stock
+              + ((Number(value) || 0) - prev.qte_mouvement
+              ) * Number(prev.sens),
           } as Article
           : prev.article;
-
+        console.log("résultat:",updatedArticle?.qte_stock)
         return {
           ...prev,
           [field]: value,
           article: prev.article ? {
-            ...prev.article,
             ...updatedArticle,
           } : undefined,
         } as Mouvement;
@@ -178,11 +183,11 @@ export default function OneMvt() {
     }
   }
 
-  function resetMouvement() {
+ /* function resetPatch() {
     setMvtPatch(mouvement);
     setFormKey((prevKey) => prevKey + 1);
   }
-
+*/
   async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
 
     e.preventDefault();
@@ -228,6 +233,7 @@ export default function OneMvt() {
 
   // Affichage du formulaire
   return (
+    <div>
     <section className={s.wrapper}>
       <div className="container">
         <h2>Saisie d'un mouvement</h2>
@@ -235,17 +241,14 @@ export default function OneMvt() {
           filtrées selon les choix affichés</p>
       </div>
 
-      <OneMvtForm formKey={formKey}
-                  fields={fields}
-                  mvtPatch={mvtPatch}
-                  setMvtPatch={setMvtPatch}
+      <OneMvtForm fields={fields}
                   updateField={updateField}
                   onSubmit={handleSubmit}
-                  id="oneMvtForm"
+                  idForm="oneMvtForm"
       />
-      <OneMvtBoutons resetMouvement={resetMouvement}
-                     onSubmit={handleSubmit}
-      />
+      <OneMvtBoutons form="oneMvtForm" />
+
     </section>
+    </div>
   );
 }

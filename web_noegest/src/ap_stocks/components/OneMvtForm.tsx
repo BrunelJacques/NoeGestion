@@ -13,23 +13,22 @@ import FieldService from "./FieldService.tsx";
 import {standardize, fmtLabel} from "../../utils/string.ts";
 import {calculsMvt} from "../utils/calculs.tsx";
 import { useFiltres } from "../hooks/contextFiltres/useFiltres.tsx";
+import {useMvtPatch} from "../hooks/contextMouvement/useMouvement.tsx";
 
 // Affichage du formulaire pour la gestion d'un enregistrement mouvement
 
 interface Props {
-  formKey: number;
   fields: MvtFormField[];
-  mvtPatch: Mouvement;
-  setMvtPatch: (mvtPatch: Mouvement) => void;
   updateField: <K extends keyof Mouvement>(
     field: K,
     value?: Mouvement[K] | null
   ) => void;
   onSubmit: (e: SyntheticEvent<HTMLFormElement>) => Promise<void>;
-  id:string;
+  idForm:string;
 }
 
-export function OneMvtForm({ fields,mvtPatch, ...props}:Props) {
+export function OneMvtForm({ fields, ...props}:Props) {
+  const { mvtPatch, setMvtPatch, formKey } = useMvtPatch();
   const [mvtActif, setMvtActif] = useState<Mouvement>({ ...mvtPatch }); // affiché
   useEffect(() => {
     setMvtActif({ ...mvtPatch });
@@ -54,8 +53,8 @@ export function OneMvtForm({ fields,mvtPatch, ...props}:Props) {
   return (
     <div className={s.wrapForm}>
       <Form
-        id="oneMvtForm"
-        key={props.formKey}
+        id={props.idForm}
+        key={formKey}
         onSubmit={props.onSubmit}
       >
         <div className={s.formStyle}>
@@ -73,7 +72,7 @@ export function OneMvtForm({ fields,mvtPatch, ...props}:Props) {
                         updateField={async (artItem) => {
                           if (typeof artItem?.id === "number") {
                             const patch = await changementArticle(artItem, mvtPatch, filtres)
-                            props.setMvtPatch(patch)
+                            setMvtPatch(patch)
                           }
                         }}
                         required={fld.required}

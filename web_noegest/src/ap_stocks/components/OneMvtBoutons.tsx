@@ -3,18 +3,17 @@ import { Xbutton } from "../../ui/Xbutton";
 import XbuttonBack from "../../ui/Xbutton/XbuttonBack";
 import goBack from "../../assets/icons/goBack.png";
 import * as s from "../pages/OneMvt/index.css.ts";
-import type { SyntheticEvent } from "react";
+import {useMvtPatch} from "../hooks/contextMouvement/useMouvement.tsx";
+
 
 interface Props {
-  resetMouvement: () => void;
-  onSubmit: (e: SyntheticEvent<HTMLFormElement>) => Promise<void>;
+  form: string;
 }
+export function OneMvtBoutons({ ...props }: Props) {
 
-
-export function OneMvtBoutons({ onSubmit, ...props }: Props ) {
+  const { resetPatch } = useMvtPatch();
 
   return (
-
     <div className={s.boutons}>
       <XbuttonBack altClassName={s.altButton} displayPrevious={true}>
         <img className={s.goBack} title="fleche" src={goBack} alt={'AVXX_'} />
@@ -23,14 +22,14 @@ export function OneMvtBoutons({ onSubmit, ...props }: Props ) {
       <Xbutton
         type="button"
         altClassName={s.altButton}
-        onClick={props.resetMouvement}
+        onClick={resetPatch}
       >
         Abandon
       </Xbutton>
 
       <Xbutton type="submit" 
                altClassName=""
-               form="oneMvtForm"
+               form={props.form}
       >
         Validation
       </Xbutton>
