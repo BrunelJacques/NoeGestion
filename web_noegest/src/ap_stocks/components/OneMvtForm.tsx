@@ -14,6 +14,7 @@ import {standardize, fmtLabel} from "../../utils/string.ts";
 import {calculsMvt} from "../utils/calculs.tsx";
 import { useFiltres } from "../hooks/contextFiltres/useFiltres.tsx";
 import {useMvtPatch} from "../hooks/contextMouvement/useMouvement.tsx";
+import { trueNumber } from "../../utils/number.ts";
 
 // Affichage du formulaire pour la gestion d'un enregistrement mouvement
 
@@ -47,7 +48,7 @@ export function OneMvtForm({ fields, ...props}:Props) {
       ...fld,
       stdLabel: stdLabel,
       label:  fmtLabel(fld.label), // Ajoute un espace entre minus & maj
-      value: sens? Number(val) * sens :val, // value : number|string, val:string
+      value: sens? Number(val): val, // value : number|string, val:string
     };
   });
   return (
@@ -93,7 +94,17 @@ export function OneMvtForm({ fields, ...props}:Props) {
                           (serv) => props.updateField(`service`, serv)
                         }
                       />
-                    ): (fld.disabled) ?( // champs non modifiables
+                    ): (fld.label === "Qte") ?(
+                      <Xinput
+                        value= {trueNumber(fld.value) * mvtPatch.sens}
+                        label= {fld.label}
+                        required={fld.required}
+                        onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
+                          const qte = trueNumber(evt.target.value)
+                          props.updateField(`qte_mouvement`, qte * mvtPatch.sens);
+                        }}
+                      />
+                  ): (fld.disabled) ?( // champs non modifiables
                       <Xinput
                         value= {fld.value}
                         label= {fld.label}

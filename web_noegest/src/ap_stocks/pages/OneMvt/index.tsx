@@ -14,6 +14,7 @@ import { OneMvtForm } from "../../components/OneMvtForm.tsx";
 import { OneMvtBoutons} from "../../components/OneMvtBoutons.tsx";
 import {getFlagsMouvement} from "../../utils/calculs.tsx";
 import {dateToISO} from "../../../utils/dates.tsx";
+import { trueNumber } from "../../../utils/number.ts";
 
 
 // Crée une Mise en cache pour cette page
@@ -21,11 +22,10 @@ const movementCache = new Map<string, Mouvement>();
 
 function mvtToPatch(mvt:Mouvement): Mouvement {
   // Transpose le mouvement reçu de l'api en mvtPatch de travail
-  const { qte_mouvement, ...leReste} = mvt;
+  const {  ...leReste} = mvt;
   return {
     ...leReste,
     article_id: leReste.article?.id??0,
-    qte_mouvement: qte_mouvement * leReste.sens
   };
 }
 
@@ -65,7 +65,7 @@ export default function OneMvt() {
       return;
     }
 
-    // 1. Vérifier si on a déjà les données en cache pour cette URL
+    // Vérifie si on a déjà les données en cache pour cette URL
     if (movementCache.has(url)) {
       const cachedData = movementCache.get(url)!;
       const cachedPatch = movementCache.get(urlPatch)!;
@@ -141,16 +141,18 @@ export default function OneMvt() {
     ) => {
       setMvtPatch((prev) => {
 
-        const isQteMouvement = field === "qte_mouvement" && prev.article;
+        const isQteMouvement = field === "qte_mouvement";
+        const valQte = isQteMouvement ? (trueNumber(value) || 0 ) * mvtPatch.sens: value;
+
 
         // Calcul optionnel des modifications de l'article si le champ correspond
-        console.log("Calcul:",prev,value,field)
+        console.log("Calcul:",prev,value,valQte,field)
         const updatedArticle = isQteMouvement && prev.article
           ? {
             ...prev.article,
             qte_stock: prev.article.qte_stock
-              + ((Number(value) || 0) - prev.qte_mouvement
-              ) * Number(prev.sens),
+              + Number(valQte)
+              - (prev.qte_mouvement * Number(prev.sens)),
           } as Article
           : prev.article;
         console.log("résultat:",updatedArticle?.qte_stock)
