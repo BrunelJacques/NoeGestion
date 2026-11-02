@@ -29,6 +29,7 @@ interface Props {
 }
 
 export function OneMvtForm({ fields, ...props}:Props) {
+  const [saisieQte, setSaisieQte] = useState("");
   const { mvtPatch, setMvtPatch, formKey } = useMvtPatch();
   const [mvtActif, setMvtActif] = useState<Mouvement>({ ...mvtPatch }); // affiché
   useEffect(() => {
@@ -51,6 +52,28 @@ export function OneMvtForm({ fields, ...props}:Props) {
       value: sens? Number(val): val, // value : number|string, val:string
     };
   });
+
+  function fnQteIn(x: string): string {
+    console.log("fnQte",x,"-")
+    if (x === "") return ""
+    console.log("fnQte",x,String(trueNumber(x) * mvtPatch.sens))
+    return String(trueNumber(x) * mvtPatch.sens)
+  }
+  function fnQteOut(x: string): string {
+    const qte = trueNumber(x)
+    console.log("qte change",x, qte)
+    //props.updateField(`qte_mouvement`, qte * mvtPatch.sens);
+
+
+    console.log("fnQte",x,"-")
+    if (x === "") return ""
+    console.log("fnQte",x,String(trueNumber(x) * mvtPatch.sens))
+    return String(trueNumber(x) * mvtPatch.sens)
+  }
+
+  useEffect(() => {
+    setSaisieQte(fnQteIn(String(mvtActif.qte_mouvement)));
+  }, [mvtActif.qte_mouvement]);
   return (
     <div className={s.wrapForm}>
       <Form
@@ -96,21 +119,35 @@ export function OneMvtForm({ fields, ...props}:Props) {
                       />
                     ): (fld.label === "Qte") ?(
                       <Xinput
-                        value= {trueNumber(fld.value) * mvtPatch.sens}
+                        value= {saisieQte}
                         label= {fld.label}
                         required={fld.required}
-                        onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
-                          const qte = trueNumber(evt.target.value)
-                          props.updateField(`qte_mouvement`, qte * mvtPatch.sens);
+                        onChange={(evt) => {
+                          const rawValue = evt.target.value;
+
+                          // 2. On met à jour l'affichage immédiatement avec ce que tape l'utilisateur (même "-" ou "")
+                          setSaisieQte(rawValue);
+
+                          // 3. Optionnel : On ne pousse au parent que si ce n'est pas un état transitoire bloquant,
+                          // ou alors on laisse fnQteOut gérer. Si rawValue est "-" ou "", on peut envoyer 0 au parent
+                          // tout en gardant saisieQte intact à l'affichage !
+                          if (rawValue === '-' || rawValue === '+' || rawValue === '') {
+                            // On prévient le parent que c'est 0 pour les calculs, mais on NE TOUCHES PAS à saisieQte
+                            fnQteOut('0');
+                          } else {
+                            fnQteOut(rawValue);
+                          }
                         }}
                       />
-                  ): (fld.disabled) ?( // champs non modifiables
+
+                    ): (fld.disabled) ?( // champs non modifiables
                       <Xinput
                         value= {fld.value}
                         label= {fld.label}
                         disabled= {true}
                         required={fld.required}
                       />
+
                     ): (fld.fieldName) ?( // autres champs modifiables
                       <Xinput
                         key={fld.fieldName}

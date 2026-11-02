@@ -14,8 +14,6 @@ import { OneMvtForm } from "../../components/OneMvtForm.tsx";
 import { OneMvtBoutons} from "../../components/OneMvtBoutons.tsx";
 import {getFlagsMouvement} from "../../utils/calculs.tsx";
 import {dateToISO} from "../../../utils/dates.tsx";
-import { trueNumber } from "../../../utils/number.ts";
-
 
 // Crée une Mise en cache pour cette page
 const movementCache = new Map<string, Mouvement>();
@@ -44,6 +42,7 @@ export default function OneMvt() {
   const queryParams = new URLSearchParams();
   if (queryId) {
     queryParams.append("id", queryId);
+    console.log("queryParams: ",queryId)
   }
   const url = `${apiUrl.STMOUVEMENT_URL}?${queryParams.toString()}`;
   const urlPatch = `${url}-patch`
@@ -55,10 +54,12 @@ export default function OneMvt() {
     if (!mvtPatch || mvtPatch.id === 0) return;
     movementCache.set(url,mouvement);
     movementCache.set(urlPatch,mvtPatch);
+    console.log("set cache: ",url)
   }, [mvtPatch]);
 
   // Initialise le mouvement à gérer, par fetch si modif ou MVT0 si creation
   useEffect(() => {
+    console.log("useEffect url :", url);
     if (isCreationMode) {
       setMouvement(MVT0);
       setMvtPatch(MVT0);
@@ -66,16 +67,24 @@ export default function OneMvt() {
     }
 
     // Vérifie si on a déjà les données en cache pour cette URL
-    if (movementCache.has(url)) {
-      const cachedData = movementCache.get(url)!;
-      const cachedPatch = movementCache.get(urlPatch)!;
-      setMouvement(cachedData);
-      setMvtPatch(cachedPatch);
-      return;
+    if (movementCache && movementCache.has(url)) {
+      const cachedData = movementCache.get(url)!
+      if (String(cachedData.id) == queryId) {
+        const cachedPatch = movementCache.get(urlPatch)!;
+        if (cachedPatch) {
+          return
+        } else {
+        setMouvement(cachedData);
+        setMvtPatch(cachedPatch);
+        }
+        return
+      }
     }
+    console.log("clear cache: ",url)
+    movementCache.clear;
 
     let isCurrent = true; // Pour éviter les mises à jour d'état si le composant se démonte
-
+    console.log("1. Fetch de l'API pour l'id :", queryId);
     const executeFetch = async () => {
       try {
         const response = await fetch(url);
@@ -140,18 +149,15 @@ export default function OneMvt() {
       value?: NonNullable<Mouvement>[K] | null
     ) => {
       setMvtPatch((prev) => {
-
         const isQteMouvement = field === "qte_mouvement";
-        const valQte = isQteMouvement ? (trueNumber(value) || 0 ) * mvtPatch.sens: value;
-
 
         // Calcul optionnel des modifications de l'article si le champ correspond
-        console.log("Calcul:",prev,value,valQte,field)
+        console.log("Calcul:",prev,value,value,field)
         const updatedArticle = isQteMouvement && prev.article
           ? {
             ...prev.article,
             qte_stock: prev.article.qte_stock
-              + Number(valQte)
+              + Number(value)
               - (prev.qte_mouvement * Number(prev.sens)),
           } as Article
           : prev.article;
