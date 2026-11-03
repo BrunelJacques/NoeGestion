@@ -59,21 +59,19 @@ export function OneMvtForm({ fields, ...props}:Props) {
     console.log("fnQte",x,String(trueNumber(x) * mvtPatch.sens))
     return String(trueNumber(x) * mvtPatch.sens)
   }
-  function fnQteOut(x: string): string {
-    const qte = trueNumber(x)
-    console.log("qte change",x, qte)
-    //props.updateField(`qte_mouvement`, qte * mvtPatch.sens);
 
-
-    console.log("fnQte",x,"-")
-    if (x === "") return ""
-    console.log("fnQte",x,String(trueNumber(x) * mvtPatch.sens))
-    return String(trueNumber(x) * mvtPatch.sens)
+  function fnQteOut(rawVal: string) {
+    const qte = trueNumber(rawVal)
+    if (qte !== 0) {
+      console.log("qte change", rawVal, qte * mvtPatch.sens)
+      props.updateField(`qte_mouvement`, qte * mvtPatch.sens);
+    }
   }
 
   useEffect(() => {
     setSaisieQte(fnQteIn(String(mvtActif.qte_mouvement)));
   }, [mvtActif.qte_mouvement]);
+
   return (
     <div className={s.wrapForm}>
       <Form
@@ -124,19 +122,8 @@ export function OneMvtForm({ fields, ...props}:Props) {
                         required={fld.required}
                         onChange={(evt) => {
                           const rawValue = evt.target.value;
-
-                          // 2. On met à jour l'affichage immédiatement avec ce que tape l'utilisateur (même "-" ou "")
-                          setSaisieQte(rawValue);
-
-                          // 3. Optionnel : On ne pousse au parent que si ce n'est pas un état transitoire bloquant,
-                          // ou alors on laisse fnQteOut gérer. Si rawValue est "-" ou "", on peut envoyer 0 au parent
-                          // tout en gardant saisieQte intact à l'affichage !
-                          if (rawValue === '-' || rawValue === '+' || rawValue === '') {
-                            // On prévient le parent que c'est 0 pour les calculs, mais on NE TOUCHES PAS à saisieQte
-                            fnQteOut('0');
-                          } else {
-                            fnQteOut(rawValue);
-                          }
+                          setSaisieQte(rawValue); //On met à jour l'affichage
+                          fnQteOut(rawValue);
                         }}
                       />
 
