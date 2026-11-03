@@ -1,6 +1,7 @@
 //src/ap_stocks/hooks/useSelectEnum.tsx
 import { useMemo, useState } from "react";
 
+// si ce hook est dans plusieurs composants, chacun aura sa propre instance sans partage
 export function useSelectEnum<T extends string | number>(
   enumObj: Record<string, T>,
   initial: T 

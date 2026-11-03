@@ -2,6 +2,8 @@
 import * as s from "../pages/OneMvt/index.css.ts";
 import {Form} from "react-router-dom";
 import {useEffect, useState, type SyntheticEvent} from "react";
+import {useFiltres} from "../hooks/contextFiltres/useFiltres.tsx";
+import {useMvtPatch} from "../hooks/contextMouvement/useMouvement.tsx";
 import type {MvtFormField} from "../types/mvtFormFields.ts";
 import type {Mouvement} from "../types/mouvement.ts";
 import {Xinput} from "../../ui/Xinput";
@@ -12,9 +14,7 @@ import FieldFournisseur from "./FieldFournisseur.tsx";
 import FieldService from "./FieldService.tsx";
 import {standardize, fmtLabel} from "../../utils/string.ts";
 import {calculsMvt} from "../utils/calculs.tsx";
-import { useFiltres } from "../hooks/contextFiltres/useFiltres.tsx";
-import {useMvtPatch} from "../hooks/contextMouvement/useMouvement.tsx";
-import { trueNumber } from "../../utils/number.ts";
+import {trueNumber} from "../../utils/number.ts";
 
 // Affichage du formulaire pour la gestion d'un enregistrement mouvement
 

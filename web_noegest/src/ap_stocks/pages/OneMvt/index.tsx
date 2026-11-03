@@ -151,14 +151,14 @@ export default function OneMvt() {
       setMvtPatch((prev) => {
         const isQteMouvement = field === "qte_mouvement";
 
-        // Calcul optionnel des modifications de l'article si le champ correspond
+        // Calcul des modifications de l'article si le champ correspond
         console.log("Calcul:",prev,value,value,field)
         const updatedArticle = isQteMouvement && prev.article
           ? {
             ...prev.article,
-            qte_stock: prev.article.qte_stock
+            qte_stock: mouvement.article?.qte_stock??0
               + Number(value)
-              - (prev.qte_mouvement * Number(prev.sens)),
+              - mouvement.qte_mouvement,
           } as Article
           : prev.article;
         console.log("résultat:",updatedArticle?.qte_stock)

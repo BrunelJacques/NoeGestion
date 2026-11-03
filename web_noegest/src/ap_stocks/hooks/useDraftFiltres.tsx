@@ -4,7 +4,7 @@ import { useState, useCallback, useMemo } from "react";
 import type { MvtFiltres } from "../types/mvtFiltres";
 
 
-// Ce hook crée le brouillon des modifs de filtres, un état avant validation
+// Ce hook ne partage pas entre composants, il crée le brouillon des modifs de filtres
 export function useDraftFiltres(initialValues: MvtFiltres) {
   const [draft, setDraft] = useState<MvtFiltres>(initialValues);
 

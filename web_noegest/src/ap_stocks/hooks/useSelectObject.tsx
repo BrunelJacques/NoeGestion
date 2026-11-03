@@ -1,6 +1,7 @@
 //src/ap_stocks/hooks/useSelectObject.tsx
 import { useMemo, useState } from "react";
 
+// Hook ne partageant pas entre composants
 export function useSelectObject<
   T extends { id: string | number; libelle: string }
 >(
