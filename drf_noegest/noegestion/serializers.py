@@ -161,6 +161,7 @@ class StMouvementSerializer(BaseModelSerializer):
     def update(self, instance, validated_data):
         # On utilise une transaction pour s'assurer que tout passe ou tout échoue
         with (transaction.atomic()):
+            print(validated_data.get("ordi"))
             old_qte = instance.qte_mouvement
             old_sens = instance.sens
             old_article = instance.article

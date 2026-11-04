@@ -142,21 +142,13 @@ class StMouvementViewset(ModelViewSet):
         serializer.save(ordi=self.request.user.username)
 
     def perform_update(self, serializer):
-        # alimente la trace de l'utisateur authentifié et du nom de son ordi
-        sep = " > "
+        # alimente la trace de l'utisateur authentifié, ou l'envoi du front end
         username = self.request.user.username
-        if len(username) == 0:
-            username = "NoToken"
         if 'ordi' in serializer.validated_data:
             ordisent = serializer.validated_data['ordi']
-        else:
-            ordisent = "Ordi inconnu"
-        if len(username+ordisent)>29:
-            # racourcissemnent des libellés à 32 au total
-            sep = ">"
-            username = username[:min(12,len(username))]
-            ordisent = ordisent[:31-len(username)]
-        serializer.save(ordi=f"{username}{sep}{ordisent}")
+            if len(ordisent) > 0:
+                username = ordisent
+        serializer.save(ordi=f"{username}")
 
 # Liste complete avec articles actifs ---------------------
 class StFournisseur_articleViewset(ReadOnlyModelViewSet):

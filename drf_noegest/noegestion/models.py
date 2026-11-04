@@ -117,7 +117,7 @@ class StArticle(models.Model):
         ordering = [Lower("nom_court")]
 
 class StMouvement(models.Model):
-    jour = models.DateField()
+    jour = models.DateField(null=True, blank=True)
     sens = models.IntegerField(default=-1,
                                help_text="Entrée +1, Sortie -1")
     origine = models.CharField(max_length=8,db_index=True,choices=xconst.ORIGINE_CHOICES,
