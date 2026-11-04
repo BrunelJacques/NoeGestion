@@ -8,6 +8,7 @@ export default function getUser():string {
     ? `${user.lastName ?? ''} ${user.firstName ?? ''}`.trim()
     : 'Anonyme';
   const platform = navigator.platform || 'Inconnu';
+
   return `${clientUser} / ${platform}`;
 }
 

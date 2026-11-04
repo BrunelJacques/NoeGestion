@@ -2,6 +2,7 @@
 import { createContext } from "react";
 import type { Key } from "react";
 import type { Mouvement } from "../../types/mouvement.ts";
+import type { Article } from "../../types/article.ts";
 
 interface MouvementContextType {
   mouvement: Mouvement;
@@ -10,6 +11,7 @@ interface MouvementContextType {
 
 export const MouvementContext =
   createContext<MouvementContextType | undefined>(undefined);
+
 
 interface PatchContextType {
   mvtPatch: Mouvement;
@@ -20,3 +22,13 @@ interface PatchContextType {
 
 export const MvtPatchContext =
   createContext<PatchContextType | undefined>(undefined);
+
+
+interface ArticleContextType {
+  article: Article;
+  setArticle: React.Dispatch<React.SetStateAction<Article>>;
+  clearArticle: () => void;
+}
+
+export const ArticleContext =
+  createContext<ArticleContextType | undefined>(undefined);

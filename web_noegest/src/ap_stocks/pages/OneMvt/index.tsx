@@ -3,7 +3,7 @@ import React, {useCallback, useEffect } from "react";
 import * as s from "./index.css.ts";
 import { useError } from "../../../hooks/useError";
 import { useFiltres } from "../../hooks/contextFiltres/useFiltres";
-import { useMouvement, useMvtPatch } from "../../hooks/contextMouvement/useMouvement";
+import { useMouvement, useMvtPatch, useArticle } from "../../hooks/contextMouvement/useMouvement";
 import { apiUrl } from "../../../constants/api.Constants";
 import { MVT0, type MvtsRetour, type Mouvement } from "../../types/mouvement";
 import { type Article } from "../../types/article";
@@ -31,9 +31,10 @@ export default function OneMvt() {
   // Lanceur de forms d'affichage mvtPatch et sa gestion
   const { setError } = useError();
   const { filtres } = useFiltres();
-  const flags = getFlagsMouvement();
+  const flags: [keyof Mouvement, Mouvement[keyof Mouvement]][] = getFlagsMouvement();
   const { mouvement, setMouvement} = useMouvement(); //original
   const { mvtPatch, setMvtPatch } = useMvtPatch(); // envoi modif
+  const { setArticle, clearArticle } = useArticle();
 
   //const [formKey] = useState(0); // pour identifier chaque field dans form
   const { id: queryId } = useParams<{ id?: string }>();
@@ -42,14 +43,13 @@ export default function OneMvt() {
   const queryParams = new URLSearchParams();
   if (queryId) {
     queryParams.append("id", queryId);
-    console.log("queryParams: ",queryId)
   }
   const url = `${apiUrl.STMOUVEMENT_URL}?${queryParams.toString()}`;
   const urlPatch = `${url}-patch`
 
   const fields = lstMvtFields[filtres?.pageOrigine || "sorties"];
 
-  // Traitement final
+  // Traitement final mise en cache
   useEffect(() => {
     if (!mvtPatch || mvtPatch.id === 0) return;
     movementCache.set(url,mouvement);
@@ -80,26 +80,30 @@ export default function OneMvt() {
         return
       }
     }
-    console.log("clear cache: ",url)
-    movementCache.clear;
+    movementCache.clear();
 
     let isCurrent = true; // Pour éviter les mises à jour d'état si le composant se démonte
-    console.log("1. Fetch de l'API pour l'id :", queryId);
+    console.log("Fetch de l'API pour l'id :", queryId);
     const executeFetch = async () => {
       try {
         const response = await fetch(url);
 
         if (!response.ok) {
           if (isCurrent) setError("Échec api mouvement: no response.");
+          clearArticle();
           return; // Ajout d'un return pour éviter de continuer en cas d'erreur
         }
         const mvts: MvtsRetour = await response.json();
         const oneMvt = mvts.results[0];
         if (!oneMvt) {
+          clearArticle();
           if (isCurrent) setError("Mouvement introuvable.");
           return;
         }
         const patch: Mouvement = mvtToPatch(oneMvt);
+        if (oneMvt?.article) { // Mémoïse l'article du mouvement lu
+          setArticle(oneMvt.article)
+        }
 
         if (isCurrent) {
           // 2. Stocker dans le cache avant d'appliquer
@@ -152,7 +156,7 @@ export default function OneMvt() {
         const isQteMouvement = field === "qte_mouvement";
 
         // Calcul des modifications de l'article si le champ correspond
-        console.log("Calcul:",prev,value,value,field)
+
         const updatedArticle = isQteMouvement && prev.article
           ? {
             ...prev.article,
@@ -161,7 +165,7 @@ export default function OneMvt() {
               - mouvement.qte_mouvement,
           } as Article
           : prev.article;
-        console.log("résultat:",updatedArticle?.qte_stock)
+
         return {
           ...prev,
           [field]: value,
@@ -196,13 +200,19 @@ export default function OneMvt() {
     setFormKey((prevKey) => prevKey + 1);
   }
 */
-  async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
 
+  async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
+    console.log(" HandleSubmit launch", mvtPatch.ordi);
     try {
+      let updatedPatch = { ...mvtPatch }; //[keyof Mouvement, Mouvement[keyof Mouvement]][]
       flags.forEach((modif) => {
-        updateField(modif[0], modif[1]);
+        const [key, value] = modif;
+        // Met à jour l'objet local pour la requête API sans attente
+        updatedPatch[key] = value as never;
+        updateField(key, value); // Notifie les autres composants via le useCallback
       });
+      console.log("updateField done, updated data:", updatedPatch);
 
       const movementId = mvtPatch.id;
 
@@ -212,20 +222,19 @@ export default function OneMvt() {
 
       const method = isCreationMode ? "POST" : "PATCH";
 
-      console.log("3. Envoi de la requête vers :", submitUrl);
+      console.log(" Envoi de la requête patch:", updatedPatch.jour,updatedPatch.ordi);
       const response = await fetch(submitUrl, {
         method: method,
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(mvtPatch),
+        body: JSON.stringify(updatedPatch),
       });
 
       if (!response.ok) {
         setError(`Échec api mouvement: ${isCreationMode ? "création" : "modification"} non enregistrée.`);
         return;
       }
-      console.log("4. Succès de la requête");
     } catch (error) {
       console.error("Erreur lors de la sauvegarde :", error);
       setError(

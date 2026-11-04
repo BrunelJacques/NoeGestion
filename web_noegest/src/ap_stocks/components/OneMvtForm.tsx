@@ -2,7 +2,6 @@
 import * as s from "../pages/OneMvt/index.css.ts";
 import {Form} from "react-router-dom";
 import {useEffect, useState, type SyntheticEvent} from "react";
-import {useFiltres} from "../hooks/contextFiltres/useFiltres.tsx";
 import {useMvtPatch} from "../hooks/contextMouvement/useMouvement.tsx";
 import type {MvtFormField} from "../types/mvtFormFields.ts";
 import type {Mouvement} from "../types/mouvement.ts";
@@ -36,7 +35,6 @@ export function OneMvtForm({ fields, ...props}:Props) {
     setMvtActif({ ...mvtPatch });
   }, [mvtPatch]);
 
-  const { filtres } = useFiltres();
   const idMvt=mvtPatch.id
   const minusable = new Set(["qte","couttot"])
   const article = mvtPatch.article
@@ -93,7 +91,7 @@ export function OneMvtForm({ fields, ...props}:Props) {
                         nomArt= {article?.nom}
                         updateField={async (artItem) => {
                           if (typeof artItem?.id === "number") {
-                            const patch = await changementArticle(artItem, mvtPatch, filtres)
+                            const patch = await changementArticle(artItem)
                             setMvtPatch(patch)
                           }
                         }}

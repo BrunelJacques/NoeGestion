@@ -1,13 +1,13 @@
 //src/ap_stocks/components/FieldArticle/index.tsx
 
-import { Xautocomplete } from "../../ui/Xautocomplete";
+import {Xautocomplete} from "../../ui/Xautocomplete";
 import apiUrl from "../../constants/api.Constants";
-import {ART0, type Article, type Articles } from "../types/article";
+import {ART0, type Article, type Articles} from "../types/article";
 import type { Item } from "../../types/item.ts";
-import type {Mouvement } from "../types/mouvement.ts";
-import type { MvtFiltres } from "../types/mvtFiltres.ts";
-
-
+import type {Mouvement} from "../types/mouvement.ts";
+import type {MvtFiltres} from "../types/mvtFiltres.ts";
+import {useFiltres} from "../hooks/contextFiltres/useFiltres.tsx";
+import {useArticle, useMvtPatch} from "../hooks/contextMouvement/useMouvement.tsx";
 
 const fetchArticlesByParam = async (baseUrl: string, value: string | number) => {
   const url =`${baseUrl}${encodeURIComponent(value)}`
@@ -55,16 +55,17 @@ const calculeArticle = (newArt:Article, mvtPatch: Mouvement, filtres: MvtFiltres
 // ChangementArticle applique les modifications induites
 export async function changementArticle(
   artItem: Item,
-  mvtPatch: Mouvement,
-  filtres: MvtFiltres,
 ): Promise<Mouvement> {
+  const { filtres } = useFiltres();
+  const { mvtPatch } = useMvtPatch();
+  const { article, setArticle } = useArticle();
 
-  const article = (artItem.id == 0)
+  const newArticle = (artItem.id == 0)
     ? ART0
     : (await fetcharticle_id(Number(artItem.id)))[0];
-  console.log("fetchArticle", article);
-
-  return calculeArticle(article, mvtPatch, filtres);
+  console.log("fetchArticle", newArticle);
+  if (article.id !== newArticle.id) { setArticle(newArticle); }
+  return calculeArticle(newArticle, mvtPatch, filtres);
 }
 
 // Composition de l'affichage de l'article
